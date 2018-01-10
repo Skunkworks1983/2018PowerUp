@@ -14,7 +14,15 @@ public class RobotMap {
     public static int RIGHT_MASTER_PORT = 3;
     public static int RIGHT_SLAVE_0_PORT = 4;
     public static int RIGHT_SLAVE_1_PORT = 5;
-	// For example to map the left and right motors, you could define the
+
+    public static boolean LEFT_MASTER_REVERSE = false;
+    public static boolean LEFT_SLAVE_0_REVERSE = false;
+    public static boolean LEFT_SLAVE_1_REVERSE = false;
+    public static boolean RIGHT_MASTER_REVERSE = false;
+    public static boolean RIGHT_SLAVE_0_REVERSE = false;
+    public static boolean RIGHT_SLAVE_1_REVERSE = false;
+
+    // For example to map the left and right motors, you could define the
 	// following variables to use with your drivetrain subsystem.
 	// public static int leftMotor = 1;
 	// public static int rightMotor = 2;
