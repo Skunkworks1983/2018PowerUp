@@ -6,7 +6,8 @@ package org.usfirst.frc.team1983.robot;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public class RobotMap { //conventions
+public class RobotMap
+{
 
     public static int LEFT_MASTER_PORT = 0;
     public static int LEFT_SLAVE_0_PORT = 1;
