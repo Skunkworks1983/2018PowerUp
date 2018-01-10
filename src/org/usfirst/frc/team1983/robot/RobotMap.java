@@ -6,8 +6,23 @@ package org.usfirst.frc.team1983.robot;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public class RobotMap {
-	// For example to map the left and right motors, you could define the
+public class RobotMap { //conventions
+
+    public static int LEFT_MASTER_PORT = 0;
+    public static int LEFT_SLAVE_0_PORT = 1;
+    public static int LEFT_SLAVE_1_PORT = 2;
+    public static int RIGHT_MASTER_PORT = 3;
+    public static int RIGHT_SLAVE_0_PORT = 4;
+    public static int RIGHT_SLAVE_1_PORT = 5;
+
+    public static boolean LEFT_MASTER_REVERSE = false;
+    public static boolean LEFT_SLAVE_0_REVERSE = false;
+    public static boolean LEFT_SLAVE_1_REVERSE = false;
+    public static boolean RIGHT_MASTER_REVERSE = false;
+    public static boolean RIGHT_SLAVE_0_REVERSE = false;
+    public static boolean RIGHT_SLAVE_1_REVERSE = false;
+
+    // For example to map the left and right motors, you could define the   Change to multiline comment /* */
 	// following variables to use with your drivetrain subsystem.
 	// public static int leftMotor = 1;
 	// public static int rightMotor = 2;
