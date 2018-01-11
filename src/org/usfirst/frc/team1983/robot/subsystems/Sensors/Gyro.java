@@ -11,10 +11,8 @@ public class Gyro extends AHRS
     {
         super(port);
     }
-
-    public Gyro() //there are two constructors here! turns out you can have multiple constructors based on what your arguments are!
-    //this buddy lets you call the gyro with no arguments and it'll call the other constructor with the correct arguments to construct a gyro!
-    //what a cool dude. a real helper.
+    //two constructors here, one of which requires no argument and calls the other with the correct argument.
+    public Gyro()
     {
         this(Port.kMXP);
     }
@@ -26,8 +24,7 @@ public class Gyro extends AHRS
 
     public void initDefaultCommand()
     {
-        // TODO: Set the default command, if any, for a subsystem here. Example:
-        //    setDefaultCommand(new MySpecialCommand());
+
     }
 }
 
