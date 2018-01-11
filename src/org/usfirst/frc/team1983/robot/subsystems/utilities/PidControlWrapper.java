@@ -6,26 +6,26 @@ import edu.wpi.first.wpilibj.PIDSource;
 
 public class PidControlWrapper extends PIDController
 {
-    public PidControlWrapper(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output, double period)
+    public PidControlWrapper(double kP, double kI, double kD, double kF, PIDSource source, PIDOutput output, double period)
     {
-        super(Kp, Ki, Kd, Kf, source, output, period);
+        super(kP, kI, kD, kF, source, output, period);
     }
 
-    public PidControlWrapper(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output,
+    public PidControlWrapper(double kP, double kI, double kD, PIDSource source, PIDOutput output,
                              double period)
     {
-        super(Kp, Ki, Kd, source, output, period);
+        super(kP, kI, kD, source, output, period);
     }
 
-    public PidControlWrapper(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output)
+    public PidControlWrapper(double kP, double kI, double kD, PIDSource source, PIDOutput output)
     {
-        super(Kp, Ki, Kd, source, output);
+        super(kP, kI, kD, source, output);
     }
 
-    public PidControlWrapper(double Kp, double Ki, double Kd, double Kf, PIDSource source,
+    public PidControlWrapper(double kP, double kI, double kD, double kF, PIDSource source,
                              PIDOutput output)
     {
-        super(Kp, Ki, Kd, Kf, source, output);
+        super(kP, kI, kD, kF, source, output);
     }
 }
 
