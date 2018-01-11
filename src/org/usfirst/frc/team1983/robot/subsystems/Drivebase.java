@@ -6,7 +6,7 @@ import org.usfirst.frc.team1983.robot.RobotMap;
 
 public class Drivebase extends Subsystem
 {
-    public MotorGroup left, right;
+    public MotorGroup left, right; //declare your 6 drive motors before constructor
 
     private static NeutralMode DRIVEBASE_NEUTRAL_MODE = NeutralMode.Coast;
 
@@ -23,7 +23,7 @@ public class Drivebase extends Subsystem
         right = new MotorGroup(rightMaster, rightSlave0, rightSlave1);
     }
 
-
+    //get rid of me!
     public void initDefaultCommand() {}
 }
 
