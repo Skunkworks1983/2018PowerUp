@@ -5,11 +5,10 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 
-public class Motor {
+public class Motor
+{
     private TalonSRX talon;
-    public int port;
-    private static ControlMode PERCENT_OUTPUT = ControlMode.PercentOutput;
-    private static ControlMode FOLLOW = ControlMode.Follower;
+    private int port;
 
     public Motor(int port, NeutralMode neutralMode, boolean reversed)
     {
@@ -19,13 +18,21 @@ public class Motor {
         this.talon.setInverted(reversed);
     }
 
-    public void set(double value) {
-        talon.set(PERCENT_OUTPUT, value);
+    //Set the percent output of the motor
+    public void set(double value)
+    {
+        talon.set(ControlMode.PercentOutput, value);
     }
 
+    //Match the output settings of a master motor
     public void follow(Motor master)
     {
-        talon.set(FOLLOW, master.port);
+        talon.set(ControlMode.Follower, master.port);
+    }
+
+    //Returns the port of this motor so slave motors can follow it
+    public int getPort() {
+        return port;
     }
 }
 
