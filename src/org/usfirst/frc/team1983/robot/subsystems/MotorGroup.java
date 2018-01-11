@@ -1,21 +1,39 @@
 package org.usfirst.frc.team1983.robot.subsystems;
 
-public class MotorGroup { //Bracket on next line
-    public Motor master, slave0, slave1; //Make motorgroup able to have x number of motors as part of it (hint: ArrayList[Motor])
+import java.util.ArrayList;
 
-    public MotorGroup (Motor master, Motor slave0, Motor slave1)
+public class MotorGroup
+{
+    private Motor master;
+    private ArrayList<Motor> motorGroup;
+    private boolean reverse;
+
+    public MotorGroup (Motor master, boolean reverse)
     {
         this.master = master;
-        this.slave0 = slave0;
-        this.slave1 = slave1;
-        slave0.follow(master);
-        slave1.follow(master);
+        this.reverse = reverse;
+        motorGroup = new ArrayList<Motor>();
+        motorGroup.add(master);
     }
 
-    //What do I do?
+    //Set speed of all motors in group
     public void set(double value)
     {
-        master.set(value);
+        if (reverse)
+        {
+            master.set(-value);
+        }
+        else
+        {
+            master.set(value);
+        }
+    }
+
+    //Add a motor to the group
+    public void addMotor(Motor motor)
+    {
+        motorGroup.add(motor);
+        motor.follow(master);
     }
 }
 
