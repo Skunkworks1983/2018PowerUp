@@ -30,7 +30,7 @@ public class Motor
         talon.set(ControlMode.Follower, master.port);
     }
 
-    //Returns the port of this motor
+    //Returns the port of this motor so slave motors can follow it
     public int getPort() {
         return port;
     }

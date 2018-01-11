@@ -24,14 +24,4 @@ public class RobotMap
     public static boolean RIGHT_MASTER_REVERSE = false;
     public static boolean RIGHT_SLAVE_0_REVERSE = false;
     public static boolean RIGHT_SLAVE_1_REVERSE = false;
-
-    // For example to map the left and right motors, you could define the   Change to multiline comment /* */
-	// following variables to use with your drivetrain subsystem.
-	// public static int leftMotor = 1;
-	// public static int rightMotor = 2;
-
-	// If you are using multiple modules, make sure to define both the port
-	// number and the module. For example you with a rangefinder:
-	// public static int rangefinderPort = 1;
-	// public static int rangefinderModule = 1;
 }
