@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1983.robot.subsystems;
+package org.usfirst.frc.team1983.robot.subsystems.utilities;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;

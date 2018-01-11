@@ -1,4 +1,6 @@
-package org.usfirst.frc.team1983.robot.subsystems;
+package org.usfirst.frc.team1983.robot.subsystems.utilities;
+
+import org.usfirst.frc.team1983.robot.subsystems.utilities.Motor;
 
 import java.util.ArrayList;
 
