@@ -1,14 +1,7 @@
-package org.usfirst.frc.team1983.robot;
+package org.usfirst.frc.team1983.robot.settings;
 
-/**
- * The RobotMap is a mapping from the ports sensors and actuators are wired into
- * to a variable name. This provides flexibility changing wiring, makes checking
- * the wiring easier and significantly reduces the number of magic numbers
- * floating around.
- */
 public class RobotMap
 {
-
     //Ports of the drivebase motors
     public static int LEFT_MASTER_PORT = 0;
     public static int LEFT_SLAVE_0_PORT = 1;
