@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1983.robot.subsystems.utilities;
 
-import org.usfirst.frc.team1983.robot.subsystems.utilities.Motor;
-
 import java.util.ArrayList;
 
 public class MotorGroup
@@ -10,18 +8,18 @@ public class MotorGroup
     private ArrayList<Motor> motorGroup;
     private boolean reverse;
 
-    public MotorGroup (Motor master, boolean reverse)
+    public MotorGroup(Motor master, boolean reverse)
     {
         this.master = master;
         this.reverse = reverse;
-        motorGroup = new ArrayList<Motor>();
+        motorGroup = new ArrayList<>();
         motorGroup.add(master);
     }
 
     //Set speed of all motors in group
     public void set(double value)
     {
-        if (reverse)
+        if(reverse)
         {
             master.set(-value);
         }
