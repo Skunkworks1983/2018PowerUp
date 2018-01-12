@@ -1,8 +1,9 @@
 package org.usfirst.frc.team1983.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.usfirst.frc.team1983.robot.RobotMap;
+import org.usfirst.frc.team1983.robot.settings.RobotMap;
 import org.usfirst.frc.team1983.robot.subsystems.utilities.Motor;
 import org.usfirst.frc.team1983.robot.subsystems.utilities.MotorGroup;
 
