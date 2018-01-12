@@ -7,8 +7,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team1983.robot.commands.ExampleCommand;
 import org.usfirst.frc.team1983.robot.subsystems.Drivebase;
 
 /**
@@ -20,8 +18,9 @@ import org.usfirst.frc.team1983.robot.subsystems.Drivebase;
  */
 public class Robot extends IterativeRobot {
 
-	public static OI oi;
-	private static Drivebase drivebase;
+	public OI oi;
+	private Drivebase drivebase;
+	private static Robot instance;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -34,8 +33,6 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		oi = new OI();
 		drivebase = new Drivebase();
-		chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 
@@ -115,8 +112,16 @@ public class Robot extends IterativeRobot {
 		LiveWindow.run();
 	}
 
-	public static Drivebase getDrivebase()
+	public Drivebase getDrivebase()
 	{
 		return drivebase;
 	}
+
+	public static Robot getInstance() {
+		if (instance == null) {
+			instance = new Robot();
+		}
+		return instance;
+	}
+
 }
