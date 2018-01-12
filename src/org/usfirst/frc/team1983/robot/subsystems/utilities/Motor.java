@@ -16,12 +16,12 @@ public class Motor extends TalonSRX
     //Set the percent output of the motor
     public void set(double value)
     {
-        set(ControlMode.PercentOutput, value);
+        super.set(ControlMode.PercentOutput, value);
     }
 
     //Match the output settings of a master motor
     public void follow(Motor master)
     {
-        set(ControlMode.Follower, master.getDeviceID());
+        super.set(ControlMode.Follower, master.getDeviceID());
     }
 }

@@ -31,15 +31,19 @@ public class Drivebase extends Subsystem
     }
 
     //Set the output of the left motorgroup
-    public void setLeft(double value) {
+    public void setLeft(double value)
+    {
         left.set(value);
     }
 
     //Set the output of the right motorgroup
-    public void setRight(double value) {
+    public void setRight(double value)
+    {
         right.set(value);
     }
 
-    protected void initDefaultCommand() {}
+    protected void initDefaultCommand()
+    {
+    }
 }
 
