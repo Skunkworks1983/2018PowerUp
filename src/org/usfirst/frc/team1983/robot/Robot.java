@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team1983.robot.commands.ExampleCommand;
+import org.usfirst.frc.team1983.robot.subsystems.Drivebase;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,6 +21,7 @@ import org.usfirst.frc.team1983.robot.commands.ExampleCommand;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
+	private static Drivebase drivebase;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -31,6 +33,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
+		drivebase = new Drivebase();
 		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
@@ -110,5 +113,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
+	}
+
+	public static Drivebase getDrivebase()
+	{
+		return drivebase;
 	}
 }

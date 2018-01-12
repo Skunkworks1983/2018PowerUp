@@ -1,9 +1,11 @@
 package org.usfirst.frc.team1983.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team1983.robot.Robot;
 import org.usfirst.frc.team1983.robot.subsystems.utilities.PidControlWrapper;
 
 public class TurnAngle extends Command
+
 {
 
     double initialAngle;
@@ -13,7 +15,7 @@ public class TurnAngle extends Command
     //the constructor takes a number of degrees it wants to turn. Positive is clockwise, negative is counterclockwise.
     public TurnAngle(double degrees)
     {
-        //requires drivebase! that's not implemented yet and not quite in the scope of this commit.
+        requires(Robot.getDrivebase());
         targetAngle = degrees;
     }
 
@@ -47,7 +49,6 @@ public class TurnAngle extends Command
         turnPid.disable();
 
     }
-
 
     @Override
     protected void interrupted()
