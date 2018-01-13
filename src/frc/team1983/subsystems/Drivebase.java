@@ -2,7 +2,7 @@ package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1983.RobotMap;
+import frc.team1983.settings.RobotMap;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.MotorGroup;
 
