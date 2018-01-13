@@ -1,5 +1,5 @@
 
-package org.usfirst.frc.team1983.robot;
+package frc.team1983;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team1983.robot.commands.ExampleCommand;
-import org.usfirst.frc.team1983.robot.subsystems.ExampleSubsystem;
+import frc.team1983.commands.ExampleCommand;
+import frc.team1983.subsystems.ExampleSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
