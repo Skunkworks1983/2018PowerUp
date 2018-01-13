@@ -111,6 +111,9 @@ public class Robot extends IterativeRobot {
 	{
 		return drivebase;
 	}
+	public OI getOI() {
+		return oi;
+	}
 
 	public static Robot getInstance() {
 		if (instance == null) {
