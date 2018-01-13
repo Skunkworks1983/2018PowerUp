@@ -19,7 +19,7 @@ public class RobotMap
 
 
     //DriveStraight constants
-    public static double DRIVEBASE_TICK_PER_FOOT = 0; //TODO:
+    public static double DRIVEBASE_TICK_PER_FOOT = 0; //TODO: find this ratio
 
     //Which drivebase motors to reverse
     public static boolean LEFT_MASTER_REVERSE = false;
