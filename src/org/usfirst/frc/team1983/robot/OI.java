@@ -8,11 +8,6 @@ import edu.wpi.first.wpilibj.Joystick;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-
     public Joystick leftStick = new Joystick(RobotMap.L_JOY_PORT);
     public Joystick rightStick = new Joystick(RobotMap.R_JOY_PORT);
-
-
-
-
 }
