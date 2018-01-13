@@ -20,6 +20,8 @@ public class TurnAngle extends Command
     {
         requires(Robot.getInstance().getDrivebase());
         drivebase = Robot.getInstance().getDrivebase();
+
+        //Uses the TurnAngle specific PidOutputWrapper implementation.
         pidOut = new TurnAnglePidOutput(drivebase);
         targetAngle = degrees;
     }
