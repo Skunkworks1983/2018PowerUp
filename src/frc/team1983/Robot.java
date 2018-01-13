@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.team1983.commands.ExampleCommand;
-import frc.team1983.subsystems.ExampleSubsystem;
+import frc.team1983.subsystems.Drivebase;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,11 +19,11 @@ import frc.team1983.subsystems.ExampleSubsystem;
  */
 public class Robot extends IterativeRobot {
 
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-	public static OI oi;
+	private OI oi;
+	private Drivebase drivebase;
+	private static Robot instance;
 
 	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -33,9 +32,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
-		chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", chooser);
+		drivebase = new Drivebase();
 	}
 
 	/**
@@ -66,7 +63,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = chooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -113,4 +109,22 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		LiveWindow.run();
 	}
+
+	public Drivebase getDrivebase()
+	{
+		return drivebase;
+	}
+
+	public OI getOI()
+	{
+		return oi;
+	}
+
+	public static Robot getInstance() {
+		if (instance == null) {
+			instance = new Robot();
+		}
+		return instance;
+	}
+
 }
