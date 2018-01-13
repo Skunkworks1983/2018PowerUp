@@ -2,9 +2,9 @@ package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.usfirst.frc.team1983.robot.RobotMap;
-import org.usfirst.frc.team1983.robot.subsystems.utilities.Motor;
-import org.usfirst.frc.team1983.robot.subsystems.utilities.MotorGroup;
+import frc.team1983.RobotMap;
+import frc.team1983.subsystems.Utilities.Motor;
+import frc.team1983.subsystems.Utilities.MotorGroup;
 
 public class Drivebase extends Subsystem
 {
