@@ -1,4 +1,4 @@
-package frc.team1983;
+package frc.team1983.settings;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -18,13 +18,8 @@ public class RobotMap
     public static int RIGHT_SLAVE_1_PORT = 5;
 
 
-    //DriveStraight things
+    //DriveStraight constants
     public static double DRIVEBASE_TICK_PER_FOOT = 0; //TODO:
-    public static double DRIVESTRAIGHT_PID_P = 0;
-    public static double DRIVESTRAIGHT_PID_I = 0;
-    public static double DRIVESTRAIGHT_PID_D = 0;
-    public static double DRIVESTRAIGHT_PID_F = 0;
-
 
     //Which drivebase motors to reverse
     public static boolean LEFT_MASTER_REVERSE = false;

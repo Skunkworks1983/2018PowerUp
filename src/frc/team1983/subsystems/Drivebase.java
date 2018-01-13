@@ -2,13 +2,13 @@ package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1983.RobotMap;
+import frc.team1983.settings.RobotMap;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.MotorGroup;
 
 public class Drivebase extends Subsystem
 {
-    private MotorGroup left, right, all;
+    private MotorGroup left, right;
     private Motor leftMaster, leftSlave0, leftSlave1, rightMaster, rightSlave0, rightSlave1;
 
     private static NeutralMode DRIVEBASE_NEUTRAL_MODE = NeutralMode.Coast;
@@ -29,13 +29,6 @@ public class Drivebase extends Subsystem
         right.addMotor(rightSlave0);
         right.addMotor(rightSlave1);
 
-        all = new MotorGroup(leftMaster, false);
-        all.addMotor(leftSlave0);
-        all.addMotor(leftSlave1);
-        all.addMotor(rightMaster);
-        all.addMotor(rightSlave0);
-        all.addMotor(rightSlave1);
-
     }
 
     //Set the output of the left motorgroup
@@ -48,10 +41,6 @@ public class Drivebase extends Subsystem
     public void setRight(double value)
     {
         right.set(value);
-    }
-
-    public MotorGroup getAll() {
-        return all;
     }
 
     protected void initDefaultCommand()

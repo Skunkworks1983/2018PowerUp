@@ -4,27 +4,21 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
-import frc.team1983.RobotMap;
+import frc.team1983.settings.RobotMap;
 
 public class DriveStraight extends Command
 {
     private double distance;
     private PIDController pidController;
-    private double p;
-    private double i;
-    private double d;
     PIDSource source;
 
     //drives a distance in feet!
     public DriveStraight(double distance)
     {
-        p = RobotMap.DRIVESTRAIGHT_PID_P;
-        i = RobotMap.DRIVESTRAIGHT_PID_I;
-        d = RobotMap.DRIVESTRAIGHT_PID_D;
         requires(Robot.getInstance().getDrivebase());
         this.distance = distance * RobotMap.DRIVEBASE_TICK_PER_FOOT;
         //needs a pidsource and pidoutput
-        //PidController driveDistancePid = new PIDController(p, i, d);
+        //PidController driveDistancePid = new PIDController(PidValues.DRIVESTRAIGHT_PID_P, PidValues.DRIVESTRAIGHT_PID_I, PidValues.DRIVESTRAIGHT_PID_D);
 
     }
 
@@ -44,7 +38,7 @@ public class DriveStraight extends Command
     @Override
     protected boolean isFinished()
     {
-        //return pidcontroller.onTarger();
+        //return pidcontroller.onTarget();
         return false;
     }
 
@@ -59,5 +53,6 @@ public class DriveStraight extends Command
     protected void interrupted()
     {
         super.interrupted();
+        this.end();
     }
 }
