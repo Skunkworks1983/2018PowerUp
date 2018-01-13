@@ -1,4 +1,4 @@
-package frc.team1983;
+package frc.team1983.settings;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
