@@ -4,7 +4,6 @@ package frc.team1983;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team1983.subsystems.Drivebase;
 
 /**
@@ -20,7 +19,7 @@ public class Robot extends IterativeRobot {
 	private Drivebase drivebase;
 	private static Robot instance;
 
-	Command autonomousCommand;
+	private Command autonomousCommand;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -103,9 +102,7 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during test mode
 	 */
 	@Override
-	public void testPeriodic() {
-		LiveWindow.run();
-	}
+	public void testPeriodic() {}
 
 	public Drivebase getDrivebase()
 	{

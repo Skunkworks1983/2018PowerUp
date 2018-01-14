@@ -25,7 +25,9 @@ public class Drivebase extends Subsystem
         left = new MotorGroup(leftMaster, false);
         left.addMotor(leftSlave0);
         left.addMotor(leftSlave1);
-        right = new MotorGroup(rightMaster, false);
+
+        //TODO: Make sure this directionality is right.
+        right = new MotorGroup(rightMaster, true);
         right.addMotor(rightSlave0);
         right.addMotor(rightSlave1);
 
