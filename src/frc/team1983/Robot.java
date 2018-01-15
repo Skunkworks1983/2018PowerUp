@@ -4,6 +4,7 @@ package frc.team1983;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.services.OI;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 
 public class Robot extends IterativeRobot
@@ -15,7 +16,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() {
 		drivebase = new Drivebase();
-		oi = new OI();
+		oi = new OI(Constants.OIInputType.DoubleJoy);
 	}
 
 	@Override
@@ -25,7 +26,7 @@ public class Robot extends IterativeRobot
 
 	@Override
 	public void disabledPeriodic() {
-		Scheduler.getInstance().run();""
+		Scheduler.getInstance().run();
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class Robot extends IterativeRobot
 
 	@Override
 	public void testPeriodic() {
-
+		oi.update();
 	}
 
 	public Drivebase getDrivebase()
