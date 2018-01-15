@@ -20,6 +20,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		oi = new OI();
 		drivebase = new Drivebase();
+		elevator = new Elevator();
 	}
 
 	@Override
@@ -62,6 +63,11 @@ public class Robot extends IterativeRobot {
 	{
 		return drivebase;
 	}
+
+	public Elevator getElevator()
+    {
+        return elevator;
+    }
 
 	public OI getOI()
 	{

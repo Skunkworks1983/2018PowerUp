@@ -25,6 +25,15 @@ public class RobotMap
     public static boolean RIGHT_SLAVE_0_REVERSE = false;
     public static boolean RIGHT_SLAVE_1_REVERSE = false;
 
-    public static int L_JOY_PORT = 0; //TODO: find actual port
-    public static int R_JOY_PORT = 1; //TODO: find actual port
+    //Elevator Winch Ports
+    public static int LEFT_WINCH_PORT = 6;
+    public static int RIGHT_WINCH_PORT = 7;
+
+    public static int RAIL_ENCODER_A_PORT = 0; //diO port on the RIO for channel A
+    public static int RAIL_ENCODER_B_PORT = 0; //diO port on the RIO for channel B
+
+    //OI Input Ports
+    public static int OI_L_JOY_PORT = 0; //TODO: find actual port
+    public static int OI_R_JOY_PORT = 1; //TODO: find actual port
+    public static int OI_BUTTONS = 3; //The joystick emulated by the psock in the OI
 }
