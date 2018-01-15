@@ -1,5 +1,5 @@
 
-package org.usfirst.frc.team1983.robot;
+package frc.team1983;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;

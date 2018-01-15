@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1983.robot.subsystems.Sensors;
+package frc.team1983.subsystems.Sensors;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI.Port;
