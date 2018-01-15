@@ -3,6 +3,7 @@ package frc.team1983.services;
 import java.util.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.team1983.Robot;
 import frc.team1983.settings.Constants;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -15,33 +16,35 @@ import edu.wpi.first.wpilibj.command.Command;
     update: i fixed it, both joysticks and buttons are 0-indexed when using this wrapper
 
     the oi will update itself provided that oi_update() is called in teleop periodic.
-
-    usage:
-    double yv = Robot.getInstance().getOI().getAxis(Constants.OIJoystick.Left,
 */
-public class OI {
-    public static int m_type;
+public class OI
+{
+    public static int type;
 
-    private HashMap<Integer, Joystick> m_joysticks;
-    private HashMap<Integer, JoystickButton[]> m_buttons;
-    private HashMap<Integer, Boolean[]> m_lastButtonStates;
+    private DriverStation ds;
+
+    private HashMap<Integer, Joystick> joysticks;
+    private HashMap<Integer, JoystickButton[]> buttons;
+    private HashMap<Integer, Boolean[]> lastButtonStates;
 
     // construct the hashmaps for joysticks, buttons, and lastbuttonstates
-    public OI(int type) {
-        m_type = type;
+    public OI(int type, DriverStation ds)
+    {
+        this.ds = ds;
+        this.type = type;
 
-        m_joysticks = new HashMap<>();
-        m_buttons = new HashMap<>();
-        m_lastButtonStates = new HashMap<>();
+        joysticks = new HashMap<>();
+        buttons = new HashMap<>();
+        lastButtonStates = new HashMap<>();
 
-        for(int joy = 0; joy < DriverStation.kJoystickPorts; joy++) {
-            if(!DriverStation.getInstance().getJoystickName(joy).equals("")) {
-                m_joysticks.put(joy, new Joystick(joy));
-                m_buttons.put(joy, new JoystickButton[m_joysticks.get(joy).getButtonCount()]);
-                m_lastButtonStates.put(joy, new Boolean[m_joysticks.get(joy).getButtonCount()]);
+        for(int joy = 0; joy < ds.kJoystickPorts; joy++) {
+            if(!ds.getJoystickName(joy).equals("")) {
+                joysticks.put(joy, new Joystick(joy));
+                buttons.put(joy, new JoystickButton[joysticks.get(joy).getButtonCount()]);
+                lastButtonStates.put(joy, new Boolean[joysticks.get(joy).getButtonCount()]);
 
-                for(int button = 1; button <= m_joysticks.get(joy).getButtonCount(); button++) {
-                    m_buttons.get(joy)[button - 1] = new JoystickButton(m_joysticks.get(joy), button);
+                for(int button = 1; button <= joysticks.get(joy).getButtonCount(); button++) {
+                    buttons.get(joy)[button - 1] = new JoystickButton(joysticks.get(joy), button);
                 }
             }
         }
@@ -52,11 +55,11 @@ public class OI {
 
     }
 
-    // updates the laststates table
+    // updates the laststates table. call this in teleopperiodic()
     public void update() {
-        for(Integer joy : m_lastButtonStates.keySet()) {
-            for(int button = 0; button < m_lastButtonStates.get(joy).length - 1; button++) {
-                m_lastButtonStates.get(joy)[button] = isDown(joy, button);
+        for(Integer joy : lastButtonStates.keySet()) {
+            for(int button = 0; button < lastButtonStates.get(joy).length - 1; button++) {
+                lastButtonStates.get(joy)[button] = isDown(joy, button);
             }
         }
     }
@@ -65,10 +68,11 @@ public class OI {
     private boolean buttonExists(int joy, int button) {
         try
         {
-            return m_buttons.get(joy)[button] != null;
+            return buttons.get(joy)[button] != null;
         }
         catch (Exception e)
         {
+            Robot.getInstance().getLogger().logFatal("joy,button pair does not exist: " + "(" + joy + "," + button + ")");
             return false;
         }
     }
@@ -77,11 +81,12 @@ public class OI {
     private boolean axisExists(int joy, int axis) {
         try
         {
-            // not sure if this works todo
-            return axis > m_joysticks.get(joy).getAxisCount();
+            // not sure if this works todo make sure this works
+            return axis > joysticks.get(joy).getAxisCount();
         }
         catch (Exception e )
         {
+            Robot.getInstance().getLogger().logFatal("joy,axis pair does not exist: " + "(" + joy + "," + axis + ")");
             return false;
         }
     }
@@ -89,18 +94,18 @@ public class OI {
     // wraps whileHeld
     public void bindToHeld(int joy, int button, Command command) {
         if(buttonExists(joy, button))
-            m_buttons.get(joy)[button].whileHeld(command);
+            buttons.get(joy)[button].whileHeld(command);
     }
 
-    // wraps whenPressed()
+    // wraps whenPressed
     public void bindToPressed(int joy, int button, Command command) {
         if(buttonExists(joy, button))
-            m_buttons.get(joy)[button].whenPressed(command);
+            buttons.get(joy)[button].whenPressed(command);
     }
 
     // gets the raw axis of a joystick, no deadzone
     public double getRawAxis(int joy, int axis) {
-        return axisExists(joy, axis) ? m_joysticks.get(joy).getRawAxis(axis) : 0;
+        return axisExists(joy, axis) ? joysticks.get(joy).getRawAxis(axis) : 0;
     }
 
     // gets the axis value with deadzone of joystick. deadzone set in Constants
@@ -112,17 +117,17 @@ public class OI {
 
     // gets whether a button is down, regardless of previous state
     public boolean isDown(int joy, int button) {
-        return m_joysticks.get(joy).getRawButton(button);
+        return joysticks.get(joy).getRawButton(button);
 
     }
 
     // gets whether a button was previously up (last frame) and is now down
     public boolean isPressed(int joy, int button) {
-        return isDown(joy, button) && !m_lastButtonStates.get(joy)[button];
+        return isDown(joy, button) && !lastButtonStates.get(joy)[button];
     }
 
     // gets whether a button was previously down and is now down
     public boolean isReleased(int joy, int button) {
-        return !isDown(joy, button) && m_lastButtonStates.get(joy)[button];
+        return !isDown(joy, button) && lastButtonStates.get(joy)[button];
     }
 }
