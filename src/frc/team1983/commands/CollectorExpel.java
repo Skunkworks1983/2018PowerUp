@@ -2,11 +2,12 @@ package frc.team1983.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
+import frc.team1983.settings.Misc;
 
 public class CollectorExpel extends Command
 {
-    private static double expellSpeed = -1;
 
+    //Runs the collector outward
     public CollectorExpel()
     {
         requires(Robot.getInstance().getCollector());
@@ -21,7 +22,7 @@ public class CollectorExpel extends Command
     @Override
     protected void execute()
     {
-        Robot.getInstance().getCollector().setSpeed(expellSpeed);
+        Robot.getInstance().getCollector().setSpeed(-Misc.COLLECTOR_EXPEL_SPEED);
     }
 
 

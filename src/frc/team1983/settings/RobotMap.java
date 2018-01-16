@@ -30,10 +30,10 @@ public class RobotMap
 
 
     //Collector motor ports TODO: Get actual ports
-    public static int LEFT_COLLECTOR_PORT = 6;
-    public static int RIGHT_COLLECTOR_PORT = 7;
+    public static final int LEFT_COLLECTOR_PORT = 6;
+    public static final int RIGHT_COLLECTOR_PORT = 7;
 
     //Collector motor reverse TODO: Verify reverse modes
-    public static boolean LEFT_COLLECTOR_REVERSE = false;
-    public static boolean RIGHT_COLLECTOR_REVERSE = true;
+    public static final boolean LEFT_COLLECTOR_REVERSE = false;
+    public static final boolean RIGHT_COLLECTOR_REVERSE = true;
 }

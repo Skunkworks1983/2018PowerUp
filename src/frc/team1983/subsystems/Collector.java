@@ -9,6 +9,7 @@ import frc.team1983.subsystems.utilities.MotorGroup;
 public class Collector extends Subsystem
 {
 
+    //The collector subsystem. IDK why you would want to run the motors
     private MotorGroup collectorMotors;
     private Motor left, right;
 
@@ -25,5 +26,7 @@ public class Collector extends Subsystem
     {
         collectorMotors.set(value);
     }
+
+    public void initDefaultCommand() {}
 }
 
