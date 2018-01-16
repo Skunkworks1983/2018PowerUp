@@ -3,14 +3,15 @@ package frc.team1983.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
 import frc.team1983.settings.Misc;
+import frc.team1983.subsystems.Collector;
 
+//Runs the collector inwards
 public class CollectorIntake extends Command
 {
-
-    //Runs the collector inwards
+    private Collector collector = Robot.getInstance().getCollector();
     public CollectorIntake()
     {
-        requires(Robot.getInstance().getCollector());
+        requires(collector);
     }
 
     @Override
@@ -22,7 +23,7 @@ public class CollectorIntake extends Command
     @Override
     protected void execute()
     {
-        Robot.getInstance().getCollector().setSpeed(Misc.COLLECTOR_INTAKE_SPEED);
+        collector.setSpeed(Misc.COLLECTOR_INTAKE_SPEED);
     }
 
     @Override
@@ -34,7 +35,7 @@ public class CollectorIntake extends Command
     @Override
     protected void end()
     {
-        Robot.getInstance().getCollector().setSpeed(0);
+        collector.setSpeed(0);
     }
 
     @Override
