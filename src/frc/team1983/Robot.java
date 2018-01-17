@@ -9,8 +9,6 @@ import frc.team1983.services.OI;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 
-import java.sql.Driver;
-
 public class Robot extends IterativeRobot
 {
 	private static Robot instance;

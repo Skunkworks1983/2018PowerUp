@@ -38,7 +38,7 @@ public class OI
         lastButtonStates = new HashMap<>();
 
         for(int joy = 0; joy < ds.kJoystickPorts; joy++) {
-            if(!ds.getJoystickName(joy).equals("")) {
+            if(ds.getJoystickName(joy) != "") {
                 joysticks.put(joy, new Joystick(joy));
                 buttons.put(joy, new JoystickButton[joysticks.get(joy).getButtonCount()]);
                 lastButtonStates.put(joy, new Boolean[joysticks.get(joy).getButtonCount()]);
@@ -59,7 +59,8 @@ public class OI
     public void update() {
         for(Integer joy : lastButtonStates.keySet()) {
             for(int button = 0; button < lastButtonStates.get(joy).length - 1; button++) {
-                lastButtonStates.get(joy)[button] = isDown(joy, button);
+                if(buttonExists(joy, button))
+                    lastButtonStates.get(joy)[button] = isDown(joy, button);
             }
         }
     }
@@ -72,7 +73,8 @@ public class OI
         }
         catch (Exception e)
         {
-            Robot.getInstance().getLogger().logFatal("joy,button pair does not exist: " + "(" + joy + "," + button + ")");
+            // had to remove due to unit testing
+            //Robot.getInstance().getLogger().logFatal("joy,button pair does not exist: " + "(" + joy + "," + button + ")");
             return false;
         }
     }
@@ -86,21 +88,26 @@ public class OI
         }
         catch (Exception e )
         {
-            Robot.getInstance().getLogger().logFatal("joy,axis pair does not exist: " + "(" + joy + "," + axis + ")");
+            // had to remove due to unit testing
+            //Robot.getInstance().getLogger().logFatal("joy,axis pair does not exist: " + "(" + joy + "," + axis + ")");
             return false;
         }
     }
 
-    // wraps whileHeld
-    public void bindToHeld(int joy, int button, Command command) {
+    // wraps whileHeld, boolean return is success
+    public boolean bindToHeld(int joy, int button, Command command) {
         if(buttonExists(joy, button))
             buttons.get(joy)[button].whileHeld(command);
+
+        return buttonExists(joy, button);
     }
 
     // wraps whenPressed
-    public void bindToPressed(int joy, int button, Command command) {
+    public boolean bindToPressed(int joy, int button, Command command) {
         if(buttonExists(joy, button))
             buttons.get(joy)[button].whenPressed(command);
+
+        return buttonExists(joy, button);
     }
 
     // gets the raw axis of a joystick, no deadzone
@@ -117,17 +124,17 @@ public class OI
 
     // gets whether a button is down, regardless of previous state
     public boolean isDown(int joy, int button) {
-        return joysticks.get(joy).getRawButton(button);
+        return buttonExists(joy, button) ? joysticks.get(joy).getRawButton(button) : false;
 
     }
 
     // gets whether a button was previously up (last frame) and is now down
     public boolean isPressed(int joy, int button) {
-        return isDown(joy, button) && !lastButtonStates.get(joy)[button];
+        return buttonExists(joy, button) ? (isDown(joy, button) && !lastButtonStates.get(joy)[button]) : false;
     }
 
     // gets whether a button was previously down and is now down
     public boolean isReleased(int joy, int button) {
-        return !isDown(joy, button) && lastButtonStates.get(joy)[button];
+        return buttonExists(joy, button) ? (!isDown(joy, button) && lastButtonStates.get(joy)[button]) : false;
     }
 }

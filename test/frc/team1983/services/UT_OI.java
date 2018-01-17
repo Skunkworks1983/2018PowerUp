@@ -3,6 +3,9 @@ package frc.team1983.services;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.hal.HAL;
 import frc.team1983.settings.Constants;
 
 import org.junit.After;
@@ -17,6 +20,10 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class UT_OI
 {
+    static {
+        HAL.initialize(500, 0);
+    }
+
     private OI oi;
 
     @Mock
@@ -37,10 +44,15 @@ public class UT_OI
     public void handlesInvalidJoystickButtonPairGetAxis() {
         when(ds.getJoystickName(0)).thenReturn("billy");
 
-        Joystick joy = new Joystick(0);
-        when(joy.getButtonCount()).thenReturn(15);
-
         // need to decide behavior for oi
         assertThat(oi.getAxis(10, 10), is(0.0));
+    }
+
+    @Test
+    public void handlesInvalidButtonBindToHeld() {
+        when(ds.getJoystickName(0)).thenReturn("jimmy");
+
+        // need to decide behavior for oi
+        assertThat(oi.bindToHeld(10, 5, new CommandGroup()), is(false));
     }
 }
