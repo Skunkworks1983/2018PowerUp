@@ -1,8 +1,8 @@
-package org.usfirst.frc.team1983.robot.subsystems;
+package frc.team1983.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.usfirst.frc.team1983.robot.RobotMap;
-import org.usfirst.frc.team1983.robot.subsystems.utilities.ServoWrapper;
+import frc.team1983.RobotMap;
+import frc.team1983.subsystems.utilities.ServoWrapper;
 // this subsystem contains methods and servos used to drop or raise the ramps.
 public class Ramps extends Subsystem
 {

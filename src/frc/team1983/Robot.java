@@ -1,11 +1,11 @@
 
-package org.usfirst.frc.team1983.robot;
+package frc.team1983;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import org.usfirst.frc.team1983.robot.subsystems.Drivebase;
-import org.usfirst.frc.team1983.robot.subsystems.Ramps;
+import frc.team1983.subsystems.Ramps;
+import frc.team1983.subsystems.Drivebase;
 
 
 public class Robot extends IterativeRobot {

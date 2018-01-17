@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1983.robot.subsystems.utilities;
+package frc.team1983.subsystems.utilities;
 import edu.wpi.first.wpilibj.Servo;
 //allows us to use servos, but also implement new methods
 public class ServoWrapper extends Servo
