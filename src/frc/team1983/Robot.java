@@ -3,16 +3,16 @@ package frc.team1983;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.services.Logger;
 import frc.team1983.services.OI;
 import frc.team1983.settings.Constants;
+import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 
 public class Robot extends IterativeRobot
 {
 	private static Robot instance;
 	private OI oi;
-	private Logger logger;
+	private Collector collector;
 	private Drivebase drivebase;
 
 	@Override
@@ -76,11 +76,6 @@ public class Robot extends IterativeRobot
 		return oi;
 	}
 
-	public Logger getLogger()
-	{
-		return logger;
-	}
-
 	public static Robot getInstance() {
 		if(instance == null) {
 			instance = new Robot();
@@ -88,5 +83,4 @@ public class Robot extends IterativeRobot
 
 		return instance;
 	}
-
 }
