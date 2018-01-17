@@ -17,6 +17,7 @@ public class OI {
         return leftStick.getButton(Joystick.kTriggerButton);
     }
     public boolean getRightTriggerPressed (){
+
         return rightStick.getButton(Joystick.kTriggerButton);
     }
 }
