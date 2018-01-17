@@ -20,4 +20,10 @@ public class OI {
 
         return rightStick.getButton(Joystick.kTriggerButton);
     }
+    public boolean button2Pushed (){
+        return leftStick.getRawButton(2);
+    }
+    public float getLeftStickY (){
+        return leftStick.getY();
+    }
 }

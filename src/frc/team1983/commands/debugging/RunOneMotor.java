@@ -51,11 +51,12 @@ public class RunOneMotor extends Command {
         }
    float joy = getLeftStickY(); //TODO: assign left stick value, and assign Y axis of joystick
    if (joy > - 0.05 && joy < 0.05) {
-       joy = )
+       joy = 0;
    }
-   motorIndex (motorIndex) = setOutput (joy); //TODO: get output and joystick values from OI
+   motorOutput(motorIndex) = setOutput (joy); //TODO: get output and joystick values from OI
 }
 boolean isFinished (){
+
        return false;
    }
    void End (){
