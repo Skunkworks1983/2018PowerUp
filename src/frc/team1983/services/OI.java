@@ -12,22 +12,18 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /*
     notes:
-    joysticks are 0-indexed, while buttons are 1-indexed
-    update: i fixed it, both joysticks and buttons are 0-indexed when using this wrapper
-
-    the oi will update itself provided that oi_update() is called in teleop periodic.
+    both joysticks and buttons are 0-indexed
 */
 public class OI
 {
-    public static int type;
+    public int type;
 
     private DriverStation ds;
 
     private HashMap<Integer, Joystick> joysticks;
     private HashMap<Integer, JoystickButton[]> buttons;
-    private HashMap<Integer, Boolean[]> lastButtonStates;
 
-    // construct the hashmaps for joysticks, buttons, and lastbuttonstates
+    // construct collections for joysticks and buttons
     public OI(int type, DriverStation ds)
     {
         this.ds = ds;
@@ -35,13 +31,13 @@ public class OI
 
         joysticks = new HashMap<>();
         buttons = new HashMap<>();
-        lastButtonStates = new HashMap<>();
 
-        for(int joy = 0; joy < ds.kJoystickPorts; joy++) {
-            if(ds.getJoystickName(joy) != "") {
+        for(int joy = 0; joy < ds.kJoystickPorts; joy++)
+        {
+            if(ds.getJoystickName(joy) != "")
+            {
                 joysticks.put(joy, new Joystick(joy));
                 buttons.put(joy, new JoystickButton[joysticks.get(joy).getButtonCount()]);
-                lastButtonStates.put(joy, new Boolean[joysticks.get(joy).getButtonCount()]);
 
                 for(int button = 1; button <= joysticks.get(joy).getButtonCount(); button++) {
                     buttons.get(joy)[button - 1] = new JoystickButton(joysticks.get(joy), button);
@@ -50,91 +46,99 @@ public class OI
         }
     }
 
-    // put your commands bound to oi in here
-    public void initialize() {
-
+    // put your commands bound to oi buttons in here
+    public void initialize()
+    {
+        // usage example:
+        // oi.bindToHeld(Constants.OIJoystick.LEFT, 5, new TurnAngle(90));
     }
 
-    // updates the laststates table. call this in teleopperiodic()
-    public void update() {
-        for(Integer joy : lastButtonStates.keySet()) {
-            for(int button = 0; button < lastButtonStates.get(joy).length - 1; button++) {
-                if(buttonExists(joy, button))
-                    lastButtonStates.get(joy)[button] = isDown(joy, button);
-            }
-        }
+    // returns a joystick
+    public Joystick getJoystick(int joy)
+    {
+        return joysticks.get(joy);
     }
 
-    // check if joy,button combination exists
-    private boolean buttonExists(int joy, int button) {
-        try
-        {
-            return buttons.get(joy)[button] != null;
-        }
-        catch (Exception e)
-        {
-            // had to remove due to unit testing
-            //Robot.getInstance().getLogger().logFatal("joy,button pair does not exist: " + "(" + joy + "," + button + ")");
-            return false;
-        }
+    // returns whether a joystick exists
+    public boolean joystickExists(int joy)
+    {
+        if(getJoystick(joy) == null)
+            System.out.println("tried to access joystick that does not exist");
+
+        return getJoystick(joy) != null;
     }
 
-    // check if joy,axis combination exists
-    private boolean axisExists(int joy, int axis) {
-        try
-        {
-            // not sure if this works todo make sure this works
-            return axis > joysticks.get(joy).getAxisCount();
-        }
-        catch (Exception e )
-        {
-            // had to remove due to unit testing
-            //Robot.getInstance().getLogger().logFatal("joy,axis pair does not exist: " + "(" + joy + "," + axis + ")");
-            return false;
-        }
+    // returns whether a button exists
+    public boolean buttonExists(int joy, int button)
+    {
+        if(button + 1 > getJoystick(joy).getButtonCount())
+            System.out.println("tried to access button that doesn't exist");
+
+        return joystickExists(joy) && button + 1 <= getJoystick(joy).getButtonCount();
     }
 
-    // wraps whileHeld, boolean return is success
-    public boolean bindToHeld(int joy, int button, Command command) {
+    // returns whether a joystick axis exists
+    public boolean axisExists(int joy, int axis)
+    {
+        if(axis + 1 > getJoystick(joy).getAxisCount())
+            System.out.println("tried to access axis that doesn't exist");
+
+        return joystickExists(joy) && axis + 1 <= getJoystick(joy).getAxisCount();
+    }
+
+    // binds a command to a joystick button. runs while the button is held and terminates after released
+    // returns whether command was successfully bound
+    public boolean bindToHeld(int joy, int button, Command command)
+    {
         if(buttonExists(joy, button))
             buttons.get(joy)[button].whileHeld(command);
 
         return buttonExists(joy, button);
     }
 
-    // wraps whenPressed
-    public boolean bindToPressed(int joy, int button, Command command) {
+    // binds a command to a joystick button. runs when button is pressed and terminates based on command
+    // returns whether command was successfully bound
+    public boolean bindToPressed(int joy, int button, Command command)
+    {
         if(buttonExists(joy, button))
             buttons.get(joy)[button].whenPressed(command);
 
         return buttonExists(joy, button);
     }
 
-    // gets the raw axis of a joystick, no deadzone
-    public double getRawAxis(int joy, int axis) {
-        return axisExists(joy, axis) ? joysticks.get(joy).getRawAxis(axis) : 0;
+    // returns raw axis
+    public double getRawAxis(int joy, int axis)
+    {
+        if(axisExists(joy, axis))
+            return getJoystick(joy).getRawAxis(axis);
+        else
+            return 0;
     }
 
-    // gets the axis value with deadzone of joystick. deadzone set in Constants
-    public double getAxis(int joy, int axis) {
-        double axisValue = getRawAxis(joy, axis);
-        double value = Math.abs(axisValue) > Constants.JOYSTICK_DEADZONE ? axisValue : 0;
-        return axisExists(joy, axis) ? value : 0;
+    // returns scaled axis with deadzone
+    public double getAxis(int joy, int axis)
+    {
+        double raw = getRawAxis(joy, axis);
+        double sign = raw < 0 ? -1 : 1;
+        double deadzoned = (Math.abs(raw) > Constants.JOYSTICK_DEADZONE ? raw : 0);
+        return Math.pow(deadzoned, Constants.JOYSTICK_RAMP_EXPONENT) * sign;
     }
 
-    // gets whether a button is down, regardless of previous state
-    public boolean isDown(int joy, int button) {
-        return buttonExists(joy, button) ? joysticks.get(joy).getRawButton(button) : false;
-
+    // returns whether or not a button is down
+    public boolean isDown(int joy, int button)
+    {
+        return buttonExists(joy, button) && getJoystick(joy).getRawButton(button);
     }
 
-    // gets whether a button was previously up (last frame) and is now down
-    public boolean isPressed(int joy, int button) {
-        return buttonExists(joy, button) ? (isDown(joy, button) && !lastButtonStates.get(joy)[button]) : false;
+    // returns whether or not a button was previously up and is now down
+    public boolean isPressed(int joy, int button)
+    {
+        return buttonExists(joy, button) && getJoystick(joy).getRawButtonPressed(button);
     }
 
-    // gets whether a button was previously down and is now down
-    public boolean isReleased(int joy, int button) {
-        return buttonExists(joy, button) ? (!isDown(joy, button) && lastButtonStates.get(joy)[button]) : false;
+    // returns whether or not a button was previously down and is now up
+    public boolean isReleased(int joy, int button)
+    {
+        return buttonExists(joy, button) && getJoystick(joy).getRawButtonReleased(button);
     }
 }

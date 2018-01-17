@@ -1,4 +1,3 @@
-
 package frc.team1983;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -21,6 +20,8 @@ public class Robot extends IterativeRobot
 	{
 		drivebase = new Drivebase();
 		oi = new OI(Constants.OIInputType.DOUBLEJOY, DriverStation.getInstance());
+
+		oi.initialize();
 	}
 
 	@Override
@@ -57,7 +58,6 @@ public class Robot extends IterativeRobot
 	public void teleopPeriodic()
 	{
 		Scheduler.getInstance().run();
-		oi.update();
 	}
 
 	@Override
