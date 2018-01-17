@@ -18,7 +18,13 @@ public class RobotMap
     public static int RIGHT_SLAVE_1_PORT = 5;
 
     //Ports of the ramp motors
-    public static int RAMP_LEFT_PORT = 6; //TODO: find real ports
+    public static int RAMP_LEFT_DROP_PORT = 6; //TODO: find real ports
+    public static int RAMP_LEFT_PROP_PORT = 7; //TODO: find real ports
+    public static int RAMP_RIGHT_DROP_PORT = 8; //TODO: find real ports
+    public static int RAMP_RIGHT_PROP_PORT = 9; //TODO: find real ports
+    public static int RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
+    public static int RAMP_PROP_SERVO_GOAL = 1;
+
     public static int RAMP_RIGHT_PORT = 7;
 
     //Which drivebase motors to reverse
