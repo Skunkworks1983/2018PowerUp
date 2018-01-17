@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team1983.robot.subsystems.Drivebase;
+import org.usfirst.frc.team1983.robot.subsystems.Ramps;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -18,6 +19,7 @@ public class Robot extends IterativeRobot {
 
 	private OI oi;
 	private Drivebase drivebase;
+	private Ramps ramps;
 	private static Robot instance;
 
 	Command autonomousCommand;
@@ -115,6 +117,11 @@ public class Robot extends IterativeRobot {
 	public OI getOI()
 	{
 		return oi;
+	}
+
+	public Ramps getRamps()
+	{
+		return ramps;
 	}
 
 	public static Robot getInstance() {
