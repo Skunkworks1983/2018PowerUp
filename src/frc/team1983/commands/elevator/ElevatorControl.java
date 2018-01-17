@@ -54,7 +54,7 @@ public class ElevatorControl extends Command
     @Override
     protected void execute()
     {
-        if(oi.buttons.isDown(0))
+        if(false)
         {
             setPIDSetpoint(oi.getSliderPos());
         }
