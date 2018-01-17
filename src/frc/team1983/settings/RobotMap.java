@@ -1,4 +1,4 @@
-package frc.team1983;
+package frc.team1983.settings;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -24,4 +24,7 @@ public class RobotMap
     public static boolean RIGHT_MASTER_REVERSE = false;
     public static boolean RIGHT_SLAVE_0_REVERSE = false;
     public static boolean RIGHT_SLAVE_1_REVERSE = false;
+
+    public static int L_JOY_PORT = 0; //TODO: find actual port
+    public static int R_JOY_PORT = 1; //TODO: find actual port
 }

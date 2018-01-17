@@ -1,4 +1,4 @@
-package frc.team1983.subsystems.Sensors;
+package frc.team1983.subsystems.sensors;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI.Port;
@@ -27,4 +27,3 @@ public class Gyro extends AHRS
 
     }
 }
-

@@ -24,7 +24,7 @@ public class RunOneMotor extends Command {
    protected void execute(){
        //motors[i].set(???){
         if(!continuousPress){
-            if(leftTriggerPressed){ //TODO: assign left trigger, and the functionality while pressed
+            if(getLeftTriggerPressed){ //TODO: assign left trigger, and the functionality while pressed
                 if(motorIndex == 0){
                     motorIndex = 15;
                 }
@@ -33,7 +33,7 @@ public class RunOneMotor extends Command {
                 }
                 continuousPress = true; //TODO: define what a continuous press is and what it does
        }
-       else if (rightTriggerPressed){ //TODO: assign right trigger, and functionality while pressed
+       else if (getRightTriggerPressed){ //TODO: assign right trigger, and functionality while pressed
                 if (motorIndex == 15){
                     motorIndex = 0;
                 }
