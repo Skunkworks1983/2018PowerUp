@@ -2,26 +2,28 @@ package frc.team1983.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
-import frc.team1983.subsystems.Ramps;
+import frc.team1983.settings.Misc;
+import frc.team1983.subsystems.Collector;
 
-//this props the ramps up
-public class PropRamps extends Command
+//Runs the collector outward
+public class CollectorExpel extends Command
 {
-    private Ramps ramp;
-    public PropRamps()
+    private Collector collector = Robot.getInstance().getCollector();
+    public CollectorExpel()
     {
-        requires(Robot.getInstance().getRamps());
-        ramp = Robot.getInstance().getRamps();
+        requires(collector);
     }
 
     @Override
     protected void initialize() {}
 
+
     @Override
     protected void execute()
     {
-        ramp.prop();
+        collector.setSpeed(-Misc.COLLECTOR_EXPEL_SPEED);
     }
+
 
     @Override
     protected boolean isFinished()
@@ -29,13 +31,17 @@ public class PropRamps extends Command
         return false;
     }
 
+
     @Override
-    protected void end() {}
+    protected void end()
+    {
+        collector.setSpeed(0);
+    }
+
 
     @Override
     protected void interrupted()
     {
         super.interrupted();
-        this.end();
     }
 }

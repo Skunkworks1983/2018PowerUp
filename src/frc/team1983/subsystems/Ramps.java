@@ -1,12 +1,12 @@
 package frc.team1983.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1983.RobotMap;
+import frc.team1983.settings.Misc;
+import frc.team1983.settings.RobotMap;
 import frc.team1983.subsystems.utilities.ServoWrapper;
 // this subsystem contains methods and servos used to drop or raise the ramps.
 public class Ramps extends Subsystem
 {
-
     private ServoWrapper leftDrop, leftProp, rightDrop, rightProp;
 
     public Ramps()
@@ -17,18 +17,18 @@ public class Ramps extends Subsystem
         rightProp = new ServoWrapper(RobotMap.RAMP_RIGHT_PROP_PORT);
     }
 
-    public void drop() {
-        leftDrop.set(RobotMap.RAMP_DROP_SERVO_GOAL);
-        rightDrop.set(RobotMap.RAMP_DROP_SERVO_GOAL);
-    }
-
-    public void prop() {
-        leftProp.set(RobotMap.RAMP_PROP_SERVO_GOAL);
-        rightProp.set(RobotMap.RAMP_PROP_SERVO_GOAL);
-    }
-
-    public void initDefaultCommand()
+    public void drop()
     {
+        leftDrop.set(Misc.RAMP_DROP_SERVO_GOAL);
+        rightDrop.set(Misc.RAMP_DROP_SERVO_GOAL);
     }
+
+    public void prop()
+    {
+        leftProp.set(Misc.RAMP_PROP_SERVO_GOAL);
+        rightProp.set(Misc.RAMP_PROP_SERVO_GOAL);
+    }
+
+    public void initDefaultCommand() {}
 }
 
