@@ -17,13 +17,12 @@ public class LowerRamps extends Command
     @Override
     protected void initialize()
     {
-        ramp.drop();
     }
 
     @Override
     protected void execute()
     {
-
+        ramp.drop();
     }
 
     @Override

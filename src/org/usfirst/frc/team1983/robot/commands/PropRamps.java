@@ -17,13 +17,12 @@ public class PropRamps extends Command
     @Override
     protected void initialize()
     {
-        ramp.prop();
     }
 
     @Override
     protected void execute()
     {
-
+        ramp.prop();
     }
 
     @Override
