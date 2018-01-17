@@ -3,7 +3,7 @@ package org.usfirst.frc.team1983.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team1983.robot.RobotMap;
 import org.usfirst.frc.team1983.robot.subsystems.utilities.ServoWrapper;
-
+// this subsystem contains methods and servos used to drop or raise the ramps.
 public class Ramps extends Subsystem
 {
 

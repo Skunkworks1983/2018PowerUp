@@ -19,9 +19,9 @@ public class RobotMap
 
     //Ports of the ramp motors
     public static int RAMP_LEFT_DROP_PORT = 6; //TODO: find real ports
-    public static int RAMP_LEFT_PROP_PORT = 7; //TODO: find real ports
-    public static int RAMP_RIGHT_DROP_PORT = 8; //TODO: find real ports
-    public static int RAMP_RIGHT_PROP_PORT = 9; //TODO: find real ports
+    public static int RAMP_LEFT_PROP_PORT = 7;
+    public static int RAMP_RIGHT_DROP_PORT = 8;
+    public static int RAMP_RIGHT_PROP_PORT = 9;
     public static int RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
     public static int RAMP_PROP_SERVO_GOAL = 1;
 
