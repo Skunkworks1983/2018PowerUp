@@ -13,4 +13,8 @@ public class Misc
     by this value to have 1 be the maximum
     */
     public static final int ELEVATOR_ENCODER_SCALAR = 1; //TODO get the real max value
+    
+    //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
+    public static final double COLLECTOR_INTAKE_SPEED = 1;
+    public static final double COLLECTOR_EXPEL_SPEED = 1;
 }

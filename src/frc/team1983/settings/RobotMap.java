@@ -36,4 +36,12 @@ public class RobotMap
     public static final int OI_L_JOY_PORT = 0; //TODO: find actual port
     public static final int OI_R_JOY_PORT = 1; //TODO: find actual port
     public static final int OI_BUTTONS = 3; //The joystick emulated by the psock in the OI
+
+    //Collector motor ports TODO: Get actual ports
+    public static final int LEFT_COLLECTOR_PORT = 6;
+    public static final int RIGHT_COLLECTOR_PORT = 7;
+
+    //Collector motor reverse TODO: Verify reverse modes
+    public static final boolean LEFT_COLLECTOR_REVERSE = false;
+    public static final boolean RIGHT_COLLECTOR_REVERSE = true;
 }

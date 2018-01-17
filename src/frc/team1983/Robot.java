@@ -4,6 +4,7 @@ package frc.team1983;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 
@@ -12,9 +13,10 @@ public class Robot extends IterativeRobot {
 	private OI oi;
 	private Drivebase drivebase;
 	private Elevator elevator;
-	private static Robot instance;
+    private Collector collector;
+    private static Robot instance;
 
-	Command autonomousCommand;
+    Command autonomousCommand;
 
 	@Override
 	public void robotInit() {
@@ -26,12 +28,13 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 
-	}
+    }
 
-	@Override
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-	}
+    @Override
+    public void disabledPeriodic()
+    {
+        Scheduler.getInstance().run();
+    }
 
 	@Override
 	public void autonomousInit() {
@@ -59,10 +62,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {}
 
-	public Drivebase getDrivebase()
-	{
-		return drivebase;
-	}
+    public Drivebase getDrivebase()
+    {
+        return drivebase;
+    }
 
 	public Elevator getElevator()
     {
@@ -74,11 +77,18 @@ public class Robot extends IterativeRobot {
 		return oi;
 	}
 
-	public static Robot getInstance() {
-		if (instance == null) {
-			instance = new Robot();
-		}
-		return instance;
-	}
+    public Collector getCollector()
+    {
+        return collector;
+    }
+
+    public static Robot getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new Robot();
+        }
+        return instance;
+    }
 
 }
