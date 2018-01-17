@@ -8,7 +8,6 @@ package frc.team1983.settings;
  */
 public class RobotMap
 {
-
     //Ports of the drivebase motors TODO: Get actual ports
     public static int LEFT_MASTER_PORT = 0;
     public static int LEFT_SLAVE_0_PORT = 1;
@@ -26,8 +25,13 @@ public class RobotMap
     public static boolean RIGHT_SLAVE_1_REVERSE = false;
 
     public static int L_JOY_PORT = 0; //TODO: find actual port
-    public static int R_JOY_PORT = 1; //TODO: find actual port
+    public static int R_JOY_PORT = 1;
 
+    //Ramp servo ports
+    public static int RAMP_LEFT_DROP_PORT = 6;
+    public static int RAMP_LEFT_PROP_PORT = 7;
+    public static int RAMP_RIGHT_DROP_PORT = 8;
+    public static int RAMP_RIGHT_PROP_PORT = 9;
 
     //Collector motor ports TODO: Get actual ports
     public static final int LEFT_COLLECTOR_PORT = 6;
