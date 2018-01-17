@@ -1,7 +1,7 @@
-package frc.team1983.subsystems.utilities;
+package frc.team1983.subsystems.utilities.outputwrappers;
 
-import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
+import frc.team1983.subsystems.utilities.outputwrappers.PidOutputWrapper;
 
 /* Implementation of PidOutputWrapper, specifically for the ElevatorControl command. Simply sets the winch speed of the
    Elevator.

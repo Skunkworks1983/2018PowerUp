@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
 import frc.team1983.subsystems.Drivebase;
-import frc.team1983.subsystems.utilities.TurnAnglePidOutput;
+import frc.team1983.subsystems.utilities.outputwrappers.TurnAnglePidOutput;
 
 public class TurnAngle extends Command
 {

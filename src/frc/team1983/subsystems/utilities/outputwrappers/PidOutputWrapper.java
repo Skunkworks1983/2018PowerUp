@@ -1,4 +1,4 @@
-package frc.team1983.subsystems.utilities;
+package frc.team1983.subsystems.utilities.outputwrappers;
 
 import edu.wpi.first.wpilibj.PIDOutput;
 
@@ -8,14 +8,33 @@ import edu.wpi.first.wpilibj.PIDOutput;
 */
 public abstract class PidOutputWrapper implements PIDOutput
 {
+    private boolean disabled;
     //DO NOT OVERRIDE. Where logging happens.
     @Override
     public void pidWrite(double out)
     {
-        //TODO: log
-        writeHelper(out);
+        if(!disabled)
+        {
+            //TODO: log
+            writeHelper(out);
+        }
     }
 
     //Must be implemented by any class that extends this one. Where all of your pidWrite logic should go.
     abstract void writeHelper(double out);
+
+    public boolean isDisabled()
+    {
+        return disabled;
+    }
+
+    public void disable()
+    {
+        disabled = true;
+    }
+
+    public void enable()
+    {
+        disabled = false;
+    }
 }
