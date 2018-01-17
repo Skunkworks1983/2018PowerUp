@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.services.OI;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
+import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.Drivebase;
 
 public class Robot extends IterativeRobot
@@ -76,8 +77,20 @@ public class Robot extends IterativeRobot
 		return oi;
 	}
 
-	public static Robot getInstance() {
-		if(instance == null) {
+	public Ramps getRamps()
+	{
+		return ramps;
+	}
+
+	public Collector getCollector()
+    {
+	    return collector;
+    }
+
+	public static Robot getInstance()
+    {
+		if (instance == null)
+		{
 			instance = new Robot();
 		}
 

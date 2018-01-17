@@ -8,7 +8,6 @@ import frc.team1983.subsystems.utilities.MotorGroup;
 
 public class Collector extends Subsystem
 {
-
     //The collector subsystem
     private MotorGroup collectorMotors;
     private Motor left, right;
