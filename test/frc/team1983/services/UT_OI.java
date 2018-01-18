@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.hal.HAL;
 
@@ -17,6 +18,8 @@ import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -67,6 +70,20 @@ public class UT_OI
     }
 
     @Test
+    public void successfullyCreatesJoysticks()
+    {
+        when(ds.getJoystickName(0)).thenReturn("billy");
+        when(ds.getJoystickName(1)).thenReturn("jimmy");
+        when(ds.getStickButtonCount(0)).thenReturn(1);
+
+        oi = new OI(Constants.OIInputType.DOUBLEJOY, ds);
+
+        assertThat(oi.getJoystickCount(), is(2));
+        assertThat(oi.getJoystickButtonCount(0), is(1));
+        assertThat(oi.getJoystickButtonCount(1), is(0));
+    }
+
+    @Test
     public void returnsJoystickValueForValidJoystick()
     {
         when(joy1.getAxisCount()).thenReturn(1);
@@ -99,15 +116,21 @@ public class UT_OI
     @Test
     public void successfullyBindsCommandToButton()
     {
+        Command wanted = new CommandGroup();
+
         when(joy1.getButtonCount()).thenReturn(1);
-        assertThat(oi.bindToHeld(0, 0, new CommandGroup()), is(true));
+        oi.bindToPressed(0, 0, wanted);
+        verify(joy1button1, times(1)).whenPressed(wanted);
     }
 
     @Test
-    public void returnsFalseForBindToNonexistentButton()
+    public void failsToBindCommandToButton()
     {
+        Command wanted = new CommandGroup();
+
         when(joy1.getButtonCount()).thenReturn(1);
-        assertThat(oi.bindToHeld(0, 1, new CommandGroup()), is(false));
+        oi.bindToPressed(0, 1, wanted);
+        verify(joy1button1, times(0)).whenPressed(wanted);
     }
 
     @Test
