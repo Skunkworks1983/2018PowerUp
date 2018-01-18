@@ -3,7 +3,6 @@ package frc.team1983.services;
 import java.util.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.team1983.Robot;
 import frc.team1983.settings.Constants;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -95,7 +94,7 @@ public class OI
     // returns the number of joysticks tracked by the oi
     public int getJoystickCount()
     {
-       return joysticks.size();
+        return joysticks.size();
     }
 
     // returns the number of buttons on joystick
