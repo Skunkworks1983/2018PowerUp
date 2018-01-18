@@ -22,15 +22,17 @@ public class OI
     public int type;
 
     private DriverStation ds;
+    private Elevator elevator;
 
     private HashMap<Integer, Joystick> joysticks;
     private HashMap<Integer, JoystickButton[]> buttons;
 
     // construct collections for joysticks and buttons
-    public OI(int type, DriverStation ds)
+    public OI(int type, DriverStation ds, Elevator elevator)
     {
         this.ds = ds;
         this.type = type;
+        this.elevator = elevator;
 
         joysticks = new HashMap<>();
         buttons = new HashMap<>();
@@ -54,9 +56,12 @@ public class OI
     public void initialize()
     {
         //Elevator presets
-        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.bottomPreset, new SetElevatorSetpoint(Elevator.Setpoint.BOTTOM));
-        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.switchPreset, new SetElevatorSetpoint(Elevator.Setpoint.SWITCH));
-        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.scalePreset, new SetElevatorSetpoint(Elevator.Setpoint.SCALE));
+        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.bottomPreset,
+                      new SetElevatorSetpoint(Elevator.Setpoint.BOTTOM, elevator, this));
+        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.switchPreset,
+                      new SetElevatorSetpoint(Elevator.Setpoint.SWITCH, elevator, this));
+        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.scalePreset,
+                      new SetElevatorSetpoint(Elevator.Setpoint.SCALE, elevator, this));
 
         // usage example:
         // oi.bindToHeld(Constants.OIJoystick.LEFT, 5, new TurnAngle(90));

@@ -27,15 +27,11 @@ public class ElevatorControl extends Command
 
         pidIn = new ElevatorPidInput(elevator);
         pidOut = new ElevatorPidOutput(elevator);
-        controller = new PIDController(PidValues.ELEVATOR_CONTROL_P, PidValues.ELEVATOR_CONTROL_I,
+        controller = new PIDController(PidValues.ELEVATOR_CONTROL_P,
+                                       PidValues.ELEVATOR_CONTROL_I,
                                        PidValues.ELEVATOR_CONTROL_D,
-                                       PidValues.ELEVATOR_CONTROL_F, pidIn, pidOut);
-    }
-
-    public double getPIDSetpoint()
-    {
-        //Return the setpoint to the 0-1 range.
-        return controller.getSetpoint() / Misc.ELEVATOR_ENCODER_SCALAR;
+                                       PidValues.ELEVATOR_CONTROL_F,
+                                       pidIn, pidOut);
     }
 
     @Override
@@ -45,9 +41,9 @@ public class ElevatorControl extends Command
     }
 
     @Override
+    //Get the 0-1 range of setpoint, scale it to the encoder range, and make it an integer
     protected void execute()
     {
-        //Get the 0-1 range fo setpoint, scale it to the encoder range, and make it an integer
         controller.setSetpoint((int) elevator.getSetpoint() * Misc.ELEVATOR_ENCODER_SCALAR);
     }
 
