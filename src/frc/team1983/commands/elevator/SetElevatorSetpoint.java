@@ -1,7 +1,7 @@
-package frc.team1983.commands;
+package frc.team1983.commands.elevator;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team1983.services.OI;
 import frc.team1983.Robot;
 import frc.team1983.settings.Constants;
 import frc.team1983.settings.OIMap;
@@ -9,13 +9,17 @@ import frc.team1983.subsystems.Elevator;
 
 public class SetElevatorSetpoint extends Command
 {
-    Elevator elevator = Robot.getInstance().getElevator();
+    private Elevator elevator;
+    private OI oi;
 
-    double setpoint;
+    private Elevator.Setpoint setpoint;
 
-    public SetElevatorSetpoint(double setpoint)
+    //A command for setting the setpoint of the elevator pid.
+    public SetElevatorSetpoint(Elevator.Setpoint setpoint)
     {
         this.setpoint = setpoint;
+        elevator = Robot.getInstance().getElevator();
+        oi = Robot.getInstance().getOI();
         requires(elevator);
     }
 
@@ -28,13 +32,14 @@ public class SetElevatorSetpoint extends Command
     @Override
     protected void execute()
     {
+        //Check to see if the oi is in slider position mode. If so, use the slider pos instead of the preset
         if(Robot.getInstance().getOI().isDown(Constants.OIJoystick.BUTTONS, OIMap.sliderPresetsToggle))
         {
-            elevator.setPIDSetpoint(Robot.getInstance().getOI().getSliderPos());
+            elevator.setSetpoint(oi.getSliderPos());
         }
         else
         {
-            elevator.setPIDSetpoint(setpoint);
+            elevator.setSetpoint(setpoint);
         }
     }
 

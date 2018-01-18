@@ -3,7 +3,7 @@ package frc.team1983.services;
 import java.util.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.team1983.commands.SetElevatorSetpoint;
+import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.settings.Constants;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.settings.Misc;
 import frc.team1983.settings.OIMap;
+import frc.team1983.subsystems.Elevator;
 
 /*
     notes:
@@ -52,9 +53,10 @@ public class OI
     // put your commands bound to oi buttons in here
     public void initialize()
     {
-        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.bottomPreset, new SetElevatorSetpoint(0));
-        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.switchPreset, new SetElevatorSetpoint(Misc.SWITCH_HEIGHT));
-        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.scalePreset, new SetElevatorSetpoint(1));
+        //Elevator presets
+        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.bottomPreset, new SetElevatorSetpoint(Elevator.Setpoint.BOTTOM));
+        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.switchPreset, new SetElevatorSetpoint(Elevator.Setpoint.SWITCH));
+        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.scalePreset, new SetElevatorSetpoint(Elevator.Setpoint.SCALE));
 
         // usage example:
         // oi.bindToHeld(Constants.OIJoystick.LEFT, 5, new TurnAngle(90));
@@ -145,6 +147,7 @@ public class OI
         return Math.pow(deadzoned, Constants.JOYSTICK_RAMP_EXPONENT) * sign;
     }
 
+    //Slider for controlling the elevator
     public double getSliderPos()
     {
         //The 2017 slider on the OI was a joystick axis. All code taken from 2017
