@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import static com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder;
 
+//Wrapper class around the WpiLib TalonSRX. Allows us to modify the functionality, and for future extendability.
 public class Motor extends TalonSRX
 {
     private boolean hasEncoder;

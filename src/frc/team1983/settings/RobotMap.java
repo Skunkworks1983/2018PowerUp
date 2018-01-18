@@ -16,6 +16,9 @@ public class RobotMap
     public static final int RIGHT_SLAVE_0_PORT = 4;
     public static final int RIGHT_SLAVE_1_PORT = 5;
 
+    //DriveStraight constants
+    public static double DRIVEBASE_TICK_PER_FOOT = 0; //TODO: find this ratio
+
     //Drivebase reversal TODO: Verify reverse modes
     public static final boolean LEFT_MASTER_REVERSE = false;
     public static final boolean LEFT_SLAVE_0_REVERSE = false;
@@ -54,7 +57,7 @@ public class RobotMap
     public static final int LEFT_COLLECTOR_PORT = 6;
     public static final int RIGHT_COLLECTOR_PORT = 7;
 
-    //Collector motor reverse TODO: Verify reverse modes
+    //collector motor reverse TODO: Verify reverse modes
     public static final boolean LEFT_COLLECTOR_REVERSE = false;
     public static final boolean RIGHT_COLLECTOR_REVERSE = true;
 }
