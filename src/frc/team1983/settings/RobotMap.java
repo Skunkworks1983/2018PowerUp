@@ -28,9 +28,16 @@ public class RobotMap
     //Elevator Winch Ports
     public static final int LEFT_WINCH_PORT = 6;
     public static final int RIGHT_WINCH_PORT = 7;
+    public static int L_JOY_PORT = 0; //TODO: find actual port
+    public static int R_JOY_PORT = 1;
 
     public static final int RAIL_ENCODER_A_PORT = 0; //diO port on the RIO for channel A
     public static final int RAIL_ENCODER_B_PORT = 0; //diO port on the RIO for channel B
+    //Ramp servo ports
+    public static int RAMP_LEFT_DROP_PORT = 6;
+    public static int RAMP_LEFT_PROP_PORT = 7;
+    public static int RAMP_RIGHT_DROP_PORT = 8;
+    public static int RAMP_RIGHT_PROP_PORT = 9;
 
     //OI Input Ports
     public static final int OI_L_JOY_PORT = 0; //TODO: find actual port

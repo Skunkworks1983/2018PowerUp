@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.subsystems.Collector;
+import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 
@@ -16,25 +17,26 @@ public class Robot extends IterativeRobot {
     private Collector collector;
     private static Robot instance;
 
-    Command autonomousCommand;
+	Command autonomousCommand;
 
 	@Override
-	public void robotInit() {
+	public void robotInit()
+    {
 		oi = new OI();
 		drivebase = new Drivebase();
+		collector = new Collector();
 		elevator = new Elevator();
+		ramps = new Ramps();
 	}
 
 	@Override
-	public void disabledInit() {
+	public void disabledInit() {}
 
-    }
-
-    @Override
-    public void disabledPeriodic()
-    {
-        Scheduler.getInstance().run();
-    }
+	@Override
+	public void disabledPeriodic()
+	{
+		Scheduler.getInstance().run();
+	}
 
 	@Override
 	public void autonomousInit() {
@@ -44,7 +46,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	@Override
-	public void autonomousPeriodic() {
+	public void autonomousPeriodic()
+	{
 		Scheduler.getInstance().run();
 	}
 
@@ -55,7 +58,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	@Override
-	public void teleopPeriodic() {
+	public void teleopPeriodic()
+	{
 		Scheduler.getInstance().run();
 	}
 
@@ -66,6 +70,13 @@ public class Robot extends IterativeRobot {
     {
         return drivebase;
     }
+    
+	public Ramps getRamps()
+	{
+		return ramps;
+	}
+	
+	
 
 	public Elevator getElevator()
     {
@@ -79,16 +90,15 @@ public class Robot extends IterativeRobot {
 
     public Collector getCollector()
     {
-        return collector;
+      return collector;
     }
-
-    public static Robot getInstance()
+    
+	public static Robot getInstance()
     {
-        if(instance == null)
-        {
-            instance = new Robot();
-        }
-        return instance;
-    }
-
+		if (instance == null)
+		{
+			instance = new Robot();
+		}
+		return instance;
+	}
 }

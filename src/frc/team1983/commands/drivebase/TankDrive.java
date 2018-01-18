@@ -23,6 +23,7 @@ public class TankDrive extends Command
     {
         double leftSpeed = Robot.getInstance().getOI().leftStick.getY();
         double rightSpeed = Robot.getInstance().getOI().rightStick.getY();
+
         //set tolerances
         if (leftSpeed < Misc.JOYSTICK_TOLERANCE && leftSpeed > -Misc.JOYSTICK_TOLERANCE)
         {
@@ -32,6 +33,7 @@ public class TankDrive extends Command
         {
             Robot.getInstance().getDrivebase().setLeft(leftSpeed);
         }
+
         //set tolerances
         if (rightSpeed < Misc.JOYSTICK_TOLERANCE && rightSpeed > -Misc.JOYSTICK_TOLERANCE)
         {

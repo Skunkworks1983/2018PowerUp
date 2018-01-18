@@ -17,4 +17,7 @@ public class Misc
     //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
     public static final double COLLECTOR_INTAKE_SPEED = 1;
     public static final double COLLECTOR_EXPEL_SPEED = 1;
+
+    public static double RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
+    public static double RAMP_PROP_SERVO_GOAL = 1;
 }
