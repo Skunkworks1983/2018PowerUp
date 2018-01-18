@@ -4,9 +4,11 @@ package frc.team1983.settings;
 //This file contains all constants used across the entire robot, stored within subclasses.
 public class Constants
 {
-    //MotorMap contains all motor and servo ports, goals, reverse settings,
+    //MotorMap contains all constants that motors require (ports, reversed values, etc)
     public static class MotorMap
     {
+
+        //Ports for the drivebase motors
         public static class DrivebasePorts
         {
             public static int LEFT_MASTER_PORT = 0; //TODO: Get actual ports
@@ -16,6 +18,8 @@ public class Constants
             public static int RIGHT_SLAVE_0_PORT = 4;
             public static int RIGHT_SLAVE_1_PORT = 5;
         }
+
+        //Constants determining if the drivebase motors should run in the negative direction
         public static class DrivebaseReversed
         {
             public static boolean LEFT_MASTER_REVERSE = false; //TODO: Verify reverse modes
@@ -25,12 +29,16 @@ public class Constants
             public static boolean RIGHT_SLAVE_0_REVERSE = false;
             public static boolean RIGHT_SLAVE_1_REVERSE = false;
         }
-        public static class RampPorts {
+
+        //Ports for the ramp servos
+        public static class RampPorts
+        {
             public static int RAMP_LEFT_DROP_PORT = 6; //TODO: find actual port
             public static int RAMP_LEFT_PROP_PORT = 7;
             public static int RAMP_RIGHT_DROP_PORT = 8;
             public static int RAMP_RIGHT_PROP_PORT = 9;
         }
+
         //motor goals ie positions to rotate to, speeds to achieve
         public static class MotorGoals {
             public static double RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
@@ -40,28 +48,54 @@ public class Constants
             public static final double COLLECTOR_INTAKE_SPEED = 1;
             public static final double COLLECTOR_EXPEL_SPEED = 1;
         }
-        public static class CollectorPorts {
+
+        //Ports for the collector motors
+        public static class CollectorPorts
+        {
             public static final int LEFT_COLLECTOR_PORT = 6; //TODO: Get actual ports
             public static final int RIGHT_COLLECTOR_PORT = 7;
         }
+
+        //Constants determining if the collector motors should run in the negative direction
         public static class CollectorReversed
         {
             public static final boolean LEFT_COLLECTOR_REVERSE = false;
             public static final boolean RIGHT_COLLECTOR_REVERSE = true;
         }
     }
-
+    //this class contains subclasses that contain PIDF values used in commands.
     public static class PidValues
     {
 
+        //PIDF values for the DriveStraight command
+        public static class DriveStrightPid
+        {
+            public static double DRIVESTRAIGHT_P;
+            public static double DRIVESTRAIGHT_I;
+            public static double DRIVESTRAIGHT_D;
+            public static double DRIVESTRAIGHT_F;
+        }
+
+        //PIDF values for the TurnAngle command
+        public static class TurnAnglePid
+        {
+            public static double TURNANGLE_P;
+            public static double TURNANGLE_I;
+            public static double TURNANGLE_D;
+            public static double TURNANGLE_F;
+        }
     }
 
+    //what goes here? God only knows
     public static class AutoValues {
 
     }
+
     //this contains all values relevant to the OI.
     public static class OIMap
     {
+
+        //Ports for the OI joysticks, buttons, steering wheel, etc.
         public static class Ports
         {
             public static int LEFTJOY = 0;
@@ -70,16 +104,22 @@ public class Constants
             public static int THROTTLE = 1;
             public static int BUTTONS = 2;
         }
+
+        //Axes of each joystick
         public static class JoyAxes
         {
             public static int X = 0;
             public static int Y = 1;
         }
+
+        //Control mode for the robot (Joysticks versus steering wheel)
         public static class Mode
         {
             public static int DOUBLEJOY = 0;
             public static int WHEEL = 1;
         }
+
+        //Agglomeration of constants relating to the joysticks
         public static class JoyConstants
         {
             public static double JOYSTICK_DEADZONE = 0.15;
