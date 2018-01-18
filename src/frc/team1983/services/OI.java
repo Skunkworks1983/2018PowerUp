@@ -46,6 +46,12 @@ public class OI
         }
     }
 
+    // constructor for unit testing
+    protected OI(HashMap<Integer, Joystick> joysticks, HashMap<Integer, JoystickButton[]> buttons) {
+        this.joysticks = joysticks;
+        this.buttons = buttons;
+    }
+
     // put your commands bound to oi buttons in here
     public void initialize()
     {

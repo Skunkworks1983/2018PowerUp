@@ -12,6 +12,7 @@ import frc.team1983.subsystems.Drivebase;
 public class Robot extends IterativeRobot
 {
 	private static Robot instance;
+	private Ramps ramps;
 	private OI oi;
 	private Collector collector;
 	private Drivebase drivebase;
@@ -20,6 +21,8 @@ public class Robot extends IterativeRobot
 	public void robotInit()
 	{
 		drivebase = new Drivebase();
+		ramps = new Ramps();
+		collector = new Collector();
 		oi = new OI(Constants.OIInputType.DOUBLEJOY, DriverStation.getInstance());
 
 		oi.initialize();
