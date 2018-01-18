@@ -17,9 +17,8 @@ public class Elevator extends Subsystem
     private static NeutralMode ELEVATOR_NEUTRAL_MODE = NeutralMode.Brake;
     public Elevator()
     {
-        //TODO: Check directionality
-        leftWinch = new Motor(RobotMap.LEFT_WINCH_PORT, ELEVATOR_NEUTRAL_MODE, false);
-        rightWinch = new Motor(RobotMap.RIGHT_WINCH_PORT, ELEVATOR_NEUTRAL_MODE, true);
+        leftWinch = new Motor(RobotMap.LEFT_WINCH_PORT, ELEVATOR_NEUTRAL_MODE, RobotMap.LEFT_WINCH_REVERSE);
+        rightWinch = new Motor(RobotMap.RIGHT_WINCH_PORT, ELEVATOR_NEUTRAL_MODE, RobotMap.RIGHT_WINCH_REVERSE);
 
         winch = new MotorGroup(leftWinch, false);
         winch.addMotor(rightWinch);
