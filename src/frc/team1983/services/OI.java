@@ -118,8 +118,8 @@ public class OI
     {
         double raw = getRawAxis(joy, axis);
         double sign = raw < 0 ? -1 : 1;
-        double deadzoned = (Math.abs(raw) > Constants.JOYSTICK_DEADZONE ? raw : 0);
-        return Math.pow(deadzoned, Constants.JOYSTICK_RAMP_EXPONENT) * sign;
+        double deadzoned = (Math.abs(raw) > Constants.OIMap.JoyConstants.JOYSTICK_DEADZONE ? raw : 0);
+        return Math.pow(deadzoned, Constants.OIMap.JoyConstants.JOYSTICK_RAMP_EXPONENT) * sign;
     }
 
     // returns whether or not a button is down

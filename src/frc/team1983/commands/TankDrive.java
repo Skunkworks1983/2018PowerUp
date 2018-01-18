@@ -21,8 +21,8 @@ public class TankDrive extends Command
     @Override
     protected void execute()
     {
-        double leftSpeed = Robot.getInstance().getOI().getAxis(Constants.OIJoystick.LEFT, Constants.OIJoystickAxis.Y);
-        double rightSpeed = Robot.getInstance().getOI().getAxis(Constants.OIJoystick.RIGHT, Constants.OIJoystickAxis.Y);
+        double leftSpeed = Robot.getInstance().getOI().getAxis(Constants.OIMap.Ports.LEFTJOY, Constants.OIMap.JoyAxes.Y);
+        double rightSpeed = Robot.getInstance().getOI().getAxis(Constants.OIMap.Ports.RIGHTJOY, Constants.OIMap.JoyAxes.Y);
 
         Robot.getInstance().getDrivebase().setLeft(leftSpeed);
         Robot.getInstance().getDrivebase().setRight(rightSpeed);

@@ -14,8 +14,8 @@ public class Collector extends Subsystem
 
     public Collector()
     {
-        left = new Motor(Constants.MotorMap.LEFT_COLLECTOR_PORT, NeutralMode.Coast, Constants.MotorMap.LEFT_COLLECTOR_REVERSE);
-        right = new Motor(Constants.MotorMap.RIGHT_COLLECTOR_PORT, NeutralMode.Coast, Constants.MotorMap.RIGHT_COLLECTOR_REVERSE);
+        left = new Motor(Constants.MotorMap.CollectorPorts.LEFT_COLLECTOR_PORT, NeutralMode.Coast, Constants.MotorMap.CollectorReversed.LEFT_COLLECTOR_REVERSE);
+        right = new Motor(Constants.MotorMap.CollectorPorts.RIGHT_COLLECTOR_PORT, NeutralMode.Coast, Constants.MotorMap.CollectorReversed.RIGHT_COLLECTOR_REVERSE);
 
         collectorMotors = new MotorGroup(left, false);
         collectorMotors.addMotor(right);

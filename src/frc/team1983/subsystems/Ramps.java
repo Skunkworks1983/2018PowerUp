@@ -11,22 +11,22 @@ public class Ramps extends Subsystem
 
     public Ramps()
     {
-        leftDrop = new ServoWrapper(Constants.MotorMap.RAMP_LEFT_DROP_PORT);
-        leftProp = new ServoWrapper(Constants.MotorMap.RAMP_LEFT_PROP_PORT);
-        rightDrop = new ServoWrapper(Constants.MotorMap.RAMP_RIGHT_DROP_PORT);
-        rightProp = new ServoWrapper(Constants.MotorMap.RAMP_RIGHT_PROP_PORT);
+        leftDrop = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_LEFT_DROP_PORT);
+        leftProp = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_LEFT_PROP_PORT);
+        rightDrop = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_RIGHT_DROP_PORT);
+        rightProp = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_RIGHT_PROP_PORT);
     }
 
     public void drop()
     {
-        leftDrop.set(Constants.MotorMap.RAMP_DROP_SERVO_GOAL);
-        rightDrop.set(Constants.MotorMap.RAMP_DROP_SERVO_GOAL);
+        leftDrop.set(Constants.MotorMap.MotorGoals.RAMP_DROP_SERVO_GOAL);
+        rightDrop.set(Constants.MotorMap.MotorGoals.RAMP_DROP_SERVO_GOAL);
     }
 
     public void prop()
     {
-        leftProp.set(Constants.MotorMap.RAMP_PROP_SERVO_GOAL);
-        rightProp.set(Constants.MotorMap.RAMP_PROP_SERVO_GOAL);
+        leftProp.set(Constants.MotorMap.MotorGoals.RAMP_PROP_SERVO_GOAL);
+        rightProp.set(Constants.MotorMap.MotorGoals.RAMP_PROP_SERVO_GOAL);
     }
 
     public void initDefaultCommand() {}
