@@ -3,12 +3,12 @@ package frc.team1983.subsystems.utilities.outputwrappers;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.utilities.outputwrappers.PidOutputWrapper;
 
-/* Implementation of PidOutputWrapper, specifically for the ElevatorControl command. Simply sets the winch speed of the
+/* Implementation of PidOutputWrapper, specifically for the elevator subsystem. Simply sets the winch speed of the
    Elevator.
 */
 public class ElevatorControlPidOutput extends PidOutputWrapper
 {
-    Elevator elevator;
+    private Elevator elevator;
 
     //Only used to store the instance of the drivebase.
     public ElevatorControlPidOutput(Elevator elevator)

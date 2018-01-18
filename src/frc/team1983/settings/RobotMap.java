@@ -36,6 +36,9 @@ public class RobotMap
     public static final int RAIL_ENCODER_A_PORT = 0; //diO port on the RIO for channel A
     public static final int RAIL_ENCODER_B_PORT = 0; //diO port on the RIO for channel B
 
+    //Rail encoder reversals
+    public static final boolean RAIL_ENCODER_REVERSE = false;
+
     //Ramp servo ports TODO: Get actual ports
     public static int RAMP_LEFT_DROP_PORT = 6;
     public static int RAMP_LEFT_PROP_PORT = 7;

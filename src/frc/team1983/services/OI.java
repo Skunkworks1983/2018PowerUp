@@ -3,12 +3,14 @@ package frc.team1983.services;
 import java.util.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.team1983.Robot;
+import frc.team1983.commands.SetElevatorSetpoint;
 import frc.team1983.settings.Constants;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team1983.settings.Misc;
+import frc.team1983.settings.OIMap;
 
 /*
     notes:
@@ -39,7 +41,8 @@ public class OI
                 joysticks.put(joy, new Joystick(joy));
                 buttons.put(joy, new JoystickButton[joysticks.get(joy).getButtonCount()]);
 
-                for(int button = 1; button <= joysticks.get(joy).getButtonCount(); button++) {
+                for(int button = 1; button <= joysticks.get(joy).getButtonCount(); button++)
+                {
                     buttons.get(joy)[button - 1] = new JoystickButton(joysticks.get(joy), button);
                 }
             }
@@ -49,6 +52,10 @@ public class OI
     // put your commands bound to oi buttons in here
     public void initialize()
     {
+        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.bottomPreset, new SetElevatorSetpoint(0));
+        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.switchPreset, new SetElevatorSetpoint(Misc.SWITCH_HEIGHT));
+        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.scalePreset, new SetElevatorSetpoint(1));
+
         // usage example:
         // oi.bindToHeld(Constants.OIJoystick.LEFT, 5, new TurnAngle(90));
     }
@@ -63,7 +70,9 @@ public class OI
     public boolean joystickExists(int joy)
     {
         if(getJoystick(joy) == null)
+        {
             System.out.println("tried to access joystick that does not exist");
+        }
 
         return getJoystick(joy) != null;
     }
@@ -72,7 +81,9 @@ public class OI
     public boolean buttonExists(int joy, int button)
     {
         if(button + 1 > getJoystick(joy).getButtonCount())
+        {
             System.out.println("tried to access button that doesn't exist");
+        }
 
         return joystickExists(joy) && button + 1 <= getJoystick(joy).getButtonCount();
     }
@@ -81,7 +92,9 @@ public class OI
     public boolean axisExists(int joy, int axis)
     {
         if(axis + 1 > getJoystick(joy).getAxisCount())
+        {
             System.out.println("tried to access axis that doesn't exist");
+        }
 
         return joystickExists(joy) && axis + 1 <= getJoystick(joy).getAxisCount();
     }
@@ -91,7 +104,9 @@ public class OI
     public boolean bindToHeld(int joy, int button, Command command)
     {
         if(buttonExists(joy, button))
+        {
             buttons.get(joy)[button].whileHeld(command);
+        }
 
         return buttonExists(joy, button);
     }
@@ -101,7 +116,9 @@ public class OI
     public boolean bindToPressed(int joy, int button, Command command)
     {
         if(buttonExists(joy, button))
+        {
             buttons.get(joy)[button].whenPressed(command);
+        }
 
         return buttonExists(joy, button);
     }
@@ -110,9 +127,13 @@ public class OI
     public double getRawAxis(int joy, int axis)
     {
         if(axisExists(joy, axis))
+        {
             return getJoystick(joy).getRawAxis(axis);
+        }
         else
+        {
             return 0;
+        }
     }
 
     // returns scaled axis with deadzone
@@ -122,6 +143,16 @@ public class OI
         double sign = raw < 0 ? -1 : 1;
         double deadzoned = (Math.abs(raw) > Constants.JOYSTICK_DEADZONE ? raw : 0);
         return Math.pow(deadzoned, Constants.JOYSTICK_RAMP_EXPONENT) * sign;
+    }
+
+    public double getSliderPos()
+    {
+        //The 2017 slider on the OI was a joystick axis. All code taken from 2017
+        double x = getRawAxis(Constants.OIJoystick.BUTTONS, Constants.OIJoystickAxis.X);
+        x = Math.pow(x, 10);
+        x = x / Misc.SLIDER_SCALAR;
+        x = 1 - x;
+        return x;
     }
 
     // returns whether or not a button is down
