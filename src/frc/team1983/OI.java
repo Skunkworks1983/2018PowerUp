@@ -3,7 +3,6 @@ package frc.team1983;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.team1983.settings.RobotMap;
 
-
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.

@@ -6,6 +6,7 @@ import frc.team1983.settings.RobotMap;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.MotorGroup;
 
+//The base of the robot. Consists of the drive train motors, slaved to each other.
 public class Drivebase extends Subsystem
 {
     private MotorGroup left, right;
@@ -30,6 +31,7 @@ public class Drivebase extends Subsystem
         right = new MotorGroup(rightMaster, true);
         right.addMotor(rightSlave0);
         right.addMotor(rightSlave1);
+
     }
 
     //Set the output of the left motorgroup

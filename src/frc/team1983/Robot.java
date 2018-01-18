@@ -15,6 +15,7 @@ public class Robot extends IterativeRobot
 	private OI oi;
 	private Collector collector;
 	private Drivebase drivebase;
+	private Ramps ramps;
 
 	@Override
 	public void robotInit()
