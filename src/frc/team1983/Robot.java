@@ -1,36 +1,35 @@
-
 package frc.team1983;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.services.OI;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.Drivebase;
 
-
 public class Robot extends IterativeRobot
 {
+	private static Robot instance;
 	private OI oi;
-	private Drivebase drivebase;
-	private Ramps ramps;
 	private Collector collector;
-
-    private static Robot instance;
-
-	Command autonomousCommand;
+	private Drivebase drivebase;
 
 	@Override
 	public void robotInit()
-    {
-		oi = new OI();
+	{
 		drivebase = new Drivebase();
-		collector = new Collector();
-		ramps = new Ramps();
+		oi = new OI(Constants.OIInputType.DOUBLEJOY, DriverStation.getInstance());
+
+		oi.initialize();
 	}
 
 	@Override
-	public void disabledInit() {}
+	public void disabledInit()
+	{
+		Scheduler.getInstance().removeAll();
+	}
 
 	@Override
 	public void disabledPeriodic()
@@ -39,8 +38,10 @@ public class Robot extends IterativeRobot
 	}
 
 	@Override
-	public void autonomousInit() {}
-
+	public void autonomousInit()
+	{
+		Scheduler.getInstance().removeAll();
+	}
 
 	@Override
 	public void autonomousPeriodic()
@@ -49,7 +50,10 @@ public class Robot extends IterativeRobot
 	}
 
 	@Override
-	public void teleopInit() {}
+	public void teleopInit()
+	{
+		Scheduler.getInstance().removeAll();
+	}
 
 	@Override
 	public void teleopPeriodic()
@@ -58,7 +62,10 @@ public class Robot extends IterativeRobot
 	}
 
 	@Override
-	public void testPeriodic() {}
+	public void testPeriodic()
+	{
+
+	}
 
 	public Drivebase getDrivebase()
 	{
@@ -86,6 +93,7 @@ public class Robot extends IterativeRobot
 		{
 			instance = new Robot();
 		}
+
 		return instance;
 	}
 }
