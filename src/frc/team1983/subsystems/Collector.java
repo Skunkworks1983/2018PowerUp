@@ -6,6 +6,7 @@ import frc.team1983.settings.RobotMap;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.MotorGroup;
 
+//Subsystem that will aqcuire and expel the Power Cubes.
 public class Collector extends Subsystem
 {
     //The collector subsystem

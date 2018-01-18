@@ -1,17 +1,18 @@
-package frc.team1983.commands;
+package frc.team1983.commands.ramps;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
 import frc.team1983.subsystems.Ramps;
 
-//this props the ramps up
-public class PropRamps extends Command
+//Activates the servos that kick down the ramp
+public class LowerRamps extends Command
 {
     private Ramps ramp;
-    public PropRamps()
+
+    public LowerRamps(Ramps ramp)
     {
-        requires(Robot.getInstance().getRamps());
-        ramp = Robot.getInstance().getRamps();
+       requires(ramp);
+       this.ramp = ramp;
     }
 
     @Override
@@ -20,7 +21,7 @@ public class PropRamps extends Command
     @Override
     protected void execute()
     {
-        ramp.prop();
+        ramp.drop();
     }
 
     @Override

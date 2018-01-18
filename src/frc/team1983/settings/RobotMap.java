@@ -16,7 +16,11 @@ public class RobotMap
     public static int RIGHT_SLAVE_0_PORT = 4;
     public static int RIGHT_SLAVE_1_PORT = 5;
 
-    //Which drivebase motors to reverse TODO: Verify reverse modes
+
+    //DriveStraight constants
+    public static double DRIVEBASE_TICK_PER_FOOT = 0; //TODO: find this ratio
+
+    //Which drivebase motors to reverse
     public static boolean LEFT_MASTER_REVERSE = false;
     public static boolean LEFT_SLAVE_0_REVERSE = false;
     public static boolean LEFT_SLAVE_1_REVERSE = false;
@@ -25,6 +29,8 @@ public class RobotMap
 
     public static boolean RIGHT_SLAVE_1_REVERSE = false;
 
+
+    //OI ports
     public static int L_JOY_PORT = 0; //TODO: find actual port
     public static int R_JOY_PORT = 1;
 
@@ -34,11 +40,11 @@ public class RobotMap
     public static int RAMP_RIGHT_DROP_PORT = 8;
     public static int RAMP_RIGHT_PROP_PORT = 9;
 
-    //Collector motor ports TODO: Get actual ports
+    //collector motor ports TODO: Get actual ports
     public static final int LEFT_COLLECTOR_PORT = 6;
     public static final int RIGHT_COLLECTOR_PORT = 7;
 
-    //Collector motor reverse TODO: Verify reverse modes
+    //collector motor reverse TODO: Verify reverse modes
     public static final boolean LEFT_COLLECTOR_REVERSE = false;
     public static final boolean RIGHT_COLLECTOR_REVERSE = true;
 }
