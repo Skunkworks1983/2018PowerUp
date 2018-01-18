@@ -1,13 +1,15 @@
-package frc.team1983.subsystems.utilities;
+package frc.team1983.subsystems.utilities.pidoutputs;
 
 import frc.team1983.subsystems.Drivebase;
+import frc.team1983.subsystems.utilities.pidoutputs.PidOutputWrapper;
 
-/* Implementation of PidOutputWrapper, specifically for the TurnAngle command. The logic simply sets the drivebase sides
+/*
+   Implementation of PidOutputWrapper, specifically for the TurnAngle command. The logic simply sets the drivebase sides
    opposite of each other, so that the robot rotates instead of simply traveling in a direction.
 */
 public class TurnAnglePidOutput extends PidOutputWrapper
 {
-    Drivebase drivebase;
+    private Drivebase drivebase;
 
     //Only used to store the instance of the drivebase.
     public TurnAnglePidOutput(Drivebase drivebase)

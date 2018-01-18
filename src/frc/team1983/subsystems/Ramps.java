@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.utilities.ServoWrapper;
 
-// this subsystem contains methods and servos used to drop or raise the ramps.
+//The ramps of the robot, managing the servos that release the different parts of the mechanism.
 public class Ramps extends Subsystem
 {
     private ServoWrapper leftDrop, leftProp, rightDrop, rightProp;

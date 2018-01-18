@@ -2,6 +2,7 @@ package frc.team1983.subsystems.utilities;
 
 import java.util.ArrayList;
 
+//A collection of Motors, all part of the same subsystem that run simultaneously.
 public class MotorGroup
 {
     private Motor master;
