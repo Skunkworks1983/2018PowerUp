@@ -29,19 +29,14 @@ public class TurnAngle extends Command
     @Override
     protected void initialize()
     {
-
         initialAngle = 0;
         //TODO: get p i d values here
         //turnPid = new PIDController(p, i, d, f, getGyro(), pidOut);
         turnPid.setSetpoint(targetAngle);
-
     }
 
     @Override
-    protected void execute()
-    {
-
-    }
+    protected void execute() {}
 
     @Override
     protected boolean isFinished()
@@ -52,9 +47,7 @@ public class TurnAngle extends Command
     @Override
     protected void end()
     {
-
         turnPid.disable();
-
     }
 
     @Override

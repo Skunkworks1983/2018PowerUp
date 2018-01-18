@@ -2,7 +2,8 @@ package frc.team1983.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
-import frc.team1983.settings.Misc;
+import frc.team1983.settings.Constants;
+import frc.team1983.settings.OIMap;
 
 //Default command for Drivebase during Teleop
 public class TankDrive extends Command
@@ -21,26 +22,11 @@ public class TankDrive extends Command
     @Override
     protected void execute()
     {
-        double leftSpeed = Robot.getInstance().getOI().leftStick.getY();
-        double rightSpeed = Robot.getInstance().getOI().rightStick.getY();
-        //set tolerances
-        if (leftSpeed < Misc.JOYSTICK_TOLERANCE && leftSpeed > -Misc.JOYSTICK_TOLERANCE)
-        {
-            Robot.getInstance().getDrivebase().setLeft(0);
-        }
-        else
-        {
-            Robot.getInstance().getDrivebase().setLeft(leftSpeed);
-        }
-        //set tolerances
-        if (rightSpeed < Misc.JOYSTICK_TOLERANCE && rightSpeed > -Misc.JOYSTICK_TOLERANCE)
-        {
-            Robot.getInstance().getDrivebase().setRight(0);
-        }
-        else
-        {
-            Robot.getInstance().getDrivebase().setRight(rightSpeed);
-        }
+        double leftSpeed = Robot.getInstance().getOI().getAxis(Constants.OIJoystick.LEFT, Constants.OIJoystickAxis.Y);
+        double rightSpeed = Robot.getInstance().getOI().getAxis(Constants.OIJoystick.RIGHT, Constants.OIJoystickAxis.Y);
+
+        Robot.getInstance().getDrivebase().setLeft(leftSpeed);
+        Robot.getInstance().getDrivebase().setRight(rightSpeed);
     }
 
     @Override
