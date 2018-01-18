@@ -15,11 +15,11 @@ public class SetElevatorSetpoint extends Command
     private Elevator.Setpoint setpoint;
 
     //A command for setting the setpoint of the elevator pid.
-    public SetElevatorSetpoint(Elevator.Setpoint setpoint)
+    public SetElevatorSetpoint(Elevator.Setpoint setpoint, Elevator elevator, OI oi)
     {
         this.setpoint = setpoint;
-        elevator = Robot.getInstance().getElevator();
-        oi = Robot.getInstance().getOI();
+        elevator = elevator;
+        oi = oi;
         requires(elevator);
     }
 
