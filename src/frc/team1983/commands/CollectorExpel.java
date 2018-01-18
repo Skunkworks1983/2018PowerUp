@@ -2,7 +2,7 @@ package frc.team1983.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
-import frc.team1983.settings.Misc;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 
 //Runs the collector outward
@@ -21,7 +21,7 @@ public class CollectorExpel extends Command
     @Override
     protected void execute()
     {
-        collector.setSpeed(-Misc.COLLECTOR_EXPEL_SPEED);
+        collector.setSpeed(-Constants.MotorMap.COLLECTOR_EXPEL_SPEED);
     }
 
 

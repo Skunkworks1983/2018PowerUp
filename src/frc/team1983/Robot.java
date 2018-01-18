@@ -15,12 +15,15 @@ public class Robot extends IterativeRobot
 	private OI oi;
 	private Collector collector;
 	private Drivebase drivebase;
+	private Ramps ramps;
 
 	@Override
 	public void robotInit()
 	{
 		drivebase = new Drivebase();
 		oi = new OI(Constants.OIInputType.DOUBLEJOY, DriverStation.getInstance());
+		ramps = new Ramps();
+		collector = new Collector();
 
 		oi.initialize();
 	}

@@ -3,7 +3,6 @@ package frc.team1983.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
 import frc.team1983.settings.Constants;
-import frc.team1983.settings.OIMap;
 
 //Default command for Drivebase during Teleop
 public class TankDrive extends Command
