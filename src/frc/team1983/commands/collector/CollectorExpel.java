@@ -1,4 +1,4 @@
-package frc.team1983.commands;
+package frc.team1983.commands.collector;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
@@ -8,10 +8,12 @@ import frc.team1983.subsystems.Collector;
 //Runs the collector outward
 public class CollectorExpel extends Command
 {
-    private Collector collector = Robot.getInstance().getCollector();
-    public CollectorExpel()
+    private Collector collector;
+
+    public CollectorExpel(Collector collector)
     {
         requires(collector);
+        this.collector = collector;
     }
 
     @Override

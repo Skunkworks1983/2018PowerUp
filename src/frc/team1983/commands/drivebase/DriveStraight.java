@@ -1,21 +1,24 @@
-package frc.team1983.commands;
+package frc.team1983.commands.drivebase;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
 import frc.team1983.settings.RobotMap;
+import frc.team1983.subsystems.Drivebase;
 
+//Moves the robot forward a specified number of feet.
 public class DriveStraight extends Command
 {
     private double distance;
+    private Drivebase drivebase;
     private PIDController pidController;
     PIDSource source;
 
-    //drives a distance in feet!
-    public DriveStraight(double distance)
+    public DriveStraight(double distance, Drivebase drivebase)
     {
-        requires(Robot.getInstance().getDrivebase());
+        requires(drivebase);
+        this.drivebase = drivebase;
         this.distance = distance * RobotMap.DRIVEBASE_TICK_PER_FOOT;
         //needs a pidsource and pidoutput
         //PidController driveDistancePid = new PIDController(PidValues.DRIVESTRAIGHT_PID_P, PidValues.DRIVESTRAIGHT_PID_I, PidValues.DRIVESTRAIGHT_PID_D);
@@ -30,10 +33,7 @@ public class DriveStraight extends Command
     }
 
     @Override
-    protected void execute()
-    {
-        
-    }
+    protected void execute() {}
 
     @Override
     protected boolean isFinished()

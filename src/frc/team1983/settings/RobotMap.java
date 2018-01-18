@@ -40,11 +40,11 @@ public class RobotMap
     public static int RAMP_RIGHT_DROP_PORT = 8;
     public static int RAMP_RIGHT_PROP_PORT = 9;
 
-    //Collector motor ports TODO: Get actual ports
+    //collector motor ports TODO: Get actual ports
     public static final int LEFT_COLLECTOR_PORT = 6;
     public static final int RIGHT_COLLECTOR_PORT = 7;
 
-    //Collector motor reverse TODO: Verify reverse modes
+    //collector motor reverse TODO: Verify reverse modes
     public static final boolean LEFT_COLLECTOR_REVERSE = false;
     public static final boolean RIGHT_COLLECTOR_REVERSE = true;
 }
