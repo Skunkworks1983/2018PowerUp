@@ -9,6 +9,7 @@ import frc.team1983.subsystems.sensors.DioEncoder;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.MotorGroup;
 
+//The elevator subsystem
 public class Elevator extends Subsystem
 {
     private Motor leftWinch, rightWinch;
@@ -22,7 +23,6 @@ public class Elevator extends Subsystem
 
     private double setpoint;
 
-    //The elevator mechanism
     public Elevator(OI oi)
     {
         //OI for unit testing

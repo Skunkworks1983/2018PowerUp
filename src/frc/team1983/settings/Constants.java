@@ -187,5 +187,4 @@ public class Constants
             public static final int scalePreset = 3;
         }
     }
-
 }

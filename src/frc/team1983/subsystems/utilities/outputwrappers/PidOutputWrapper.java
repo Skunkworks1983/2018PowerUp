@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 public abstract class PidOutputWrapper implements PIDOutput
 {
     private boolean disabled;
+
     //DO NOT OVERRIDE. Where logging happens.
     @Override
     public void pidWrite(double out)
