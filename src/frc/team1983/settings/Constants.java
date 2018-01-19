@@ -63,6 +63,7 @@ public class Constants
             public static final boolean RIGHT_COLLECTOR_REVERSE = true;
         }
     }
+    
     //this class contains subclasses that contain PIDF values used in commands.
     public static class PidValues
     {
@@ -70,19 +71,19 @@ public class Constants
         //PIDF values for the DriveStraight command
         public static class DriveStrightPid
         {
-            public static double DRIVESTRAIGHT_P;
-            public static double DRIVESTRAIGHT_I;
-            public static double DRIVESTRAIGHT_D;
-            public static double DRIVESTRAIGHT_F;
+            public static double P;
+            public static double I;
+            public static double D;
+            public static double F;
         }
 
         //PIDF values for the TurnAngle command
         public static class TurnAnglePid
         {
-            public static double TURNANGLE_P;
-            public static double TURNANGLE_I;
-            public static double TURNANGLE_D;
-            public static double TURNANGLE_F;
+            public static double P;
+            public static double I;
+            public static double D;
+            public static double F;
         }
     }
 
@@ -115,7 +116,7 @@ public class Constants
         //Control mode for the robot (Joysticks versus steering wheel)
         public static class Mode
         {
-            public static int DOUBLEJOY = 0;
+            public static int DOUBLE_JOY = 0;
             public static int WHEEL = 1;
         }
 
