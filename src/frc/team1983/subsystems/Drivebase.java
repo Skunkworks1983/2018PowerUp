@@ -2,7 +2,7 @@ package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1983.settings.RobotMap;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.MotorGroup;
 
@@ -16,12 +16,12 @@ public class Drivebase extends Subsystem
 
     public Drivebase()
     {
-        leftMaster = new Motor(RobotMap.LEFT_MASTER_PORT, DRIVEBASE_NEUTRAL_MODE, RobotMap.LEFT_MASTER_REVERSE);
-        leftSlave0 = new Motor(RobotMap.LEFT_SLAVE_0_PORT, DRIVEBASE_NEUTRAL_MODE, RobotMap.LEFT_SLAVE_0_REVERSE);
-        leftSlave1 = new Motor(RobotMap.LEFT_SLAVE_1_PORT, DRIVEBASE_NEUTRAL_MODE, RobotMap.LEFT_SLAVE_1_REVERSE);
-        rightMaster = new Motor(RobotMap.RIGHT_MASTER_PORT, DRIVEBASE_NEUTRAL_MODE, RobotMap.RIGHT_MASTER_REVERSE);
-        rightSlave0 = new Motor(RobotMap.RIGHT_SLAVE_0_PORT, DRIVEBASE_NEUTRAL_MODE, RobotMap.RIGHT_SLAVE_0_REVERSE);
-        rightSlave1 = new Motor(RobotMap.RIGHT_SLAVE_1_PORT, DRIVEBASE_NEUTRAL_MODE, RobotMap.RIGHT_SLAVE_1_REVERSE);
+        leftMaster = new Motor(Constants.MotorMap.DrivebasePorts.LEFT_MASTER_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.LEFT_MASTER_REVERSE);
+        leftSlave0 = new Motor(Constants.MotorMap.DrivebasePorts.LEFT_SLAVE_0_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.LEFT_SLAVE_0_REVERSE);
+        leftSlave1 = new Motor(Constants.MotorMap.DrivebasePorts.LEFT_SLAVE_1_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.LEFT_SLAVE_1_REVERSE);
+        rightMaster = new Motor(Constants.MotorMap.DrivebasePorts.RIGHT_MASTER_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.RIGHT_MASTER_REVERSE);
+        rightSlave0 = new Motor(Constants.MotorMap.DrivebasePorts.RIGHT_SLAVE_0_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.RIGHT_SLAVE_0_REVERSE);
+        rightSlave1 = new Motor(Constants.MotorMap.DrivebasePorts.RIGHT_SLAVE_1_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.RIGHT_SLAVE_1_REVERSE);
 
         left = new MotorGroup(leftMaster, false);
         left.addMotor(leftSlave0);

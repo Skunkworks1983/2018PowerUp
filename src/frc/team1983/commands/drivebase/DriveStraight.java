@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
-import frc.team1983.settings.RobotMap;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 
 //Moves the robot forward a specified number of feet.
@@ -19,7 +19,7 @@ public class DriveStraight extends Command
     {
         requires(drivebase);
         this.drivebase = drivebase;
-        this.distance = distance * RobotMap.DRIVEBASE_TICK_PER_FOOT;
+        this.distance = distance * Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT;
         //needs a pidsource and pidoutput
         //PidController driveDistancePid = new PIDController(PidValues.DRIVESTRAIGHT_PID_P, PidValues.DRIVESTRAIGHT_PID_I, PidValues.DRIVESTRAIGHT_PID_D);
 

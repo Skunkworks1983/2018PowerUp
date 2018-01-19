@@ -1,7 +1,5 @@
 package frc.team1983.services;
 
-import java.util.*;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.settings.Constants;
@@ -12,6 +10,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.settings.Misc;
 import frc.team1983.settings.OIMap;
 import frc.team1983.subsystems.Elevator;
+
+import java.util.HashMap;
 
 /*
     notes:
@@ -64,7 +64,7 @@ public class OI
                       new SetElevatorSetpoint(Elevator.Setpoint.SCALE, elevator, this));
 
         // usage example:
-        // oi.bindToHeld(Constants.OIJoystick.LEFT, 5, new TurnAngle(90));
+        // oi.bindToHeld(Constants.OIMap.LEFTJOY, 5, new TurnAngle(90));
     }
 
     // returns a joystick
@@ -148,8 +148,8 @@ public class OI
     {
         double raw = getRawAxis(joy, axis);
         double sign = raw < 0 ? -1 : 1;
-        double deadzoned = (Math.abs(raw) > Constants.JOYSTICK_DEADZONE ? raw : 0);
-        return Math.pow(deadzoned, Constants.JOYSTICK_RAMP_EXPONENT) * sign;
+        double deadzoned = (Math.abs(raw) > Constants.OIMap.JoyConstants.JOYSTICK_DEADZONE ? raw : 0);
+        return Math.pow(deadzoned, Constants.OIMap.JoyConstants.JOYSTICK_RAMP_EXPONENT) * sign;
     }
 
     //Slider for controlling the elevator

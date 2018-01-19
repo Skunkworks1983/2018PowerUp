@@ -1,4 +1,3 @@
-package frc.team1983.settings;
 
 //Container for all the PIDF values we use across commands. Prevents magic numbers.
 public class PidValues
