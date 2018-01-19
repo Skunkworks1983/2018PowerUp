@@ -62,6 +62,12 @@ public class Constants
             public static final boolean LEFT_COLLECTOR_REVERSE = false;
             public static final boolean RIGHT_COLLECTOR_REVERSE = true;
         }
+
+        //Random and hard to classify drivebase constants
+        public static class DrivebaseConstants
+        {
+            public static final double DRIVEBASE_TICKS_PER_FOOT = 0;
+        }
     }
 
     //this class contains subclasses that contain PIDF values used in commands.

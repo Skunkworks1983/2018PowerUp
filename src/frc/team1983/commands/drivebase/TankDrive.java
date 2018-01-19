@@ -1,7 +1,6 @@
 package frc.team1983.commands.drivebase;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team1983.Robot;
 import frc.team1983.services.OI;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
@@ -28,8 +27,8 @@ public class TankDrive extends Command
     @Override
     protected void execute()
     {
-        double leftSpeed = oi.getAxis(Constants.OIJoystick.LEFT, Constants.OIJoystickAxis.Y);
-        double rightSpeed = oi.getAxis(Constants.OIJoystick.RIGHT, Constants.OIJoystickAxis.Y);
+        double leftSpeed = oi.getAxis(Constants.OIMap.Ports.LEFT_JOY, Constants.OIMap.JoyAxes.Y);
+        double rightSpeed = oi.getAxis(Constants.OIMap.Ports.RIGHT_JOY, Constants.OIMap.JoyAxes.Y);
 
         drivebase.setLeft(leftSpeed);
         drivebase.setRight(rightSpeed);
