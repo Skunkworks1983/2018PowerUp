@@ -40,7 +40,8 @@ public class Constants
         }
 
         //motor goals ie positions to rotate to, speeds to achieve
-        public static class MotorGoals {
+        public static class MotorGoals
+        {
             public static final double RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
             public static final double RAMP_PROP_SERVO_GOAL = 1;
 
@@ -133,7 +134,8 @@ public class Constants
     }
 
     //what goes here? God only knows
-    public static class AutoValues {
+    public static class AutoValues
+    {
 
     }
 

@@ -70,7 +70,7 @@ public class Elevator extends Subsystem
     public void setSetpoint(Setpoint newSetpoint)
     {
         //The constants for each preset of elevator height
-        switch (newSetpoint)
+        switch(newSetpoint)
         {
             case SCALE:
                 setpoint = 1;
@@ -90,7 +90,8 @@ public class Elevator extends Subsystem
     }
 
     //Enums for presets
-    public enum Setpoint {
+    public enum Setpoint
+    {
         SCALE,
         SWITCH,
         BOTTOM,
