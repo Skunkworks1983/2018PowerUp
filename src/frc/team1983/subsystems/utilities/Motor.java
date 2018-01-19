@@ -24,4 +24,5 @@ public class Motor extends TalonSRX
     {
         super.set(ControlMode.Follower, master.getDeviceID());
     }
+
 }
