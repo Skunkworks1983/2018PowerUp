@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
+import frc.team1983.settings.Constants;
 import frc.team1983.settings.Misc;
-import frc.team1983.settings.PidValues;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.utilities.inputwrappers.ElevatorPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.ElevatorPidOutput;
@@ -27,10 +27,10 @@ public class ElevatorControl extends Command
 
         pidIn = new ElevatorPidInput(elevator);
         pidOut = new ElevatorPidOutput(elevator);
-        controller = new PIDController(PidValues.ELEVATOR_CONTROL_P,
-                                       PidValues.ELEVATOR_CONTROL_I,
-                                       PidValues.ELEVATOR_CONTROL_D,
-                                       PidValues.ELEVATOR_CONTROL_F,
+        controller = new PIDController(Constants.PidValues.ElevatorPid.ELEVATOR_CONTROL_P,
+                                       Constants.PidValues.ElevatorPid.ELEVATOR_CONTROL_I,
+                                       Constants.PidValues.ElevatorPid.ELEVATOR_CONTROL_D,
+                                       Constants.PidValues.ElevatorPid.ELEVATOR_CONTROL_F,
                                        pidIn, pidOut);
     }
 

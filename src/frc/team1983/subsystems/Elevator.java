@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.services.OI;
-import frc.team1983.settings.RobotMap;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.sensors.DioEncoder;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.MotorGroup;
@@ -29,14 +29,18 @@ public class Elevator extends Subsystem
         this.oi = oi;
 
         //The winches that actuate the collector
-        leftWinch = new Motor(RobotMap.LEFT_WINCH_PORT, ELEVATOR_NEUTRAL_MODE, RobotMap.LEFT_WINCH_REVERSE);
-        rightWinch = new Motor(RobotMap.RIGHT_WINCH_PORT, ELEVATOR_NEUTRAL_MODE, RobotMap.RIGHT_WINCH_REVERSE);
+        leftWinch = new Motor(Constants.MotorMap.ElevatorWinchPorts.LEFT_WINCH_PORT, ELEVATOR_NEUTRAL_MODE,
+                              Constants.MotorMap.ElevatorWinchReversed.LEFT_WINCH_REVERSE);
+        rightWinch = new Motor(Constants.MotorMap.ElevatorWinchPorts.RIGHT_WINCH_PORT, ELEVATOR_NEUTRAL_MODE,
+                               Constants.MotorMap.ElevatorWinchReversed.RIGHT_WINCH_REVERSE);
 
         winch = new MotorGroup(leftWinch, false);
         winch.addMotor(rightWinch);
 
         //The encoders on the rail
-        rail = new DioEncoder(RobotMap.RAIL_ENCODER_A_PORT, RobotMap.RAIL_ENCODER_B_PORT, RobotMap.RAIL_ENCODER_REVERSE);
+        rail = new DioEncoder(Constants.MotorMap.RailEncoders.RAIL_ENCODER_A_PORT,
+                              Constants.MotorMap.RailEncoders.RAIL_ENCODER_B_PORT,
+                              Constants.MotorMap.RailEncoders.RAIL_ENCODER_REVERSE);
 
         //Initialize the elevator to its resting position
         setSetpoint(Setpoint.RESTING);

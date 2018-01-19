@@ -33,7 +33,7 @@ public class SetElevatorSetpoint extends Command
     protected void execute()
     {
         //Check to see if the oi is in slider position mode. If so, use the slider pos instead of the preset
-        if(Robot.getInstance().getOI().isDown(Constants.OIJoystick.BUTTONS, OIMap.sliderPresetsToggle))
+        if(Robot.getInstance().getOI().isDown(Constants.OIMap.Ports.BUTTONS, OIMap.sliderPresetsToggle))
         {
             elevator.setSetpoint(oi.getSliderPos());
         }

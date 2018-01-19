@@ -7,8 +7,6 @@ import frc.team1983.settings.Constants;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team1983.settings.Misc;
-import frc.team1983.settings.OIMap;
 import frc.team1983.subsystems.Elevator;
 
 import java.util.HashMap;
@@ -56,11 +54,11 @@ public class OI
     public void initialize()
     {
         //Elevator presets
-        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.bottomPreset,
+        bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.bottomPreset,
                       new SetElevatorSetpoint(Elevator.Setpoint.BOTTOM, elevator, this));
-        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.switchPreset,
+        bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.switchPreset,
                       new SetElevatorSetpoint(Elevator.Setpoint.SWITCH, elevator, this));
-        bindToPressed(Constants.OIJoystick.BUTTONS, OIMap.scalePreset,
+        bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.scalePreset,
                       new SetElevatorSetpoint(Elevator.Setpoint.SCALE, elevator, this));
 
         // usage example:
@@ -148,17 +146,17 @@ public class OI
     {
         double raw = getRawAxis(joy, axis);
         double sign = raw < 0 ? -1 : 1;
-        double deadzoned = (Math.abs(raw) > Constants.OIMap.JoyConstants.JOYSTICK_DEADZONE ? raw : 0);
-        return Math.pow(deadzoned, Constants.OIMap.JoyConstants.JOYSTICK_RAMP_EXPONENT) * sign;
+        double deadzoned = (Math.abs(raw) > Constants.OIMap.OIConstants.JOYSTICK_DEADZONE ? raw : 0);
+        return Math.pow(deadzoned, Constants.OIMap.OIConstants.JOYSTICK_RAMP_EXPONENT) * sign;
     }
 
     //Slider for controlling the elevator
     public double getSliderPos()
     {
         //The 2017 slider on the OI was a joystick axis. All code taken from 2017
-        double x = getRawAxis(Constants.OIJoystick.BUTTONS, Constants.OIJoystickAxis.X);
+        double x = getRawAxis(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.JoyAxes.X);
         x = Math.pow(x, 10);
-        x = x / Misc.SLIDER_SCALAR;
+        x = x / Constants.OIMap.OIConstants.SLIDER_SCALAR;
         x = 1 - x;
         return x;
     }

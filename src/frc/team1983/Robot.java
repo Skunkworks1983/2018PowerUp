@@ -26,7 +26,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
-        oi = new OI(Constants.OIInputType.DOUBLEJOY, DriverStation.getInstance(), elevator);
+        oi = new OI(Constants.OIMap.Mode.DOUBLE_JOY, DriverStation.getInstance(), elevator);
         oi.initialize();
         drivebase = new Drivebase();
         collector = new Collector();
