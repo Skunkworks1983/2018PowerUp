@@ -4,9 +4,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team1983.Robot;
 import frc.team1983.settings.Constants;
-import frc.team1983.settings.Misc;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.utilities.inputwrappers.ElevatorPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.ElevatorPidOutput;
@@ -21,9 +19,9 @@ public class ElevatorControl extends Command
 
     //This command controls the elevator with a PID. It should be the only class that
     // sets the speed of the elevator winches
-    public ElevatorControl()
+    public ElevatorControl(Elevator elevator)
     {
-        elevator = Robot.getInstance().getElevator();
+        this.elevator = elevator;
 
         pidIn = new ElevatorPidInput(elevator);
         pidOut = new ElevatorPidOutput(elevator);
@@ -44,7 +42,7 @@ public class ElevatorControl extends Command
     //Get the 0-1 range of setpoint, scale it to the encoder range, and make it an integer
     protected void execute()
     {
-        controller.setSetpoint((int) elevator.getSetpoint() * Misc.ELEVATOR_ENCODER_SCALAR);
+        controller.setSetpoint((int) elevator.getSetpoint() * Constants.MotorMap.RailEncoders.ELEVATOR_ENCODER_SCALAR);
     }
 
     @Override
@@ -63,5 +61,6 @@ public class ElevatorControl extends Command
     protected void interrupted()
     {
         super.interrupted();
+        this.end();
     }
 }

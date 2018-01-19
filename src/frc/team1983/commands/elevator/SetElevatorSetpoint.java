@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.services.OI;
 import frc.team1983.Robot;
 import frc.team1983.settings.Constants;
-import frc.team1983.settings.OIMap;
 import frc.team1983.subsystems.Elevator;
 
 public class SetElevatorSetpoint extends Command
@@ -18,8 +17,8 @@ public class SetElevatorSetpoint extends Command
     public SetElevatorSetpoint(Elevator.Setpoint setpoint, Elevator elevator, OI oi)
     {
         this.setpoint = setpoint;
-        elevator = elevator;
-        oi = oi;
+        this.elevator = elevator;
+        this.oi = oi;
         requires(elevator);
     }
 
@@ -33,7 +32,7 @@ public class SetElevatorSetpoint extends Command
     protected void execute()
     {
         //Check to see if the oi is in slider position mode. If so, use the slider pos instead of the preset
-        if(Robot.getInstance().getOI().isDown(Constants.OIMap.Ports.BUTTONS, OIMap.sliderPresetsToggle))
+        if(oi.isDown(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.sliderPresetsToggle))
         {
             elevator.setSetpoint(oi.getSliderPos());
         }
@@ -59,5 +58,6 @@ public class SetElevatorSetpoint extends Command
     protected void interrupted()
     {
         super.interrupted();
+        this.end();
     }
 }
