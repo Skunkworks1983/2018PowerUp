@@ -9,6 +9,8 @@ import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.utilities.inputwrappers.ElevatorPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.ElevatorPidOutput;
 
+//This command controls the elevator with a PID. It should be the only class that
+// sets the speed of the elevator winches
 public class ElevatorControl extends Command
 {
     private PIDController controller;
@@ -17,8 +19,6 @@ public class ElevatorControl extends Command
 
     private Elevator elevator;
 
-    //This command controls the elevator with a PID. It should be the only class that
-    // sets the speed of the elevator winches
     public ElevatorControl(Elevator elevator)
     {
         this.elevator = elevator;
