@@ -21,9 +21,9 @@ public class Robot extends IterativeRobot
 	public void robotInit()
 	{
 		drivebase = new Drivebase();
+		oi = new OI(Constants.OIMap.Mode.DOUBLE_JOY, DriverStation.getInstance());
 		ramps = new Ramps();
 		collector = new Collector();
-		oi = new OI(Constants.OIInputType.DOUBLEJOY, DriverStation.getInstance());
 
 		oi.initialize();
 	}

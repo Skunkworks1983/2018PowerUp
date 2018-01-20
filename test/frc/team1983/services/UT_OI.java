@@ -76,7 +76,7 @@ public class UT_OI
         when(ds.getJoystickName(1)).thenReturn("jimmy");
         when(ds.getStickButtonCount(0)).thenReturn(1);
 
-        oi = new OI(Constants.OIInputType.DOUBLEJOY, ds);
+        oi = new OI(Constants.OIMap.Mode.DOUBLE_JOY, ds);
 
         assertThat(oi.getJoystickCount(), is(2));
         assertThat(oi.getJoystickButtonCount(0), is(1));
@@ -137,7 +137,7 @@ public class UT_OI
     public void returnsDeadzonedValue()
     {
         when(joy1.getAxisCount()).thenReturn(1);
-        when(joy1.getRawAxis(0)).thenReturn(Constants.JOYSTICK_DEADZONE * 0.5);
+        when(joy1.getRawAxis(0)).thenReturn(Constants.OIMap.JoyConstants.JOYSTICK_DEADZONE * 0.5);
         assertThat(oi.getAxis(0, 0), is(0.0));
     }
 }
