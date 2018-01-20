@@ -5,24 +5,22 @@ import java.util.List;
 
 public class FakeScheduler
 {
-
-    List<CommandBase> commandQueue = new LinkedList<>();
+    private List<CommandBase> commandQueue = new LinkedList<>();
 
     public void run()
     {
-        for(CommandBase c: commandQueue)
+        for(CommandBase c : commandQueue)
         {
             c.initialize();
             c.execute();
         }
         while(!getDone())
         {
-            for(CommandBase c: commandQueue)
+            for(CommandBase c : commandQueue)
             {
                 if(!c.isFinished())
                 {
                     c.execute();
-
                 }
             }
         }
@@ -31,14 +29,14 @@ public class FakeScheduler
     public boolean getDone()
     {
         boolean done;
-        for(CommandBase c: commandQueue)
+        for(CommandBase c : commandQueue)
         {
             if(!c.isFinished())
             {
                 return false;
             }
         }
-       return true;
+        return true;
     }
 
     public void add(CommandBase command)
@@ -56,6 +54,4 @@ public class FakeScheduler
             commandQueue.remove(command);
         }
     }
-
-
 }
