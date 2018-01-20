@@ -1,0 +1,13 @@
+0
+0
+0
+0
+elevator
+null
+null
+null
+0
+0
+0
+0
+tank
