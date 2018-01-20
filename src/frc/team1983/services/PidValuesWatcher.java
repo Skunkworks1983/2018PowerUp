@@ -64,7 +64,7 @@ public class PidValuesWatcher
     {
         BufferedReader inputStream = null;
         int i = 0;
-        double[] pidValues;
+        double[] pidValues = new double[4];
 
         try
         {
@@ -73,14 +73,25 @@ public class PidValuesWatcher
             String l;
             while(true)
             {
-                if((l = inputStream.readLine()).equals(subsystem))
+                if(!(l = inputStream.readLine()).equals(subsystem))
                 {
-                    pidValues[i] = Double.parseDouble(l);
+                    try
+                    {
+                        pidValues[i] = Double.parseDouble(l);
+                    }
+                    catch(NumberFormatException e)
+                    {
+                        pidValues[i] = 0.0;
+                    }
                     i++;
                     if(i > 3)
                     {
                         i = 0;
                     }
+                }
+                else
+                {
+                    return pidValues;
                 }
             }
         }
