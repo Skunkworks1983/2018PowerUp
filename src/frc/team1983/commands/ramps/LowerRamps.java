@@ -2,10 +2,11 @@ package frc.team1983.commands.ramps;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
+import frc.team1983.commands.CommandBase;
 import frc.team1983.subsystems.Ramps;
 
 //Activates the servos that kick down the ramp
-public class LowerRamps extends Command
+public class LowerRamps extends CommandBase
 {
     private Ramps ramp;
 
@@ -16,27 +17,26 @@ public class LowerRamps extends Command
     }
 
     @Override
-    protected void initialize() {}
+    public void initialize() {}
 
     @Override
-    protected void execute()
+    public void execute()
     {
         ramp.drop();
     }
 
     @Override
-    protected boolean isFinished()
+    public boolean isFinished()
     {
         return false;
     }
 
     @Override
-    protected void end() {}
+    public void end() {}
 
     @Override
-    protected void interrupted()
+    public void interrupted()
     {
-        super.interrupted();
         this.end();
     }
 }
