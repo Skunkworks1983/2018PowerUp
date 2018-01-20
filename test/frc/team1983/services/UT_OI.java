@@ -33,7 +33,7 @@ public class UT_OI
     @Before
     public void setup() {
         initMocks(this);
-        oi = new OI(Constants.OIInputType.DOUBLEJOY, ds);
+        oi = new OI(Constants.OIMap.Mode.DOUBLE_JOY, ds);
     }
 
     @After
