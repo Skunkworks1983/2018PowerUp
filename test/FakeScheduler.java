@@ -1,47 +1,59 @@
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.CommandBase;
 
- import java.util.LinkedList;
- import java.util.List;
+import java.util.LinkedList;
+import java.util.List;
 
- public class FakeScheduler extends Scheduler{
+public class FakeScheduler
+{
 
-     List<Command> commandqueue = new LinkedList<Command>();
+    List<CommandBase> commandQueue = new LinkedList<>();
 
-     @Override
-     public void run(Command command)
-     {
-
-
-         for(int i = commandqueue.size();  i >= 0; i--)
+    public void run()
+    {
+        for(CommandBase c: commandQueue)
+        {
+            c.initialize();
+            c.execute();
+        }
+        while(!getDone())
+        {
+            for(CommandBase c: commandQueue)
             {
-                if (command.start())
+                if(!c.isFinished())
                 {
-                    commandqueue.remove(command);
-                }
-                else
-                {
-                    commandqueue.run(command);
+                    c.execute();
+
                 }
             }
-
-     }
-
-    @Override
-    public void add(Command command)
-    {
-        if(command != null)
-        {
-            commandqueue.add(command);
         }
     }
 
-    @Override
-    public void remove(Command command)
+    public boolean getDone()
+    {
+        boolean done;
+        for(CommandBase c: commandQueue)
+        {
+            if(!c.isFinished())
+            {
+                return false;
+            }
+        }
+       return true;
+    }
+
+    public void add(CommandBase command)
+    {
+        if(command != null)
+        {
+            commandQueue.add(command);
+        }
+    }
+
+    public void remove(CommandBase command)
     {
         if(command == null)
         {
-            commandqueue.remove(command);
+            commandQueue.remove(command);
         }
     }
 

@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1983.robot.Robot;
 import frc.team1983.subsystems.Utilities.PidControlWrapper;
 
-public class TurnAngle extends Command
+public class TurnAngle extends CommandBase
 {
     double initialAngle;
     double targetAngle;
@@ -18,7 +18,7 @@ public class TurnAngle extends Command
     }
 
     @Override
-    protected void initialize()
+    public void initialize()
     {
 
         initialAngle = 0;
@@ -29,19 +29,19 @@ public class TurnAngle extends Command
     }
 
     @Override
-    protected void execute()
+    public void execute()
     {
 
     }
 
     @Override
-    protected boolean isFinished()
+    public boolean isFinished()
     {
         return turnPid.onTarget();
     }
 
     @Override
-    protected void end()
+    public void end()
     {
 
         turnPid.disable();
@@ -49,7 +49,7 @@ public class TurnAngle extends Command
     }
 
     @Override
-    protected void interrupted()
+    public void interrupted()
     {
         super.interrupted();
     }
