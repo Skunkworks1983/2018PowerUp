@@ -72,9 +72,8 @@ public class UT_OI
     @Test
     public void successfullyCreatesJoysticks()
     {
-        when(ds.getJoystickName(0)).thenReturn("billy");
-        when(ds.getJoystickName(1)).thenReturn("jimmy");
         when(ds.getStickButtonCount(0)).thenReturn(1);
+        when(ds.getStickAxisCount(1)).thenReturn(1);
 
         oi = new OI(Constants.OIMap.Mode.DOUBLE_JOY, ds);
 
