@@ -1,12 +1,13 @@
 package frc.team1983.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team1983.commands.CommandBase;
 import frc.team1983.services.OI;
 import frc.team1983.Robot;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Elevator;
 
-public class SetElevatorSetpoint extends Command
+public class SetElevatorSetpoint extends CommandBase
 {
     private Elevator elevator;
     private OI oi;
@@ -23,13 +24,13 @@ public class SetElevatorSetpoint extends Command
     }
 
     @Override
-    protected void initialize()
+    public void initialize()
     {
 
     }
 
     @Override
-    protected void execute()
+    public void execute()
     {
         //Check to see if the oi is in slider position mode. If so, use the slider pos instead of the preset
         if(oi.isDown(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.sliderPresetsToggle))
@@ -43,21 +44,20 @@ public class SetElevatorSetpoint extends Command
     }
 
     @Override
-    protected boolean isFinished()
+    public boolean isFinished()
     {
         return false;
     }
 
     @Override
-    protected void end()
+    public void end()
     {
 
     }
 
     @Override
-    protected void interrupted()
+    public void interrupted()
     {
-        super.interrupted();
         this.end();
     }
 }

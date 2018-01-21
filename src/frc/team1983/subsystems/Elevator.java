@@ -64,7 +64,7 @@ public class Elevator extends Subsystem
 
     public double getSetpoint()
     {
-        return setpoint;
+        return setpoint  * Constants.MotorMap.RailEncoders.ELEVATOR_ENCODER_SCALAR;
     }
 
     public void setSetpoint(Setpoint newSetpoint)
