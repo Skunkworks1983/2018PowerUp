@@ -186,5 +186,14 @@ public class Constants
             public static final int switchPreset = 2;
             public static final int scalePreset = 3;
         }
+
+        //Enums for presets
+        public enum Setpoint
+        {
+            SCALE,
+            SWITCH,
+            BOTTOM,
+            RESTING
+        }
     }
 }

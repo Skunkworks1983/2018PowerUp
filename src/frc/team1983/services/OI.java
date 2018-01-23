@@ -1,6 +1,7 @@
 package frc.team1983.services;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.team1983.Robot;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.settings.Constants;
 
@@ -26,11 +27,11 @@ public class OI
     private HashMap<Integer, JoystickButton[]> buttons;
 
     // construct collections for joysticks and buttons
-    public OI(int type, DriverStation ds, Elevator elevator)
+    public OI(int type, DriverStation ds)
     {
         this.ds = ds;
         this.type = type;
-        this.elevator = elevator;
+        this.elevator = Robot.getInstance().getElevator();
 
         joysticks = new HashMap<>();
         buttons = new HashMap<>();
@@ -55,11 +56,11 @@ public class OI
     {
         //Elevator presets
         bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.bottomPreset,
-                      new SetElevatorSetpoint(Elevator.Setpoint.BOTTOM, elevator, this));
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, this));
         bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.switchPreset,
-                      new SetElevatorSetpoint(Elevator.Setpoint.SWITCH, elevator, this));
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, this));
         bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.scalePreset,
-                      new SetElevatorSetpoint(Elevator.Setpoint.SCALE, elevator, this));
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE, elevator, this));
 
         // usage example:
         // oi.bindToHeld(Constants.OIMap.LEFTJOY, 5, new TurnAngle(90));

@@ -12,13 +12,12 @@ public class SetElevatorSetpoint extends CommandBase
     private Elevator elevator;
     private OI oi;
 
-    private Elevator.Setpoint setpoint;
+    private Constants.OIMap.Setpoint setpoint;
 
     //A command for setting the setpoint of the elevator pid.
-    public SetElevatorSetpoint(Elevator.Setpoint setpoint, Elevator elevator, OI oi)
+    public SetElevatorSetpoint(Constants.OIMap.Setpoint setpoint, Elevator elevator, OI oi)
     {
         this.setpoint = setpoint;
-        this.elevator = elevator;
         this.oi = oi;
         requires(elevator);
     }

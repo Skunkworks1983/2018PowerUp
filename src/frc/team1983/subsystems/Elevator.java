@@ -43,7 +43,7 @@ public class Elevator extends Subsystem
                               Constants.MotorMap.RailEncoders.RAIL_ENCODER_REVERSE);
 
         //Initialize the elevator to its resting position
-        setSetpoint(Setpoint.RESTING);
+        setSetpoint(Constants.OIMap.Setpoint.RESTING);
     }
 
     //Used by commands to set the speed of the winch. We never want the winch motors running opposite of each other.
@@ -59,15 +59,15 @@ public class Elevator extends Subsystem
 
     public void initDefaultCommand()
     {
-        new SetElevatorSetpoint(Setpoint.RESTING, this, oi);
+        new SetElevatorSetpoint(Constants.OIMap.Setpoint.RESTING, this, oi);
     }
 
     public double getSetpoint()
     {
-        return setpoint  * Constants.MotorMap.RailEncoders.ELEVATOR_ENCODER_SCALAR;
+        return setpoint * Constants.MotorMap.RailEncoders.ELEVATOR_ENCODER_SCALAR;
     }
 
-    public void setSetpoint(Setpoint newSetpoint)
+    public void setSetpoint(Constants.OIMap.Setpoint newSetpoint)
     {
         //The constants for each preset of elevator height
         switch(newSetpoint)
@@ -87,14 +87,5 @@ public class Elevator extends Subsystem
     public void setSetpoint(double newSetpoint)
     {
         setpoint = newSetpoint;
-    }
-
-    //Enums for presets
-    public enum Setpoint
-    {
-        SCALE,
-        SWITCH,
-        BOTTOM,
-        RESTING
     }
 }
