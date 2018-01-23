@@ -83,7 +83,10 @@ public class Constants
         }
 
         //setpoints for motors
-        public static class MotorSetpoints {
+        public static class MotorSetpoints
+        {
+
+            //the position to which the ramp servos rotate.
             public static final double RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
             public static final double RAMP_PROP_SERVO_GOAL = 1;
 
@@ -94,7 +97,8 @@ public class Constants
     }
 
     //what goes here? God only knows
-    public static class AutoValues {
+    public static class AutoValues
+    {
 
     }
 
