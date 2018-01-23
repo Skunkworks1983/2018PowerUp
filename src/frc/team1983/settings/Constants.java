@@ -39,16 +39,6 @@ public class Constants
             public static final int RAMP_RIGHT_PROP_PORT = 9;
         }
 
-        //motor goals ie positions to rotate to, speeds to achieve
-        public static class MotorGoals {
-            public static final double RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
-            public static final double RAMP_PROP_SERVO_GOAL = 1;
-
-            //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
-            public static final double COLLECTOR_INTAKE_SPEED = 1;
-            public static final double COLLECTOR_EXPEL_SPEED = 1;
-        }
-
         //Ports for the collector motors
         public static class CollectorPorts
         {
@@ -90,6 +80,16 @@ public class Constants
             public static final double I = 0;
             public static final double D = 0;
             public static final double F = 0;
+        }
+
+        //setpoints for motors
+        public static class MotorSetpoints {
+            public static final double RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
+            public static final double RAMP_PROP_SERVO_GOAL = 1;
+
+            //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
+            public static final double COLLECTOR_INTAKE_SPEED = 1;
+            public static final double COLLECTOR_EXPEL_SPEED = 1;
         }
     }
 
@@ -134,5 +134,4 @@ public class Constants
             public static final double JOYSTICK_TOLERANCE = 0.5;
         }
     }
-
 }
