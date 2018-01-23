@@ -8,6 +8,7 @@ import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.Drivebase;
+import frc.team1983.commands.debugging.RunOneMotor;
 
 public class Robot extends IterativeRobot
 {
@@ -56,6 +57,7 @@ public class Robot extends IterativeRobot
 	public void teleopInit()
 	{
 		Scheduler.getInstance().removeAll();
+		Scheduler.getInstance().add(new RunOneMotor(oi));
 	}
 
 	@Override
