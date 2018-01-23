@@ -75,7 +75,9 @@ public class Constants
     //this class contains subclasses that contain PIDF values used in commands.
     public static class PidNames
     {
-        public static final double PLACEHOLDER_VALUE = 0;
+        //This *has* to be 0.0, otherwise pids
+        //with no f value will acquire this as one
+        public static final double PLACEHOLDER_VALUE = 0.0;
 
         //PIDF values for the DriveStraight command
         public static class DriveStrightPid
