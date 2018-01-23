@@ -1,12 +1,11 @@
 package frc.team1983.commands.elevator;
 
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Elevator;
+import frc.team1983.subsystems.utilities.PidControllerWrapper;
 import frc.team1983.subsystems.utilities.inputwrappers.ElevatorPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.ElevatorPidOutput;
 
@@ -14,7 +13,7 @@ import frc.team1983.subsystems.utilities.outputwrappers.ElevatorPidOutput;
 // sets the speed of the elevator winches
 public class ElevatorControl extends CommandBase
 {
-    private PIDController controller;
+    private PidControllerWrapper controller;
     private PIDSource pidIn;
     private PIDOutput pidOut;
 
@@ -26,11 +25,11 @@ public class ElevatorControl extends CommandBase
 
         pidIn = new ElevatorPidInput(elevator);
         pidOut = new ElevatorPidOutput(elevator);
-        controller = new PIDController(Constants.PidValues.ElevatorPid.ELEVATOR_CONTROL_P,
-                                       Constants.PidValues.ElevatorPid.ELEVATOR_CONTROL_I,
-                                       Constants.PidValues.ElevatorPid.ELEVATOR_CONTROL_D,
-                                       Constants.PidValues.ElevatorPid.ELEVATOR_CONTROL_F,
-                                       pidIn, pidOut);
+        controller = new PidControllerWrapper(Constants.PidValues.ElevatorPid.P,
+                                              Constants.PidValues.ElevatorPid.I,
+                                              Constants.PidValues.ElevatorPid.D,
+                                              Constants.PidValues.ElevatorPid.F,
+                                              pidIn, pidOut);
     }
 
     @Override

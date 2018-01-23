@@ -126,10 +126,10 @@ public class Constants
         //PIDF values for the TurnAngle command
         public static class ElevatorPid
         {
-            public static final double ELEVATOR_CONTROL_P = 0;
-            public static final double ELEVATOR_CONTROL_I = 0;
-            public static final double ELEVATOR_CONTROL_D = 0;
-            public static final double ELEVATOR_CONTROL_F = 0;
+            public static final double P = 0;
+            public static final double I = 0;
+            public static final double D = 0;
+            public static final double F = 0;
         }
     }
 
