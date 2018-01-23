@@ -3,6 +3,7 @@ package frc.team1983;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.utilities.PidTuner;
 import frc.team1983.services.OI;
 import frc.team1983.services.PidValuesWatcher;
 import frc.team1983.settings.Constants;
@@ -48,6 +49,7 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
+        Scheduler.getInstance().add(new PidTuner());
     }
 
     @Override
@@ -60,12 +62,12 @@ public class Robot extends IterativeRobot
     public void teleopInit()
     {
         Scheduler.getInstance().removeAll();
+        Scheduler.getInstance().add(new PidTuner());
     }
 
     @Override
     public void teleopPeriodic()
     {
-        pidFileModified = watcher.isFileModified();
         Scheduler.getInstance().run();
     }
 
@@ -95,6 +97,11 @@ public class Robot extends IterativeRobot
         return collector;
     }
 
+    public PidValuesWatcher getWatcher()
+    {
+        return watcher;
+    }
+
     public static Robot getInstance()
     {
         if(instance == null)
@@ -103,10 +110,5 @@ public class Robot extends IterativeRobot
         }
 
         return instance;
-    }
-
-    public boolean isPidFileModified()
-    {
-        return pidFileModified;
     }
 }

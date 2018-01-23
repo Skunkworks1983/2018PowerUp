@@ -1,18 +1,23 @@
 package frc.team1983.services;
 
-import java.io.BufferedInputStream;
+import frc.team1983.settings.Constants;
+import frc.team1983.subsystems.utilities.PidControllerWrapper;
+
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
-import java.util.ArrayList;
 
+/*
+A service that will watch the PidValues.txt file to alert the robot if any changes occur, and can
+also get pidf values for any registered pid. Pids are registered in the PidTuner command.
+
+1983 is a placehold number for when actual pid values cannot be gotten or have not been initialized
+ */
 public class PidValuesWatcher
 {
     private Path dir;
@@ -22,13 +27,15 @@ public class PidValuesWatcher
 
     public PidValuesWatcher()
     {
+        //Set default values, if the actual values have not been initialized
         dir = FileSystems.getDefault().getPath("/home/lvuser", "PidValues.txt");
         defaultValues = new double[4];
         for(int i = 0; i <= 3; i++)
         {
-            defaultValues[i] = 0.0;
+            defaultValues[i] = Constants.PidNames.PLACEHOLDER_VALUE;
         }
 
+        //Make the watcher and key
         try
         {
             watcher = FileSystems.getDefault().newWatchService();
@@ -42,8 +49,6 @@ public class PidValuesWatcher
 
     public boolean isFileModified()
     {
-        WatchKey key;
-
         try
         {
             // get all events
@@ -60,37 +65,40 @@ public class PidValuesWatcher
         }
     }
 
-    public double[] getMyPidValues(String subsystem)
+    public double[] getPidValues(String pid)
     {
-        BufferedReader inputStream = null;
-        int i = 0;
-        double[] pidValues = new double[4];
+        BufferedReader inputStream;
+        double[] pidValues;
 
         try
         {
             inputStream = new BufferedReader(new FileReader("/home/lvuser/PidValues.txt"));
 
+            //set to default values in case values are not initialized
+            pidValues = defaultValues;
             String l;
+
+            int i = 0;
             while(true)
             {
-                if(!(l = inputStream.readLine()).equals(subsystem))
+                l = inputStream.readLine(); //Get the next line
+                if(l != null && !(l).equals(pid)) //If not the end of the file or the deliminator
                 {
                     try
                     {
                         pidValues[i] = Double.parseDouble(l);
+                        i++;
                     }
                     catch(NumberFormatException e)
                     {
-                        pidValues[i] = 0.0;
-                    }
-                    i++;
-                    if(i > 3)
-                    {
+                        //If it is the deliminator make it a placeholder and reset the counter
+                        pidValues[i] = Constants.PidNames.PLACEHOLDER_VALUE;
                         i = 0;
                     }
                 }
                 else
                 {
+                    inputStream.close();
                     return pidValues;
                 }
             }
@@ -100,5 +108,10 @@ public class PidValuesWatcher
             //TODO log this
             return defaultValues;
         }
+    }
+
+    public void updatePidValues(PidControllerWrapper controller)
+    {
+
     }
 }
