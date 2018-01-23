@@ -35,7 +35,7 @@ public class OI
 
         for(int joy = 0; joy < ds.kJoystickPorts; joy++)
         {
-            if(ds.getJoystickName(joy) != null)
+            if((ds.getStickButtonCount(joy) + ds.getStickAxisCount(joy)) > 0)
             {
                 joysticks.put(joy, new Joystick(joy));
                 buttons.put(joy, new JoystickButton[ds.getStickButtonCount(joy)]);
