@@ -102,7 +102,7 @@ public class UT_OI
     public void returnsTrueForExistentButton()
     {
         when(joy1.getButtonCount()).thenReturn(1);
-        when(joy1.getRawButton(0)).thenReturn(true);
+        when(joy1.getRawButton(1)).thenReturn(true);
         assertThat(oi.isDown(0, 0), is(true));
     }
 
@@ -124,7 +124,7 @@ public class UT_OI
     }
 
     @Test
-    public void failsToBindCommandToButton()
+    public void failsToBindCommandToNonexistentButton()
     {
         Command wanted = new CommandGroup();
 
@@ -139,5 +139,22 @@ public class UT_OI
         when(joy1.getAxisCount()).thenReturn(1);
         when(joy1.getRawAxis(0)).thenReturn(Constants.OIMap.JoyConstants.JOYSTICK_DEADZONE * 0.5);
         assertThat(oi.getAxis(0, 0), is(0.0));
+    }
+
+    @Test
+    public void returnsZeroForNonexistentJoystick()
+    {
+        assertThat(oi.getAxis(oi.getJoystickCount(), 0), is(0.0));
+    }
+
+    @Test
+    public void joystickGetAxisReturnsOneForOne()
+    {
+        when(joy1.getAxisCount()).thenReturn(1);
+        when(joy1.getRawAxis(0)).thenReturn(1.0);
+        assertThat(oi.getAxis(0, 0), is(1.0));
+
+        when(joy1.getRawAxis(0)).thenReturn(-1.0);
+        assertThat(oi.getAxis(0, 0), is(-1.0));
     }
 }

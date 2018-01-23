@@ -78,8 +78,15 @@ public class OI
     // returns whether a button exists
     public boolean buttonExists(int joy, int button)
     {
-        if(button + 1 > getJoystick(joy).getButtonCount())
-            System.out.println("tried to access button that doesn't exist");
+        if(joystickExists(joy))
+        {
+            if(button + 1 > getJoystick(joy).getButtonCount())
+                System.out.println("tried to access button that doesn't exist");
+        }
+        else
+        {
+            System.out.println("tried to access joystick that doesn't exist");
+        }
 
         return joystickExists(joy) && button + 1 <= getJoystick(joy).getButtonCount();
     }
@@ -87,8 +94,15 @@ public class OI
     // returns whether a joystick axis exists
     public boolean axisExists(int joy, int axis)
     {
-        if(axis + 1 > getJoystick(joy).getAxisCount())
-            System.out.println("tried to access axis that doesn't exist");
+        if(joystickExists(joy))
+        {
+            if(axis + 1 > getJoystick(joy).getAxisCount())
+                System.out.println("tried to access axis that doesn't exist");
+        }
+        else
+        {
+            System.out.println("tried to access joystick that doesn't exist");
+        }
 
         return joystickExists(joy) && axis + 1 <= getJoystick(joy).getAxisCount();
     }
