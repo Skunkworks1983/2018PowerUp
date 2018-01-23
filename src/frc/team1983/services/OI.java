@@ -35,6 +35,7 @@ public class OI
 
         for(int joy = 0; joy < ds.kJoystickPorts; joy++)
         {
+            // check if joysticks exist: if a joystick has no buttons or axes we assume id does not exist
             if((ds.getStickButtonCount(joy) + ds.getStickAxisCount(joy)) > 0)
             {
                 joysticks.put(joy, new Joystick(joy));
