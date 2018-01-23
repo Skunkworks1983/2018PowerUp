@@ -63,7 +63,7 @@ public class Constants
     }
 
     //this class contains subclasses that contain PIDF values used in commands.
-    public static class PidNames
+    public static class PidConstants
     {
         //This *has* to be 0.0, otherwise pids
         //with no f value will acquire this as one

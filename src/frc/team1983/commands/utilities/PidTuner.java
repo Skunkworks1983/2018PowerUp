@@ -3,6 +3,7 @@ package frc.team1983.commands.utilities;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
+import frc.team1983.services.PidValuesWatcher;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -26,16 +27,15 @@ public class PidTuner extends CommandBase
     private String[] pidf;
     private double[] newPidValues;
     private boolean newData;
+    private PidValuesWatcher watcher;
 
     private PrintWriter outputStream;
 
-    public PidTuner()
+    public PidTuner(PidValuesWatcher watcher)
     {
-    }
+        this.watcher = watcher;
+        pids = watcher.getPids();
 
-    @Override
-    public void initialize()
-    {
         newPidValues = new double[4];
         //array of pidf values
         pidf = new String[4];
@@ -48,12 +48,18 @@ public class PidTuner extends CommandBase
         //from watcher.getPidValues, then put them on smartdashboard
         for(int i = 0; i < pids.size(); i++)
         {
-            pidValues.add(Robot.getInstance().getWatcher().getPidValues(pids.get(i)));
+            pidValues.add(watcher.getPidValues(pids.get(i)));
             for(int a = 0; a < 4; a++)
             {
                 SmartDashboard.putNumber(pids.get(i) + pidf[a], pidValues.get(i)[a]);
             }
         }
+    }
+
+    @Override
+    public void initialize()
+    {
+
     }
 
     @Override

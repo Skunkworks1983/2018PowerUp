@@ -11,6 +11,8 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.Drivebase;
 
+import java.util.ArrayList;
+
 public class Robot extends IterativeRobot
 {
     private static Robot instance;
@@ -19,7 +21,6 @@ public class Robot extends IterativeRobot
     private Drivebase drivebase;
     private Ramps ramps;
     private PidValuesWatcher watcher;
-    private boolean pidFileModified;
 
     @Override
     public void robotInit()
@@ -49,12 +50,16 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
-        Scheduler.getInstance().add(new PidTuner());
+        watcher.resetPids();
+
+        //PidControllers need to be added before pidtuner, or default values will be used
+        Scheduler.getInstance().add(new PidTuner(watcher));
     }
 
     @Override
     public void autonomousPeriodic()
     {
+        watcher.checkFile();
         Scheduler.getInstance().run();
     }
 
@@ -62,12 +67,16 @@ public class Robot extends IterativeRobot
     public void teleopInit()
     {
         Scheduler.getInstance().removeAll();
-        Scheduler.getInstance().add(new PidTuner());
+        watcher.resetPids();
+
+        //PidControllerWrappers need to be added before pidtuner, or default values will be used
+        Scheduler.getInstance().add(new PidTuner(watcher));
     }
 
     @Override
     public void teleopPeriodic()
     {
+        watcher.checkFile();
         Scheduler.getInstance().run();
     }
 
