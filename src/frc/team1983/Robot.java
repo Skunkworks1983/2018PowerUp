@@ -3,6 +3,7 @@ package frc.team1983;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.services.OI;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
@@ -26,6 +27,11 @@ public class Robot extends IterativeRobot
 		collector = new Collector();
 
 		oi.initialize();
+
+		//SmartDashboard values
+
+		//the distance from the left wall to the side of our robot
+		SmartDashboard.putNumber("Distance from left wall", 0);
 	}
 
 	@Override
