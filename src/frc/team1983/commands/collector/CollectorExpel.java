@@ -23,7 +23,7 @@ public class CollectorExpel extends Command
     @Override
     protected void execute()
     {
-        collector.setSpeed(-Constants.MotorMap.MotorGoals.COLLECTOR_EXPEL_SPEED);
+        collector.setSpeed(-Constants.PidConstants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
     }
 
 
