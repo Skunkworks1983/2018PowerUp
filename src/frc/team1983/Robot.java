@@ -12,10 +12,10 @@ import frc.team1983.subsystems.Drivebase;
 public class Robot extends IterativeRobot
 {
 	private static Robot instance;
+	private Ramps ramps;
 	private OI oi;
 	private Collector collector;
 	private Drivebase drivebase;
-	private Ramps ramps;
 
 	@Override
 	public void robotInit()
