@@ -139,6 +139,7 @@ public class OI
         if(buttonExists(joy, button))
         {
             buttons.get(joy)[button].whileHeld(command);
+        }
     }
 
     // binds a command to a joystick button. runs when button is pressed and terminates based on command
@@ -147,6 +148,7 @@ public class OI
         if(buttonExists(joy, button))
         {
             buttons.get(joy)[button].whenPressed(command);
+        }
     }
 
     // returns raw axis
