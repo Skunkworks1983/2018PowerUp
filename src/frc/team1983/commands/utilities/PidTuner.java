@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 /*
@@ -48,11 +49,11 @@ public class PidTuner extends CommandBase
         //from watcher.getPidValues, then put them on smartdashboard
         for(int i = 0; i < pids.size(); i++)
         {
-            pidValues.add(watcher.getPidValues(pids.get(i)));
             for(int a = 0; a < 4; a++)
             {
                 SmartDashboard.putNumber(pids.get(i) + pidf[a], pidValues.get(i)[a]);
             }
+            pidValues.add(watcher.getPidValues(pids.get(i)));
         }
     }
 
@@ -73,7 +74,7 @@ public class PidTuner extends CommandBase
             {
                 newPidValues[a] = SmartDashboard.getNumber(pids.get(i) + pidf[a], 0.0);
             }
-            if(newPidValues != pidValues.get(i))
+            if(!Arrays.equals(newPidValues, pidValues.get(i)))
             {
                 pidValues.set(i, newPidValues);
                 newData = true;
