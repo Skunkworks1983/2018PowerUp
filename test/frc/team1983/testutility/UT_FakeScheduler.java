@@ -6,6 +6,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -85,4 +89,33 @@ public class UT_FakeScheduler
         verify(command, times(1)).execute();
     }
 
+    @Test
+    public void getDoneStopsWhenMeetsLoopCutOff()
+    {
+        when(command.isFinished()).thenReturn(false);
+        fakeScheduler.add(command);
+        fakeScheduler.run(5);
+        verify(command, times(1)).initialize();
+        verify(command, times(6)).execute();
+    }
+
+    @Test
+    public void getDoneRunsForeverWhenCounterIsInfinite()
+    {
+        AtomicReference<Integer> counter = new AtomicReference<>(0);
+        when(command.isFinished()).thenAnswer(new Answer<Boolean>()
+        {
+            @Override
+            public Boolean answer(InvocationOnMock invocationOnMock) throws Throwable
+            {
+                counter.set(counter.get() + 1);
+
+                return counter.get() >= 6000;
+            }
+        });
+        fakeScheduler.add(command);
+        fakeScheduler.run();
+        verify(command, times(1)).initialize();
+        verify(command, times(3000)).execute();
+    }
 }

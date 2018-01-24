@@ -2,11 +2,12 @@ package frc.team1983.commands.collector;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
+import frc.team1983.commands.CommandBase;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 
 //Runs the collector outward
-public class CollectorExpel extends Command
+public class CollectorExpel extends CommandBase
 {
     private Collector collector;
 
@@ -17,35 +18,32 @@ public class CollectorExpel extends Command
     }
 
     @Override
-    protected void initialize()
-    {
-    }
-
+    public void initialize(){}
 
     @Override
-    protected void execute()
+    public void execute()
     {
         collector.setSpeed(-Constants.PidValues.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
     }
 
 
     @Override
-    protected boolean isFinished()
+    public boolean isFinished()
     {
         return false;
     }
 
 
     @Override
-    protected void end()
+    public void end()
     {
         collector.setSpeed(0);
     }
 
 
     @Override
-    protected void interrupted()
+    public void interrupted()
     {
-        super.interrupted();
+        this.end();
     }
 }
