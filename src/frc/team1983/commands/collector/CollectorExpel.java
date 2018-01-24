@@ -17,7 +17,9 @@ public class CollectorExpel extends Command
     }
 
     @Override
-    protected void initialize() {}
+    protected void initialize()
+    {
+    }
 
 
     @Override

@@ -44,7 +44,8 @@ public class OI
                 joysticks.put(joy, new Joystick(joy));
                 buttons.put(joy, new JoystickButton[ds.getStickButtonCount(joy)]);
 
-                for(int button = 1; button <= ds.getStickButtonCount(joy); button++) {
+                for(int button = 1; button <= ds.getStickButtonCount(joy); button++)
+                {
                     buttons.get(joy)[button - 1] = new JoystickButton(joysticks.get(joy), button);
                 }
             }
@@ -52,7 +53,8 @@ public class OI
     }
 
     // constructor for unit testing
-    protected OI(HashMap<Integer, Joystick> joysticks, HashMap<Integer, JoystickButton[]> buttons) {
+    protected OI(HashMap<Integer, Joystick> joysticks, HashMap<Integer, JoystickButton[]> buttons)
+    {
         this.joysticks = joysticks;
         this.buttons = buttons;
     }
@@ -95,7 +97,9 @@ public class OI
         if(joystickExists(joy))
         {
             if(button + 1 > getJoystick(joy).getButtonCount())
+            {
                 System.out.println("tried to access button that doesn't exist");
+            }
         }
         else
         {
@@ -111,7 +115,9 @@ public class OI
         if(joystickExists(joy))
         {
             if(axis + 1 > getJoystick(joy).getAxisCount())
+            {
                 System.out.println("tried to access axis that doesn't exist");
+            }
         }
         else
         {

@@ -29,6 +29,8 @@ public class Ramps extends Subsystem
         rightProp.set(Constants.PidValues.MotorSetpoints.RAMP_PROP_SERVO_GOAL);
     }
 
-    public void initDefaultCommand() {}
+    public void initDefaultCommand()
+    {
+    }
 }
 

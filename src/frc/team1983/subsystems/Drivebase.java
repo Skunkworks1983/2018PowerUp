@@ -46,6 +46,8 @@ public class Drivebase extends Subsystem
         right.set(value);
     }
 
-    protected void initDefaultCommand() {}
+    protected void initDefaultCommand()
+    {
+    }
 }
 

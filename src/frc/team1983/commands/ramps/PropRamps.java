@@ -16,7 +16,9 @@ public class PropRamps extends Command
     }
 
     @Override
-    protected void initialize() {}
+    protected void initialize()
+    {
+    }
 
     @Override
     protected void execute()
@@ -31,7 +33,9 @@ public class PropRamps extends Command
     }
 
     @Override
-    protected void end() {}
+    protected void end()
+    {
+    }
 
     @Override
     protected void interrupted()

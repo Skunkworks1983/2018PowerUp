@@ -27,6 +27,8 @@ public class Collector extends Subsystem
         collectorMotors.set(value);
     }
 
-    public void initDefaultCommand() {}
+    public void initDefaultCommand()
+    {
+    }
 }
 
