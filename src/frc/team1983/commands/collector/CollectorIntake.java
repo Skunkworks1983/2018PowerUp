@@ -17,12 +17,14 @@ public class CollectorIntake extends Command
     }
 
     @Override
-    protected void initialize() {}
+    protected void initialize()
+    {
+    }
 
     @Override
     protected void execute()
     {
-        collector.setSpeed(Constants.MotorMap.MotorGoals.COLLECTOR_INTAKE_SPEED);
+        collector.setSpeed(Constants.PidValues.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
     }
 
     @Override

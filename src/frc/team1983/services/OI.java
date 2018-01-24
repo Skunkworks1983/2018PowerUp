@@ -1,13 +1,14 @@
 package frc.team1983.services;
 
 import edu.wpi.first.wpilibj.DriverStation;
-
+import frc.team1983.Robot;
+import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.settings.Constants;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team1983.settings.Constants;
+import frc.team1983.subsystems.Elevator;
 
 import java.util.HashMap;
 
@@ -20,6 +21,7 @@ public class OI
     public int type;
 
     private DriverStation ds;
+    private Elevator elevator;
 
     private HashMap<Integer, Joystick> joysticks;
     private HashMap<Integer, JoystickButton[]> buttons;
@@ -29,6 +31,7 @@ public class OI
     {
         this.ds = ds;
         this.type = type;
+        this.elevator = Robot.getInstance().getElevator();
 
         joysticks = new HashMap<>();
         buttons = new HashMap<>();
@@ -41,7 +44,8 @@ public class OI
                 joysticks.put(joy, new Joystick(joy));
                 buttons.put(joy, new JoystickButton[ds.getStickButtonCount(joy)]);
 
-                for(int button = 1; button <= ds.getStickButtonCount(joy); button++) {
+                for(int button = 1; button <= ds.getStickButtonCount(joy); button++)
+                {
                     buttons.get(joy)[button - 1] = new JoystickButton(joysticks.get(joy), button);
                 }
             }
@@ -49,7 +53,8 @@ public class OI
     }
 
     // constructor for unit testing
-    protected OI(HashMap<Integer, Joystick> joysticks, HashMap<Integer, JoystickButton[]> buttons) {
+    protected OI(HashMap<Integer, Joystick> joysticks, HashMap<Integer, JoystickButton[]> buttons)
+    {
         this.joysticks = joysticks;
         this.buttons = buttons;
     }
@@ -57,6 +62,14 @@ public class OI
     // put your commands bound to oi buttons in here
     public void initialize()
     {
+        //Elevator presets
+        bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.bottomPreset,
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, this));
+        bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.switchPreset,
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, this));
+        bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.scalePreset,
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE, elevator, this));
+
         // usage example:
         // oi.bindToHeld(Constants.OIMap.LEFTJOY, 5, new TurnAngle(90));
     }
@@ -71,7 +84,9 @@ public class OI
     public boolean joystickExists(int joy)
     {
         if(getJoystick(joy) == null)
+        {
             System.out.println("tried to access joystick that does not exist");
+        }
 
         return getJoystick(joy) != null;
     }
@@ -82,7 +97,9 @@ public class OI
         if(joystickExists(joy))
         {
             if(button + 1 > getJoystick(joy).getButtonCount())
+            {
                 System.out.println("tried to access button that doesn't exist");
+            }
         }
         else
         {
@@ -98,7 +115,9 @@ public class OI
         if(joystickExists(joy))
         {
             if(axis + 1 > getJoystick(joy).getAxisCount())
+            {
                 System.out.println("tried to access axis that doesn't exist");
+            }
         }
         else
         {
@@ -124,14 +143,18 @@ public class OI
     public void bindToHeld(int joy, int button, Command command)
     {
         if(buttonExists(joy, button))
+        {
             buttons.get(joy)[button].whileHeld(command);
+        }
     }
 
     // binds a command to a joystick button. runs when button is pressed and terminates based on command
     public void bindToPressed(int joy, int button, Command command)
     {
         if(buttonExists(joy, button))
+        {
             buttons.get(joy)[button].whenPressed(command);
+        }
     }
 
     // returns raw axis
@@ -145,8 +168,19 @@ public class OI
     {
         double raw = getRawAxis(joy, axis);
         double sign = raw < 0 ? -1 : 1;
-        double deadzoned = (Math.abs(raw) > Constants.OIMap.JoyConstants.JOYSTICK_DEADZONE ? raw : 0);
-        return Math.pow(deadzoned, Constants.OIMap.JoyConstants.JOYSTICK_RAMP_EXPONENT) * sign;
+        double deadzoned = (Math.abs(raw) > Constants.OIMap.OIConstants.JOYSTICK_DEADZONE ? raw : 0);
+        return Math.pow(deadzoned, Constants.OIMap.OIConstants.JOYSTICK_RAMP_EXPONENT) * sign;
+    }
+
+    //Slider for controlling the elevator
+    public double getSliderPos()
+    {
+        //The 2017 slider on the OI was a joystick axis. All code taken from 2017
+        double x = getRawAxis(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.JoyAxes.X);
+        x = Math.pow(x, 10);
+        x = x / Constants.OIMap.OIConstants.SLIDER_SCALAR;
+        x = 1 - x;
+        return x;
     }
 
     // returns whether or not a button is down

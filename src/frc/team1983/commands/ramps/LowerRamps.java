@@ -11,12 +11,14 @@ public class LowerRamps extends Command
 
     public LowerRamps(Ramps ramp)
     {
-       requires(ramp);
-       this.ramp = ramp;
+        requires(ramp);
+        this.ramp = ramp;
     }
 
     @Override
-    protected void initialize() {}
+    protected void initialize()
+    {
+    }
 
     @Override
     protected void execute()
@@ -31,7 +33,9 @@ public class LowerRamps extends Command
     }
 
     @Override
-    protected void end() {}
+    protected void end()
+    {
+    }
 
     @Override
     protected void interrupted()
