@@ -1,6 +1,9 @@
 package frc.team1983.settings;
 
 
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+
 //This file contains all constants used across the entire robot, stored within subclasses.
 public class Constants
 {
@@ -90,10 +93,16 @@ public class Constants
 
     }
 
-    //this class contains subclasses that contain PIDF values used in commands.
-    public static class PidValues
+    public static class DashboardConstants
     {
+        public static final Path dirPath = FileSystems.getDefault().getPath("/home/lvuser", "DashboardValues.txt");
+        public static final String dir = "/home/lvuser/DashboardValues.txt";
+        public static final Double DEFAULT_VALUE = 0.0;
+    }
 
+    //this class contains subclasses that contain PIDF values used in commands.
+    public static class PidConstants
+    {
         //PIDF values for the DriveStraight command
         public static class DriveStrightPid
         {
