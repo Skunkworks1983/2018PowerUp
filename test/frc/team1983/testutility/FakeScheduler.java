@@ -8,9 +8,17 @@ import java.util.List;
 public class FakeScheduler
 {
     private List<CommandBase> commandQueue = new LinkedList<>();
+    private int counter = 0;
+    private int loopCutOff = 1; //loop number
 
     public void run()
     {
+        run(-1);
+    }
+
+    public void run(int loopCutOff)
+    {
+        this.loopCutOff = loopCutOff;
         for(CommandBase c : commandQueue)
         {
             c.initialize();
@@ -18,6 +26,7 @@ public class FakeScheduler
         }
         while(!getDone())
         {
+            counter++;
             for(CommandBase c : commandQueue)
             {
                 if(!c.isFinished())
@@ -30,16 +39,21 @@ public class FakeScheduler
 
     public boolean getDone()
     {
-        boolean done;
-        for(CommandBase c : commandQueue)
+        if(loopCutOff == -1 || counter < loopCutOff)
         {
-            if(!c.isFinished())
+            for(CommandBase c : commandQueue)
             {
-                return false;
+                if(!c.isFinished())
+                {
+                    return false;
+                }
+
             }
         }
         return true;
+
     }
+
 
     public void add(CommandBase command)
     {

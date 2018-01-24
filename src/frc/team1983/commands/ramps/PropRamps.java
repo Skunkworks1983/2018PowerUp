@@ -35,8 +35,5 @@ public class PropRamps extends CommandBase
     public void end() {}
 
     @Override
-    public void interrupted()
-    {
-        this.end();
-    }
+    public void interrupted(){this.end();}
 }

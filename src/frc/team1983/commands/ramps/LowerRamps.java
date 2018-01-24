@@ -12,12 +12,12 @@ public class LowerRamps extends CommandBase
 
     public LowerRamps(Ramps ramp)
     {
-       requires(ramp);
-       this.ramp = ramp;
+        requires(ramp);
+        this.ramp = ramp;
     }
 
     @Override
-    public void initialize() {}
+    public void initialize(){}
 
     @Override
     public void execute()
@@ -32,11 +32,8 @@ public class LowerRamps extends CommandBase
     }
 
     @Override
-    public void end() {}
+    public void end(){}
 
     @Override
-    public void interrupted()
-    {
-        this.end();
-    }
+    public void interrupted(){this.end();}
 }
