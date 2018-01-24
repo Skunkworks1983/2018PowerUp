@@ -23,7 +23,7 @@ public class CollectorIntake extends CommandBase
     @Override
     public void execute()
     {
-        collector.setSpeed(Constants.MotorMap.MotorGoals.COLLECTOR_INTAKE_SPEED);
+        collector.setSpeed(Constants.PidValues.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
     }
 
     @Override
