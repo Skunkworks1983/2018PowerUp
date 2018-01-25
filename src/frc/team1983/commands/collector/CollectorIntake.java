@@ -2,11 +2,12 @@ package frc.team1983.commands.collector;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
+import frc.team1983.commands.CommandBase;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 
 //Runs the collector inwards
-public class CollectorIntake extends Command
+public class CollectorIntake extends CommandBase
 {
     private Collector collector;
 
@@ -17,29 +18,29 @@ public class CollectorIntake extends Command
     }
 
     @Override
-    protected void initialize() {}
+    public void initialize(){}
 
     @Override
-    protected void execute()
+    public void execute()
     {
-        collector.setSpeed(Constants.MotorMap.MotorGoals.COLLECTOR_INTAKE_SPEED);
+        collector.setSpeed(Constants.PidValues.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
     }
 
     @Override
-    protected boolean isFinished()
+    public boolean isFinished()
     {
         return false;
     }
 
     @Override
-    protected void end()
+    public void end()
     {
         collector.setSpeed(0);
     }
 
     @Override
-    protected void interrupted()
+    public void interrupted()
     {
-        super.interrupted();
+        this.end();
     }
 }
