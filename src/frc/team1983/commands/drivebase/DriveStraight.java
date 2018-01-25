@@ -22,7 +22,7 @@ public class DriveStraight extends CommandBase
         this.drivebase = drivebase;
         this.distance = distance * Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT;
         //needs a pidsource and pidoutput
-        //PidController driveDistancePid = new PIDController(PidValues.DRIVESTRAIGHT_PID_P, PidValues.DRIVESTRAIGHT_PID_I, PidValues.DRIVESTRAIGHT_PID_D);
+        //PidController driveDistancePid = new PIDController(PidConstants.DRIVESTRAIGHT_PID_P, PidConstants.DRIVESTRAIGHT_PID_I, PidConstants.DRIVESTRAIGHT_PID_D);
 
     }
 

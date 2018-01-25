@@ -2,6 +2,7 @@ package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1983.Robot;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.services.OI;
 import frc.team1983.settings.Constants;
@@ -17,16 +18,12 @@ public class Elevator extends Subsystem
 
     private DioEncoder rail;
 
-    private OI oi;
-
     private static NeutralMode ELEVATOR_NEUTRAL_MODE = NeutralMode.Brake;
 
     private double setpoint;
 
-    public Elevator(OI oi)
+    public Elevator()
     {
-        //OI for unit testing
-        this.oi = oi;
 
         //The winches that actuate the collector
         leftWinch = new Motor(Constants.MotorMap.ElevatorWinchPorts.LEFT_WINCH_PORT, ELEVATOR_NEUTRAL_MODE,
@@ -59,7 +56,7 @@ public class Elevator extends Subsystem
 
     public void initDefaultCommand()
     {
-        new SetElevatorSetpoint(Constants.OIMap.Setpoint.RESTING, this, oi);
+        new SetElevatorSetpoint(Constants.OIMap.Setpoint.RESTING, this, Robot.getInstance().getOI());
     }
 
     public double getSetpoint()
