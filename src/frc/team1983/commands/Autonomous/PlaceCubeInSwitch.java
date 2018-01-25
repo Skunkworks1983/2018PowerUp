@@ -35,6 +35,7 @@ public class PlaceCubeInSwitch extends CommandGroup
 
                 //drive to be equally distant from the left wall as the right side of the switch is (19.5 ft away)
                 super.addSequential(new DriveStraight((19.5 - distanceFromLeftWall), drivebase));
+                super.addSequential(new TurnAngle(-90, drivebase));
             }
             super.addSequential(new DriveStraight(7, drivebase));
             //super.addSequential(raise elevator);
