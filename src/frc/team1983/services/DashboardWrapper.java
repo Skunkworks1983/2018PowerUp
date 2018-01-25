@@ -85,7 +85,7 @@ public class DashboardWrapper
                 {
                     splitLine = line.split(VALUE_SEPARATOR); //Split into command/key and doub
 
-                    //If the value string has an e, then it is either fals*e* or tru*e*, but not a double
+                    //If the value string has an e, then it is either fals'e' or tru'e', but not a double
                     if(splitLine[1].contains("e"))
                     {
                         bool = Boolean.getBoolean(splitLine[1]); //set bool to bool
@@ -101,6 +101,10 @@ public class DashboardWrapper
                         put(splitLine[0], splitLine[1], doub);
                     }
 
+                }
+                else
+                {
+                    return;
                 }
             }
             catch(IOException e)
