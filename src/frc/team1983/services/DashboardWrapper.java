@@ -128,8 +128,9 @@ public class DashboardWrapper
             outputStream = new PrintWriter(new FileWriter(Constants.DashboardConstants.dir));
 
             Iterator it = map.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry pair = (Map.Entry)it.next();
+            while(it.hasNext())
+            {
+                Map.Entry pair = (Map.Entry) it.next();
                 outputStream.println(pair.getKey() + VALUE_SEPARATOR + pair.getValue());
                 it.remove(); // avoids a ConcurrentModificationException
             }
