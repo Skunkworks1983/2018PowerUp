@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.elevator.ElevatorControl;
+import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
@@ -20,6 +21,7 @@ public class Robot extends IterativeRobot
     private Elevator elevator;
     private Collector collector;
     private Ramps ramps;
+    private DashboardWrapper dashboard;
     private static Robot instance;
 
     @Override
@@ -31,6 +33,7 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator(oi);
         ramps = new Ramps();
+        dashboard = new DashboardWrapper();
     }
 
 
@@ -38,6 +41,7 @@ public class Robot extends IterativeRobot
     public void disabledInit()
     {
         Scheduler.getInstance().removeAll();
+        dashboard.store();
     }
 
     @Override

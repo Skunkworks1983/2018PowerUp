@@ -98,6 +98,9 @@ public class Constants
         public static final Path dirPath = FileSystems.getDefault().getPath("/home/lvuser", "DashboardValues.txt");
         public static final String dir = "/home/lvuser/DashboardValues.txt";
         public static final Double DEFAULT_VALUE = 0.0;
+        public static final Boolean DEFAULT_BOOLEAN = false;
+        public static final String KEY_SEPARATOR = "-";
+        public static final String VALUE_SEPARATOR = ":";
     }
 
     //this class contains subclasses that contain PIDF values used in commands.
