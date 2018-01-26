@@ -5,12 +5,15 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.elevator.ElevatorControl;
 import frc.team1983.services.DashboardWrapper;
+import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.OI;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
+
+import java.io.File;
 
 public class Robot extends IterativeRobot
 {
@@ -20,18 +23,20 @@ public class Robot extends IterativeRobot
     private Elevator elevator;
     private Collector collector;
     private Ramps ramps;
-    private DashboardWrapper dashboard;
+    private StatefulDashboard dashboard;
+    private DashboardWrapper dashboardWrapper;
     private static Robot instance;
 
     @Override
     public void robotInit()
     {
+        dashboardWrapper = new DashboardWrapper();
+        dashboard = new StatefulDashboard(dashboardWrapper, new File(Constants.DashboardConstants.file));
         oi = new OI(Constants.OIMap.Mode.DOUBLE_JOY, DriverStation.getInstance());
         drivebase = new Drivebase();
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
-        dashboard = new DashboardWrapper();
 
         oi.initialize(this);
     }

@@ -1,6 +1,7 @@
 package frc.team1983.settings;
 
 
+import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
@@ -95,8 +96,7 @@ public class Constants
 
     public static class DashboardConstants
     {
-        public static final Path dirPath = FileSystems.getDefault().getPath("/home/lvuser", "DashboardValues.txt");
-        public static final String dir = "/home/lvuser/DashboardValues.txt";
+        public static final String file = "/home/lvuser/DashboardValues.txt";
         public static final Double DEFAULT_VALUE = 0.0;
         public static final Boolean DEFAULT_BOOLEAN = false;
         public static final String DEFAULT_STRING = "Your a dum-dum for not initializing this correctly";
