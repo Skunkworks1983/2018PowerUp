@@ -4,11 +4,12 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
+import frc.team1983.commands.CommandBase;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 
 //Moves the robot forward a specified number of feet.
-public class DriveStraight extends Command
+public class DriveStraight extends CommandBase
 {
     private double distance;
     private Drivebase drivebase;
@@ -21,38 +22,37 @@ public class DriveStraight extends Command
         this.drivebase = drivebase;
         this.distance = distance * Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT;
         //needs a pidsource and pidoutput
-        //PidController driveDistancePid = new PIDController(PidValues.DRIVESTRAIGHT_PID_P, PidValues.DRIVESTRAIGHT_PID_I, PidValues.DRIVESTRAIGHT_PID_D);
+        //PidController driveDistancePid = new PIDController(PidConstants.DRIVESTRAIGHT_PID_P, PidConstants.DRIVESTRAIGHT_PID_I, PidConstants.DRIVESTRAIGHT_PID_D);
 
     }
 
     @Override
-    protected void initialize()
+    public void initialize()
     {
         //driveDistancePid.setSetpoint(distance)
         //driveDistancePid.Enable();
     }
 
     @Override
-    protected void execute() {}
+    public void execute() {}
 
     @Override
-    protected boolean isFinished()
+    public boolean isFinished()
     {
         //return pidcontroller.onTarget();
         return false;
     }
 
     @Override
-    protected void end()
+    public void end()
     {
         Robot.getInstance().getDrivebase().setLeft(0);
         Robot.getInstance().getDrivebase().setRight(0);
     }
 
     @Override
-    protected void interrupted()
+    public void interrupted()
     {
-        super.interrupted();
         this.end();
     }
 }

@@ -19,16 +19,18 @@ public class Ramps extends Subsystem
 
     public void drop()
     {
-        leftDrop.set(Constants.MotorMap.MotorGoals.RAMP_DROP_SERVO_GOAL);
-        rightDrop.set(Constants.MotorMap.MotorGoals.RAMP_DROP_SERVO_GOAL);
+        leftDrop.set(Constants.PidConstants.MotorSetpoints.RAMP_DROP_SERVO_GOAL);
+        rightDrop.set(Constants.PidConstants.MotorSetpoints.RAMP_DROP_SERVO_GOAL);
     }
 
     public void prop()
     {
-        leftProp.set(Constants.MotorMap.MotorGoals.RAMP_PROP_SERVO_GOAL);
-        rightProp.set(Constants.MotorMap.MotorGoals.RAMP_PROP_SERVO_GOAL);
+        leftProp.set(Constants.PidConstants.MotorSetpoints.RAMP_PROP_SERVO_GOAL);
+        rightProp.set(Constants.PidConstants.MotorSetpoints.RAMP_PROP_SERVO_GOAL);
     }
 
-    public void initDefaultCommand() {}
+    public void initDefaultCommand()
+    {
+    }
 }
 

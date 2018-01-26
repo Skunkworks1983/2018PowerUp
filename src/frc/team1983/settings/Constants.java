@@ -58,10 +58,40 @@ public class Constants
         {
             public static final double DRIVEBASE_TICKS_PER_FOOT = 0;
         }
+
+        //Ports for the Elevator Winches
+        public static class ElevatorWinchPorts
+        {
+            public static final int LEFT_WINCH_PORT = 6;
+            public static final int RIGHT_WINCH_PORT = 7;
+        }
+
+        //Constants to determine if the elevator winches should run in the negative direction
+        public static class ElevatorWinchReversed
+        {
+            public static final boolean LEFT_WINCH_REVERSE = false;
+            public static final boolean RIGHT_WINCH_REVERSE = true;
+        }
+
+        //Constants for the elevator rail encoders
+        public static class RailEncoders
+        {
+            public static final int RAIL_ENCODER_A_PORT = 0; //diO port on the RIO for channel A
+            public static final int RAIL_ENCODER_B_PORT = 0; //diO port on the RIO for channel B
+            public static final boolean RAIL_ENCODER_REVERSE = false;
+
+            /*
+            We give the elevator a double between 0 and 1, but the encoder operates
+            on a currently unknown scale from 0 to whatever, so multiply the the input
+            by this value to have 1 be the maximum
+            */
+            public static final int ELEVATOR_ENCODER_SCALAR = 1;
+        }
+
     }
 
     //this class contains subclasses that contain PIDF values used in commands.
-    public static class PidValues
+    public static class PidConstants
     {
 
         //PIDF values for the DriveStraight command
@@ -93,6 +123,15 @@ public class Constants
             //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
             public static final double COLLECTOR_INTAKE_SPEED = 1;
             public static final double COLLECTOR_EXPEL_SPEED = 1;
+        }
+
+        //PIDF values for the TurnAngle command
+        public static class ElevatorPid
+        {
+            public static final double P = 0;
+            public static final double I = 0;
+            public static final double D = 0;
+            public static final double F = 0;
         }
     }
 
@@ -131,11 +170,32 @@ public class Constants
         }
 
         //Agglomeration of constants relating to the joysticks
-        public static class JoyConstants
+        public static class OIConstants
         {
+            //Joystick constants
             public static final double JOYSTICK_DEADZONE = 0.15;
             public static final double JOYSTICK_RAMP_EXPONENT = 2;
             public static final double JOYSTICK_TOLERANCE = 0.5;
+
+            //Scalar coefficient of the slider on the OI
+            public static final double SLIDER_SCALAR = 0.618726;
+        }
+
+        public static class SliderConstants
+        {
+            public static final int sliderPresetsToggle = 0;
+            public static final int bottomPreset = 1;
+            public static final int switchPreset = 2;
+            public static final int scalePreset = 3;
+        }
+
+        //Enums for presets
+        public enum Setpoint
+        {
+            SCALE,
+            SWITCH,
+            BOTTOM,
+            RESTING
         }
     }
 }
