@@ -35,7 +35,7 @@ public class RunOneMotor extends Command
         if(!continuousPress)
         {
             //each press goes to the motor lower, 1 at a time
-            if(oi.isPressed(0, 0)) //triggers are always button 0 (according to Thomas)
+            if(oi.isPressed(0, 1)) //triggers are always button 0 (according to Thomas)
             {
                //selects motor 15 if it was set to motor 0
                 System.out.println("motor down");
@@ -50,7 +50,7 @@ public class RunOneMotor extends Command
                 continuousPress = true;
             }
             // each press goes to the motor above, 1 at a time
-            else if(oi.isPressed(1, 0))
+            else if(oi.isPressed(1, 1))
             {
                //slects motor 0 if it was set to motor 15
                 System.out.println("motor up");
@@ -74,7 +74,7 @@ public class RunOneMotor extends Command
             }
         }
         // prints out the position of the motor, according to the senor attatched/connected
-        if(oi.isDown(2, 2))
+        if(oi.isDown(2, 3))
         {
             System.out.println(motors[motorIndex].getSelectedSensorPosition(0));
         }

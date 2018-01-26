@@ -60,12 +60,12 @@ public class OI
     public void initialize(Robot robot)
     {
         //Elevator presets
-        bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.bottomPreset,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator(), this));
-        bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.switchPreset,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator(), this));
-        bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.scalePreset,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE, robot.getElevator(), this));
+        //bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.bottomPreset,
+                    //  new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator(), this));
+       // bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.switchPreset,
+                      //new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator(), this));
+        //bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.scalePreset,
+                     // new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE, robot.getElevator(), this));
 
         // usage example:
         // oi.bindToHeld(Constants.OIMap.LEFTJOY, 5, new TurnAngle(90));
@@ -82,7 +82,7 @@ public class OI
     {
         if(getJoystick(joy) == null)
         {
-            System.out.println("tried to access joystick that does not exist");
+            System.out.println("tried to access joystick that does not exist (" + joy + ")");
         }
 
         return getJoystick(joy) != null;
