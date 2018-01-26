@@ -24,10 +24,9 @@ import static frc.team1983.settings.Constants.DashboardConstants.VALUE_SEPARATOR
 public class DashboardWrapper
 {
     private BufferedReader inputStream;
-    private String line;
+    private String line, key, str, valueType, value;
     private Double doub;
     private Boolean bool;
-    private String str;
     private String[] splitLine;
     private Map<String, DashType> map = new HashMap<>();
 
@@ -93,38 +92,37 @@ public class DashboardWrapper
 
         try
         {
-            line = inputStream.readLine();
-
-            while(line != null)
+            while((line = inputStream.readLine()) != null)
             {
                 splitLine = line.split(VALUE_SEPARATOR); //Split into command/key and doub
 
-                if(splitLine[1].equals("true") || splitLine[1].equals("false"))
+                valueType = getTypeFromString(splitLine[1]); //get the valueType
+
+
+                if(str.equals("boolean"))
                 {
-                    bool = Boolean.getBoolean(splitLine[1]); //set bool to bool
+                    bool = Boolean.valueOf(splitLine[1]); //set bool to parsed boolean
                     SmartDashboard.putBoolean(splitLine[0], bool);
                     splitLine = splitLine[0].split(KEY_SEPARATOR); //Split command/key into command and key
                     put(splitLine[0], splitLine[1], bool);
+                    continue;
                 }
-                else
+                if(str.equals("double"))
                 {
-                    try
-                    {
-                        doub = Double.parseDouble(splitLine[1]); //set doub to doub
-                        SmartDashboard.putNumber(splitLine[0], doub);
-                        splitLine = splitLine[0].split(KEY_SEPARATOR); //Split command/key into command and key
-                        put(splitLine[0], splitLine[1], doub);
-                    }
-                    catch (NumberFormatException e) //If the double could not be parsed, assume it is not a double
-                    {
-                        str = splitLine[1]; //set str to str
-                        SmartDashboard.putString(splitLine[0], str);
-                        splitLine = splitLine[0].split(KEY_SEPARATOR); //Split command/key into command and key
-                        put(splitLine[0], splitLine[1], str);
-                    }
+                    doub = Double.parseDouble(splitLine[1]); //set doub to parsed double
+                    SmartDashboard.putNumber(splitLine[0], doub);
+                    splitLine = splitLine[0].split(KEY_SEPARATOR); //Split command/key into command and key
+                    put(splitLine[0], splitLine[1], doub);
+                    continue;
+                }
+                if(str.equals("string"))
+                {
+                    str = splitLine[1]; //set str to string
+                    SmartDashboard.putString(splitLine[0], str);
+                    splitLine = splitLine[0].split(KEY_SEPARATOR);
+                    put(splitLine[0], splitLine[1], str);
                 }
             }
-            line = inputStream.readLine();
         }
         catch(IOException e)
         {
@@ -157,6 +155,28 @@ public class DashboardWrapper
             //TODO log this
             System.out.println("IOException when writing to file in DashboardWrapper");
         }
+    }
+
+    private String getTypeFromString(String value)
+    {
+        if(value.equals("true") || value.equals("false"))
+        {
+            return "boolean";
+        }
+        else
+        {
+            try
+            {
+                Double.parseDouble(value);
+                return "double";
+            }
+            //If the value is not true, false, or parsable by Double.parseDouble(), then it must be a string
+            catch (NumberFormatException e)
+            {
+                return "string";
+            }
+        }
+
     }
 }
 
