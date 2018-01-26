@@ -27,12 +27,13 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         oi = new OI(Constants.OIMap.Mode.DOUBLE_JOY, DriverStation.getInstance());
-        oi.initialize();
         drivebase = new Drivebase();
         collector = new Collector();
-        elevator = new Elevator(oi);
+        elevator = new Elevator();
         ramps = new Ramps();
         dashboard = new DashboardWrapper();
+
+        oi.initialize(this);
     }
 
 
