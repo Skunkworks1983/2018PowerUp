@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_2018powerup" default="compile.module.2018powerup">
+  <dirname property="module.2018powerup.basedir" file="${ant.file.module_2018powerup}"/>
+  
+  <property name="module.jdk.home.2018powerup" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.2018powerup" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.2018powerup" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.2018powerup" value="-encoding UTF-8 -source 1.8 -target 1.8 ${compiler.args}"/>
+  
+  <property name="2018powerup.output.dir" value="${module.2018powerup.basedir}/out/production/2018PowerUp"/>
+  <property name="2018powerup.testoutput.dir" value="${module.2018powerup.basedir}/out/test/2018PowerUp"/>
+  
+  <path id="2018powerup.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="2018powerup.module.production.classpath">
+    <path refid="${module.jdk.classpath.2018powerup}"/>
+    <fileset dir="${basedir}/../../../wpilib/user/java/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+    <fileset dir="${basedir}/../../../wpilib/java/current/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
+  
+  <path id="2018powerup.runtime.production.module.classpath">
+    <pathelement location="${2018powerup.output.dir}"/>
+    <fileset dir="${basedir}/../../../wpilib/user/java/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+    <fileset dir="${basedir}/../../../wpilib/java/current/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
+  
+  <path id="2018powerup.module.classpath">
+    <path refid="${module.jdk.classpath.2018powerup}"/>
+    <pathelement location="${2018powerup.output.dir}"/>
+    <fileset dir="${basedir}/../../../wpilib/user/java/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+    <fileset dir="${basedir}/../../../wpilib/java/current/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
+  
+  <path id="2018powerup.runtime.module.classpath">
+    <pathelement location="${2018powerup.testoutput.dir}"/>
+    <pathelement location="${2018powerup.output.dir}"/>
+    <fileset dir="${basedir}/../../../wpilib/user/java/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+    <fileset dir="${basedir}/../../../wpilib/java/current/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.2018powerup">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.2018powerup">
+    <patternset refid="excluded.from.module.2018powerup"/>
+  </patternset>
+  
+  <path id="2018powerup.module.sourcepath">
+    <dirset dir="${module.2018powerup.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  <path id="2018powerup.module.test.sourcepath">
+    <dirset dir="${module.2018powerup.basedir}">
+      <include name="test-resources"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.2018powerup" depends="compile.module.2018powerup.production,compile.module.2018powerup.tests" description="Compile module 2018PowerUp"/>
+  
+  <target name="compile.module.2018powerup.production" depends="register.custom.compilers" description="Compile module 2018PowerUp; production classes">
+    <mkdir dir="${2018powerup.output.dir}"/>
+    <javac2 destdir="${2018powerup.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.2018powerup}/javac">
+      <compilerarg line="${compiler.args.2018powerup}"/>
+      <bootclasspath refid="2018powerup.module.bootclasspath"/>
+      <classpath refid="2018powerup.module.production.classpath"/>
+      <src refid="2018powerup.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.2018powerup"/>
+    </javac2>
+    
+    <copy todir="${2018powerup.output.dir}">
+      <fileset dir="${module.2018powerup.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.2018powerup.tests" depends="register.custom.compilers,compile.module.2018powerup.production" description="compile module 2018PowerUp; test classes" unless="skip.tests">
+    <mkdir dir="${2018powerup.testoutput.dir}"/>
+    <javac2 destdir="${2018powerup.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.2018powerup}/javac">
+      <compilerarg line="${compiler.args.2018powerup}"/>
+      <bootclasspath refid="2018powerup.module.bootclasspath"/>
+      <classpath refid="2018powerup.module.classpath"/>
+      <src refid="2018powerup.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.2018powerup"/>
+    </javac2>
+    
+    <copy todir="${2018powerup.testoutput.dir}">
+      <fileset dir="${module.2018powerup.basedir}/test-resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.2018powerup" description="cleanup module">
+    <delete dir="${2018powerup.output.dir}"/>
+    <delete dir="${2018powerup.testoutput.dir}"/>
+  </target>
+</project>
