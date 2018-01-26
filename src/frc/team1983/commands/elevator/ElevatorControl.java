@@ -25,10 +25,10 @@ public class ElevatorControl extends CommandBase
 
         pidIn = new ElevatorPidInput(elevator);
         pidOut = new ElevatorPidOutput(elevator);
-        controller = new PidControllerWrapper(Constants.PidValues.ElevatorPid.P,
-                                              Constants.PidValues.ElevatorPid.I,
-                                              Constants.PidValues.ElevatorPid.D,
-                                              Constants.PidValues.ElevatorPid.F,
+        controller = new PidControllerWrapper(Constants.PidConstants.ElevatorPid.P,
+                                              Constants.PidConstants.ElevatorPid.I,
+                                              Constants.PidConstants.ElevatorPid.D,
+                                              Constants.PidConstants.ElevatorPid.F,
                                               pidIn, pidOut);
     }
 

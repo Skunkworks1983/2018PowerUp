@@ -8,7 +8,6 @@ import frc.team1983.settings.Constants;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team1983.subsystems.Elevator;
 
 import java.util.HashMap;
 
@@ -21,7 +20,6 @@ public class OI
     public int type;
 
     private DriverStation ds;
-    private Elevator elevator;
 
     private HashMap<Integer, Joystick> joysticks;
     private HashMap<Integer, JoystickButton[]> buttons;
@@ -31,7 +29,6 @@ public class OI
     {
         this.ds = ds;
         this.type = type;
-        this.elevator = Robot.getInstance().getElevator();
 
         joysticks = new HashMap<>();
         buttons = new HashMap<>();
@@ -60,15 +57,15 @@ public class OI
     }
 
     // put your commands bound to oi buttons in here
-    public void initialize()
+    public void initialize(Robot robot)
     {
         //Elevator presets
         bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.bottomPreset,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, this));
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator(), this));
         bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.switchPreset,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, this));
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator(), this));
         bindToPressed(Constants.OIMap.Ports.BUTTONS, Constants.OIMap.SliderConstants.scalePreset,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE, elevator, this));
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE, robot.getElevator(), this));
 
         // usage example:
         // oi.bindToHeld(Constants.OIMap.LEFTJOY, 5, new TurnAngle(90));
