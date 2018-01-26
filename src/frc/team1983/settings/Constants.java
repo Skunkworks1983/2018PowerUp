@@ -91,7 +91,7 @@ public class Constants
     }
 
     //this class contains subclasses that contain PIDF values used in commands.
-    public static class PidValues
+    public static class PidConstants
     {
 
         //PIDF values for the DriveStraight command
