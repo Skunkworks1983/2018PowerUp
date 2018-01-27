@@ -13,8 +13,6 @@ import frc.team1983.subsystems.Elevator;
 
 public class Robot extends IterativeRobot
 {
-
-
     private OI oi;
     private Drivebase drivebase;
     private Elevator elevator;
@@ -25,7 +23,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
-        oi = new OI(Constants.OIMap.Mode.DOUBLE_JOY, DriverStation.getInstance());
+        oi = new OI(DriverStation.getInstance());
         drivebase = new Drivebase();
         collector = new Collector();
         elevator = new Elevator();
