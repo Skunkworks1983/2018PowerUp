@@ -25,7 +25,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class UT_OI
 {
-    static {
+    static
+    {
         HAL.initialize(500, 0);
     }
 

@@ -256,7 +256,7 @@ public class StatefulDashboard
                 return "double";
             }
             //If the value is not true, false, or parsable by Double.parseDouble(), then it must be a string
-            catch (NumberFormatException e)
+            catch(NumberFormatException e)
             {
                 return "string";
             }

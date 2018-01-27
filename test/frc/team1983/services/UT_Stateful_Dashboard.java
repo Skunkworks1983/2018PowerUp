@@ -26,7 +26,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class UT_Stateful_Dashboard
 {
-    static {
+    static
+    {
         HAL.initialize(500, 0);
     }
 
@@ -49,7 +50,6 @@ public class UT_Stateful_Dashboard
     public void setup() throws IOException
     {
         initMocks(this);
-
 
 
         tempFile = testFolder.newFile("testDashboardValues.txt");
@@ -173,13 +173,13 @@ public class UT_Stateful_Dashboard
     @Test
     public void addDistinguishesKey() throws InterruptedException
     {
-        assertThat(dashboard.getDouble("addtest", "double2"), is( 4.0));
+        assertThat(dashboard.getDouble("addtest", "double2"), is(4.0));
     }
 
     @Test
     public void addAcceptsStrings() throws InterruptedException
     {
-        assertThat(dashboard.getString("addtest", "string"), is( "add test string"));
+        assertThat(dashboard.getString("addtest", "string"), is("add test string"));
     }
 
     @Test
