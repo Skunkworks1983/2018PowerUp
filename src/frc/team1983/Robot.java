@@ -3,6 +3,7 @@ package frc.team1983;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.debugging.DSTestFunctionality;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.elevator.ElevatorControl;
 import frc.team1983.services.OI;
@@ -22,6 +23,7 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private static Robot instance;
+    private DSTestFunctionality DSTest;
 
     @Override
     public void robotInit()
@@ -65,7 +67,7 @@ public class Robot extends IterativeRobot
     public void teleopInit()
     {
         Scheduler.getInstance().removeAll();
-        Scheduler.getInstance().add(new RunOneMotor(oi));
+     //   Scheduler.getInstance().add(new RunOneMotor(oi));
     }
 
     @Override
@@ -77,8 +79,8 @@ public class Robot extends IterativeRobot
     @Override
     public void testInit()
     {
-        Scheduler.getInstance().removeAll();
-        Scheduler.getInstance().add(new RunOneMotor(oi));
+        DSTest = new DSTestFunctionality();
+        DSTest.execute();
     }
     @Override
     public void testPeriodic()
