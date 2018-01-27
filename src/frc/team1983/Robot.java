@@ -18,6 +18,7 @@ import java.io.File;
 public class Robot extends IterativeRobot
 {
 
+
     private OI oi;
     private Drivebase drivebase;
     private Elevator elevator;
@@ -95,7 +96,6 @@ public class Robot extends IterativeRobot
     {
         return ramps;
     }
-
 
     public Elevator getElevator()
     {
