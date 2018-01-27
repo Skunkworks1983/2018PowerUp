@@ -7,12 +7,16 @@ public class DSTestFunctionality
 {
     private int motorIndex = 0;
     private Motor motors[] = new Motor [1];
+    // there is only one space in the motor array, since we are only running one motor at a time
+    // on 2017, motor 6 is the collector belt
 
     public DSTestFunctionality()
     {
         int port = 6;
+        // this sets the motor to motor port already stated automatically
         {
             motors[motorIndex] = new Motor (port, NeutralMode.Brake,true);
+            // the motor indexed here is given the constraints required
         }
     }
     protected void initialize()
@@ -21,10 +25,13 @@ public class DSTestFunctionality
     }
     public void execute()
     {
+        // this sets the speed of the selected motor to half speed automatically
         motors[motorIndex].set(0.5);
     }
     public void end()
     {
+        // if this were called within the test, then the motor would be turned off
+        // since this is currently not called, in order to shut off the motor you need to disable it
         motors[motorIndex].set(0);
     }
 }
