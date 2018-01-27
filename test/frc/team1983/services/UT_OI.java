@@ -93,9 +93,6 @@ public class UT_OI
     @Test
     public void createsPortMapSuccessfully()
     {
-        when(ds.getJoystickName(0)).thenReturn("tommy");
-        when(ds.getJoystickName(1)).thenReturn("tommy");
-
         when(joy1.getAxisCount()).thenReturn(1);
         when(joy2.getAxisCount()).thenReturn(1);
 
@@ -104,19 +101,6 @@ public class UT_OI
 
         assertThat(oi.getRawAxis(Constants.OIMap.Port.LEFT_JOY, 0), is(1.0));
         assertThat(oi.getRawAxis(Constants.OIMap.Port.RIGHT_JOY, 0), is(0.5));
-    }
-
-    @Test
-    public void handlesJoystickSwap()
-    {
-        when(ds.getJoystickName(0)).thenReturn("tommy2k");
-
-        when(joy1.getAxisCount()).thenReturn(1);
-        when(joy1.getRawAxis(0)).thenReturn(1.0);
-
-        assertThat(oi.getRawAxis(Constants.OIMap.Port.LEFT_JOY, 0), is(1.0));
-        when(ds.getJoystickName(0)).thenReturn("tommy2k 2.0");
-        assertThat(oi.getRawAxis(Constants.OIMap.Port.LEFT_JOY, 0), is(1.0));
     }
 
     @Test

@@ -50,9 +50,13 @@ public class OI
                 else
                 {
                     if(ds.getJoystickName(joy).equals(lastJoystickName))
+                    {
                         portMap.put(Constants.OIMap.Port.RIGHT_JOY, joy);
+                    }
                     else
+                    {
                         portMap.put(Constants.OIMap.Port.LEFT_JOY, joy);
+                    }
 
                     lastJoystickName = ds.getJoystickName(joy);
                 }
