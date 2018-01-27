@@ -97,8 +97,6 @@ public class Constants
     public static class DashboardConstants
     {
         public static final File FILE = new File("/home/lvuser/DashboardValues.txt");
-        public static final File WINDOWS_FILE = new File("C:\\Users\\s-4036947\\Documents\\home\\DashboadValues.txt");
-        //^^For debugging! Do not put into dev!^^
         public static final Double DEFAULT_DOUBLE = 0.0;
         public static final Boolean DEFAULT_BOOLEAN = false;
         public static final String DEFAULT_STRING = "Your a dum-dum for not initializing this correctly";
