@@ -37,4 +37,30 @@ public class DashboardWrapper
     {
         return SmartDashboard.getNumber(key, defaultValue);
     }
+
+    public String getType(String key)
+    {
+        try
+        {
+            SmartDashboard.getNumber(key, 0.0);
+            return "double";
+        }
+        catch(Exception e)
+        {
+        }
+        try
+        {
+            SmartDashboard.getString(key, "");
+            return "string";
+        }
+        catch(Exception e)
+        {
+            return "boolean";
+        }
+    }
+
+    public void delete(String key)
+    {
+        SmartDashboard.delete(key);
+    }
 }

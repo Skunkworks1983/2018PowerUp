@@ -31,7 +31,7 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         dashboardWrapper = new DashboardWrapper();
-        dashboard = new StatefulDashboard(dashboardWrapper, new File(Constants.DashboardConstants.file));
+        dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
         oi = new OI(Constants.OIMap.Mode.DOUBLE_JOY, DriverStation.getInstance());
         drivebase = new Drivebase();
         collector = new Collector();

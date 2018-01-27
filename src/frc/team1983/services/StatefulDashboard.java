@@ -1,8 +1,5 @@
 package frc.team1983.services;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team1983.settings.Constants;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,13 +7,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static frc.team1983.settings.Constants.DashboardConstants.DEFAULT_BOOLEAN;
 import static frc.team1983.settings.Constants.DashboardConstants.DEFAULT_STRING;
-import static frc.team1983.settings.Constants.DashboardConstants.DEFAULT_VALUE;
+import static frc.team1983.settings.Constants.DashboardConstants.DEFAULT_DOUBLE;
 import static frc.team1983.settings.Constants.DashboardConstants.KEY_SEPARATOR;
 import static frc.team1983.settings.Constants.DashboardConstants.VALUE_SEPARATOR;
 
@@ -30,7 +29,7 @@ public class StatefulDashboard
     private Double doub;
     private Boolean bool;
     private String[] splitLine;
-    private HashMap<String, DashType> map = new HashMap<>();
+    private Set<String> keySet = new HashSet<>();
     private DashboardWrapper dashboardWrapper;
 
     private PrintWriter outputStream;
@@ -39,41 +38,40 @@ public class StatefulDashboard
     {
         this.dir = dir;
         this.dashboardWrapper = dashboardWrapper;
-        populate();
     }
 
-    //for unit testing
-    private HashMap getMap()
+    //For unit testing
+    public Set<String> getKeySet()
     {
-        return map;
+        return keySet;
     }
 
     //The add functions are for adding a variable to the dashboard, the value given is only a default, and will
     //not be used if the variable already exists (like if the variable is already in the file)
-    public void add(String command, String key, Double value)
+    public void add(String command, String key, Double defaultValue)
     {
         key = command + KEY_SEPARATOR + key;
-        if(map.putIfAbsent(key, new DashType(value)) == null)
+        if(keySet.add(key))
         {
-            dashboardWrapper.putNumber(key, value);
+            dashboardWrapper.putNumber(key, defaultValue);
         }
     }
 
-    public void add(String command, String key, Boolean value)
+    public void add(String command, String key, Boolean defaultValue)
     {
         key = command + KEY_SEPARATOR + key;
-        if(map.putIfAbsent(key, new DashType(value)) == null)
+        if(keySet.add(key))
         {
-            dashboardWrapper.putBoolean(key, value);
+            dashboardWrapper.putBoolean(key, defaultValue);
         }
     }
 
-    public void add(String command, String key, String value)
+    public void add(String command, String key, String defaultValue)
     {
         key = command + KEY_SEPARATOR + key;
-        if(map.putIfAbsent(key, new DashType(value)) == null)
+        if(keySet.add(key))
         {
-            dashboardWrapper.putString(key, value);
+            dashboardWrapper.putString(key, defaultValue);
         }
     }
 
@@ -81,49 +79,71 @@ public class StatefulDashboard
     public void set(String command, String key, Double value)
     {
         key = command + KEY_SEPARATOR + key;
-        map.put(key, new DashType(value));
+        keySet.add(key);
         dashboardWrapper.putNumber(key, value);
     }
 
     public void set(String command, String key, Boolean value)
     {
         key = command + KEY_SEPARATOR + key;
-        map.put(key, new DashType(value));
+        keySet.add(key);
         dashboardWrapper.putBoolean(key, value);
     }
 
     public void set(String command, String key, String value)
     {
         key = command + KEY_SEPARATOR + key;
-        map.put(key, new DashType(value));
+        keySet.add(key);
         dashboardWrapper.putString(key, value);
     }
 
     public double getDouble(String command, String key)
     {
         key = command + KEY_SEPARATOR + key;
-        doub = SmartDashboard.getNumber(command + KEY_SEPARATOR + key, DEFAULT_VALUE);
-        map.put(key, new DashType(doub));
-        return doub;
+        if(keySet.contains(key))
+        {
+            return dashboardWrapper.getNumber(key, DEFAULT_DOUBLE);
+        }
+        else
+        {
+            System.out.println("Something requested a double at " + key
+                                       + "but it has not been added or set yet, so a default value was returned");
+            return DEFAULT_DOUBLE;
+        }
     }
 
     public boolean getBoolean(String command, String key)
     {
         key = command + KEY_SEPARATOR + key;
-        bool = SmartDashboard.getBoolean(key, DEFAULT_BOOLEAN);
-        map.put(key, new DashType(bool));
+        if(keySet.contains(key))
+        {
+            bool = dashboardWrapper.getBoolean(key, DEFAULT_BOOLEAN);
+        }
+        else
+        {
+            System.out.println("Something requested a boolean at " + key
+                                       + "but it has not been added or set yet, so a default value was returned");
+            return DEFAULT_BOOLEAN;
+        }
         return bool;
     }
 
     public String getString(String command, String key)
     {
         key = command + KEY_SEPARATOR + key;
-        str = SmartDashboard.getString(key, DEFAULT_STRING);
-        map.put(key, new DashType(str));
-        return str;
+        if(keySet.contains(key))
+        {
+            return dashboardWrapper.getString(key, DEFAULT_STRING);
+        }
+        else
+        {
+            System.out.println("Something requested a double at " + key
+                                       + "but it has not been added or set yet, so a default value was returned");
+            return DEFAULT_STRING;
+        }
     }
 
-    private void populate()
+    public void populate()
     {
         try
         {
@@ -140,35 +160,36 @@ public class StatefulDashboard
         {
             while((line = inputStream.readLine()) != null)
             {
-                splitLine = line.split(VALUE_SEPARATOR); //Split into command/key and doub
+                splitLine = line.split(VALUE_SEPARATOR); //Split into command/key and value
 
                 valueType = getTypeFromString(splitLine[1]); //get the valueType
 
 
-                if(str.equals("boolean"))
+                if(valueType.equals("boolean"))
                 {
                     bool = Boolean.valueOf(splitLine[1]); //set bool to parsed boolean
-                    SmartDashboard.putBoolean(splitLine[0], bool);
+                    dashboardWrapper.putBoolean(splitLine[0], bool);
                     splitLine = splitLine[0].split(KEY_SEPARATOR); //Split command/key into command and key
                     add(splitLine[0], splitLine[1], bool);
                     continue;
                 }
-                if(str.equals("double"))
+                if(valueType.equals("double"))
                 {
                     doub = Double.parseDouble(splitLine[1]); //set doub to parsed double
-                    SmartDashboard.putNumber(splitLine[0], doub);
+                    dashboardWrapper.putNumber(splitLine[0], doub);
                     splitLine = splitLine[0].split(KEY_SEPARATOR); //Split command/key into command and key
                     add(splitLine[0], splitLine[1], doub);
                     continue;
                 }
-                if(str.equals("string"))
+                if(valueType.equals("string"))
                 {
                     str = splitLine[1]; //set str to string
-                    SmartDashboard.putString(splitLine[0], str);
+                    dashboardWrapper.putString(splitLine[0], str);
                     splitLine = splitLine[0].split(KEY_SEPARATOR);
                     add(splitLine[0], splitLine[1], str);
                 }
             }
+            inputStream.close();
         }
         catch(IOException e)
         {
@@ -179,7 +200,7 @@ public class StatefulDashboard
 
     public void remove(String command, String key)
     {
-        map.remove(command + KEY_SEPARATOR + key);
+        keySet.remove(command + KEY_SEPARATOR + key);
     }
 
     public void store()
@@ -188,22 +209,40 @@ public class StatefulDashboard
         {
             outputStream = new PrintWriter(new FileWriter(dir));
 
-            Iterator it = map.entrySet().iterator();
-            while(it.hasNext())
+            for(String key : keySet)
             {
-                Map.Entry pair = (Map.Entry) it.next();
-                outputStream.println(pair.getKey() + VALUE_SEPARATOR + pair.getValue().toString());
-                it.remove(); // avoids a ConcurrentModificationException
+                valueType = dashboardWrapper.getType(key);
+
+                if(valueType == null)
+                {
+                    valueType = "unknown";
+                    System.out.println("unknown data type");
+                }
+                if(valueType.equals("boolean"))
+                {
+                    value = dashboardWrapper.getBoolean(key, DEFAULT_BOOLEAN).toString();
+                }
+                if(valueType.equals("double"))
+                {
+                    value = dashboardWrapper.getNumber(key, DEFAULT_DOUBLE).toString();
+                }
+                if(valueType.equals("string"))
+                {
+                    value = dashboardWrapper.getString(key, DEFAULT_STRING);
+                }
+                outputStream.println(key + VALUE_SEPARATOR + value);
             }
+
+            outputStream.close();
         }
         catch(IOException e)
         {
             //TODO log this
-            System.out.println("IOException when writing to file in StatefulDashboard");
         }
     }
 
-    private String getTypeFromString(String value)
+    //protected so unit test can access
+    protected String getTypeFromString(String value)
     {
         if(value.equals("true") || value.equals("false"))
         {
@@ -260,5 +299,21 @@ class DashType
     Boolean getBoolean()
     {
         return bool;
+    }
+
+    String getAsString()
+    {
+        if(doub != null)
+        {
+            return doub.toString();
+        }
+        if(bool != null)
+        {
+            return bool.toString();
+        }
+        else
+        {
+            return str;
+        }
     }
 }
