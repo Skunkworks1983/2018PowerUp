@@ -46,6 +46,7 @@ public class UT_OI
 
     private HashMap<Integer, Joystick> joysticks;
     private HashMap<Integer, JoystickButton[]> buttons;
+    private HashMap<Constants.OIMap.Port, Integer> portMap;
 
     @Before
     public void setup()
@@ -54,6 +55,7 @@ public class UT_OI
 
         joysticks = new HashMap<>();
         buttons = new HashMap<>();
+        portMap = new HashMap<>();
 
         joysticks.put(0, joy1);
         joysticks.put(1, joy2);
@@ -61,7 +63,10 @@ public class UT_OI
         buttons.put(0, new JoystickButton[]{joy1button1});
         buttons.put(1, new JoystickButton[]{});
 
-        oi = new OI(joysticks, buttons);
+        portMap.put(Constants.OIMap.Port.LEFT_JOY, 0);
+        portMap.put(Constants.OIMap.Port.RIGHT_JOY, 1);
+
+        oi = new OI(joysticks, buttons, portMap);
     }
 
     @After
@@ -76,11 +81,27 @@ public class UT_OI
         when(ds.getStickButtonCount(0)).thenReturn(1);
         when(ds.getStickAxisCount(1)).thenReturn(1);
 
-        oi = new OI(Constants.OIMap.Mode.DOUBLE_JOY, ds);
+        when(ds.getJoystickName(0)).thenReturn("jimmy");
+        when(ds.getJoystickName(1)).thenReturn("jimmy");
+
+        oi = new OI(ds);
 
         assertThat(oi.getJoystickCount(), is(2));
-        assertThat(oi.getJoystickButtonCount(0), is(1));
-        assertThat(oi.getJoystickButtonCount(1), is(0));
+        assertThat(oi.getJoystickButtonCount(Constants.OIMap.Port.LEFT_JOY), is(1));
+        assertThat(oi.getJoystickButtonCount(Constants.OIMap.Port.RIGHT_JOY), is(0));
+    }
+
+    @Test
+    public void createsPortMapSuccessfully()
+    {
+        when(joy1.getAxisCount()).thenReturn(1);
+        when(joy2.getAxisCount()).thenReturn(1);
+
+        when(joy1.getRawAxis(0)).thenReturn(1.0);
+        when(joy2.getRawAxis(0)).thenReturn(0.5);
+
+        assertThat(oi.getRawAxis(Constants.OIMap.Port.LEFT_JOY, 0), is(1.0));
+        assertThat(oi.getRawAxis(Constants.OIMap.Port.RIGHT_JOY, 0), is(0.5));
     }
 
     @Test
@@ -88,14 +109,14 @@ public class UT_OI
     {
         when(joy1.getAxisCount()).thenReturn(1);
         when(joy1.getRawAxis(0)).thenReturn(1.0);
-        assertThat(oi.getAxis(0, 0), is(1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Port.LEFT_JOY, 0), is(1.0));
     }
 
     @Test
     public void returnsZeroForNonexistentAxis()
     {
         when(joy1.getAxisCount()).thenReturn(1);
-        assertThat(oi.getAxis(0, 1), is(0.0));
+        assertThat(oi.getAxis(Constants.OIMap.Port.LEFT_JOY, 1), is(0.0));
     }
 
     @Test
@@ -103,14 +124,14 @@ public class UT_OI
     {
         when(joy1.getButtonCount()).thenReturn(1);
         when(joy1.getRawButton(1)).thenReturn(true);
-        assertThat(oi.isDown(0, 0), is(true));
+        assertThat(oi.isDown(Constants.OIMap.Port.LEFT_JOY, 0), is(true));
     }
 
     @Test
     public void returnsFalseForNonexistentButton()
     {
         when(joy1.getButtonCount()).thenReturn(1);
-        assertThat(oi.isDown(0, 1), is(false));
+        assertThat(oi.isDown(Constants.OIMap.Port.LEFT_JOY, 1), is(false));
     }
 
     @Test
@@ -119,7 +140,7 @@ public class UT_OI
         Command wanted = new CommandGroup();
 
         when(joy1.getButtonCount()).thenReturn(1);
-        oi.bindToPressed(0, 0, wanted);
+        oi.bindToPressed(Constants.OIMap.Port.LEFT_JOY, 0, wanted);
         verify(joy1button1, times(1)).whenPressed(wanted);
     }
 
@@ -129,7 +150,7 @@ public class UT_OI
         Command wanted = new CommandGroup();
 
         when(joy1.getButtonCount()).thenReturn(1);
-        oi.bindToPressed(0, 1, wanted);
+        oi.bindToPressed(Constants.OIMap.Port.LEFT_JOY, 1, wanted);
         verify(joy1button1, times(0)).whenPressed(wanted);
     }
 
@@ -138,13 +159,7 @@ public class UT_OI
     {
         when(joy1.getAxisCount()).thenReturn(1);
         when(joy1.getRawAxis(0)).thenReturn(Constants.OIMap.OIConstants.JOYSTICK_DEADZONE * 0.5);
-        assertThat(oi.getAxis(0, 0), is(0.0));
-    }
-
-    @Test
-    public void returnsZeroForNonexistentJoystick()
-    {
-        assertThat(oi.getAxis(oi.getJoystickCount(), 0), is(0.0));
+        assertThat(oi.getAxis(Constants.OIMap.Port.LEFT_JOY, 0), is(0.0));
     }
 
     @Test
@@ -152,9 +167,9 @@ public class UT_OI
     {
         when(joy1.getAxisCount()).thenReturn(1);
         when(joy1.getRawAxis(0)).thenReturn(1.0);
-        assertThat(oi.getAxis(0, 0), is(1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Port.LEFT_JOY, 0), is(1.0));
 
         when(joy1.getRawAxis(0)).thenReturn(-1.0);
-        assertThat(oi.getAxis(0, 0), is(-1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Port.LEFT_JOY, 0), is(-1.0));
     }
 }

@@ -157,29 +157,16 @@ public class Constants
     //this contains all values relevant to the OI.
     public static class OIMap
     {
+        public static String CONSOLE_JOYSTICK_NAME = "Skunk Works DS";
 
         //Ports for the OI joysticks, buttons, steering wheel, etc.
-        public static class Ports
-        {
-            public static final int LEFT_JOY = 0;
-            public static final int RIGHT_JOY = 1;
-            public static final int WHEEL = 0;
-            public static final int THROTTLE = 1;
-            public static final int BUTTONS = 2;
-        }
+        public enum Port { LEFT_JOY, RIGHT_JOY, WHEEL, THROTTLE, BUTTONS }
 
         //Axes of each joystick
         public static class JoyAxes
         {
             public static final int X = 0;
             public static final int Y = 1;
-        }
-
-        //Control mode for the robot (Joysticks versus steering wheel)
-        public static class Mode
-        {
-            public static final int DOUBLE_JOY = 0;
-            public static final int WHEEL = 1;
         }
 
         //Agglomeration of constants relating to the joysticks

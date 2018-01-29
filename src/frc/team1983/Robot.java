@@ -17,8 +17,6 @@ import java.io.File;
 
 public class Robot extends IterativeRobot
 {
-
-
     private OI oi;
     private Drivebase drivebase;
     private Elevator elevator;
@@ -31,7 +29,7 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
-        oi = new OI(Constants.OIMap.Mode.DOUBLE_JOY, DriverStation.getInstance());
+        oi = new OI(DriverStation.getInstance());
         drivebase = new Drivebase();
         collector = new Collector();
         elevator = new Elevator();
