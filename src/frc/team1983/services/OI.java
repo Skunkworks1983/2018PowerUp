@@ -77,7 +77,7 @@ public class OI
         this.portMap = portMap;
     }
 
-    // put your commands bound to oi buttons in here
+    // add your commands bound to oi buttons in here
     public void initialize(Robot robot)
     {
         //Elevator presets
