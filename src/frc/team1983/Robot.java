@@ -56,7 +56,7 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
-        Scheduler.getInstance().add(new ElevatorControl(elevator));
+        Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
     }
 
     @Override
@@ -69,7 +69,7 @@ public class Robot extends IterativeRobot
     public void teleopInit()
     {
         Scheduler.getInstance().removeAll();
-        Scheduler.getInstance().add(new ElevatorControl(elevator));
+        Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
     }
 
     @Override

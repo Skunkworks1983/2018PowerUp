@@ -102,6 +102,7 @@ public class Constants
         public static final String DEFAULT_STRING = "You're a dum-dum for not initializing this correctly";
         public static final String KEY_SEPARATOR = "-";
         public static final String VALUE_SEPARATOR = ":";
+        public static final String ELEVATOR_CONTROL_NAME = "elevator";
     }
 
     //this class contains subclasses that contain PIDF values used in commands.
@@ -136,15 +137,6 @@ public class Constants
             //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
             public static final double COLLECTOR_INTAKE_SPEED = 1;
             public static final double COLLECTOR_EXPEL_SPEED = 1;
-        }
-
-        //PIDF values for the TurnAngle command
-        public static class ElevatorPid
-        {
-            public static final double P = 0;
-            public static final double I = 0;
-            public static final double D = 0;
-            public static final double F = 0;
         }
     }
 
