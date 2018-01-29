@@ -33,9 +33,6 @@ public class UT_Stateful_Dashboard
 
     private StatefulDashboard dashboard;
     private File tempFile;
-    private String key, str;
-    private Boolean bool;
-    private Double doub;
     private ArgumentCaptor<String> keyCaptor, stringCaptor;
     private ArgumentCaptor<Boolean> booleanCaptor;
     private ArgumentCaptor<Double> doubleCaptor;

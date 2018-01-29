@@ -99,7 +99,7 @@ public class Constants
         public static final File FILE = new File("/home/lvuser/DashboardValues.txt");
         public static final Double DEFAULT_DOUBLE = 0.0;
         public static final Boolean DEFAULT_BOOLEAN = false;
-        public static final String DEFAULT_STRING = "Your a dum-dum for not initializing this correctly";
+        public static final String DEFAULT_STRING = "You're a dum-dum for not initializing this correctly";
         public static final String KEY_SEPARATOR = "-";
         public static final String VALUE_SEPARATOR = ":";
     }

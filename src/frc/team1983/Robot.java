@@ -25,14 +25,12 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private StatefulDashboard dashboard;
-    private DashboardWrapper dashboardWrapper;
     private static Robot instance;
 
     @Override
     public void robotInit()
     {
-        dashboardWrapper = new DashboardWrapper();
-        dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
+        dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
         oi = new OI(Constants.OIMap.Mode.DOUBLE_JOY, DriverStation.getInstance());
         drivebase = new Drivebase();
         collector = new Collector();

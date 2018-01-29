@@ -46,11 +46,16 @@ public class StatefulDashboard
         return keySet;
     }
 
+    private String constructKey(String command, String key)
+    {
+        return command + KEY_SEPARATOR + key;
+    }
+    
     //The add functions are for adding a variable to the dashboard, the value given is only a default, and will
     //not be used if the variable already exists (like if the variable is already in the file)
     public void add(String command, String key, Double defaultValue)
     {
-        key = command + KEY_SEPARATOR + key;
+        key = constructKey(command, key);
         if(keySet.add(key))
         {
             dashboardWrapper.putNumber(key, defaultValue);
@@ -59,7 +64,7 @@ public class StatefulDashboard
 
     public void add(String command, String key, Boolean defaultValue)
     {
-        key = command + KEY_SEPARATOR + key;
+        key = constructKey(command, key);
         if(keySet.add(key))
         {
             dashboardWrapper.putBoolean(key, defaultValue);
@@ -68,38 +73,38 @@ public class StatefulDashboard
 
     public void add(String command, String key, String defaultValue)
     {
-        key = command + KEY_SEPARATOR + key;
+        key = constructKey(command, key);
         if(keySet.add(key))
         {
             dashboardWrapper.putString(key, defaultValue);
         }
     }
 
-    //The set functions will
+    //The set functions will replace the value at the given key with a new provided value
     public void set(String command, String key, Double value)
     {
-        key = command + KEY_SEPARATOR + key;
+        key = constructKey(command, key);
         keySet.add(key);
         dashboardWrapper.putNumber(key, value);
     }
 
     public void set(String command, String key, Boolean value)
     {
-        key = command + KEY_SEPARATOR + key;
+        key = constructKey(command, key);
         keySet.add(key);
         dashboardWrapper.putBoolean(key, value);
     }
 
     public void set(String command, String key, String value)
     {
-        key = command + KEY_SEPARATOR + key;
+        key = constructKey(command, key);
         keySet.add(key);
         dashboardWrapper.putString(key, value);
     }
 
     public double getDouble(String command, String key)
     {
-        key = command + KEY_SEPARATOR + key;
+        key = constructKey(command, key);
         if(keySet.contains(key))
         {
             return dashboardWrapper.getNumber(key, DEFAULT_DOUBLE);
@@ -114,7 +119,7 @@ public class StatefulDashboard
 
     public boolean getBoolean(String command, String key)
     {
-        key = command + KEY_SEPARATOR + key;
+        key = constructKey(command, key);
         if(keySet.contains(key))
         {
             bool = dashboardWrapper.getBoolean(key, DEFAULT_BOOLEAN);
@@ -130,7 +135,7 @@ public class StatefulDashboard
 
     public String getString(String command, String key)
     {
-        key = command + KEY_SEPARATOR + key;
+        key = constructKey(command, key);
         if(keySet.contains(key))
         {
             return dashboardWrapper.getString(key, DEFAULT_STRING);
@@ -237,6 +242,7 @@ public class StatefulDashboard
         }
         catch(IOException e)
         {
+            System.out.println("IOException when writing to file");
             //TODO log this
         }
     }
@@ -262,58 +268,5 @@ public class StatefulDashboard
             }
         }
 
-    }
-}
-
-class DashType
-{
-    private Double doub;
-    private Boolean bool;
-    private String str;
-
-    DashType(Boolean bool)
-    {
-        this.bool = bool;
-    }
-
-    DashType(Double doub)
-    {
-        this.doub = doub;
-    }
-
-    DashType(String str)
-    {
-        this.str = str;
-    }
-
-    String getString()
-    {
-        return str;
-    }
-
-    Double getDouble()
-    {
-        return doub;
-    }
-
-    Boolean getBoolean()
-    {
-        return bool;
-    }
-
-    String getAsString()
-    {
-        if(doub != null)
-        {
-            return doub.toString();
-        }
-        if(bool != null)
-        {
-            return bool.toString();
-        }
-        else
-        {
-            return str;
-        }
     }
 }
