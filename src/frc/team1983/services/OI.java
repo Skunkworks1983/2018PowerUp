@@ -1,7 +1,10 @@
 package frc.team1983.services;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.team1983.Robot;
+import frc.team1983.commands.collector.CollectorExpel;
+import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.settings.Constants;
 
@@ -88,6 +91,12 @@ public class OI
         bindToPressed(Constants.OIMap.Port.BUTTONS, Constants.OIMap.SliderConstants.scalePreset,
                       new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE, robot.getElevator(), this));
 
+        //Intake will run until expel is pressed
+        bindToPressed(Constants.OIMap.Port.BUTTONS, Constants.OIMap.CollectorButtons.INTAKE,
+                      new CollectorIntake(robot.getCollector()));
+        bindToHeld(Constants.OIMap.Port.BUTTONS, Constants.OIMap.CollectorButtons.EXPEL,
+                   new CollectorExpel(robot.getCollector()));
+
         // usage example:
         // oi.bindToHeld(Constants.OIMap.LEFTJOY, 5, new TurnAngle(90));
     }
@@ -102,7 +111,9 @@ public class OI
     public boolean joystickExists(Constants.OIMap.Port joy)
     {
         if(getJoystick(joy) == null)
+        {
             System.out.println("tried to access joystick that does not exist (joy: " + joy + ")");
+        }
 
         return getJoystick(joy) != null;
     }
@@ -113,7 +124,9 @@ public class OI
         if(joystickExists(joy))
         {
             if(button + 1 > getJoystick(joy).getButtonCount())
+            {
                 System.out.println("tried to access button that doesn't exist (joy: " + joy + ", button: " + button + ")");
+            }
         }
 
         return joystickExists(joy) && button + 1 <= getJoystick(joy).getButtonCount();
@@ -125,7 +138,9 @@ public class OI
         if(joystickExists(joy))
         {
             if(axis + 1 > getJoystick(joy).getAxisCount())
+            {
                 System.out.println("tried to access axis that doesn't exist (joy: " + joy + ", axis: " + axis + ")");
+            }
         }
 
         return joystickExists(joy) && axis + 1 <= getJoystick(joy).getAxisCount();

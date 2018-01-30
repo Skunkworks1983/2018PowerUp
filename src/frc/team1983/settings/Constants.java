@@ -46,6 +46,8 @@ public class Constants
         {
             public static final int LEFT_COLLECTOR_PORT = 6; //TODO: Get actual ports
             public static final int RIGHT_COLLECTOR_PORT = 7;
+            public static final int LEFT_SWITCH_PORT = 8;
+            public static final int RIGHT_SWITCH_PORT = 9;
         }
 
         //Constants determining if the collector motors should run in the negative direction
@@ -89,7 +91,14 @@ public class Constants
             */
             public static final int ELEVATOR_ENCODER_SCALAR = 1;
         }
+    }
 
+    public static class MotorSetpoints
+    {
+        //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
+        public static final double COLLECTOR_INTAKE_SPEED = 1;
+        public static final double COLLECTOR_EXPEL_SPEED = -1;
+        public static final double COLLECTOR_ROTATE_SPEED = -1;
     }
 
     public static class DashboardConstants
@@ -131,10 +140,6 @@ public class Constants
             //the position to which the ramp servos rotate.
             public static final double RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
             public static final double RAMP_PROP_SERVO_GOAL = 1;
-
-            //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
-            public static final double COLLECTOR_INTAKE_SPEED = 1;
-            public static final double COLLECTOR_EXPEL_SPEED = 1;
         }
     }
 
@@ -149,7 +154,10 @@ public class Constants
         public static String CONSOLE_JOYSTICK_NAME = "Skunk Works DS";
 
         //Ports for the OI joysticks, buttons, steering wheel, etc.
-        public enum Port { LEFT_JOY, RIGHT_JOY, WHEEL, THROTTLE, BUTTONS }
+        public enum Port
+        {
+            LEFT_JOY, RIGHT_JOY, WHEEL, THROTTLE, BUTTONS
+        }
 
         //Axes of each joystick
         public static class JoyAxes
@@ -176,6 +184,12 @@ public class Constants
             public static final int bottomPreset = 1;
             public static final int switchPreset = 2;
             public static final int scalePreset = 3;
+        }
+
+        public static class CollectorButtons
+        {
+            public static final int INTAKE = 4;
+            public static final int EXPEL = 5;
         }
 
         //Enums for presets
