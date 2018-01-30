@@ -18,6 +18,7 @@ public class SetElevatorSetpoint extends CommandBase
     public SetElevatorSetpoint(Constants.OIMap.Setpoint setpoint, Elevator elevator, OI oi)
     {
         this.setpoint = setpoint;
+        this.elevator = elevator;
         this.oi = oi;
         requires(elevator);
     }
