@@ -39,12 +39,6 @@ public class StatefulDashboard
     {
         return keySet;
     }
-
-    //Construct the key that smartdashboard will use
-    private String constructKey(String command, String key)
-    {
-        return command + Constants.DashboardConstants.KEY_SEPARATOR + key;
-    }
     
     //The add functions are for adding a variable to the dashboard, the value given is only a default, and will
     //not be used if the variable already exists (like if the variable is already in the file)
@@ -272,6 +266,11 @@ public class StatefulDashboard
                 return "string";
             }
         }
+    }
 
+    //Construct the key that smartdashboard will use
+    private String constructKey(String command, String key)
+    {
+        return command + Constants.DashboardConstants.KEY_SEPARATOR + key;
     }
 }
