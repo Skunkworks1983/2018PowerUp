@@ -38,6 +38,11 @@ public class DashboardWrapper
     {
         return SmartDashboard.getNumber(key, defaultValue);
     }
+    
+    public void delete(String key)
+    {
+        SmartDashboard.delete(key);
+    }
 
     public String getType(String key)
     {
@@ -58,10 +63,5 @@ public class DashboardWrapper
         {
             return "boolean";
         }
-    }
-
-    public void delete(String key)
-    {
-        SmartDashboard.delete(key);
     }
 }
