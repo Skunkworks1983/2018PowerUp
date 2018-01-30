@@ -2,6 +2,7 @@ package frc.team1983.services;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+//A barebones wrapper for smartdashboard to facilitate unit testing
 public class DashboardWrapper
 {
     public DashboardWrapper()

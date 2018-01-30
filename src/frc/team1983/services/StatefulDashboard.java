@@ -138,7 +138,7 @@ public class StatefulDashboard
         }
         else
         {
-            System.out.println("Something requested a double at " + key
+            System.out.println("Something requested a string at " + key
                                        + "but it has not been added or set yet, so a default value was returned");
             return Constants.DashboardConstants.DEFAULT_STRING;
         }

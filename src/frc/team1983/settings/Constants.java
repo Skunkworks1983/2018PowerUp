@@ -138,7 +138,6 @@ public class Constants
         }
     }
 
-    //what goes here? God only knows
     public static class AutoValues
     {
 
