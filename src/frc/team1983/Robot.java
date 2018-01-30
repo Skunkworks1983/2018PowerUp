@@ -13,8 +13,6 @@ import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 
-import java.io.File;
-
 public class Robot extends IterativeRobot
 {
     private OI oi;

@@ -1,5 +1,8 @@
 package frc.team1983.services;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+import frc.team1983.settings.Constants;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,12 +12,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Set;
-
-import static frc.team1983.settings.Constants.DashboardConstants.DEFAULT_BOOLEAN;
-import static frc.team1983.settings.Constants.DashboardConstants.DEFAULT_STRING;
-import static frc.team1983.settings.Constants.DashboardConstants.DEFAULT_DOUBLE;
-import static frc.team1983.settings.Constants.DashboardConstants.KEY_SEPARATOR;
-import static frc.team1983.settings.Constants.DashboardConstants.VALUE_SEPARATOR;
 
 
 //A wrapper for the smartdashboard that persists values through robot restarts
@@ -45,7 +42,7 @@ public class StatefulDashboard
 
     private String constructKey(String command, String key)
     {
-        return command + KEY_SEPARATOR + key;
+        return command + Constants.DashboardConstants.KEY_SEPARATOR + key;
     }
     
     //The add functions are for adding a variable to the dashboard, the value given is only a default, and will
@@ -104,13 +101,13 @@ public class StatefulDashboard
         key = constructKey(command, key);
         if(keySet.contains(key))
         {
-            return dashboardWrapper.getNumber(key, DEFAULT_DOUBLE);
+            return dashboardWrapper.getNumber(key, Constants.DashboardConstants.DEFAULT_DOUBLE);
         }
         else
         {
             System.out.println("Something requested a double at " + key
                                        + "but it has not been added or set yet, so a default value was returned");
-            return DEFAULT_DOUBLE;
+            return Constants.DashboardConstants.DEFAULT_DOUBLE;
         }
     }
 
@@ -119,13 +116,13 @@ public class StatefulDashboard
         key = constructKey(command, key);
         if(keySet.contains(key))
         {
-            bool = dashboardWrapper.getBoolean(key, DEFAULT_BOOLEAN);
+            bool = dashboardWrapper.getBoolean(key, Constants.DashboardConstants.DEFAULT_BOOLEAN);
         }
         else
         {
             System.out.println("Something requested a boolean at " + key
                                        + "but it has not been added or set yet, so a default value was returned");
-            return DEFAULT_BOOLEAN;
+            return Constants.DashboardConstants.DEFAULT_BOOLEAN;
         }
         return bool;
     }
@@ -135,13 +132,13 @@ public class StatefulDashboard
         key = constructKey(command, key);
         if(keySet.contains(key))
         {
-            return dashboardWrapper.getString(key, DEFAULT_STRING);
+            return dashboardWrapper.getString(key, Constants.DashboardConstants.DEFAULT_STRING);
         }
         else
         {
             System.out.println("Something requested a double at " + key
                                        + "but it has not been added or set yet, so a default value was returned");
-            return DEFAULT_STRING;
+            return Constants.DashboardConstants.DEFAULT_STRING;
         }
     }
 
@@ -164,7 +161,7 @@ public class StatefulDashboard
             while((line = inputStream.readLine()) != null)
             {
                 System.out.println("Populating with " + line);
-                splitLine = line.split(VALUE_SEPARATOR); //Split into command/key and value
+                splitLine = line.split(Constants.DashboardConstants.VALUE_SEPARATOR); //Split into command/key and value
 
                 valueType = getTypeFromString(splitLine[1]); //get the valueType
 
@@ -173,7 +170,7 @@ public class StatefulDashboard
                 {
                     bool = Boolean.valueOf(splitLine[1]); //set bool to parsed boolean
                     dashboardWrapper.putBoolean(splitLine[0], bool);
-                    splitLine = splitLine[0].split(KEY_SEPARATOR); //Split command/key into command and key
+                    splitLine = splitLine[0].split(Constants.DashboardConstants.KEY_SEPARATOR); //Split command/key into command and key
                     add(splitLine[0], splitLine[1], bool);
                     continue;
                 }
@@ -181,7 +178,7 @@ public class StatefulDashboard
                 {
                     doub = Double.parseDouble(splitLine[1]); //set doub to parsed double
                     dashboardWrapper.putNumber(splitLine[0], doub);
-                    splitLine = splitLine[0].split(KEY_SEPARATOR); //Split command/key into command and key
+                    splitLine = splitLine[0].split(Constants.DashboardConstants.KEY_SEPARATOR); //Split command/key into command and key
                     add(splitLine[0], splitLine[1], doub);
                     continue;
                 }
@@ -189,7 +186,7 @@ public class StatefulDashboard
                 {
                     str = splitLine[1]; //set str to string
                     dashboardWrapper.putString(splitLine[0], str);
-                    splitLine = splitLine[0].split(KEY_SEPARATOR);
+                    splitLine = splitLine[0].split(Constants.DashboardConstants.KEY_SEPARATOR);
                     add(splitLine[0], splitLine[1], str);
                 }
             }
@@ -204,7 +201,7 @@ public class StatefulDashboard
 
     public void remove(String command, String key)
     {
-        keySet.remove(command + KEY_SEPARATOR + key);
+        keySet.remove(command + Constants.DashboardConstants.KEY_SEPARATOR + key);
     }
 
     public void store()
@@ -224,18 +221,18 @@ public class StatefulDashboard
                 }
                 if(valueType.equals("boolean"))
                 {
-                    value = dashboardWrapper.getBoolean(key, DEFAULT_BOOLEAN).toString();
+                    value = dashboardWrapper.getBoolean(key, Constants.DashboardConstants.DEFAULT_BOOLEAN).toString();
                 }
                 if(valueType.equals("double"))
                 {
-                    value = dashboardWrapper.getNumber(key, DEFAULT_DOUBLE).toString();
+                    value = dashboardWrapper.getNumber(key, Constants.DashboardConstants.DEFAULT_DOUBLE).toString();
                 }
                 if(valueType.equals("string"))
                 {
-                    value = dashboardWrapper.getString(key, DEFAULT_STRING);
+                    value = dashboardWrapper.getString(key, Constants.DashboardConstants.DEFAULT_STRING);
                 }
-                System.out.println("Stored " + key + VALUE_SEPARATOR + value);
-                outputStream.println(key + VALUE_SEPARATOR + value);
+                System.out.println("Stored " + key + Constants.DashboardConstants.VALUE_SEPARATOR + value);
+                outputStream.println(key + Constants.DashboardConstants.VALUE_SEPARATOR + value);
             }
 
             outputStream.close();

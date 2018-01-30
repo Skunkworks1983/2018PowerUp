@@ -4,13 +4,11 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.StatefulDashboard;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.utilities.PidControllerWrapper;
 import frc.team1983.subsystems.utilities.inputwrappers.ElevatorPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.ElevatorPidOutput;
-
-import static frc.team1983.settings.Constants.DashboardConstants.DEFAULT_DOUBLE;
-import static frc.team1983.settings.Constants.DashboardConstants.ELEVATOR_CONTROL_NAME;
 
 //This command controls the elevator with a PID. It should be the only class that
 // sets the speed of the elevator winches
@@ -29,12 +27,12 @@ public class ElevatorControl extends CommandBase
         this.elevator = elevator;
         this.dashboard = dashboard;
 
-        NAME = ELEVATOR_CONTROL_NAME;
+        NAME = Constants.DashboardConstants.ELEVATOR_CONTROL_NAME;
 
-        dashboard.add(NAME, "P", DEFAULT_DOUBLE);
-        dashboard.add(NAME, "I", DEFAULT_DOUBLE);
-        dashboard.add(NAME, "D", DEFAULT_DOUBLE);
-        dashboard.add(NAME, "F", DEFAULT_DOUBLE);
+        dashboard.add(NAME, "P", Constants.DashboardConstants.DEFAULT_DOUBLE);
+        dashboard.add(NAME, "I", Constants.DashboardConstants.DEFAULT_DOUBLE);
+        dashboard.add(NAME, "D", Constants.DashboardConstants.DEFAULT_DOUBLE);
+        dashboard.add(NAME, "F", Constants.DashboardConstants.DEFAULT_DOUBLE);
 
         pidIn = new ElevatorPidInput(elevator);
         pidOut = new ElevatorPidOutput(elevator);

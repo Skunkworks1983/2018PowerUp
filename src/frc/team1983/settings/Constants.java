@@ -2,8 +2,6 @@ package frc.team1983.settings;
 
 
 import java.io.File;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 
 //This file contains all constants used across the entire robot, stored within subclasses.
 public class Constants

@@ -1,9 +1,7 @@
 package frc.team1983.commands.elevator;
 
-import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.OI;
-import frc.team1983.Robot;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Elevator;
 
