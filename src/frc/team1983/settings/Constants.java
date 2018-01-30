@@ -1,6 +1,8 @@
 package frc.team1983.settings;
 
 
+import java.io.File;
+
 //This file contains all constants used across the entire robot, stored within subclasses.
 public class Constants
 {
@@ -90,10 +92,20 @@ public class Constants
 
     }
 
+    public static class DashboardConstants
+    {
+        public static final File FILE = new File("/home/lvuser/DashboardValues.txt");
+        public static final Double DEFAULT_DOUBLE = 0.0;
+        public static final Boolean DEFAULT_BOOLEAN = false;
+        public static final String DEFAULT_STRING = "You're a dum-dum for not initializing this correctly";
+        public static final String KEY_SEPARATOR = "-";
+        public static final String VALUE_SEPARATOR = ":";
+        public static final String ELEVATOR_CONTROL_NAME = "elevator";
+    }
+
     //this class contains subclasses that contain PIDF values used in commands.
     public static class PidConstants
     {
-
         //PIDF values for the DriveStraight command
         public static class DriveStrightPid
         {
@@ -124,18 +136,8 @@ public class Constants
             public static final double COLLECTOR_INTAKE_SPEED = 1;
             public static final double COLLECTOR_EXPEL_SPEED = 1;
         }
-
-        //PIDF values for the TurnAngle command
-        public static class ElevatorPid
-        {
-            public static final double P = 0;
-            public static final double I = 0;
-            public static final double D = 0;
-            public static final double F = 0;
-        }
     }
 
-    //what goes here? God only knows
     public static class AutoValues
     {
 
