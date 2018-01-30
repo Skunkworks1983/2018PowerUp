@@ -29,6 +29,7 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
+        dashboard.populate();
         oi = new OI(DriverStation.getInstance());
         drivebase = new Drivebase();
         collector = new Collector();
@@ -56,6 +57,7 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
+        dashboard.populate();
         Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
     }
 
@@ -69,6 +71,7 @@ public class Robot extends IterativeRobot
     public void teleopInit()
     {
         Scheduler.getInstance().removeAll();
+        dashboard.populate();
         Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
     }
 

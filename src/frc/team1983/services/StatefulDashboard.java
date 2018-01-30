@@ -7,10 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import static frc.team1983.settings.Constants.DashboardConstants.DEFAULT_BOOLEAN;
@@ -24,7 +21,7 @@ import static frc.team1983.settings.Constants.DashboardConstants.VALUE_SEPARATOR
 public class StatefulDashboard
 {
     private BufferedReader inputStream;
-    private String line, key, str, valueType, value;
+    private String line, str, valueType, value;
     private File dir;
     private Double doub;
     private Boolean bool;
@@ -153,6 +150,7 @@ public class StatefulDashboard
         try
         {
             inputStream = new BufferedReader(new FileReader(dir));
+            System.out.println("Opened inputsteam");
         }
         catch(FileNotFoundException e)
         {
@@ -165,6 +163,7 @@ public class StatefulDashboard
         {
             while((line = inputStream.readLine()) != null)
             {
+                System.out.println("Populating with " + line);
                 splitLine = line.split(VALUE_SEPARATOR); //Split into command/key and value
 
                 valueType = getTypeFromString(splitLine[1]); //get the valueType
@@ -235,10 +234,12 @@ public class StatefulDashboard
                 {
                     value = dashboardWrapper.getString(key, DEFAULT_STRING);
                 }
+                System.out.println("Stored " + key + VALUE_SEPARATOR + value);
                 outputStream.println(key + VALUE_SEPARATOR + value);
             }
 
             outputStream.close();
+            System.out.println("Closed outputstream");
         }
         catch(IOException e)
         {
