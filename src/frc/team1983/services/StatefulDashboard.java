@@ -40,6 +40,7 @@ public class StatefulDashboard
         return keySet;
     }
 
+    //Construct the key that smartdashboard will use
     private String constructKey(String command, String key)
     {
         return command + Constants.DashboardConstants.KEY_SEPARATOR + key;
@@ -96,6 +97,7 @@ public class StatefulDashboard
         dashboardWrapper.putString(key, value);
     }
 
+    //The get functions get the value from Smartdashboard, and if it does not exist returns a default value
     public double getDouble(String command, String key)
     {
         key = constructKey(command, key);
@@ -142,6 +144,7 @@ public class StatefulDashboard
         }
     }
 
+    //Populate gets all the values from the file and adds them to smartdashboard
     public void populate()
     {
         try
@@ -199,11 +202,15 @@ public class StatefulDashboard
         }
     }
 
+    //Removes a value from the keyset and smartdashboard
     public void remove(String command, String key)
     {
-        keySet.remove(command + Constants.DashboardConstants.KEY_SEPARATOR + key);
+        key = constructKey(command, key);
+        dashboardWrapper.delete(key);
+        keySet.remove(key);
     }
 
+    //Gets all values from smartdashboard and writes them to the file
     public void store()
     {
         try
