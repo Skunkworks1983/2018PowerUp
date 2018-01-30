@@ -36,6 +36,7 @@ public class UT_Stateful_Dashboard
     private ArgumentCaptor<String> keyCaptor, stringCaptor;
     private ArgumentCaptor<Boolean> booleanCaptor;
     private ArgumentCaptor<Double> doubleCaptor;
+    private AtomicReference<HashMap<String, String>> dashMockMap;
 
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
@@ -53,7 +54,7 @@ public class UT_Stateful_Dashboard
 
         dashboard = new StatefulDashboard(dashboardWrapper, tempFile);
 
-        AtomicReference<HashMap<String, String>> dashMockMap = new AtomicReference<>(new HashMap<>());
+        dashMockMap = new AtomicReference<>(new HashMap<>());
 
         keyCaptor = ArgumentCaptor.forClass(String.class);
         booleanCaptor = ArgumentCaptor.forClass(Boolean.class);
@@ -125,28 +126,6 @@ public class UT_Stateful_Dashboard
                 return dashboard.getTypeFromString(dashMockMap.get().get(keyCaptor.getValue()));
             }
         });
-
-        dashboard.add("addtest", "double", 1.0); //add something to not be overidden
-        dashboard.add("addtest", "double", 2.0); //add does not override
-        dashboard.add("addtest2", "double", 3.0); //add distinguishes command
-        dashboard.add("addtest", "double2", 4.0); //add distinguishes key
-        dashboard.add("addtest", "string", "add test string"); //add accepts strings
-        dashboard.add("addtest", "boolean", true); //add accepts booleans
-
-        dashboard.add("settest", "string", "added"); //add something to be ovewritten
-        dashboard.set("settest", "string", "set"); //set overwrites
-        dashboard.set("settest2", "string", "command"); //set distinguishes command
-        dashboard.set("settest", "string2", "key"); //set distinguishes key
-        dashboard.set("settest", "boolean", true); //set accepts booleans
-        dashboard.set("settest", "double", 1.0); //set accepts doubles
-
-        dashboard.store();
-
-        //Clear
-        dashboard.getKeySet().clear();
-        dashMockMap.get().clear();
-
-        dashboard.populate();
     }
 
     @After
@@ -158,61 +137,93 @@ public class UT_Stateful_Dashboard
     @Test
     public void addDoesNotOverride() throws InterruptedException
     {
+        dashboard.add("addtest", "double", 1.0); //add something to not be overidden
+        dashboard.add("addtest", "double", 2.0); //add does not override
+        simulateRioRestart();
         assertThat(dashboard.getDouble("addtest", "double"), is(1.0));
     }
 
     @Test
     public void addDistinguishesCommand() throws InterruptedException
     {
+        dashboard.add("addtest2", "double", 3.0); //add distinguishes command
+        simulateRioRestart();
         assertThat(dashboard.getDouble("addtest2", "double"), is(3.0));
     }
 
     @Test
     public void addDistinguishesKey() throws InterruptedException
     {
+        dashboard.add("addtest", "double2", 4.0); //add distinguishes key
+        simulateRioRestart();
         assertThat(dashboard.getDouble("addtest", "double2"), is(4.0));
     }
 
     @Test
     public void addAcceptsStrings() throws InterruptedException
     {
+        dashboard.add("addtest", "string", "add test string"); //add accepts strings
+        simulateRioRestart();
         assertThat(dashboard.getString("addtest", "string"), is("add test string"));
     }
 
     @Test
     public void addAcceptsBooleans() throws InterruptedException
     {
+        dashboard.add("addtest", "boolean", true); //add accepts booleans
+        simulateRioRestart();
         assertThat(dashboard.getBoolean("addtest", "boolean"), is(true));
     }
 
     @Test
     public void setOverwrites() throws InterruptedException
     {
+        dashboard.add("settest", "string", "added"); //add something to be ovewritten
+        dashboard.set("settest", "string", "set"); //set overwrites
+        simulateRioRestart();
         assertThat(dashboard.getString("settest", "string"), is("set"));
     }
 
     @Test
     public void setDistinguishesCommand() throws InterruptedException
     {
+        dashboard.set("settest2", "string", "command"); //set distinguishes command
+        simulateRioRestart();
         assertThat(dashboard.getString("settest2", "string"), is("command"));
     }
 
     @Test
     public void setDistinguishesKey() throws InterruptedException
     {
+        dashboard.set("settest", "string2", "key"); //set distinguishes key
+        simulateRioRestart();
         assertThat(dashboard.getString("settest", "string2"), is("key"));
     }
 
     @Test
     public void setAcceptsDoubles() throws InterruptedException
     {
+        dashboard.set("settest", "double", 1.0); //set accepts doubles
+        simulateRioRestart();
         assertThat(dashboard.getDouble("settest", "double"), is(1.0));
     }
 
     @Test
     public void setAcceptsBoolean() throws InterruptedException
     {
+        dashboard.set("settest", "boolean", true); //set accepts booleans
+        simulateRioRestart();
         assertThat(dashboard.getBoolean("settest", "boolean"), is(true));
     }
 
+    public void simulateRioRestart()
+    {
+        dashboard.store();
+
+        //Clear
+        dashboard.getKeySet().clear();
+        dashMockMap.get().clear();
+
+        dashboard.populate();
+    }
 }
