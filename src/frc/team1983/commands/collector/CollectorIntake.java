@@ -9,7 +9,7 @@ public class CollectorIntake extends CommandBase
 {
     private Collector collector;
     private double intakeSpeed, rotateSpeed;
-    private int bitCode;
+    private int switchStates;
 
     public CollectorIntake(Collector collector)
     {
@@ -28,31 +28,35 @@ public class CollectorIntake extends CommandBase
     @Override
     public void execute()
     {
-        //Assemble a bitcode of the current switch states
-        bitCode = 0;
-        if(collector.getLeft())
+        //Represent both switch states in a single integer
+        switchStates = 0;
+        if(collector.isLeftPressed())
         {
-            bitCode = 10;
+            switchStates = 10;
         }
-        if(collector.getRight())
+        if(collector.isRightPressed())
         {
-            bitCode++;
+            switchStates++;
         }
         //Use a switch to determine what to do
-        switch(bitCode)
+        switch(switchStates)
         {
             case (0): //If neither switch is active, full intake
                 collector.setLeft(intakeSpeed);
                 collector.setRight(intakeSpeed);
-            case (10): //If only left, intake right, expel left a little to try to balance it out
-                collector.setRight(intakeSpeed);
-                collector.setLeft(rotateSpeed);
+                break;
             case (1): //If only right, intake left, expel right a little to try to balance it out
                 collector.setLeft(intakeSpeed);
                 collector.setRight(rotateSpeed);
+                break;
+            case (10): //If only left, intake right, expel left a little to try to balance it out
+                collector.setRight(intakeSpeed);
+                collector.setLeft(rotateSpeed);
+                break;
             case (11): //If both, cube is in place and motors can be off
-                collector.setRight(0);
-                collector.setLeft(0);
+                collector.setRight(0.0);
+                collector.setLeft(0.0);
+                break;
         }
     }
 
@@ -65,8 +69,8 @@ public class CollectorIntake extends CommandBase
     @Override
     public void end()
     {
-        collector.setLeft(0);
-        collector.setRight(0);
+        collector.setLeft(0.0);
+        collector.setRight(0.0);
     }
 
     @Override

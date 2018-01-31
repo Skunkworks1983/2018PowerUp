@@ -19,13 +19,15 @@ public class CollectorExpel extends CommandBase
     @Override
     public void initialize()
     {
+        collector.setLeft(Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
+        System.out.println("CollectorExpel set left to " + Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
+        collector.setRight(Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
+        System.out.println("and right to " + Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
     }
 
     @Override
     public void execute()
     {
-        collector.setLeft(Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
-        collector.setRight(Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
     }
 
 

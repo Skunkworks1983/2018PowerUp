@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.subsystems.utilities.MotorGroup;
 
 //Subsystem that will acquire and expel the Power Cubes.
 public class Collector extends Subsystem
@@ -23,12 +22,12 @@ public class Collector extends Subsystem
         rightSwitch = new DigitalInput(Constants.MotorMap.CollectorPorts.RIGHT_SWITCH_PORT);
     }
 
-    public boolean getLeft()
+    public boolean isLeftPressed()
     {
         return leftSwitch.get();
     }
 
-    public boolean getRight()
+    public boolean isRightPressed()
     {
         return rightSwitch.get();
     }

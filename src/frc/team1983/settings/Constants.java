@@ -14,9 +14,9 @@ public class Constants
         public static class DrivebasePorts
         {
             public static final int LEFT_MASTER_PORT = 0; //TODO: Get actual ports
-            public static final int LEFT_SLAVE_0_PORT = 1;
-            public static final int LEFT_SLAVE_1_PORT = 2;
-            public static final int RIGHT_MASTER_PORT = 3;
+            public static final int LEFT_SLAVE_0_PORT = 5;
+            public static final int LEFT_SLAVE_1_PORT = 6;
+            public static final int RIGHT_MASTER_PORT = 7;
             public static final int RIGHT_SLAVE_0_PORT = 4;
             public static final int RIGHT_SLAVE_1_PORT = 5;
         }
@@ -44,16 +44,16 @@ public class Constants
         //Ports for the collector motors
         public static class CollectorPorts
         {
-            public static final int LEFT_COLLECTOR_PORT = 6; //TODO: Get actual ports
-            public static final int RIGHT_COLLECTOR_PORT = 7;
-            public static final int LEFT_SWITCH_PORT = 8;
-            public static final int RIGHT_SWITCH_PORT = 9;
+            public static final int LEFT_COLLECTOR_PORT = 3; //TODO: Get actual ports
+            public static final int RIGHT_COLLECTOR_PORT = 12;
+            public static final int LEFT_SWITCH_PORT = 1;
+            public static final int RIGHT_SWITCH_PORT = 2;
         }
 
         //Constants determining if the collector motors should run in the negative direction
         public static class CollectorReversed
         {
-            public static final boolean LEFT_COLLECTOR_REVERSE = false;
+            public static final boolean LEFT_COLLECTOR_REVERSE = true;
             public static final boolean RIGHT_COLLECTOR_REVERSE = true;
         }
 
@@ -80,8 +80,8 @@ public class Constants
         //Constants for the elevator rail encoders
         public static class RailEncoders
         {
-            public static final int RAIL_ENCODER_A_PORT = 0; //diO port on the RIO for channel A
-            public static final int RAIL_ENCODER_B_PORT = 0; //diO port on the RIO for channel B
+            public static final int RAIL_ENCODER_A_PORT = 27; //diO port on the RIO for channel A
+            public static final int RAIL_ENCODER_B_PORT = 30; //diO port on the RIO for channel B
             public static final boolean RAIL_ENCODER_REVERSE = false;
 
             /*
@@ -96,9 +96,9 @@ public class Constants
     public static class MotorSetpoints
     {
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
-        public static final double COLLECTOR_INTAKE_SPEED = 1;
-        public static final double COLLECTOR_EXPEL_SPEED = -1;
-        public static final double COLLECTOR_ROTATE_SPEED = -1;
+        public static final double COLLECTOR_INTAKE_SPEED = 1.0;
+        public static final double COLLECTOR_EXPEL_SPEED = -1.0;
+        public static final double COLLECTOR_ROTATE_SPEED = -1.0;
     }
 
     public static class DashboardConstants
@@ -188,8 +188,8 @@ public class Constants
 
         public static class CollectorButtons
         {
-            public static final int INTAKE = 4;
-            public static final int EXPEL = 5;
+            public static final int INTAKE = 8;
+            public static final int EXPEL = 9;
         }
 
         //Enums for presets
