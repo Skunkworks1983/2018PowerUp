@@ -53,7 +53,7 @@ public class Constants
         //Constants determining if the collector motors should run in the negative direction
         public static class CollectorReversed
         {
-            public static final boolean LEFT_COLLECTOR_REVERSE = true;
+            public static final boolean LEFT_COLLECTOR_REVERSE = false;
             public static final boolean RIGHT_COLLECTOR_REVERSE = true;
         }
 
