@@ -8,14 +8,10 @@ import frc.team1983.subsystems.Collector;
 public class CollectorIntake extends CommandBase
 {
     private Collector collector;
-    private double intakeSpeed, rotateSpeed;
-    private int switchStates;
 
     public CollectorIntake(Collector collector)
     {
         this.collector = collector;
-        this.intakeSpeed = Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED;
-        this.rotateSpeed = Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED;
 
         requires(collector);
     }
@@ -28,35 +24,32 @@ public class CollectorIntake extends CommandBase
     @Override
     public void execute()
     {
-        //Represent both switch states in a single integer
-        switchStates = 0;
         if(collector.isLeftPressed())
         {
-            switchStates = 10;
-        }
-        if(collector.isRightPressed())
-        {
-            switchStates++;
-        }
-        //Use a switch to determine what to do
-        switch(switchStates)
-        {
-            case (0): //If neither switch is active, full intake
-                collector.setLeft(intakeSpeed);
-                collector.setRight(intakeSpeed);
-                break;
-            case (1): //If only right, intake left, expel right a little to try to balance it out
-                collector.setLeft(intakeSpeed);
-                collector.setRight(rotateSpeed);
-                break;
-            case (10): //If only left, intake right, expel left a little to try to balance it out
-                collector.setRight(intakeSpeed);
-                collector.setLeft(rotateSpeed);
-                break;
-            case (11): //If both, cube is in place and motors can be off
-                collector.setRight(0.0);
+            if(collector.isRightPressed())
+            {
                 collector.setLeft(0.0);
-                break;
+                collector.setRight(0.0);
+            }
+            else
+            {
+                collector.setLeft(Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
+                collector.setRight(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+            }
+        }
+        else
+        {
+            if(collector.isRightPressed())
+            {
+                collector.setLeft(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+                collector.setRight(Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
+            }
+            else
+            {
+                collector.setLeft(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+                collector.setRight(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+            }
+
         }
     }
 

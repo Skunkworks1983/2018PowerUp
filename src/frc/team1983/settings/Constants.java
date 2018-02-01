@@ -44,7 +44,7 @@ public class Constants
         //Ports for the collector motors
         public static class CollectorPorts
         {
-            public static final int LEFT_COLLECTOR_PORT = 3; //TODO: Get actual ports
+            public static final int LEFT_COLLECTOR_PORT = 3;
             public static final int RIGHT_COLLECTOR_PORT = 12;
             public static final int LEFT_SWITCH_PORT = 1;
             public static final int RIGHT_SWITCH_PORT = 2;
