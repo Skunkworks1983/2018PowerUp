@@ -55,6 +55,8 @@ public class Constants
         {
             public static final boolean LEFT_COLLECTOR_REVERSE = false;
             public static final boolean RIGHT_COLLECTOR_REVERSE = true;
+            public static final boolean LEFT_SWITCH_REVERSE = false;
+            public static final boolean RIGHT_SWITCH_REVERSE = false;
         }
 
         //Random and hard to classify drivebase constants

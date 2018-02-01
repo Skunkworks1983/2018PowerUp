@@ -4,13 +4,14 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.settings.Constants;
+import frc.team1983.subsystems.sensors.DigitalInputWrapper;
 import frc.team1983.subsystems.utilities.Motor;
 
 //Subsystem that will acquire and expel the Power Cubes.
 public class Collector extends Subsystem
 {
     private Motor left, right;
-    private DigitalInput leftSwitch, rightSwitch;
+    private DigitalInputWrapper leftSwitch, rightSwitch;
 
     public Collector()
     {
@@ -18,8 +19,10 @@ public class Collector extends Subsystem
                          Constants.MotorMap.CollectorReversed.LEFT_COLLECTOR_REVERSE);
         right = new Motor(Constants.MotorMap.CollectorPorts.RIGHT_COLLECTOR_PORT, NeutralMode.Coast,
                           Constants.MotorMap.CollectorReversed.RIGHT_COLLECTOR_REVERSE);
-        leftSwitch = new DigitalInput(Constants.MotorMap.CollectorPorts.LEFT_SWITCH_PORT);
-        rightSwitch = new DigitalInput(Constants.MotorMap.CollectorPorts.RIGHT_SWITCH_PORT);
+        leftSwitch = new DigitalInputWrapper(Constants.MotorMap.CollectorPorts.LEFT_SWITCH_PORT,
+                                             Constants.MotorMap.CollectorReversed.LEFT_SWITCH_REVERSE);
+        rightSwitch = new DigitalInputWrapper(Constants.MotorMap.CollectorPorts.RIGHT_SWITCH_PORT,
+                                              Constants.MotorMap.CollectorReversed.RIGHT_SWITCH_REVERSE);
     }
 
     public boolean isLeftPressed()
