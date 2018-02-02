@@ -67,10 +67,13 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopInit()
     {
+        if (DSTest != null)
+        {
+            DSTest.end();
+        }
        // Scheduler.getInstance().removeAll();
      //   Scheduler.getInstance().add(new RunOneMotor(oi));
         // this would run the RunOneMotor in TeleOp with the joysticks
-        Scheduler.getInstance().add(new DSTestFunctionality());
     }
 
     @Override
@@ -82,8 +85,11 @@ public class Robot extends IterativeRobot
     @Override
     public void testInit()
     {
-        //DSTest = new DSTestFunctionality();
-        //DSTest.execute();
+        if (DSTest == null)
+        {
+            DSTest = new DSTestFunctionality();
+        }
+        DSTest.initialize();
             // these two would allow the ds test class to run within test
 
       //  runMotor = new RunOneMotor(oi);
@@ -94,6 +100,7 @@ public class Robot extends IterativeRobot
     @Override
     public void testPeriodic()
     {
+        DSTest.execute();
        // runMotor.execute();
         // calling execute in here allows it to run within test on the frc ds
         // since there is no end method called, operator must manually disable ds
