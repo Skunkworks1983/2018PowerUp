@@ -2,9 +2,10 @@ package frc.team1983.commands.debugging;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.subsystems.utilities.Motor;
 
-public class DSTestFunctionality
+public class DSTestFunctionality extends Command
 {
     private int motorIndex = 0;
     private Motor motors[] = new Motor [1];
@@ -25,7 +26,7 @@ public class DSTestFunctionality
     {
       //nothing
     }
-    public void execute()
+    protected void execute()
     {
         // this sets the speed of the selected motor to half speed automatically
         motors[motorIndex].set(0.5);
@@ -38,10 +39,14 @@ public class DSTestFunctionality
             System.out.println("motorSelector returns false");
         }
     }
-    public void end()
+    protected void end()
     {
         // if this were called within the test, then the motor would be turned off
         // since this is currently not called, in order to shut off the motor you need to disable it
+        motors[motorIndex].set(0);
+    }
+    protected void isFinished()
+    {
         motors[motorIndex].set(0);
     }
 }
