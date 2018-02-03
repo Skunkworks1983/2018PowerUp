@@ -1,7 +1,6 @@
 package frc.team1983.testutility;
 
 import frc.team1983.commands.CommandBase;
-import frc.team1983.testutility.FakeScheduler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
