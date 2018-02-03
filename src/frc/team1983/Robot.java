@@ -3,6 +3,7 @@ package frc.team1983;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.debugging.DSButtons;
 import frc.team1983.commands.debugging.DSTestFunctionality;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.elevator.ElevatorControl;
@@ -12,6 +13,8 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
+
+import java.awt.*;
 
 public class Robot extends IterativeRobot
 {
@@ -25,6 +28,7 @@ public class Robot extends IterativeRobot
     private static Robot instance;
     private DSTestFunctionality DSTest;
     private RunOneMotor runMotor;
+    private DSButtons ButtonTest;
 
     @Override
     public void robotInit()
@@ -67,10 +71,15 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopInit()
     {
-        if (DSTest != null)
+        if (ButtonTest != null)
+        {
+            ButtonTest.end();
+        }
+
+       /* if (DSTest != null)
         {
             DSTest.end();
-        }
+        } */
        // Scheduler.getInstance().removeAll();
      //   Scheduler.getInstance().add(new RunOneMotor(oi));
         // this would run the RunOneMotor in TeleOp with the joysticks
@@ -85,11 +94,16 @@ public class Robot extends IterativeRobot
     @Override
     public void testInit()
     {
-        if (DSTest == null)
+        if (ButtonTest == null)
+        {
+            ButtonTest = new DSButtons();
+        }
+        ButtonTest.initialize();
+
+       /* if(DSTest == null)
         {
             DSTest = new DSTestFunctionality();
-        }
-        DSTest.initialize();
+        } */
             // these two would allow the ds test class to run within test
 
       //  runMotor = new RunOneMotor(oi);
@@ -100,7 +114,8 @@ public class Robot extends IterativeRobot
     @Override
     public void testPeriodic()
     {
-        DSTest.execute();
+        //DSTest.execute();
+        ButtonTest.execute();
        // runMotor.execute();
         // calling execute in here allows it to run within test on the frc ds
         // since there is no end method called, operator must manually disable ds

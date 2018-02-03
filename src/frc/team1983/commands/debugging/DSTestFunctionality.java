@@ -14,24 +14,36 @@ public class DSTestFunctionality
     // on 2017, motor 6 is the collector belt
     private DigitalInput motorSelector;
     private AnalogInput manualSpeed;
+    private DigitalInput motorSelectorDown;
 
     public DSTestFunctionality()
     {
         int port = 6;
+       /* motorSelector = new DigitalInput(5);
+        manualSpeed = new AnalogInput(2);
+        motorSelectorDown = new DigitalInput(4);
         // this sets the motor to motor port already stated automatically
+        this.motorSelector = motorSelector;
+        this.manualSpeed = manualSpeed;
+        this.motorSelectorDown = motorSelectorDown;
+        for(int i=0; i<16; i++) */
         {
-            motors[motorIndex] = new Motor (port, NeutralMode.Brake,true);
+            motors[motorIndex] = new Motor (port, NeutralMode.Coast,true);
             // the motor indexed here is given the constraints required
-            motorSelector = new DigitalInput(5);
-            manualSpeed = new AnalogInput(2);
+           // motorSelector = new DigitalInput(5);
+           manualSpeed = new AnalogInput(2);
         }
     }
-    protected void initialize()
+    public void initialize()
     {
       //nothing
         //motors[motorIndex].set(0.25);
+        for(int i=0; i<16;)
+        {
+            motors[i].setNeutralMode(NeutralMode.Coast);
+        }
     }
-    protected void execute()
+    public void execute()
     {
         // this sets the speed of the selected motor to half speed automatically
        // motors[motorIndex].set(0.5);
@@ -45,10 +57,12 @@ public class DSTestFunctionality
         } */
         if (manualSpeed != null)
         {
-            motors[motorIndex].set((manualSpeed.getVoltage()/2.5)-1);
+            //motors[motorIndex].set((manualSpeed.getVoltage()/2.5)-1);
+            motors[motorIndex].set((manualSpeed.getVoltage()/5)-0.5);
+            // this would set the maximum speed to half speed
         }
     }
-    protected void end()
+    public void end()
     {
         // if this were called within the test, then the motor would be turned off
         // since this is currently not called, in order to shut off the motor you need to disable it

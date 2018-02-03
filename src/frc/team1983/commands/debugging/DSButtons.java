@@ -16,9 +16,9 @@ public class DSButtons
 
     public DSButtons()
     {
-        this.motorUp = motorUp;
+        /*this.motorUp = motorUp;
         this.motorDown = motorDown;
-        this.manualSpeed = manualSpeed;
+        this.manualSpeed = manualSpeed; */
 
         motorUp = new DigitalInput(5);
         motorDown = new DigitalInput(4);
@@ -29,51 +29,65 @@ public class DSButtons
             motors[i] = new Motor(i, NeutralMode.Coast, false);
         }
     }
-    protected void initialize()
+    public void initialize()
     {
-        System.out.println("command initialized");
+        for(int i=0; i<16;)
+        {
+            motors[i].setNeutralMode(NeutralMode.Coast);
+        }
     }
-    protected void execute()
+    public void execute()
     {
         if (manualSpeed != null)
         {
-            motors[motorIndex].set((manualSpeed.getVoltage()/2.5)-1);
+           // motors[motorIndex].set((manualSpeed.getVoltage()/2.5)-1);
+            motors[motorIndex].set((manualSpeed.getVoltage()/5)-0.5);
+            // for now, maximum speed is set to half of full possible speed
         }
         if(!continuousPress)
         {
-        if(motorUp != null)
-        {
-            if(motorIndex == 15)
+            if(motorUp.get())
             {
-                motorIndex = 0;
-                System.out.println("The motor running is number" + motors[motorIndex]);
+                motors[motorIndex].set(0);
+                if(motorIndex == 15)
+                {
+                    motorIndex = 0;
+                }
+                else
+                {
+                    motorIndex += 1;
+                }
+                continuousPress = true;
             }
-            else
+            if(motorDown.get())
             {
-                motorIndex += 1;
-                System.out.println("The motor running is number" + motors[motorIndex]);
+                motors[motorIndex].set(0);
+                if(motorIndex == 0)
+                {
+                    motorIndex = 15;
+                }
+                else
+                {
+                    motorIndex -= 1;
+                }
+                continuousPress = true;
             }
-            continuousPress = true;
         }
-        if(motorDown != null)
+        else
         {
-            if(motorIndex == 0)
+            if(!((motorUp.get()) || motorDown.get()))
             {
-                motorIndex = 15;
-                System.out.println("The motor running is number" + motors[motorIndex]);
+                continuousPress = false;
             }
-            else
-            {
-                motorIndex -= 0;
-                System.out.println("The motor running is number" + motors[motorIndex]);
-            }
-            continuousPress = true;
         }
-    }
 }
-    protected void end()
+    public void end()
     {
         motors[motorIndex].set(0);
+        for(int i=0; i<16;)
+        {
+            motors[i].set(0);
+        }
     }
     protected boolean isFinished()
     {
