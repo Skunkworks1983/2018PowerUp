@@ -31,17 +31,19 @@ public class DSButtons
     }
     public void initialize()
     {
-        for(int i=0; i<16;)
+        for(int i=0; i<16;i++)
         {
             motors[i].setNeutralMode(NeutralMode.Coast);
+            System.out.println("Initialized motor " + i);
         }
     }
     public void execute()
     {
+        double speed = (manualSpeed.getVoltage()/5.0)-0.5;
         if (manualSpeed != null)
         {
            // motors[motorIndex].set((manualSpeed.getVoltage()/2.5)-1);
-            motors[motorIndex].set((manualSpeed.getVoltage()/5)-0.5);
+            motors[motorIndex].set(speed);
             // for now, maximum speed is set to half of full possible speed
         }
         if(!continuousPress)
@@ -57,6 +59,7 @@ public class DSButtons
                 {
                     motorIndex += 1;
                 }
+                System.out.println("New motor index is " + motorIndex);
                 continuousPress = true;
             }
             if(motorDown.get())
@@ -70,6 +73,7 @@ public class DSButtons
                 {
                     motorIndex -= 1;
                 }
+                System.out.println("New motor index is " + motorIndex);
                 continuousPress = true;
             }
         }
@@ -77,6 +81,7 @@ public class DSButtons
         {
             if(!((motorUp.get()) || motorDown.get()))
             {
+                System.out.println("Button released");
                 continuousPress = false;
             }
         }
@@ -84,7 +89,7 @@ public class DSButtons
     public void end()
     {
         motors[motorIndex].set(0);
-        for(int i=0; i<16;)
+        for(int i=0; i<16;i++)
         {
             motors[i].set(0);
         }
