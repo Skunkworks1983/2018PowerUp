@@ -79,7 +79,7 @@ public class Constants
         public static class RailEncoders
         {
             public static final int RAIL_ENCODER_A_PORT = 0; //diO port on the RIO for channel A
-            public static final int RAIL_ENCODER_B_PORT = 0; //diO port on the RIO for channel B
+            public static final int RAIL_ENCODER_B_PORT = 1; //diO port on the RIO for channel B
             public static final boolean RAIL_ENCODER_REVERSE = false;
 
             /*

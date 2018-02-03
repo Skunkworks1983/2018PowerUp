@@ -5,16 +5,20 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.elevator.ElevatorControl;
 import frc.team1983.services.DashboardWrapper;
-import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.OI;
+import frc.team1983.services.StatefulDashboard;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
-import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
+import frc.team1983.subsystems.Ramps;
+import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 
 public class Robot extends IterativeRobot
 {
+    private static Logger logger ;
+    //Properties loggerProperties;
     private OI oi;
     private Drivebase drivebase;
     private Elevator elevator;
@@ -26,6 +30,9 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
+        System.setProperty("log4j.configurationFile", "2018PowerUp/log4j.xml");
+        logger = Logger.getLogger(Robot.class);
+
         dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
         dashboard.populate();
         oi = new OI(DriverStation.getInstance());
@@ -33,6 +40,8 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
+
+        DOMConfigurator.configure("2018PowerUp/log4j.xml");
 
         oi.initialize(this);
     }
@@ -71,12 +80,14 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         dashboard.populate();
         Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
+        logger.trace("You know I had to do it to em");
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+        logger.fatal("Second test");
     }
 
     @Override
@@ -108,6 +119,8 @@ public class Robot extends IterativeRobot
     {
         return collector;
     }
+
+    public Logger getLogger() { return logger; }
 
     public static Robot getInstance()
     {
