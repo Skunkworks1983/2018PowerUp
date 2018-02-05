@@ -13,7 +13,6 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 
 public class Robot extends IterativeRobot
 {
@@ -32,7 +31,6 @@ public class Robot extends IterativeRobot
     {
         System.setProperty("log4j.configurationFile", "2018PowerUp/log4j.xml");
         logger = Logger.getLogger(Robot.class);
-
         dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
         dashboard.populate();
         oi = new OI(DriverStation.getInstance());
@@ -41,9 +39,8 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
         ramps = new Ramps();
 
-        DOMConfigurator.configure("2018PowerUp/log4j.xml");
-
         oi.initialize(this);
+        logger.fatal("robotInit");
     }
 
 
@@ -66,12 +63,15 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         dashboard.populate();
         Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
+        logger.debug("AutoInit");
+        getRamps().drop();
     }
 
     @Override
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
+        logger.debug("AutoPeriodic");
     }
 
     @Override
@@ -80,14 +80,14 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         dashboard.populate();
         Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
-        logger.trace("You know I had to do it to em");
+        logger.info("You know I had to do it to em");
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-        logger.fatal("Second test");
+        logger.info("Second test");
     }
 
     @Override
