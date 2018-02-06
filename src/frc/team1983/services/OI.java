@@ -1,13 +1,12 @@
 package frc.team1983.services;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.team1983.Robot;
-import frc.team1983.commands.elevator.SetElevatorSetpoint;
-import frc.team1983.settings.Constants;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team1983.Robot;
+import frc.team1983.commands.elevator.SetElevatorSetpoint;
+import frc.team1983.settings.Constants;
 
 import java.util.HashMap;
 
