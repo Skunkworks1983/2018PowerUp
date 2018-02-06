@@ -1,7 +1,5 @@
 package frc.team1983.commands.ramps;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.subsystems.Ramps;
 
