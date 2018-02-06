@@ -2,12 +2,10 @@ package frc.team1983.services;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.hal.HAL;
-
 import frc.team1983.settings.Constants;
 import org.junit.After;
 import org.junit.Before;
