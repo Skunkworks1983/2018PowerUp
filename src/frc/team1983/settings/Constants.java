@@ -13,12 +13,12 @@ public class Constants
         //Ports for the drivebase motors
         public static class DrivebasePorts
         {
-            public static final int LEFT_MASTER_PORT = 0; //TODO: Get actual ports
-            public static final int LEFT_SLAVE_0_PORT = 1;
-            public static final int LEFT_SLAVE_1_PORT = 2;
-            public static final int RIGHT_MASTER_PORT = 3;
-            public static final int RIGHT_SLAVE_0_PORT = 4;
-            public static final int RIGHT_SLAVE_1_PORT = 5;
+            public static final int LEFT_MASTER_PORT = 14; //TODO: Get actual ports
+            public static final int LEFT_SLAVE_0_PORT = 15;
+            public static final int LEFT_SLAVE_1_PORT = 13;
+            public static final int RIGHT_MASTER_PORT = 1;
+            public static final int RIGHT_SLAVE_0_PORT = 0;
+            public static final int RIGHT_SLAVE_1_PORT = 2;
         }
 
         //Constants determining if the drivebase motors should run in the negative direction
@@ -79,7 +79,7 @@ public class Constants
         public static class RailEncoders
         {
             public static final int RAIL_ENCODER_A_PORT = 0; //diO port on the RIO for channel A
-            public static final int RAIL_ENCODER_B_PORT = 0; //diO port on the RIO for channel B
+            public static final int RAIL_ENCODER_B_PORT = 1; //diO port on the RIO for channel B
             public static final boolean RAIL_ENCODER_REVERSE = false;
 
             /*
