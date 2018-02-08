@@ -32,13 +32,11 @@ public class CollectorIntake extends CommandBase
         {
             if(isRightPressed())
             {
-                System.out.println("left right");
                 collector.setLeft(0.0);
                 collector.setRight(0.0);
             }
             else
             {
-                System.out.println("left not right");
                 collector.setLeft(Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
                 collector.setRight(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
             }
@@ -47,13 +45,11 @@ public class CollectorIntake extends CommandBase
         {
             if(isRightPressed())
             {
-                System.out.println("not left right");
                 collector.setLeft(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
                 collector.setRight(Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
             }
             else
             {
-                System.out.println("not left not right");
                 collector.setLeft(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
                 collector.setRight(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
             }

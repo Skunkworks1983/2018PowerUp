@@ -46,6 +46,8 @@ public class Constants
         {
             public static final int LEFT_COLLECTOR_PORT = 6; //TODO: Get actual ports
             public static final int RIGHT_COLLECTOR_PORT = 7;
+            public static final int LEFT_SWITCH_PORT = 0;
+            public static final int RIGHT_SWITCH_PORT = 1;
         }
 
         //Constants determining if the collector motors should run in the negative direction
@@ -91,6 +93,7 @@ public class Constants
             */
             public static final int ELEVATOR_ENCODER_SCALAR = 1;
         }
+    }
 
     public static class MotorSetpoints
     {

@@ -116,7 +116,6 @@ public class UT_CollectorIntake
 
         when(collector.isRightPressed()).thenAnswer((Answer<Boolean>) invocationOnMock -> {
             boolean answer = counter == 0 || counter == 52;
-            if(answer || counter == 26) {System.out.println(counter);}
             counter++;
             return answer;
         });
@@ -124,12 +123,12 @@ public class UT_CollectorIntake
         fakeScheduler.run(103);
 
         List<double[]> speeds = new ArrayList<>();
-        speeds.add(new double[] {0.0, 0.0});
-        speeds.add(new double[] {Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED,
+        speeds.add(new double[]{0.0, 0.0});
+        speeds.add(new double[]{Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED,
                 Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED});
-        speeds.add(new double[] {Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED,
+        speeds.add(new double[]{Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED,
                 Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED});
-        speeds.add(new double[] {Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED,
+        speeds.add(new double[]{Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED,
                 Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED});
 
         for(double[] thisSpeed : speeds)
