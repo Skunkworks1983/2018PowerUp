@@ -14,13 +14,17 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Matchers.booleanThat;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class UT_CollectorIntake
 {
@@ -31,12 +35,10 @@ public class UT_CollectorIntake
 
     private CollectorIntake collectorIntake;
     private FakeScheduler fakeScheduler;
-    private double left, right;
-    private int leftCounter, rightCounter;
-    private ArgumentCaptor<Double> leftCaptor, rightCaptor;
+    private int leftUTCounter, rightUTCounter, counter;
 
     @Mock
-    public Collector collector;
+    private Collector collector;
 
     @Before
     public void setup()
@@ -108,57 +110,35 @@ public class UT_CollectorIntake
 
         fakeScheduler.add(collectorIntake);
 
-        leftCounter = 0;
-        rightCounter = 0;
+        counter = 0;
 
-        when(collector.isLeftPressed()).thenAnswer(new Answer<Boolean>()
-        {
-            @Override
-            public Boolean answer(InvocationOnMock invocationOnMock) throws Throwable
-            {
-                switch(leftCounter++)
-                {
-                    case (0):
-                    case (1):
-                        return true;
-                    case (2):
-                    case (3):
-                        return false;
-                }
-                return false;
-            }
+        when(collector.isLeftPressed()).thenAnswer((Answer<Boolean>) invocationOnMock -> counter == 0 || counter == 26);
+
+        when(collector.isRightPressed()).thenAnswer((Answer<Boolean>) invocationOnMock -> {
+            boolean answer = counter == 0 || counter == 52;
+            if(answer || counter == 26) {System.out.println(counter);}
+            counter++;
+            return answer;
         });
 
-        when(collector.isRightPressed()).thenAnswer(new Answer<Boolean>()
+        fakeScheduler.run(103);
+
+        List<double[]> speeds = new ArrayList<>();
+        speeds.add(new double[] {0.0, 0.0});
+        speeds.add(new double[] {Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED,
+                Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED});
+        speeds.add(new double[] {Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED,
+                Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED});
+        speeds.add(new double[] {Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED,
+                Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED});
+
+        for(double[] thisSpeed : speeds)
         {
-            @Override
-            public Boolean answer(InvocationOnMock invocationOnMock) throws Throwable
+            for(int i = 0; i < 26; i++)
             {
-                switch(rightCounter++)
-                {
-                    case (0):
-                    case (2):
-                        return true;
-                    case (1):
-                    case (3):
-                        return false;
-                }
-                return false;
+                inOrder.verify(collector).setLeft(thisSpeed[0]);
+                inOrder.verify(collector).setRight(thisSpeed[1]);
             }
-        });
-
-        fakeScheduler.run(3);
-
-        inOrder.verify(collector).setLeft(0.0);
-        inOrder.verify(collector).setRight(0.0);
-
-        inOrder.verify(collector).setLeft(Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
-        inOrder.verify(collector).setRight(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
-
-        inOrder.verify(collector).setLeft(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
-        inOrder.verify(collector).setRight(Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
-
-        inOrder.verify(collector).setLeft(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
-        inOrder.verify(collector).setRight(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+        }
     }
 }

@@ -101,6 +101,10 @@ public class Constants
         public static final double COLLECTOR_INTAKE_SPEED = 1.0;
         public static final double COLLECTOR_EXPEL_SPEED = -1.0;
         public static final double COLLECTOR_ROTATE_SPEED = -1.0;
+
+        //The number of command cycles (runs at 50 Hertz) after a limit switch
+        //is activated that it will always return true (for debouncing)
+        public static final int COLLECTOR_SWITCH_DEBOUNCE_TIME = 25;
     }
 
     public static class DashboardConstants
