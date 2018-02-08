@@ -112,15 +112,15 @@ public class UT_CollectorIntake
 
         counter = 0;
 
-        when(collector.isLeftPressed()).thenAnswer((Answer<Boolean>) invocationOnMock -> counter == 0 || counter == 26);
+        when(collector.isLeftPressed()).thenAnswer((Answer<Boolean>) invocationOnMock ->
+                counter == 0 || counter == Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME + 1);
 
         when(collector.isRightPressed()).thenAnswer((Answer<Boolean>) invocationOnMock -> {
-            boolean answer = counter == 0 || counter == 52;
+            boolean answer = counter == 0 || counter == Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME * 2 + 2;
             counter++;
             return answer;
         });
 
-        fakeScheduler.run(103);
 
         List<double[]> speeds = new ArrayList<>();
         speeds.add(new double[]{0.0, 0.0});
@@ -131,9 +131,12 @@ public class UT_CollectorIntake
         speeds.add(new double[]{Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED,
                 Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED});
 
+        fakeScheduler.run(Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME * speeds.size()
+                                  + speeds.size());
+
         for(double[] thisSpeed : speeds)
         {
-            for(int i = 0; i < 26; i++)
+            for(int i = 0; i < Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME; i++)
             {
                 inOrder.verify(collector).setLeft(thisSpeed[0]);
                 inOrder.verify(collector).setRight(thisSpeed[1]);
