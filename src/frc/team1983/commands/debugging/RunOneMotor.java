@@ -35,12 +35,12 @@ public class RunOneMotor //extends Command
     // when extends command is commented out, execute becomes public
     // one of the main reasons it needs to become public is because it will be called in Robot
     {
-        motors[motorIndex].set(0.5);
+        //motors[motorIndex].set(0.5);
         // it is necessary to comment everything below this out, otherwise it will whine
         // commenting everything under this out also gets rid of the OI necessity]
         // this sets the speed of the motor indexed to half speed
 
-       /*  if(!continuousPress)
+       if(!continuousPress)
         {
             //each press goes to the motor lower, 1 at a time
             if(oi.isPressed(0, 1)) //triggers are always button 0 (according to Thomas)
@@ -55,6 +55,7 @@ public class RunOneMotor //extends Command
                 {
                     motorIndex -= 1;
                 }
+                System.out.println("New motor index is " + motorIndex);
                 continuousPress = true;
             }
             // each press goes to the motor above, 1 at a time
@@ -70,6 +71,7 @@ public class RunOneMotor //extends Command
                 {
                     motorIndex += 1;
                 }
+                System.out.println("New motor index is " + motorIndex);
                 continuousPress = true;
             }
         }
@@ -99,7 +101,7 @@ public class RunOneMotor //extends Command
         //motors.get() = setOutput (joy);
         // sets the output of the motor currently selected in accordance to the joystick
         motors[motorIndex].set(joy);
-         */
+
     }
 // there isn't a point where isfinished is assigned or called, so it is always false
     protected boolean isFinished()
