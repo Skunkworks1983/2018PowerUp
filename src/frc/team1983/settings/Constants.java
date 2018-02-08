@@ -13,12 +13,12 @@ public class Constants
         //Ports for the drivebase motors
         public static class DrivebasePorts
         {
-            public static final int LEFT_MASTER_PORT = 0; //TODO: Get actual ports
-            public static final int LEFT_SLAVE_0_PORT = 5;
-            public static final int LEFT_SLAVE_1_PORT = 6;
-            public static final int RIGHT_MASTER_PORT = 7;
-            public static final int RIGHT_SLAVE_0_PORT = 4;
-            public static final int RIGHT_SLAVE_1_PORT = 5;
+            public static final int LEFT_MASTER_PORT = 14; //TODO: Get actual ports
+            public static final int LEFT_SLAVE_0_PORT = 15;
+            public static final int LEFT_SLAVE_1_PORT = 13;
+            public static final int RIGHT_MASTER_PORT = 1;
+            public static final int RIGHT_SLAVE_0_PORT = 0;
+            public static final int RIGHT_SLAVE_1_PORT = 2;
         }
 
         //Constants determining if the drivebase motors should run in the negative direction
@@ -44,10 +44,8 @@ public class Constants
         //Ports for the collector motors
         public static class CollectorPorts
         {
-            public static final int LEFT_COLLECTOR_PORT = 3;
-            public static final int RIGHT_COLLECTOR_PORT = 12;
-            public static final int LEFT_SWITCH_PORT = 1;
-            public static final int RIGHT_SWITCH_PORT = 2;
+            public static final int LEFT_COLLECTOR_PORT = 6; //TODO: Get actual ports
+            public static final int RIGHT_COLLECTOR_PORT = 7;
         }
 
         //Constants determining if the collector motors should run in the negative direction
@@ -82,8 +80,8 @@ public class Constants
         //Constants for the elevator rail encoders
         public static class RailEncoders
         {
-            public static final int RAIL_ENCODER_A_PORT = 27; //diO port on the RIO for channel A
-            public static final int RAIL_ENCODER_B_PORT = 30; //diO port on the RIO for channel B
+            public static final int RAIL_ENCODER_A_PORT = 0; //diO port on the RIO for channel A
+            public static final int RAIL_ENCODER_B_PORT = 1; //diO port on the RIO for channel B
             public static final boolean RAIL_ENCODER_REVERSE = false;
 
             /*
@@ -93,7 +91,6 @@ public class Constants
             */
             public static final int ELEVATOR_ENCODER_SCALAR = 1;
         }
-    }
 
     public static class MotorSetpoints
     {
