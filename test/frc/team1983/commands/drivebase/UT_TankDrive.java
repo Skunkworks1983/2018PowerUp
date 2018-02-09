@@ -1,6 +1,7 @@
 package frc.team1983.commands.drivebase;
 
 import frc.team1983.services.OI;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import org.junit.After;
 import org.junit.Before;
@@ -9,6 +10,9 @@ import org.mockito.Mock;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class UT_TankDrive
@@ -19,8 +23,6 @@ public class UT_TankDrive
     @Mock
     private OI oi;
 
-    double leftSpeed;
-    double rightSpeed;
 
     @Before
     public void setup()
@@ -36,44 +38,43 @@ public class UT_TankDrive
     }
 
     @Test
-    public void setLeftSpeedReturnsZeroForZeroInput()
+    public void tankDriveSetsBothLeftAndRightToZero()
     {
-        leftSpeed = 0.0;
-        assertThat(new TankDrive(drivebase, oi).getLeftSpeed(0.0), is(0.0));
+        when(oi.getAxis(Constants.OIMap.Port.LEFT_JOY, Constants.OIMap.JoyAxes.Y)).thenReturn(0.0);
+        when(oi.getAxis(Constants.OIMap.Port.RIGHT_JOY, Constants.OIMap.JoyAxes.Y)).thenReturn(0.0);
+        tankDrive.execute();
+        verify(drivebase, times(1)).setLeft(0.0);
+        verify(drivebase, times(1)).setRight(0.0);
     }
 
     @Test
-    public void setRightSpeedReturnsZeroForZeroInput()
+    public void tankDriveSetsBothLeftAndRightToOne()
     {
-        rightSpeed = 0.0;
-        assertThat(new TankDrive(drivebase, oi).getRightSpeed(rightSpeed), is(0.0));
+        when(oi.getAxis(Constants.OIMap.Port.LEFT_JOY, Constants.OIMap.JoyAxes.Y)).thenReturn(1.0);
+        when(oi.getAxis(Constants.OIMap.Port.RIGHT_JOY, Constants.OIMap.JoyAxes.Y)).thenReturn(1.0);
+        tankDrive.execute();
+        verify(drivebase, times(1)).setLeft(1.0);
+        verify(drivebase, times(1)).setRight(1.0);
     }
 
     @Test
-    public void setLeftSpeedReturnsOneForOneInput()
+    public void tankDriveSetsBothLeftAndRightToNegativeOne()
     {
-        leftSpeed = 1.0;
-        assertThat(new TankDrive(drivebase, oi).getLeftSpeed(leftSpeed), is(1.0));
+        when(oi.getAxis(Constants.OIMap.Port.LEFT_JOY, Constants.OIMap.JoyAxes.Y)).thenReturn(-1.0);
+        when(oi.getAxis(Constants.OIMap.Port.RIGHT_JOY, Constants.OIMap.JoyAxes.Y)).thenReturn(-1.0);
+        tankDrive.execute();
+        verify(drivebase, times(1)).setLeft(-1.0);
+        verify(drivebase, times(1)).setRight(-1.0);
     }
 
     @Test
-    public void setRightSpeedReturnsOneForOneInput()
+    public void tankDriveSetsLeftAndRightToDifferentValues()
     {
-        rightSpeed = 1.0;
-        assertThat(new TankDrive(drivebase, oi).getRightSpeed(rightSpeed), is(1.0));
+        when(oi.getAxis(Constants.OIMap.Port.LEFT_JOY, Constants.OIMap.JoyAxes.Y)).thenReturn(-1.0);
+        when(oi.getAxis(Constants.OIMap.Port.RIGHT_JOY, Constants.OIMap.JoyAxes.Y)).thenReturn(1.0);
+        tankDrive.execute();
+        verify(drivebase, times(1)).setRight(1.0);
+        verify(drivebase, times(1)).setLeft(-1.0);
     }
 
-    @Test
-    public void setLeftSpeedReturnsNegativeOneForNegativeOneInput()
-    {
-        leftSpeed = -1.0;
-        assertThat(new TankDrive(drivebase, oi).getLeftSpeed(leftSpeed), is(-1.0));
-    }
-
-    @Test
-    public void setRightSpeedReturnsNegativeOneForNegativeOneInput()
-    {
-        rightSpeed = -1.0;
-        assertThat(new TankDrive(drivebase, oi).getRightSpeed(rightSpeed), is(-1.0));
-    }
 }

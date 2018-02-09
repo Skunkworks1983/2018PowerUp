@@ -18,10 +18,13 @@ public class CommandGroupWrapper
 
     public final synchronized void addSequential(CommandBase command) //adds to List of List of commands
     {
-        addSequentialList = new LinkedList<>();
-        addSequentialList.add(command);
-        commandGroupWrapperList.add(addSequentialList);
-        commandGroup.addSequential(command);
+            addSequentialList = new LinkedList<>();
+            addSequentialList.add(command);
+            commandGroupWrapperList.add(addSequentialList);
+            if(commandGroup != null)
+            {
+                commandGroup.addSequential(command);
+            }
     }
 
     public final synchronized void addSequential(CommandBase command, double timeout)
@@ -29,7 +32,10 @@ public class CommandGroupWrapper
         addSequentialList = new LinkedList<>();
         addSequentialList.add(command);
         commandGroupWrapperList.add(addSequentialList);
-        commandGroup.addSequential(command, timeout);
+        if(commandGroup != null)
+        {
+            commandGroup.addSequential(command, timeout);
+        }
     }
 
     public final synchronized void addParallel(CommandBase command) //adds to List of commands
@@ -37,8 +43,10 @@ public class CommandGroupWrapper
         addSequentialList.add(command);
         int size = commandGroupWrapperList.size();
         commandGroupWrapperList.add(size, addSequentialList);
-        commandGroup.addParallel(command);
-
+        if(commandGroup != null)
+        {
+            commandGroup.addParallel(command);
+        }
     }
 
     public final synchronized void addParallel(CommandBase command, double timeout)
@@ -46,11 +54,19 @@ public class CommandGroupWrapper
         addSequentialList.add(command);
         int size = commandGroupWrapperList.size();
         commandGroupWrapperList.add(size, addSequentialList);
-        commandGroup.addParallel(command, timeout);
+        if(commandGroup != null)
+        {
+            commandGroup.addParallel(command, timeout);
+        }
     }
 
     public List<List<CommandBase>> getCommandGroupWrapperList()
     {
         return new LinkedList<>(commandGroupWrapperList);
+    }
+
+    public CommandGroup getCommandGroup()
+    {
+        return commandGroup;
     }
 }

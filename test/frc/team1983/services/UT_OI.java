@@ -159,13 +159,13 @@ public class UT_OI
     {
         when(joy1.getAxisCount()).thenReturn(1);
         when(joy1.getRawAxis(0)).thenReturn(Constants.OIMap.OIConstants.JOYSTICK_DEADZONE * 0.5);
-        assertThat(oi.getAxis(0, 0), is(0.0));
+        assertThat(oi.getAxis(Constants.OIMap.Port.BUTTONS, 0), is(0.0));
     }
 
     @Test
     public void returnsZeroForNonexistentJoystick()
     {
-        assertThat(oi.getAxis(oi.getJoystickCount(), 0), is(0.0));
+        assertThat(oi.getAxis(Constants.OIMap.Port.BUTTONS, 0), is(0.0));
     }
 
     @Test

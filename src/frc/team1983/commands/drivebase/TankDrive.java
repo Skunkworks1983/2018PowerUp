@@ -33,19 +33,8 @@ public class TankDrive extends CommandBase
         drivebase.setLeft(leftSpeed);
         drivebase.setRight(rightSpeed);
 
-        getLeftSpeed(leftSpeed);
-        getRightSpeed(rightSpeed);
     }
 
-    public double getLeftSpeed(double leftSpeed)
-    {
-        return leftSpeed;
-    }
-
-    public double getRightSpeed(double rightSpeed)
-    {
-        return rightSpeed;
-    }
 
     @Override
     public boolean isFinished()

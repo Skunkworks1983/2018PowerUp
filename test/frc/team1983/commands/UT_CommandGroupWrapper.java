@@ -132,7 +132,7 @@ public class UT_CommandGroupWrapper
     }
 
     @Test
-    public void commandGroupWrapperInteractsWithCommandGroup()
+    public void commandGroupWrapperUsesCommandGroup()
     {
         commandGroupWrapper.addSequential(command0);
         commandGroupWrapper.addParallel(command1);
