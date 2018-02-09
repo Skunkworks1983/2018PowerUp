@@ -3,10 +3,9 @@ package frc.team1983;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.drivebase.TankDrive;
 import frc.team1983.commands.elevator.ElevatorControl;
 import frc.team1983.services.DashboardWrapper;
-import frc.team1983.services.StatefulDashboard;
-import frc.team1983.commands.drivebase.TankDrive;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.settings.Constants;
@@ -61,12 +60,12 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
     }
 
-	@Override
-	public void teleopInit()
-	{
-		Scheduler.getInstance().removeAll();
-		Scheduler.getInstance().add(new TankDrive(drivebase, oi));
-	}
+    @Override
+    public void teleopInit()
+    {
+        Scheduler.getInstance().removeAll();
+        Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+    }
 
     @Override
     public void teleopPeriodic()
