@@ -5,7 +5,7 @@ import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.team1983.subsystems.utilities.Motor;
 
-public class DSJoystick {
+/* public class DSJoystick {
     private boolean continuousPress = false;
     private int motorIndex = 0;
     private Motor motors[] = new Motor[16];
@@ -33,4 +33,4 @@ public class DSJoystick {
     {
         motors[motorIndex].set(joy);
     }
-}
+} */

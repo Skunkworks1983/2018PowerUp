@@ -59,10 +59,10 @@ public class DSButtons
                 {
                     motorIndex += 1;
                 }
-                System.out.println("New motor index is " + motorIndex);
+                System.out.println("New motor index is " + motorIndex + " up");
                 continuousPress = true;
             }
-            if(motorDown.get())
+            else if(motorDown.get())
             {
                 motors[motorIndex].set(0);
                 if(motorIndex == 0)
