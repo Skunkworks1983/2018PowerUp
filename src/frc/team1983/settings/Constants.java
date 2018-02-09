@@ -44,10 +44,10 @@ public class Constants
         //Ports for the collector motors
         public static class CollectorPorts
         {
-            public static final int LEFT_COLLECTOR_PORT = 6; //TODO: Get actual ports
-            public static final int RIGHT_COLLECTOR_PORT = 7;
-            public static final int LEFT_SWITCH_PORT = 0;
-            public static final int RIGHT_SWITCH_PORT = 1;
+            public static final int LEFT_COLLECTOR_PORT = 3;
+            public static final int RIGHT_COLLECTOR_PORT = 12;
+            public static final int LEFT_SWITCH_PORT = 1;
+            public static final int RIGHT_SWITCH_PORT = 2;
         }
 
         //Constants determining if the collector motors should run in the negative direction
@@ -55,8 +55,8 @@ public class Constants
         {
             public static final boolean LEFT_COLLECTOR_REVERSE = false;
             public static final boolean RIGHT_COLLECTOR_REVERSE = true;
-            public static final boolean LEFT_SWITCH_REVERSE = false;
-            public static final boolean RIGHT_SWITCH_REVERSE = false;
+            public static final boolean LEFT_SWITCH_REVERSE = true;
+            public static final boolean RIGHT_SWITCH_REVERSE = true;
         }
 
         //Random and hard to classify drivebase constants
@@ -82,8 +82,8 @@ public class Constants
         //Constants for the elevator rail encoders
         public static class RailEncoders
         {
-            public static final int RAIL_ENCODER_A_PORT = 0; //diO port on the RIO for channel A
-            public static final int RAIL_ENCODER_B_PORT = 1; //diO port on the RIO for channel B
+            public static final int RAIL_ENCODER_A_PORT = 29; //diO port on the RIO for channel A
+            public static final int RAIL_ENCODER_B_PORT = 30; //diO port on the RIO for channel B
             public static final boolean RAIL_ENCODER_REVERSE = false;
 
             /*
@@ -100,11 +100,11 @@ public class Constants
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
         public static final double COLLECTOR_INTAKE_SPEED = 1.0;
         public static final double COLLECTOR_EXPEL_SPEED = -1.0;
-        public static final double COLLECTOR_ROTATE_SPEED = -1.0;
+        public static final double COLLECTOR_ROTATE_SPEED = -0.1;
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
         //is activated that it will always return true (for debouncing)
-        public static final int COLLECTOR_SWITCH_DEBOUNCE_TIME = 25;
+        public static final int COLLECTOR_SWITCH_DEBOUNCE_TIME = 10;
     }
 
     public static class DashboardConstants
@@ -194,8 +194,8 @@ public class Constants
 
         public static class CollectorButtons
         {
-            public static final int INTAKE = 8;
-            public static final int EXPEL = 9;
+            public static final int INTAKE = 0;
+            public static final int EXPEL = 1;
         }
 
         //Enums for presets
