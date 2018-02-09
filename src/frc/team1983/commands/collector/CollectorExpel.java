@@ -11,17 +11,21 @@ public class CollectorExpel extends CommandBase
 
     public CollectorExpel(Collector collector)
     {
-        requires(collector);
         this.collector = collector;
+
+        requires(collector);
     }
 
     @Override
-    public void initialize(){}
+    public void initialize()
+    {
+        collector.setLeft(Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
+        collector.setRight(Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
+    }
 
     @Override
     public void execute()
     {
-        collector.setSpeed(-Constants.PidConstants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
     }
 
 
@@ -35,7 +39,8 @@ public class CollectorExpel extends CommandBase
     @Override
     public void end()
     {
-        collector.setSpeed(0);
+        collector.setLeft(0);
+        collector.setRight(0);
     }
 
 
