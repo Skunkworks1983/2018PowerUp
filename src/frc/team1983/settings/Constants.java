@@ -13,11 +13,11 @@ public class Constants
         //Ports for the drivebase motors
         public static class DrivebasePorts
         {
-            public static final int LEFT_MASTER_PORT = 14; //TODO: Get actual ports
-            public static final int LEFT_SLAVE_0_PORT = 15;
-            public static final int LEFT_SLAVE_1_PORT = 13;
-            public static final int RIGHT_MASTER_PORT = 1;
-            public static final int RIGHT_SLAVE_0_PORT = 0;
+            public static final int LEFT_MASTER_PORT = 13; //TODO: Actual ports are 14,15,13,1,0,2
+            public static final int LEFT_SLAVE_0_PORT = 15;//TODO: Change back before pull request
+            public static final int LEFT_SLAVE_1_PORT = 14;
+            public static final int RIGHT_MASTER_PORT = 0;
+            public static final int RIGHT_SLAVE_0_PORT = 1;
             public static final int RIGHT_SLAVE_1_PORT = 2;
         }
 
@@ -109,22 +109,33 @@ public class Constants
         //PIDF values for the DriveStraight command
         public static class DriveStrightPid
         {
-            public static final double P = 0; //TODO: find pid values
+            public static final double P = 0; //TODO: tune pid
             public static final double I = 0;
             public static final double D = 0;
             public static final double F = 0;
+
+            public static final double DEFAULT_BASE_SPEED = 0.5;
         }
 
         //PIDF values for the TurnAngle command
         public static class TurnAnglePid
         {
-            public static final double P = 0; //TODO: find pid values
+            public static final double P = 0.005; //TODO: tune pid
+            public static final double I = 0;
+            public static final double D = 0;
+            public static final double F = 0;
+        }
+
+        public static class ElevatorControlPid
+        {
+            public static final double P = 0; //TODO: tune pid
             public static final double I = 0;
             public static final double D = 0;
             public static final double F = 0;
         }
 
         //setpoints for motors
+        //TODO: Refactor out of this scope
         public static class MotorSetpoints
         {
 
@@ -172,10 +183,10 @@ public class Constants
 
         public static class SliderConstants
         {
-            public static final int sliderPresetsToggle = 0;
-            public static final int bottomPreset = 1;
-            public static final int switchPreset = 2;
-            public static final int scalePreset = 3;
+            public static final int SLIDER_PRESETS_TOGGLE = 0;
+            public static final int BOTTOM_PRESET = 1;
+            public static final int SWITCH_PRESET = 2;
+            public static final int SCALE_PRESET = 3;
         }
 
         //Enums for presets
@@ -185,6 +196,15 @@ public class Constants
             SWITCH,
             BOTTOM,
             RESTING
+        }
+    }
+
+    public static class SensorMap
+    {
+        public static class GyroConstants
+        {
+            public static final int IS_CONNECTED_TIMEOUT = 500;
+            public static final int IS_CALIBRATING_TIMEOUT = 500;
         }
     }
 }
