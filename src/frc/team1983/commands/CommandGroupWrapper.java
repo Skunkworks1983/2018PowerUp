@@ -40,23 +40,28 @@ public class CommandGroupWrapper
 
     public final synchronized void addParallel(CommandBase command) //adds to List of commands
     {
+
         addSequentialList.add(command);
-        int size = commandGroupWrapperList.size();
-        commandGroupWrapperList.add(size, addSequentialList);
         if(commandGroup != null)
         {
             commandGroup.addParallel(command);
+        }
+        if(commandGroupWrapperList.size() == 0)
+        {
+            commandGroupWrapperList.add(addSequentialList);
         }
     }
 
     public final synchronized void addParallel(CommandBase command, double timeout)
     {
         addSequentialList.add(command);
-        int size = commandGroupWrapperList.size();
-        commandGroupWrapperList.add(size, addSequentialList);
         if(commandGroup != null)
         {
             commandGroup.addParallel(command, timeout);
+        }
+        if(commandGroupWrapperList.size() == 0)
+        {
+            commandGroupWrapperList.add(addSequentialList);
         }
     }
 

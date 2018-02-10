@@ -80,7 +80,7 @@ public class UT_CommandGroupWrapper
     {
         commandGroupWrapper.addSequential(command0);
         commandGroupWrapper.addParallel(command1);
-        assertThat(commandGroupWrapper.getCommandGroupWrapperList().size(), is(2));
+        assertThat(commandGroupWrapper.getCommandGroupWrapperList().size(), is(1));
         assertThat(commandGroupWrapper.getCommandGroupWrapperList().get(0).get(0), is(command0));
         assertThat(commandGroupWrapper.getCommandGroupWrapperList().get(0).get(1), is(command1));
     }
@@ -90,7 +90,7 @@ public class UT_CommandGroupWrapper
     {
         commandGroupWrapper.addSequential(command0, 3);
         commandGroupWrapper.addParallel(command1, 4);
-        assertThat(commandGroupWrapper.getCommandGroupWrapperList().size(), is(2));
+        assertThat(commandGroupWrapper.getCommandGroupWrapperList().size(), is(1));
         assertThat(commandGroupWrapper.getCommandGroupWrapperList().get(0).get(0), is(command0));
         assertThat(commandGroupWrapper.getCommandGroupWrapperList().get(0).get(1), is(command1));
     }

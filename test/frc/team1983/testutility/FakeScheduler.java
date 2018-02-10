@@ -3,16 +3,20 @@ package frc.team1983.testutility;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.commands.CommandGroupWrapper;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class FakeScheduler
 {
     private List<CommandBase> commandQueue = new LinkedList<>();
-    private List<CommandBase> orderFinished = new LinkedList<>();
+    private Set<CommandBase> orderFinished = new LinkedHashSet<>();
     private List<CommandBase> commandGroupRemoval = new LinkedList<>();
+    private List<CommandBase> commandBaseRemoval = new LinkedList<>();
     private int counter = 0;
     private int loopCutOff = 1; //loop number
 
@@ -49,21 +53,26 @@ public class FakeScheduler
                 {
                     c.execute();
                 }
+
+            }
+            for(CommandBase finished : commandBaseRemoval)
+            {
+                commandQueue.remove(finished);
             }
             for(CommandGroupWrapper c : commandGroupMap.keySet())
             {
-                for(CommandBase d : c.getCommandGroupWrapperList().get(commandGroupMap.get(c)))
+                for(CommandBase command : c.getCommandGroupWrapperList().get(commandGroupMap.get(c)))
                 {
 
-                    if(!d.isFinished())
+                    if(!command.isFinished())
                     {
-                        d.execute();
+                        command.execute();
                     }
                     else
                     {
-                        d.end();
-                        commandGroupRemoval.add(d);
-                        orderFinished.add(d);
+                        command.end();
+                        commandGroupRemoval.add(command);
+                        orderFinished.add(command);
                     }
                 }
                 for(CommandBase finished : commandGroupRemoval)
@@ -85,6 +94,7 @@ public class FakeScheduler
                 }
             }
         }
+
     }
 
     public boolean getDone()
@@ -103,7 +113,8 @@ public class FakeScheduler
                         }
                         else
                         {
-                            commandGroupRemoval.add(command);
+                            orderFinished.add(command);
+                            //commandGroupRemoval.add(command);
                         }
                     }
                 }
@@ -121,8 +132,11 @@ public class FakeScheduler
                 else
                 {
                     orderFinished.add(c);
+                    commandBaseRemoval.add(c);
+
                 }
             }
+
         }
         return true;
     }

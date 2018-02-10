@@ -16,10 +16,10 @@ public class Drivebase extends Subsystem
 
     public Drivebase()
     {
-        leftMaster = new Motor(Constants.MotorMap.DrivebasePorts.LEFT_MASTER_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.LEFT_MASTER_REVERSE);
+        leftMaster = new Motor(Constants.MotorMap.DrivebasePorts.LEFT_MASTER_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.LEFT_MASTER_REVERSE, true);
         leftSlave0 = new Motor(Constants.MotorMap.DrivebasePorts.LEFT_SLAVE_0_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.LEFT_SLAVE_0_REVERSE);
         leftSlave1 = new Motor(Constants.MotorMap.DrivebasePorts.LEFT_SLAVE_1_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.LEFT_SLAVE_1_REVERSE);
-        rightMaster = new Motor(Constants.MotorMap.DrivebasePorts.RIGHT_MASTER_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.RIGHT_MASTER_REVERSE);
+        rightMaster = new Motor(Constants.MotorMap.DrivebasePorts.RIGHT_MASTER_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.RIGHT_MASTER_REVERSE, true);
         rightSlave0 = new Motor(Constants.MotorMap.DrivebasePorts.RIGHT_SLAVE_0_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.RIGHT_SLAVE_0_REVERSE);
         rightSlave1 = new Motor(Constants.MotorMap.DrivebasePorts.RIGHT_SLAVE_1_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.RIGHT_SLAVE_1_REVERSE);
 
@@ -48,6 +48,16 @@ public class Drivebase extends Subsystem
 
     protected void initDefaultCommand()
     {
+    }
+
+    public double getLeftDist()
+    {
+        return leftMaster.getPosition();
+    }
+
+    public double getRightDist()
+    {
+        return rightMaster.getPosition();
     }
 }
 

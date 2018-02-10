@@ -36,7 +36,6 @@ public class UT_FakeScheduler
         initMocks(this);
         fakeScheduler = new FakeScheduler();
         commandGroupWrapper = new CommandGroupWrapper(null);
-
     }
 
     @After
@@ -146,9 +145,33 @@ public class UT_FakeScheduler
     }
 
     @Test
-    public void orderFinishedReturnsRightOrder()
+    public void orderFinishedReturnsRightOrderForCommands()
     {
-        //TODO: finish this
+        when(command.isFinished()).thenReturn(true);
+        when(command1.isFinished()).thenReturn(false, true);
+        when(command2.isFinished()).thenReturn(false, false, true);
+        fakeScheduler.add(command);
+        fakeScheduler.add(command1);
+        fakeScheduler.add(command2);
+        fakeScheduler.run();
+        assertThat(fakeScheduler.getOrderFinished().get(0), is(command));
+        assertThat(fakeScheduler.getOrderFinished().get(1), is(command1));
+        assertThat(fakeScheduler.getOrderFinished().get(2), is(command2));
     }
 
+    @Test
+    public void orderFinishedReturnsRightOrderForCommandGroup()
+    {
+        when(command.isFinished()).thenReturn(false,true);
+        when(command1.isFinished()).thenReturn(true);
+        when(command2.isFinished()).thenReturn(true);
+        commandGroupWrapper.addSequential(command);
+        commandGroupWrapper.addParallel(command1);
+        commandGroupWrapper.addSequential(command2);
+        fakeScheduler.add(commandGroupWrapper);
+        fakeScheduler.run();
+        assertThat(fakeScheduler.getOrderFinished().get(0), is(command1));
+        assertThat(fakeScheduler.getOrderFinished().get(1), is(command));
+        assertThat(fakeScheduler.getOrderFinished().get(2), is(command2));
+    }
 }
