@@ -13,18 +13,18 @@ public class Constants
         //Ports for the drivebase motors
         public static class DrivebasePorts
         {
-            public static final int LEFT_MASTER_PORT = 14; //TODO: Get actual ports
-            public static final int LEFT_SLAVE_0_PORT = 15;
-            public static final int LEFT_SLAVE_1_PORT = 13;
-            public static final int RIGHT_MASTER_PORT = 1;
-            public static final int RIGHT_SLAVE_0_PORT = 0;
-            public static final int RIGHT_SLAVE_1_PORT = 2;
+            public static final int LEFT_MASTER_PORT = 0;
+            public static final int LEFT_SLAVE_0_PORT = 1;
+            public static final int LEFT_SLAVE_1_PORT = 2;
+            public static final int RIGHT_MASTER_PORT = 13;
+            public static final int RIGHT_SLAVE_0_PORT = 14;
+            public static final int RIGHT_SLAVE_1_PORT = 15;
         }
 
         //Constants determining if the drivebase motors should run in the negative direction
         public static class DrivebaseReversed
         {
-            public static final boolean LEFT_MASTER_REVERSE = false; //TODO: Verify reverse modes
+            public static final boolean LEFT_MASTER_REVERSE = false;
             public static final boolean LEFT_SLAVE_0_REVERSE = false;
             public static final boolean LEFT_SLAVE_1_REVERSE = false;
             public static final boolean RIGHT_MASTER_REVERSE = false;
@@ -194,8 +194,8 @@ public class Constants
 
         public static class CollectorButtons
         {
-            public static final int INTAKE = 0;
-            public static final int EXPEL = 1;
+            public static final int INTAKE = 8;
+            public static final int EXPEL = 9;
         }
 
         //Enums for presets
