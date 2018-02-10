@@ -3,6 +3,7 @@ package frc.team1983;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.drivebase.TankDrive;
 import frc.team1983.commands.elevator.ElevatorControl;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
@@ -18,7 +19,6 @@ import org.apache.logging.log4j.core.Logger;
 public class Robot extends IterativeRobot
 {
     private static Logger robotLogger;
-    //Properties loggerProperties;
     private OI oi;
     private Drivebase drivebase;
     private Elevator elevator;
@@ -65,7 +65,6 @@ public class Robot extends IterativeRobot
         dashboard.populate();
         Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
         robotLogger.info("AutoInit");
-        getRamps().drop();
     }
 
     @Override
@@ -78,9 +77,9 @@ public class Robot extends IterativeRobot
     public void teleopInit()
     {
         Scheduler.getInstance().removeAll();
+        Scheduler.getInstance().add(new TankDrive(drivebase, oi));
         dashboard.populate();
         Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
-        robotLogger.info("You know I had to do it to em");
     }
 
     @Override
@@ -118,8 +117,6 @@ public class Robot extends IterativeRobot
     {
         return collector;
     }
-
-    public Logger getLogger() { return robotLogger; }
 
     public static Robot getInstance()
     {

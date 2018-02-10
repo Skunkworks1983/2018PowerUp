@@ -1,7 +1,6 @@
 package frc.team1983.subsystems.utilities;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -17,16 +16,19 @@ public class Motor extends TalonSRX
         super(port);
         setNeutralMode(neutralMode);
         setInverted(reversed);
-
-        //The values passed in here are mostly a guess, because the Phoenix documentation is terrible.
-        //The example code doesn't pass in a third value, but I believe if timeoutMs is 0 than it ignores the value.
-        configSelectedFeedbackSensor(QuadEncoder, 0, 0);
     }
 
     public Motor(int port, NeutralMode neutralMode, boolean reversed, boolean hasEncoder)
     {
         this(port, neutralMode, reversed);
         this.hasEncoder = hasEncoder;
+
+        if(this.hasEncoder)
+        {
+            //The values passed in here are mostly a guess, because the Phoenix documentation is terrible.
+            //The example code doesn't pass in a third value, but I believe if timeoutMs is 0 than it ignores the value.
+            configSelectedFeedbackSensor(QuadEncoder, 0, 0);
+        }
     }
 
     //Set the percent output of the motor
