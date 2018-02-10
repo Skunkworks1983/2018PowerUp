@@ -1,6 +1,8 @@
 package frc.team1983.testutility;
 
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.commands.CommandBase;
+import frc.team1983.commands.CommandGroupWrapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,13 +25,17 @@ public class UT_FakeScheduler
     @Mock
     private CommandBase command;
     @Mock
+    private CommandBase command1;
+    @Mock
     private CommandBase command2;
-
+    private CommandGroup commandGroup;
+    private CommandGroupWrapper commandGroupWrapper;
     @Before
     public void setup()
     {
         initMocks(this);
         fakeScheduler = new FakeScheduler();
+        commandGroupWrapper = new CommandGroupWrapper(null);
     }
 
     @After
@@ -89,6 +95,26 @@ public class UT_FakeScheduler
     }
 
     @Test
+    public void runExecutesCommandGroup()
+    {
+        when(command.isFinished()).thenReturn(true);
+        when(command1.isFinished()).thenReturn(true);
+        when(command2.isFinished()).thenReturn(true);
+        commandGroupWrapper.addSequential(command);
+        commandGroupWrapper.addParallel(command1);
+        commandGroupWrapper.addSequential(command2);
+        fakeScheduler.add(commandGroupWrapper);
+        fakeScheduler.run();
+        verify(command, times(1)).initialize();
+        verify(command, times(1)).execute();
+        verify(command1, times(1)).initialize();
+        verify(command1, times(1)).execute();
+        verify(command2, times(1)).initialize();
+        verify(command2, times(1)).execute();
+    }
+
+
+    @Test
     public void getDoneStopsWhenMeetsLoopCutOff()
     {
         when(command.isFinished()).thenReturn(false);
@@ -116,5 +142,36 @@ public class UT_FakeScheduler
         fakeScheduler.run();
         verify(command, times(1)).initialize();
         verify(command, times(3000)).execute();
+    }
+
+    @Test
+    public void orderFinishedReturnsRightOrderForCommands()
+    {
+        when(command.isFinished()).thenReturn(true);
+        when(command1.isFinished()).thenReturn(false, true);
+        when(command2.isFinished()).thenReturn(false, false, true);
+        fakeScheduler.add(command);
+        fakeScheduler.add(command1);
+        fakeScheduler.add(command2);
+        fakeScheduler.run();
+        assertThat(fakeScheduler.getOrderFinished().get(0), is(command));
+        assertThat(fakeScheduler.getOrderFinished().get(1), is(command1));
+        assertThat(fakeScheduler.getOrderFinished().get(2), is(command2));
+    }
+
+    @Test
+    public void orderFinishedReturnsRightOrderForCommandGroup()
+    {
+        when(command.isFinished()).thenReturn(false,true);
+        when(command1.isFinished()).thenReturn(true);
+        when(command2.isFinished()).thenReturn(true);
+        commandGroupWrapper.addSequential(command);
+        commandGroupWrapper.addParallel(command1);
+        commandGroupWrapper.addSequential(command2);
+        fakeScheduler.add(commandGroupWrapper);
+        fakeScheduler.run();
+        assertThat(fakeScheduler.getOrderFinished().get(0), is(command1));
+        assertThat(fakeScheduler.getOrderFinished().get(1), is(command));
+        assertThat(fakeScheduler.getOrderFinished().get(2), is(command2));
     }
 }
