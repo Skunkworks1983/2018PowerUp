@@ -7,16 +7,17 @@ import frc.team1983.commands.elevator.ElevatorControl;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.core.Logger;
 
 public class Robot extends IterativeRobot
 {
-    private static Logger logger ;
+    private static Logger robotLogger;
     //Properties loggerProperties;
     private OI oi;
     private Drivebase drivebase;
@@ -29,8 +30,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
-        System.setProperty("log4j.configurationFile", "2018PowerUp/log4j.xml");
-        logger = Logger.getLogger(Robot.class);
+        robotLogger = LoggerFactory.createNewLogger(Robot.class);
         dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
         dashboard.populate();
         oi = new OI(DriverStation.getInstance());
@@ -40,7 +40,8 @@ public class Robot extends IterativeRobot
         ramps = new Ramps();
 
         oi.initialize(this);
-        logger.fatal("robotInit");
+        robotLogger.info("robotInit");
+
     }
 
 
@@ -63,7 +64,7 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         dashboard.populate();
         Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
-        logger.debug("AutoInit");
+        robotLogger.info("AutoInit");
         getRamps().drop();
     }
 
@@ -71,7 +72,6 @@ public class Robot extends IterativeRobot
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
-        logger.debug("AutoPeriodic");
     }
 
     @Override
@@ -80,14 +80,13 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         dashboard.populate();
         Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
-        logger.info("You know I had to do it to em");
+        robotLogger.info("You know I had to do it to em");
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-        logger.info("Second test");
     }
 
     @Override
@@ -120,7 +119,7 @@ public class Robot extends IterativeRobot
         return collector;
     }
 
-    public Logger getLogger() { return logger; }
+    public Logger getLogger() { return robotLogger; }
 
     public static Robot getInstance()
     {

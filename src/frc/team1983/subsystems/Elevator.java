@@ -4,10 +4,12 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.Robot;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.sensors.DioEncoder;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.MotorGroup;
+import org.apache.logging.log4j.core.Logger;
 
 //The elevator subsystem
 public class Elevator extends Subsystem
@@ -20,6 +22,8 @@ public class Elevator extends Subsystem
     private static NeutralMode ELEVATOR_NEUTRAL_MODE = NeutralMode.Brake;
 
     private double setpoint;
+
+    private Logger elevatorLogger;
 
     public Elevator()
     {
@@ -40,6 +44,7 @@ public class Elevator extends Subsystem
 
         //Initialize the elevator to its resting position
         setSetpoint(Constants.OIMap.Setpoint.RESTING);
+        elevatorLogger = LoggerFactory.createNewLogger(Elevator.class);
     }
 
     //Used by commands to set the speed of the winch. We never want the winch motors running opposite of each other.
