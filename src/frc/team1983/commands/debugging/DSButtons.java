@@ -63,7 +63,7 @@ public class DSButtons
                 System.out.println("Motor up is activated");
                 // motors[motorIndex].set(0);
                 motors.get(motorIndex).set(0);
-                if(motorIndex == motors.size())
+                if(motorIndex == motors.size() - 1)
                 {
                     motorIndex = 0;
                 }
