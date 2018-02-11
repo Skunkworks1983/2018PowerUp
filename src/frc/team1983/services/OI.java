@@ -96,22 +96,21 @@ public class OI
 
     private Joystick getJoystick(Constants.OIMap.Joystick joystick)
     {
-        Joystick joy = left;
-
-        switch(joystick)
+        if(joystickExists(joystick))
         {
-            case RIGHT:
-                joy = right;
-                break;
-            case PANEL:
-                joy = panel;
-                break;
+            switch(joystick)
+            {
+                case LEFT:
+                    return left;
+                case RIGHT:
+                    return right;
+                case PANEL:
+                    return panel;
+            }
         }
 
-        if(!joystickExists(joystick))
-            System.out.println("attempted to access nonexistent joystick: " + joystick);
-
-        return joy;
+        System.out.println("tried to acces joystick that doesn't exist: " + joystick);
+        return new Joystick(0);
     }
 
     private JoystickButton[] getJoystickButtons(Constants.OIMap.Joystick joystick)
