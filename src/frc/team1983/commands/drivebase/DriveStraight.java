@@ -16,11 +16,11 @@ public class DriveStraight extends CommandBase
     private Drivebase drivebase;
     private PIDController pidController;
     PIDSource source;
-    private Logger driveStraightLogger;
+    private Logger logger;
 
     public DriveStraight(double distance, Drivebase drivebase)
     {
-        driveStraightLogger = LoggerFactory.createNewLogger(DriveStraight.class);
+        logger = LoggerFactory.createNewLogger(DriveStraight.class);
         requires(drivebase);
         this.drivebase = drivebase;
         this.distance = distance * Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT;

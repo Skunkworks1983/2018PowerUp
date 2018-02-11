@@ -23,13 +23,13 @@ public class ElevatorControl extends CommandBase
     private String NAME;
 
     private Elevator elevator;
-    private Logger elevatorLogger;
+    private Logger logger;
 
     public ElevatorControl(Elevator elevator, StatefulDashboard dashboard)
     {
         this.elevator = elevator;
         this.dashboard = dashboard;
-        elevatorLogger = LoggerFactory.createNewLogger(ElevatorControl.class);
+        logger = LoggerFactory.createNewLogger(ElevatorControl.class);
 
         NAME = Constants.DashboardConstants.ELEVATOR_CONTROL_NAME;
 

@@ -12,14 +12,14 @@ public class TankDrive extends CommandBase
 {
     private Drivebase drivebase;
     private OI oi;
-    private Logger tankDriveLogger;
+    private Logger logger;
 
     public TankDrive(Drivebase drivebase, OI oi)
     {
         requires(drivebase);
         this.drivebase = drivebase;
         this.oi = oi;
-        tankDriveLogger = LoggerFactory.createNewLogger(TankDrive.class);
+        logger = LoggerFactory.createNewLogger(TankDrive.class);
     }
 
     @Override

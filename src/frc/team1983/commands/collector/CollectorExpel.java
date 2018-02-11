@@ -11,11 +11,11 @@ public class CollectorExpel extends CommandBase
 {
     private Collector collector;
 
-    private Logger collectorExpelLogger;
+    private Logger logger;
 
     public CollectorExpel(Collector collector)
     {
-        collectorExpelLogger = LoggerFactory.createNewLogger(CollectorExpel.class);
+        logger = LoggerFactory.createNewLogger(CollectorExpel.class);
         requires(collector);
         this.collector = collector;
     }

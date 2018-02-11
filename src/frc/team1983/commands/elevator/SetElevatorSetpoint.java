@@ -11,7 +11,7 @@ public class SetElevatorSetpoint extends CommandBase
 {
     private Elevator elevator;
     private OI oi;
-    private Logger setElevatorSetpointLogger;
+    private Logger logger;
 
     private Constants.OIMap.Setpoint setpoint;
 
@@ -22,7 +22,7 @@ public class SetElevatorSetpoint extends CommandBase
         this.elevator = elevator;
         this.oi = oi;
         requires(elevator);
-        setElevatorSetpointLogger = LoggerFactory.createNewLogger(SetElevatorSetpoint.class);
+        logger = LoggerFactory.createNewLogger(SetElevatorSetpoint.class);
     }
 
     @Override

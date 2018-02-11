@@ -9,13 +9,13 @@ import org.apache.logging.log4j.core.Logger;
 public class LowerRamps extends CommandBase
 {
     private Ramps ramp;
-    private Logger lowerRampsLogger;
+    private Logger logger;
 
     public LowerRamps(Ramps ramp)
     {
         requires(ramp);
         this.ramp = ramp;
-        lowerRampsLogger = LoggerFactory.createNewLogger(LowerRamps.class);
+        logger = LoggerFactory.createNewLogger(LowerRamps.class);
     }
 
     @Override

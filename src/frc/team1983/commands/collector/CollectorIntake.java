@@ -12,10 +12,10 @@ public class CollectorIntake extends CommandBase
     private int leftCounter, rightCounter;
     private Collector collector;
 
-    private Logger collectorIntakeLogger;
+    private Logger logger;
     public CollectorIntake(Collector collector)
     {
-        collectorIntakeLogger = LoggerFactory.createNewLogger(CollectorIntake.class);
+        logger = LoggerFactory.createNewLogger(CollectorIntake.class);
         requires(collector);
         this.collector = collector;
 

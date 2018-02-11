@@ -15,13 +15,13 @@ public class Collector extends Subsystem
     //The collector subsystem
     private MotorGroup collectorMotors;
     private Motor left, right;
-    private Logger collectorLogger;
+    private Logger logger;
     private Motor leftMotor, rightMotor;
     private DigitalInputWrapper leftSwitch, rightSwitch;
 
     public Collector()
     {
-        collectorLogger = LoggerFactory.createNewLogger(Collector.class);
+        logger = LoggerFactory.createNewLogger(Collector.class);
 
         leftMotor = new Motor(Constants.MotorMap.CollectorPorts.LEFT_COLLECTOR_PORT, NeutralMode.Coast,
                               Constants.MotorMap.CollectorReversed.LEFT_COLLECTOR_REVERSE);

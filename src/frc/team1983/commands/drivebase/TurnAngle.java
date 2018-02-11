@@ -18,13 +18,13 @@ public class TurnAngle extends CommandBase
     private PIDSource pidSource;
     private PIDOutput pidOut;
     private PidControllerWrapper turnPid;
-    private Logger turnAngleLogger;
+    private Logger logger;
 
     public TurnAngle(double degrees, Drivebase drivebase)
     {
         requires(drivebase);
         this.drivebase = drivebase;
-        turnAngleLogger = LoggerFactory.createNewLogger(TurnAngle.class);
+        logger = LoggerFactory.createNewLogger(TurnAngle.class);
 
         //Uses the TurnAngle specific PidWrapper implementations.
         //pidSource = new TurnAnglePidInput(); Implementation of PidInputWrapper is available on another branch.
