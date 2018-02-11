@@ -7,9 +7,11 @@ import frc.team1983.subsystems.utilities.Motor;
 
 public class RunOneMotor //extends Command
     // commenting out command is needed in order for the test to run without it complaining
+    // RunOneMotor cannot actually run in test most successfully
+    // DSTestFunctionality and DSButtons are the two that run in test mode
 {
     private boolean continuousPress = false;
-    private int motorIndex = 6;
+    private int motorIndex = 0;
     private OI oi;
 
     private Motor motors[] = new Motor[16];
@@ -27,7 +29,7 @@ public class RunOneMotor //extends Command
     protected void initialize()
     {
         System.out.println("command running");
-// leave blank, most happens within constructor
+    // leave blank, most happens within constructor
     }
 
     public void execute()
@@ -36,8 +38,6 @@ public class RunOneMotor //extends Command
     // one of the main reasons it needs to become public is because it will be called in Robot
     {
         //motors[motorIndex].set(0.5);
-        // it is necessary to comment everything below this out, otherwise it will whine
-        // commenting everything under this out also gets rid of the OI necessity]
         // this sets the speed of the motor indexed to half speed
 
        if(!continuousPress)
@@ -59,6 +59,7 @@ public class RunOneMotor //extends Command
                 continuousPress = true;
             }
             // each press goes to the motor above, 1 at a time
+            // the else if stops it from indexing both ways if both buttons are pushed ay the same time
             else if(oi.isPressed(1, 1))
             {
                //selects motor 0 if it was set to motor 15
@@ -78,7 +79,7 @@ public class RunOneMotor //extends Command
         // returns the false if either is not pressed, stops motors from rapidly indexing while trigger is held down
         else
         {
-            if(!(oi.isPressed(0,0)||(oi.isPressed(1,0))))
+            if(!(oi.isPressed(0,1)||(oi.isPressed(1,1))))
             {
                 continuousPress = false;
             }

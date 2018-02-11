@@ -19,6 +19,7 @@ public class DSTestFunctionality
     public DSTestFunctionality()
     {
         int port = 6;
+        // this would allows us to manually select one motor, and run it
        /* motorSelector = new DigitalInput(5);
         manualSpeed = new AnalogInput(2);
         motorSelectorDown = new DigitalInput(4);
@@ -32,6 +33,7 @@ public class DSTestFunctionality
             // the motor indexed here is given the constraints required
            // motorSelector = new DigitalInput(5);
            manualSpeed = new AnalogInput(2);
+           //
         }
     }
     public void initialize()

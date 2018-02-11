@@ -1,5 +1,6 @@
 package frc.team1983;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -13,8 +14,10 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
+import frc.team1983.subsystems.utilities.Motor;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Robot extends IterativeRobot
 {
@@ -94,11 +97,21 @@ public class Robot extends IterativeRobot
     @Override
     public void testInit()
     {
+        ArrayList<Motor> motors;
+        motors = new ArrayList<>();
         if (ButtonTest == null)
         {
             ButtonTest = new DSButtons();
         }
-        ButtonTest.initialize();
+
+        for(int i=0; i<16;i++)
+        {
+            motors.add(new Motor(i, NeutralMode.Coast, false));
+            motors.get(i).setNeutralMode(NeutralMode.Coast);
+            System.out.println("Initialized motor " + i);
+        }
+
+        ButtonTest.initialize(motors);
 
        /* if(DSTest == null)
         {
