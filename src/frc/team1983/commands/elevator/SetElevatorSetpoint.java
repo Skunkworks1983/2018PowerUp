@@ -11,6 +11,7 @@ public class SetElevatorSetpoint extends CommandBase
 {
     private Elevator elevator;
     private OI oi;
+
     private Logger logger;
 
     private Constants.OIMap.Setpoint setpoint;

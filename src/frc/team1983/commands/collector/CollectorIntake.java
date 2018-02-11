@@ -13,6 +13,7 @@ public class CollectorIntake extends CommandBase
     private Collector collector;
 
     private Logger logger;
+
     public CollectorIntake(Collector collector)
     {
         logger = LoggerFactory.createNewLogger(CollectorIntake.class);

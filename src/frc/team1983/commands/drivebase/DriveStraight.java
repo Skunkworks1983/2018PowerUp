@@ -16,6 +16,7 @@ public class DriveStraight extends CommandBase
     private Drivebase drivebase;
     private PIDController pidController;
     PIDSource source;
+
     private Logger logger;
 
     public DriveStraight(double distance, Drivebase drivebase)

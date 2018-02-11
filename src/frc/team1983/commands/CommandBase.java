@@ -4,8 +4,6 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public abstract class CommandBase extends Command
 {
-
-
     @Override
     public abstract void initialize();
 

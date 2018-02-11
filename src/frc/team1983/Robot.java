@@ -41,7 +41,6 @@ public class Robot extends IterativeRobot
 
         oi.initialize(this);
         robotLogger.info("robotInit");
-
     }
 
 

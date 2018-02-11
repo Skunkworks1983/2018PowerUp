@@ -23,6 +23,7 @@ public class ElevatorControl extends CommandBase
     private String NAME;
 
     private Elevator elevator;
+
     private Logger logger;
 
     public ElevatorControl(Elevator elevator, StatefulDashboard dashboard)

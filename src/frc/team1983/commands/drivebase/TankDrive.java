@@ -19,6 +19,7 @@ public class TankDrive extends CommandBase
         requires(drivebase);
         this.drivebase = drivebase;
         this.oi = oi;
+
         logger = LoggerFactory.createNewLogger(TankDrive.class);
     }
 
