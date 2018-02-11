@@ -14,11 +14,11 @@ import org.apache.logging.log4j.core.Logger;
 public class PlaceCubeInSwitch extends CommandGroup
 {
     private boolean isOurColorLeft = true; //TODO: GET SOME REAL INFORMATION FOR THIS
-    private Logger placeCubeInSwitchLogger;
+    private Logger logger;
 
     public PlaceCubeInSwitch(Drivebase drivebase)
     {
-        placeCubeInSwitchLogger = LoggerFactory.createNewLogger(PlaceCubeInSwitch.class);
+        logger = LoggerFactory.createNewLogger(PlaceCubeInSwitch.class);
         double distanceFromLeftWall = SmartDashboard.getNumber("Distance from left wall", 0);
 
         super.addSequential(new DriveStraight(7.0, drivebase)); //are these numbers too magical? they're field constants

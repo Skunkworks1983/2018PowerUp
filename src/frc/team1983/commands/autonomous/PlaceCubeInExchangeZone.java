@@ -20,11 +20,11 @@ public class PlaceCubeInExchangeZone extends CommandGroup
     private Drivebase drivebase = Robot.getInstance().getDrivebase();
     double distanceFromLeftWall = SmartDashboard.getNumber("Distance from left wall", 0);
 
-    private Logger placeCubeInExchangeZoneLogger;
+    private Logger logger;
 
     public PlaceCubeInExchangeZone()
     {
-        placeCubeInExchangeZoneLogger = LoggerFactory.createNewLogger(PlaceCubeInExchangeZone.class);
+        logger = LoggerFactory.createNewLogger(PlaceCubeInExchangeZone.class);
         //these are approximate values! they'll be subbed out later for stuff that works with motion profiling
         super.addSequential(new DriveStraight(5, drivebase));
         super.addSequential(new TurnAngle(90, drivebase));

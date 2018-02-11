@@ -14,11 +14,11 @@ public class PlaceCubeInScale extends CommandGroup
     private Drivebase drivebase = Robot.getInstance().getDrivebase();
     private boolean isOurColorLeft = true; //TODO: GET SOME REAL INFORMATION FOR THIS
 
-    private Logger placeCubeInScaleLogger;
+    private Logger logger;
 
     public PlaceCubeInScale()
     {
-        placeCubeInScaleLogger = LoggerFactory.createNewLogger(PlaceCubeInScale.class);
+        logger = LoggerFactory.createNewLogger(PlaceCubeInScale.class);
 
         double distanceFromLeftWall = SmartDashboard.getNumber("Distance from left wall", 0);
 
