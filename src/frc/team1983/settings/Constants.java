@@ -207,4 +207,8 @@ public class Constants
             RESTING
         }
     }
+
+    public static class Motion {
+        public static final double DEFAULT_MOTIONPROFILE_ACCEL_TIME = 0.5; // [0-1]
+    }
 }
