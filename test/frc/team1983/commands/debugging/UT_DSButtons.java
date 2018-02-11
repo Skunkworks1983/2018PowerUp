@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.hal.HAL;
 import frc.team1983.subsystems.utilities.Motor;
+import org.hamcrest.Matchers;
+import org.hamcrest.number.IsCloseTo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +24,7 @@ public class UT_DSButtons
     {
         HAL.initialize(500, 0);
     }
+
     private DSButtons button;
 
     @Mock
@@ -39,6 +42,9 @@ public class UT_DSButtons
     @Mock
     private Motor motor1;
 
+    @Mock
+    private Motor motor2;
+
     private ArrayList<Motor> motors;
 
     @Before
@@ -50,6 +56,7 @@ public class UT_DSButtons
         motors = new ArrayList<>();
         motors.add(motor0);
         motors.add(motor1);
+        motors.add(motor2);
     }
 
     @After
@@ -58,28 +65,41 @@ public class UT_DSButtons
 
     }
 
-   /*  @Test
+    @Test
     public void manualSpeedReturnsOneTenthForThree()
     {
+        when(manualSpeed.getVoltage()).thenReturn(3.0); //3d is also accepted as a double
+        button.initialize(motors, motorUp, motorDown, manualSpeed);
+        button.execute();
+        assertThat(button.getSpeed(), is(new IsCloseTo(0.1, 0.01)));
+    }
 
-    } */
+    @Test
+    public void manualSpeedReturnsNegativeOneTenthforNegativeThree()
+    {
+        when(manualSpeed.getVoltage()).thenReturn(-3.0);
+        button.initialize(motors, motorUp, motorDown, manualSpeed);
+        button.execute();
+        assertThat(button.getSpeed(), is(new IsCloseTo(-1.1, 0.01)));
+    }
 
     @Test
     public void motorUpTrueReturnsMotorIndexOneForMotorZero()
     {
         when(motorUp.get()).thenReturn(true);
-        button.initialize(motors);
+        button.initialize(motors, motorUp, motorDown, manualSpeed);
         button.execute();
         assertThat(button.getMotorIndex(), is(1));
     }
 
     @Test
-    public void motorDownTrueReturnsMotorIndexFifteenForMotorZero()
+    public void motorDownTrueReturnsMotorIndexZeroForMotorOne()
     {
-        button.initialize(motors);
+        button.initialize(motors, motorUp, motorDown, manualSpeed);
         when(motorUp.get()).thenReturn(false);
         when(motorDown.get()).thenReturn(true);
         button.execute();
-        assertThat(button.getMotorIndex(), is(0));
+        assertThat(button.getMotorIndex(), is(2));
     }
+
 }

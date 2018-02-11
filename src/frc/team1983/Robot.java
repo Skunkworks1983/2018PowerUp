@@ -1,6 +1,8 @@
 package frc.team1983;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -99,6 +101,16 @@ public class Robot extends IterativeRobot
     {
         ArrayList<Motor> motors;
         motors = new ArrayList<>();
+
+        DigitalInput motorUp;
+        DigitalInput motorDown;
+        AnalogInput manualSpeed;
+
+        motorUp = new DigitalInput(5);
+        motorDown = new DigitalInput(4);
+        manualSpeed = new AnalogInput(2);
+
+
         if (ButtonTest == null)
         {
             ButtonTest = new DSButtons();
@@ -111,7 +123,7 @@ public class Robot extends IterativeRobot
             System.out.println("Initialized motor " + i);
         }
 
-        ButtonTest.initialize(motors);
+        ButtonTest.initialize(motors, motorUp, motorDown, manualSpeed);
 
        /* if(DSTest == null)
         {
