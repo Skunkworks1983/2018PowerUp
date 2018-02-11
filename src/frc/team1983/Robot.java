@@ -35,7 +35,13 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
         ramps = new Ramps();
 
-        oi.initialize(this);
+        oi.initializeBindings(this);
+    }
+
+    @Override
+    public void robotPeriodic()
+    {
+        System.out.println(oi.isDown(Constants.OIMap.Joystick.LEFT, 0));
     }
 
 
@@ -43,7 +49,7 @@ public class Robot extends IterativeRobot
     public void disabledInit()
     {
         Scheduler.getInstance().removeAll();
-        dashboard.store();
+        //dashboard.store();
     }
 
     @Override
@@ -55,22 +61,22 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
-        Scheduler.getInstance().removeAll();
-        dashboard.populate();
-        Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
+        //Scheduler.getInstance().removeAll();
+        //dashboard.populate();
+        //Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
     }
 
     @Override
     public void teleopInit()
     {
-        Scheduler.getInstance().removeAll();
+        //Scheduler.getInstance().removeAll();
         Scheduler.getInstance().add(new TankDrive(drivebase, oi));
     }
 
     @Override
     public void teleopPeriodic()
     {
-        Scheduler.getInstance().run();
+        //Scheduler.getInstance().run();
     }
 
     @Override
