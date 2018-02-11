@@ -23,7 +23,7 @@ public class Elevator extends Subsystem
 
     private double setpoint;
 
-    private Logger elevatorLogger;
+    private Logger logger;
 
     public Elevator()
     {
@@ -44,7 +44,7 @@ public class Elevator extends Subsystem
 
         //Initialize the elevator to its resting position
         setSetpoint(Constants.OIMap.Setpoint.RESTING);
-        elevatorLogger = LoggerFactory.createNewLogger(Elevator.class);
+        logger = LoggerFactory.createNewLogger(Elevator.class);
     }
 
     //Used by commands to set the speed of the winch. We never want the winch motors running opposite of each other.

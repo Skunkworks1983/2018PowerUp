@@ -16,7 +16,7 @@ public class Drivebase extends Subsystem
 
     private static NeutralMode DRIVEBASE_NEUTRAL_MODE = NeutralMode.Coast;
 
-    private Logger drivebaseLogger;
+    private Logger logger;
 
     public Drivebase()
     {
@@ -36,7 +36,7 @@ public class Drivebase extends Subsystem
         right.addMotor(rightSlave0);
         right.addMotor(rightSlave1);
 
-        drivebaseLogger = LoggerFactory.createNewLogger(Drivebase.class);
+        logger = LoggerFactory.createNewLogger(Drivebase.class);
 
     }
 

@@ -10,7 +10,7 @@ import org.apache.logging.log4j.core.Logger;
 public class Ramps extends Subsystem
 {
     private ServoWrapper leftDrop, leftProp, rightDrop, rightProp;
-    private Logger rampsLogger;
+    private Logger logger;
 
     public Ramps()
     {
@@ -18,8 +18,7 @@ public class Ramps extends Subsystem
         leftProp = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_LEFT_PROP_PORT);
         rightDrop = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_RIGHT_DROP_PORT);
         rightProp = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_RIGHT_PROP_PORT);
-        rampsLogger = LoggerFactory.createNewLogger(Ramps.class);
-        rampsLogger.fatal("Ramps initialized");
+        logger = LoggerFactory.createNewLogger(Ramps.class);
 
     }
 
