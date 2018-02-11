@@ -36,13 +36,19 @@ public class OI
         initializeButtons(Constants.OIMap.Joystick.PANEL);
     }
 
-    protected OI(Joystick left, Joystick right, Joystick panel, HashMap joystickButtons)
+    protected OI(Joystick left, Joystick right, Joystick panel)
     {
         this.left = left;
         this.right = right;
         this.panel = panel;
 
-        this.joystickButtons = joystickButtons;
+        //this.joystickButtons = joystickButtons;
+
+        joystickButtons = new HashMap<>();
+
+        initializeButtons(Constants.OIMap.Joystick.LEFT);
+        initializeButtons(Constants.OIMap.Joystick.RIGHT);
+        initializeButtons(Constants.OIMap.Joystick.PANEL);
     }
 
     // put your command bindings in here :)
