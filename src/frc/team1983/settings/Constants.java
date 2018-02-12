@@ -166,6 +166,18 @@ public class Constants
             LEFT, RIGHT, PANEL
         }
 
+        public enum Axis
+        {
+            X(0), Y(1), Z(2);
+
+            int value = 0;
+
+            Axis(int value)
+            {
+                this.value = value;
+            }
+        }
+
         //Agglomeration of constants relating to the joysticks
         public static class OIConstants
         {

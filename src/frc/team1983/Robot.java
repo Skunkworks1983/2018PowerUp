@@ -41,9 +41,8 @@ public class Robot extends IterativeRobot
     @Override
     public void robotPeriodic()
     {
-        System.out.println(oi.isDown(Constants.OIMap.Joystick.LEFT, 0));
-    }
 
+    }
 
     @Override
     public void disabledInit()
@@ -82,7 +81,9 @@ public class Robot extends IterativeRobot
     @Override
     public void testPeriodic()
     {
+
     }
+
 
     public Drivebase getDrivebase()
     {
