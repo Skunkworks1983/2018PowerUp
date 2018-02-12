@@ -110,7 +110,7 @@ public class OI
     {
         if(getJoystick(joy) == null)
         {
-            System.out.println("tried to access joystick that does not exist (joy: " + joy + ")");
+            //System.out.println("tried to access joystick that does not exist (joy: " + joy + ")");
         }
 
         return getJoystick(joy) != null;
@@ -123,7 +123,7 @@ public class OI
         {
             if(button + 1 > getJoystick(joy).getButtonCount())
             {
-                System.out.println("tried to access button that doesn't exist (joy: " + joy + ", button: " + button + ")");
+                //System.out.println("tried to access button that doesn't exist (joy: " + joy + ", button: " + button + ")");
             }
         }
 
@@ -137,7 +137,7 @@ public class OI
         {
             if(axis + 1 > getJoystick(joy).getAxisCount())
             {
-                System.out.println("tried to access axis that doesn't exist (joy: " + joy + ", axis: " + axis + ")");
+                //System.out.println("tried to access axis that doesn't exist (joy: " + joy + ", axis: " + axis + ")");
             }
         }
 

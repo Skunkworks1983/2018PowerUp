@@ -49,6 +49,7 @@ public class ElevatorControl extends CommandBase
                                               dashboard.getDouble(NAME, "F"),
                                               pidIn, pidOut);
         controller.enable();
+        controller.initFile();
     }
 
     @Override
@@ -61,6 +62,8 @@ public class ElevatorControl extends CommandBase
         controller.setF(dashboard.getDouble(NAME, "F"));
 
         controller.setSetpoint((int) elevator.getSetpoint());
+
+        controller.writeToFile();
     }
 
     @Override
@@ -72,7 +75,9 @@ public class ElevatorControl extends CommandBase
     @Override
     public void end()
     {
+        System.out.println("ran end");
         controller.disable();
+        controller.closeFile();
     }
 
     @Override

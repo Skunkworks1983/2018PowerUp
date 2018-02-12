@@ -56,15 +56,18 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
-        dashboard.populate();
         Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
+        System.out.println("made elevatorcontrol");
     }
 
     @Override
     public void teleopInit()
     {
+        System.out.println("Removing all...");
         Scheduler.getInstance().removeAll();
         Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+        Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
+        System.out.println("made elevatorcontrol");
     }
 
     @Override
