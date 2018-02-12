@@ -5,9 +5,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
-import frc.team1983.commands.collector.CollectorExpel;
-import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.settings.Constants;
 
 import java.util.HashMap;
@@ -81,6 +78,7 @@ public class OI
     // add your commands bound to oi buttons in here
     public void initialize(Robot robot)
     {
+        /*
         //Elevator presets
         bindToPressed(Constants.OIMap.Port.BUTTONS, Constants.OIMap.SliderConstants.bottomPreset,
                       new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator(), this));
@@ -94,6 +92,7 @@ public class OI
                       new CollectorIntake(robot.getCollector()));
         bindToHeld(Constants.OIMap.Port.BUTTONS, Constants.OIMap.CollectorButtons.EXPEL,
                    new CollectorExpel(robot.getCollector()));
+                   */
 
         // usage example:
         // oi.bindToHeld(Constants.OIMap.LEFTJOY, 5, new TurnAngle(90));

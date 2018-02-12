@@ -1,5 +1,6 @@
 package frc.team1983.commands.drivebase;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import frc.team1983.Robot;
@@ -45,8 +46,8 @@ public class DriveStraight extends CommandBase
     @Override
     public void end()
     {
-        Robot.getInstance().getDrivebase().setLeft(0);
-        Robot.getInstance().getDrivebase().setRight(0);
+        Robot.getInstance().getDrivebase().setLeft(ControlMode.PercentOutput, 0);
+        Robot.getInstance().getDrivebase().setRight(ControlMode.PercentOutput, 0);
     }
 
     @Override

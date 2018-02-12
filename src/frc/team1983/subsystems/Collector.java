@@ -1,5 +1,6 @@
 package frc.team1983.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.settings.Constants;
@@ -9,43 +10,41 @@ import frc.team1983.subsystems.utilities.Motor;
 //Subsystem that will acquire and expel the Power Cubes.
 public class Collector extends Subsystem
 {
-    private Motor leftMotor, rightMotor;
+    private Motor left, right;
     private DigitalInputWrapper leftSwitch, rightSwitch;
 
     public Collector()
     {
-        leftMotor = new Motor(Constants.MotorMap.CollectorPorts.LEFT_COLLECTOR_PORT, NeutralMode.Coast,
-                              Constants.MotorMap.CollectorReversed.LEFT_COLLECTOR_REVERSE);
-        rightMotor = new Motor(Constants.MotorMap.CollectorPorts.RIGHT_COLLECTOR_PORT, NeutralMode.Coast,
-                               Constants.MotorMap.CollectorReversed.RIGHT_COLLECTOR_REVERSE);
-        leftSwitch = new DigitalInputWrapper(Constants.MotorMap.CollectorPorts.LEFT_SWITCH_PORT,
-                                             Constants.MotorMap.CollectorReversed.LEFT_SWITCH_REVERSE);
-        rightSwitch = new DigitalInputWrapper(Constants.MotorMap.CollectorPorts.RIGHT_SWITCH_PORT,
-                                              Constants.MotorMap.CollectorReversed.RIGHT_SWITCH_REVERSE);
-    }
+        left = new Motor(Constants.MotorMap.Collector.LEFT, Constants.MotorMap.Collector.LEFT_REVERSED);
+        right = new Motor(Constants.MotorMap.Collector.RIGHT, Constants.MotorMap.Collector.RIGHT_REVERSED);
 
-    public boolean isLeftPressed()
-    {
-        return leftSwitch.get();
-    }
-
-    public boolean isRightPressed()
-    {
-        return rightSwitch.get();
-    }
-
-    public void setLeft(double value)
-    {
-        leftMotor.set(value);
-    }
-
-    public void setRight(double value)
-    {
-        rightMotor.set(value);
+        leftSwitch = new DigitalInputWrapper(Constants.MotorMap.Collector.LEFT_SWITCH, Constants.MotorMap.Collector.LEFT_SWITCH_REVERSED);
+        rightSwitch = new DigitalInputWrapper(Constants.MotorMap.Collector.RIGHT_SWITCH, Constants.MotorMap.Collector.RIGHT_SWITCH_REVERSED);
     }
 
     public void initDefaultCommand()
     {
+
+    }
+
+    public void setLeft(ControlMode mode, double value)
+    {
+        left.set(mode, value);
+    }
+
+    public void setRight(ControlMode mode, double value)
+    {
+        right.set(mode, value);
+    }
+
+    public boolean isLeftSwitchDown()
+    {
+        return leftSwitch.get();
+    }
+
+    public boolean isRightSwitchDown()
+    {
+        return rightSwitch.get();
     }
 }
 

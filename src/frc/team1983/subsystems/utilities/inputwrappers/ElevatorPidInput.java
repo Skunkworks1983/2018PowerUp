@@ -16,6 +16,6 @@ public class ElevatorPidInput extends PidInputWrapper
 
     public double pidGet()
     {
-        return elevator.getPosition();
+        return 0;
     }
 }

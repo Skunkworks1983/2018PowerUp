@@ -7,30 +7,21 @@ import frc.team1983.subsystems.utilities.ServoWrapper;
 //The ramps of the robot, managing the servos that release the different parts of the mechanism.
 public class Ramps extends Subsystem
 {
-    private ServoWrapper leftDrop, leftProp, rightDrop, rightProp;
+    private ServoWrapper leftLock, rightLock; // locks for the keys attached to the elevator
+    private ServoWrapper leftLeg, rightLeg; // locks for the keys attached to the gas shocks
 
     public Ramps()
     {
-        leftDrop = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_LEFT_DROP_PORT);
-        leftProp = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_LEFT_PROP_PORT);
-        rightDrop = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_RIGHT_DROP_PORT);
-        rightProp = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_RIGHT_PROP_PORT);
-    }
+        leftLock = new ServoWrapper(Constants.MotorMap.Ramps.LEFT_RAMPLOCK);
+        rightLock = new ServoWrapper(Constants.MotorMap.Ramps.RIGHT_RAMPLOCK);
 
-    public void drop()
-    {
-        leftDrop.set(Constants.PidConstants.MotorSetpoints.RAMP_DROP_SERVO_GOAL);
-        rightDrop.set(Constants.PidConstants.MotorSetpoints.RAMP_DROP_SERVO_GOAL);
-    }
-
-    public void prop()
-    {
-        leftProp.set(Constants.PidConstants.MotorSetpoints.RAMP_PROP_SERVO_GOAL);
-        rightProp.set(Constants.PidConstants.MotorSetpoints.RAMP_PROP_SERVO_GOAL);
+        leftLeg = new ServoWrapper(Constants.MotorMap.Ramps.LEFT_LEG);
+        rightLeg = new ServoWrapper(Constants.MotorMap.Ramps.RIGHT_LEG);
     }
 
     public void initDefaultCommand()
     {
+
     }
 }
 

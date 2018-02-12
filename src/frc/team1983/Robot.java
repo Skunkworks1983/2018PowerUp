@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.drivebase.TankDrive;
-import frc.team1983.commands.elevator.ElevatorControl;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
@@ -22,14 +21,16 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private StatefulDashboard dashboard;
+
     private static Robot instance;
 
     @Override
     public void robotInit()
     {
         dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
-        dashboard.populate();
+
         oi = new OI(DriverStation.getInstance());
+
         drivebase = new Drivebase();
         collector = new Collector();
         elevator = new Elevator();
@@ -38,11 +39,19 @@ public class Robot extends IterativeRobot
         oi.initialize(this);
     }
 
+    @Override
+    public void robotPeriodic()
+    {
+        Scheduler.getInstance().run();
+
+        dashboard.populate();
+    }
 
     @Override
     public void disabledInit()
     {
         Scheduler.getInstance().removeAll();
+
         dashboard.store();
     }
 
@@ -56,15 +65,18 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
-        dashboard.populate();
-        Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
+    }
+
+    @Override
+    public void autonomousPeriodic()
+    {
+        Scheduler.getInstance().run();
     }
 
     @Override
     public void teleopInit()
     {
         Scheduler.getInstance().removeAll();
-        Scheduler.getInstance().add(new TankDrive(drivebase, oi));
     }
 
     @Override
@@ -74,9 +86,17 @@ public class Robot extends IterativeRobot
     }
 
     @Override
+    public void testInit()
+    {
+        Scheduler.getInstance().removeAll();
+    }
+
+    @Override
     public void testPeriodic()
     {
+        Scheduler.getInstance().run();
     }
+
 
     public Drivebase getDrivebase()
     {
