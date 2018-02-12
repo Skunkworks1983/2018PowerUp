@@ -29,9 +29,9 @@ public class CollectorIntake extends CommandBase
     @Override
     public void execute()
     {
-        if(isLeftPressed())
+        if(isLeftSwitchDown())
         {
-            if(isRightPressed())
+            if(isRightSwitchDown())
             {
                 collector.setLeft(ControlMode.PercentOutput, 0.0);
                 collector.setRight(ControlMode.PercentOutput, 0.0);
@@ -44,7 +44,7 @@ public class CollectorIntake extends CommandBase
         }
         else
         {
-            if(isRightPressed())
+            if(isRightSwitchDown())
             {
                 collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
                 collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
@@ -77,7 +77,7 @@ public class CollectorIntake extends CommandBase
         this.end();
     }
 
-    private boolean isLeftPressed()
+    private boolean isLeftSwitchDown()
     {
         if(collector.isLeftSwitchDown())
         {
@@ -87,7 +87,7 @@ public class CollectorIntake extends CommandBase
         return leftCounter++ < Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME;
     }
 
-    private boolean isRightPressed()
+    private boolean isRightSwitchDown()
     {
         if(collector.isRightSwitchDown())
         {
