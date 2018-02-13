@@ -2,9 +2,11 @@ package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.MotorGroup;
+import org.apache.logging.log4j.core.Logger;
 
 //The base of the robot. Consists of the drive train motors, slaved to each other.
 public class Drivebase extends Subsystem
@@ -13,6 +15,8 @@ public class Drivebase extends Subsystem
     private Motor leftMaster, leftSlave0, leftSlave1, rightMaster, rightSlave0, rightSlave1;
 
     private static NeutralMode DRIVEBASE_NEUTRAL_MODE = NeutralMode.Coast;
+
+    private Logger logger;
 
     public Drivebase()
     {
@@ -31,6 +35,8 @@ public class Drivebase extends Subsystem
         right = new MotorGroup(rightMaster, true);
         right.addMotor(rightSlave0);
         right.addMotor(rightSlave1);
+
+        logger = LoggerFactory.createNewLogger(Drivebase.class);
 
     }
 

@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.TurnAngle;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.Drivebase;
+import org.apache.logging.log4j.core.Logger;
 
 
 //Places a cube in our switch from any position on the alliance station wall. drives straight until it's centered
@@ -12,9 +14,11 @@ import frc.team1983.subsystems.Drivebase;
 public class PlaceCubeInSwitch extends CommandGroup
 {
     private boolean isOurColorLeft = true; //TODO: GET SOME REAL INFORMATION FOR THIS
+    private Logger logger;
 
     public PlaceCubeInSwitch(Drivebase drivebase)
     {
+        logger = LoggerFactory.createNewLogger(PlaceCubeInSwitch.class);
         double distanceFromLeftWall = SmartDashboard.getNumber("Distance from left wall", 0);
 
         super.addSequential(new DriveStraight(7.0, drivebase)); //are these numbers too magical? they're field constants

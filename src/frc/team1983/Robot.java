@@ -8,14 +8,17 @@ import frc.team1983.commands.elevator.ElevatorControl;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
+import org.apache.logging.log4j.core.Logger;
 
 public class Robot extends IterativeRobot
 {
+    private static Logger robotLogger;
     private OI oi;
     private Drivebase drivebase;
     private Elevator elevator;
@@ -27,6 +30,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
+        robotLogger = LoggerFactory.createNewLogger(Robot.class);
         dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
         dashboard.populate();
         oi = new OI(DriverStation.getInstance());
@@ -36,6 +40,7 @@ public class Robot extends IterativeRobot
         ramps = new Ramps();
 
         oi.initialize(this);
+        robotLogger.info("robotInit");
     }
 
 
@@ -58,6 +63,13 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         dashboard.populate();
         Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
+        robotLogger.info("AutoInit");
+    }
+
+    @Override
+    public void autonomousPeriodic()
+    {
+        Scheduler.getInstance().run();
     }
 
     @Override
@@ -65,6 +77,8 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
         Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+        dashboard.populate();
+        Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
     }
 
     @Override
