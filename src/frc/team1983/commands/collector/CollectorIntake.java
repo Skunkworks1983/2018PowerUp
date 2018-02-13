@@ -2,8 +2,10 @@ package frc.team1983.commands.collector;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.commands.CommandBase;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
+import org.apache.logging.log4j.core.Logger;
 
 //Runs the collector inwards, holding cube in place
 public class CollectorIntake extends CommandBase
@@ -11,8 +13,12 @@ public class CollectorIntake extends CommandBase
     private int leftCounter, rightCounter;
     private Collector collector;
 
+    private Logger logger;
+
     public CollectorIntake(Collector collector)
     {
+        logger = LoggerFactory.createNewLogger(CollectorIntake.class);
+        requires(collector);
         this.collector = collector;
 
         leftCounter = Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME;

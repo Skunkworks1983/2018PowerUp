@@ -3,14 +3,17 @@ package frc.team1983.commands.drivebase;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.OI;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
+import org.apache.logging.log4j.core.Logger;
 
 //Default command for drivebase during Teleop
 public class TankDrive extends CommandBase
 {
     private Drivebase drivebase;
     private OI oi;
+    private Logger logger;
 
     public TankDrive(Drivebase drivebase, OI oi)
     {
@@ -18,6 +21,8 @@ public class TankDrive extends CommandBase
 
         this.drivebase = drivebase;
         this.oi = oi;
+
+        logger = LoggerFactory.createNewLogger(TankDrive.class);
     }
 
     @Override

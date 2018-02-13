@@ -5,8 +5,10 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
+import org.apache.logging.log4j.core.Logger;
 
 //Moves the robot forward a specified number of feet.
 public class DriveStraight extends CommandBase
@@ -16,8 +18,11 @@ public class DriveStraight extends CommandBase
     private PIDController pidController;
     PIDSource source;
 
+    private Logger logger;
+
     public DriveStraight(double distance, Drivebase drivebase)
     {
+        logger = LoggerFactory.createNewLogger(DriveStraight.class);
         requires(drivebase);
         this.drivebase = drivebase;
         this.distance = distance * Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT;

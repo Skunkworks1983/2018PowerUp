@@ -4,15 +4,19 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.MotorGroup;
+import org.apache.logging.log4j.core.Logger;
 
 //The base of the robot. Consists of the drive train motors, slaved to each other.
 public class Drivebase extends Subsystem
 {
     private Motor left1, left2, left3;
     private Motor right1, right2, right3;
+
+    private Logger logger;
 
     public Drivebase()
     {
@@ -32,6 +36,8 @@ public class Drivebase extends Subsystem
 
         left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+
+        logger = LoggerFactory.createNewLogger(Drivebase.class);
     }
 
     public void initDefaultCommand()
