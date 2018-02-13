@@ -166,9 +166,11 @@ public class Constants
             LEFT, RIGHT, PANEL
         }
 
-        public enum Axis
+        public class Axis
         {
-            X, Y, Z;
+            public static final int X = 0;
+            public static final int Y = 1;
+            public static final int Z = 2;
         }
 
         //Agglomeration of constants relating to the joysticks

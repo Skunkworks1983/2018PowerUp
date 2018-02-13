@@ -12,6 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.HashMap;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
@@ -38,6 +40,9 @@ public class UT_OI
     private Joystick panel;
 
     @Mock
+    private JoystickButton joy1button1;
+
+    @Mock
     private DriverStation ds;
 
     @Before
@@ -47,7 +52,11 @@ public class UT_OI
 
         when(left.getButtonCount()).thenReturn(2);
 
-        oi = new OI(left, right, panel);
+        HashMap joystickButtons = new HashMap<Joystick, JoystickButton[]>();
+
+        joystickButtons.put(left, joy1button1);
+
+        oi = new OI(left, right, panel, joystickButtons);
     }
 
     @After
@@ -57,29 +66,57 @@ public class UT_OI
     }
 
     @Test
+    public void returnsJoystickValueForValidJoystick()
+    {
+        when(left.getAxisCount()).thenReturn(1);
+        when(left.getRawAxis(0)).thenReturn(1.0);
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
+    }
+
+    @Test
     public void returnsZeroForNonexistentAxis()
     {
-        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, -1), is(0.0));
+        when(left.getAxisCount()).thenReturn(1);
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 1), is(0.0));
     }
 
     @Test
-    public void returnsOneForOneAxis()
+    public void returnsTrueForExistentButton()
     {
-        when(left.getAxisCount()).thenReturn(2);
-        when(left.getRawAxis(1)).thenReturn(1.0);
-        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 1), is(1.0));
-    }
-
-    @Test
-    public void returnFalseForNonexistentButton()
-    {
-        assertThat(oi.isDown(Constants.OIMap.Joystick.LEFT, -1), is(false));
-    }
-
-    @Test
-    public void returnsTrueForButtonDown()
-    {
+        when(left.getButtonCount()).thenReturn(1);
         when(left.getRawButton(1)).thenReturn(true);
-        assertThat(oi.isDown(Constants.OIMap.Joystick.LEFT, 1), is(true));
+        assertThat(oi.isDown(Constants.OIMap.Joystick.LEFT, 0), is(true));
+    }
+
+    @Test
+    public void returnsFalseForNonexistentButton()
+    {
+        when(left.getButtonCount()).thenReturn(1);
+        assertThat(oi.isDown(Constants.OIMap.Joystick.LEFT, 1), is(false));
+    }
+    
+    @Test
+    public void returnsDeadzonedValue()
+    {
+        when(left.getAxisCount()).thenReturn(1);
+        when(left.getRawAxis(0)).thenReturn(Constants.OIMap.OIConstants.JOYSTICK_DEADZONE * 0.5);
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.PANEL, 0), is(0.0));
+    }
+
+    @Test
+    public void returnsZeroForNonexistentJoystick()
+    {
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.PANEL, 0), is(0.0));
+    }
+
+    @Test
+    public void joystickGetAxisReturnsOneForOne()
+    {
+        when(left.getAxisCount()).thenReturn(1);
+        when(left.getRawAxis(0)).thenReturn(1.0);
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
+
+        when(left.getRawAxis(0)).thenReturn(-1.0);
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(-1.0));
     }
 }

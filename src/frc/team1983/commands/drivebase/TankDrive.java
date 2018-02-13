@@ -27,8 +27,8 @@ public class TankDrive extends CommandBase
     @Override
     public void execute()
     {
-        double leftSpeed = oi.getAxis(Constants.OIMap.Joystick.LEFT, 1);
-        double rightSpeed = oi.getAxis(Constants.OIMap.Joystick.RIGHT, 1);
+        double leftSpeed = oi.getAxis(Constants.OIMap.Joystick.LEFT, Constants.OIMap.Axis.Y);
+        double rightSpeed = oi.getAxis(Constants.OIMap.Joystick.RIGHT, Constants.OIMap.Axis.Y);
 
         drivebase.setLeft(leftSpeed);
         drivebase.setRight(rightSpeed);

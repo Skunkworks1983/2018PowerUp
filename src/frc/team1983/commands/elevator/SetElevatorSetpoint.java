@@ -33,7 +33,7 @@ public class SetElevatorSetpoint extends CommandBase
         //Check to see if the oi is in slider position mode. If so, use the slider pos instead of the preset
         if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.SliderConstants.sliderPresetsToggle))
         {
-            elevator.setSetpoint(oi.getSliderPos());
+            elevator.setSetpoint(oi.getElevatorSliderPos());
         }
         else
         {
