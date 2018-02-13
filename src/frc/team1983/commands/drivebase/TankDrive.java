@@ -32,7 +32,9 @@ public class TankDrive extends CommandBase
 
         drivebase.setLeft(leftSpeed);
         drivebase.setRight(rightSpeed);
+
     }
+
 
     @Override
     public boolean isFinished()
@@ -52,4 +54,6 @@ public class TankDrive extends CommandBase
     {
         this.end();
     }
+
+
 }

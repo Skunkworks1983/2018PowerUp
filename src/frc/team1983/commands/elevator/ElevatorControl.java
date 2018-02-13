@@ -49,7 +49,6 @@ public class ElevatorControl extends CommandBase
                                               dashboard.getDouble(NAME, "F"),
                                               pidIn, pidOut);
         controller.enable();
-        controller.initFile();
     }
 
     @Override
