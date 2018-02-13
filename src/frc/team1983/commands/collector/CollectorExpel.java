@@ -1,5 +1,6 @@
 package frc.team1983.commands.collector;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
@@ -23,8 +24,8 @@ public class CollectorExpel extends CommandBase
     @Override
     public void initialize()
     {
-        collector.setLeft(Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
-        collector.setRight(Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
+        collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
+        collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
     }
 
     @Override
@@ -43,8 +44,8 @@ public class CollectorExpel extends CommandBase
     @Override
     public void end()
     {
-        collector.setLeft(0);
-        collector.setRight(0);
+        collector.setLeft(ControlMode.PercentOutput, 0);
+        collector.setRight(ControlMode.PercentOutput, 0);
     }
 
 

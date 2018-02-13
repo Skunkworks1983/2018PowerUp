@@ -1,50 +1,63 @@
 package frc.team1983.subsystems.utilities;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import static com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder;
+import frc.team1983.util.control.ProfileController;
+import frc.team1983.util.motion.MotionProfile;
 
 //Wrapper class around the WpiLib TalonSRX. Allows us to modify the functionality, and for future extendability.
 public class Motor extends TalonSRX
 {
     private boolean hasEncoder;
+    private ProfileController manager;
 
-    public Motor(int port, NeutralMode neutralMode, boolean reversed)
+    public Motor(int port, boolean reversed)
     {
         super(port);
-        setNeutralMode(neutralMode);
         setInverted(reversed);
+
+        manager = new ProfileController(this);
+        setProfileRunState(false);
     }
 
-    public Motor(int port, NeutralMode neutralMode, boolean reversed, boolean hasEncoder)
+    public Motor(int port, boolean reversed, boolean hasEncoder)
     {
-        this(port, neutralMode, reversed);
-        this.hasEncoder = hasEncoder;
+        super(port);
+        setInverted(reversed);
 
-        if(this.hasEncoder)
+        if(hasEncoder)
         {
-            //The values passed in here are mostly a guess, because the Phoenix documentation is terrible.
-            //The example code doesn't pass in a third value, but I believe if timeoutMs is 0 than it ignores the value.
-            configSelectedFeedbackSensor(QuadEncoder, 0, 0);
+            configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         }
+
+        manager = new ProfileController(this);
+        setProfileRunState(false);
     }
 
-    //Set the percent output of the motor
-    public void set(double value)
+    // don't need this method but it makes things look more readable
+    public void follow(Motor leader)
     {
-        super.set(ControlMode.PercentOutput, value);
+        set(ControlMode.Follower, leader.getDeviceID());
     }
 
-    //Match the output settings of a master motor
-    public void follow(Motor master)
+    public void setProfile(MotionProfile profile)
     {
-        super.set(ControlMode.Follower, master.getDeviceID());
+        manager.setProfile(profile);
     }
 
-    public int getPosition()
+    public void runLoadedProfile()
     {
-        return getSelectedSensorPosition(0);
+        setProfileRunState(true);
+    }
+
+    public void stopLoadedProfile()
+    {
+        setProfileRunState(false);
+    }
+
+    public void setProfileRunState(boolean run)
+    {
+        manager.setEnabled(run);
     }
 }
