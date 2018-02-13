@@ -21,6 +21,8 @@ public class DSButtons
     private AnalogInput manualSpeed;
     // this is a potentiometer plugged into a Analog port on the roboRIO, according to this code its port 2
 
+    // the ports for the digital inputs and analog input have to be changed in robot
+
     public DSButtons()
     {
         // for unit testing, and other purposes, the constructors have been moved to both initalize and robot
