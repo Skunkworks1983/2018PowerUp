@@ -57,8 +57,7 @@ public class OI
     // put your command bindings in here :)
     public void initializeBindings(Robot robot)
     {
-        // usage:
-        // bindToPressed(Constants.OIMap.Joystick.LEFT, 0, new Command());
+        //Intake will run until expel is pressed
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
                       new CollectorIntake(robot.getCollector()));
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.EXPEL,

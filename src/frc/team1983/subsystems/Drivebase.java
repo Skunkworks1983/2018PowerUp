@@ -1,63 +1,68 @@
 package frc.team1983.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.MotorGroup;
+import org.apache.logging.log4j.core.Logger;
 
 //The base of the robot. Consists of the drive train motors, slaved to each other.
 public class Drivebase extends Subsystem
 {
-    private MotorGroup left, right;
-    private Motor leftMaster, leftSlave0, leftSlave1, rightMaster, rightSlave0, rightSlave1;
+    private Motor left1, left2, left3;
+    private Motor right1, right2, right3;
 
-    private static NeutralMode DRIVEBASE_NEUTRAL_MODE = NeutralMode.Coast;
+    private Logger logger;
 
     public Drivebase()
     {
-        leftMaster = new Motor(Constants.MotorMap.DrivebasePorts.LEFT_MASTER_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.LEFT_MASTER_REVERSE, true);
-        leftSlave0 = new Motor(Constants.MotorMap.DrivebasePorts.LEFT_SLAVE_0_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.LEFT_SLAVE_0_REVERSE);
-        leftSlave1 = new Motor(Constants.MotorMap.DrivebasePorts.LEFT_SLAVE_1_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.LEFT_SLAVE_1_REVERSE);
-        rightMaster = new Motor(Constants.MotorMap.DrivebasePorts.RIGHT_MASTER_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.RIGHT_MASTER_REVERSE, true);
-        rightSlave0 = new Motor(Constants.MotorMap.DrivebasePorts.RIGHT_SLAVE_0_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.RIGHT_SLAVE_0_REVERSE);
-        rightSlave1 = new Motor(Constants.MotorMap.DrivebasePorts.RIGHT_SLAVE_1_PORT, DRIVEBASE_NEUTRAL_MODE, Constants.MotorMap.DrivebaseReversed.RIGHT_SLAVE_1_REVERSE);
+        left1 = new Motor(Constants.MotorMap.Drivebase.LEFT_1, Constants.MotorMap.Drivebase.LEFT1_REVERSED, true);
+        left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED, false);
+        left3 = new Motor(Constants.MotorMap.Drivebase.LEFT_3, Constants.MotorMap.Drivebase.LEFT3_REVERSED, false);
 
-        left = new MotorGroup(leftMaster, false);
-        left.addMotor(leftSlave0);
-        left.addMotor(leftSlave1);
+        right1 = new Motor(Constants.MotorMap.Drivebase.RIGHT_1, Constants.MotorMap.Drivebase.RIGHT1_REVERSED, true);
+        right2 = new Motor(Constants.MotorMap.Drivebase.RIGHT_2, Constants.MotorMap.Drivebase.RIGHT2_REVERSED, false);
+        right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED, false);
 
-        //TODO: Make sure this directionality is right.
-        right = new MotorGroup(rightMaster, true);
-        right.addMotor(rightSlave0);
-        right.addMotor(rightSlave1);
+        left2.follow(left1);
+        left3.follow(left1);
+
+        right2.follow(right1);
+        right3.follow(right1);
+
+        left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+        right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+
+        logger = LoggerFactory.createNewLogger(Drivebase.class);
+    }
+
+    public void initDefaultCommand()
+    {
 
     }
 
-    //Set the output of the left motorgroup
-    public void setLeft(double value)
+    public void setLeft(ControlMode mode, double value)
     {
-        left.set(value);
+        left1.set(mode, value);
     }
 
-    //Set the output of the right motorgroup
-    public void setRight(double value)
+    public void setRight(ControlMode mode, double value)
     {
-        right.set(value);
+        right2.set(mode, value);
     }
 
-    protected void initDefaultCommand()
+    public double getLeftEncoderValue()
     {
+        return left1.getSelectedSensorPosition(0);
     }
 
-    public double getLeftDist()
+    public double getRightEncoderValue()
     {
-        return leftMaster.getPosition();
-    }
-
-    public double getRightDist()
-    {
-        return rightMaster.getPosition();
+        return right1.getSelectedSensorPosition(0);
     }
 }
 

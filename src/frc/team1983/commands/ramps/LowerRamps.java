@@ -1,26 +1,33 @@
 package frc.team1983.commands.ramps;
 
 import frc.team1983.commands.CommandBase;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.Ramps;
+import org.apache.logging.log4j.core.Logger;
 
 //Activates the servos that kick down the ramp
 public class LowerRamps extends CommandBase
 {
     private Ramps ramp;
+    private Logger logger;
 
     public LowerRamps(Ramps ramp)
     {
         requires(ramp);
         this.ramp = ramp;
+        logger = LoggerFactory.createNewLogger(LowerRamps.class);
     }
 
     @Override
-    public void initialize(){}
+    public void initialize()
+    {
+
+    }
 
     @Override
     public void execute()
     {
-        ramp.drop();
+
     }
 
     @Override
@@ -30,8 +37,14 @@ public class LowerRamps extends CommandBase
     }
 
     @Override
-    public void end(){}
+    public void end()
+    {
+
+    }
 
     @Override
-    public void interrupted(){this.end();}
+    public void interrupted()
+    {
+        end();
+    }
 }
