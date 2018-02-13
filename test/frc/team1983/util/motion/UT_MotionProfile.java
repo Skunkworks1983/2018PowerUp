@@ -77,7 +77,7 @@ public class UT_MotionProfile
     @Test
     public void returnsConstantVelocityForMiddleInput()
     {
-        double t_a = (totalTime * Constants.DEFAULT_MOTIONPROFILE_ACCEL_TIME) / 2;
+        double t_a = (totalTime * Constants.Motion.DEFAULT_MOTIONPROFILE_ACCEL_TIME) / 2;
         assertThat(profile.evaluateVelocity(totalTime / 2), is(distance / (totalTime - t_a)));
     }
 
