@@ -9,41 +9,38 @@ import java.util.ArrayList;
 public class DSButtons
 {
     private boolean continuousPress = false;
+    // this is used below, stopping the buttons form being held and rapidly indexing through the motors
     private int motorIndex = 0;
-    // motor always starts out on 0
-    //private Motor motors[] = new Motor[16];
+    // motor always starts out on motorIndex 0
     private ArrayList<Motor> motors;
+    // instead of using an array, like originally, now we're using an array list called motors, containing Motor
     private DigitalInput motorUp;
+    // this is a button plugged into an DIO port on the roboRIO
     private DigitalInput motorDown;
+    // this is a button plugged into an DIO port on the roboRIO
     private AnalogInput manualSpeed;
+    // this is a potentiometer plugged into an Analog port on the roboRIO
 
     public DSButtons()
     {
-        /*this.motorUp = motorUp;
-        this.motorDown = motorDown;
-        this.manualSpeed = manualSpeed; */
-
-       /* motorUp = new DigitalInput(5);
-        motorDown = new DigitalInput(4);
-        manualSpeed = new AnalogInput(2); */
-
+        // originally, this constructor contained the setting up of the motors and the buttons
+        // for unit testing, and other purposes, the constructors have been moved to both initalize and robot
+        // all the required code for this class to function is still available, in different places and formats
     }
 
     public void initialize(ArrayList<Motor> motorList, DigitalInput indexUp, DigitalInput indexDown, AnalogInput manSpeed)
+            // it's required we pass in the array list, digital inputs, and analog input in order for this class to work
+            // anywhere initalize is called, these methods have to be passed in
     {
         motorUp = indexUp;
+        // motorup here is set equal to indexup, which is used when calling initialize
         motorDown = indexDown;
+        // motordown here is set equal to indexdown, which is used when calling initialize
         manualSpeed = manSpeed;
+        // manualspeed here is set equal to manspeed, which is used when calling initalize
 
         motors = new ArrayList<Motor>(motorList);
-
-       // motors.get(motorIndex).setNeutralMode(NeutralMode.Coast);
-        /* for(int i=0; i<16;i++)
-        {
-            motors.add(new Motor(i, NeutralMode.Coast, false));
-            motors.get(i).setNeutralMode(NeutralMode.Coast);
-            System.out.println("Initialized motor " + i);
-        } */
+        // the array list of motors here is set to
     }
 
     public void execute()
