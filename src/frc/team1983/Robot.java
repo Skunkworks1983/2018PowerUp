@@ -28,6 +28,7 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
+        dashboard.populate();
 
         oi = new OI(DriverStation.getInstance());
 
@@ -42,9 +43,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotPeriodic()
     {
-        Scheduler.getInstance().run();
-
-        dashboard.populate();
+        
     }
 
     @Override
