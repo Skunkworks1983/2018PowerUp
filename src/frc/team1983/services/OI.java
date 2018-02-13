@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
+import frc.team1983.commands.collector.CollectorExpel;
+import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.settings.Constants;
 
@@ -56,11 +58,21 @@ public class OI
     {
         // usage:
         // bindToPressed(Constants.OIMap.Joystick.LEFT, 0, new Command());
+
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
+                      new CollectorIntake(robot.getCollector()));
+        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.EXPEL,
+                   new CollectorExpel(robot.getCollector()));
     }
 
     public double getSliderPos()
     {
-        return 0;
+        //The 2017 slider on the OI was a joystick axis. All code taken from 2017
+        double x = getAxis(Constants.OIMap.Joystick.PANEL, 0);
+        x = Math.pow(x, 10);
+        x = x / Constants.OIMap.OIConstants.SLIDER_SCALAR;
+        x = 1 - x;
+        return x;
     }
 
     public void initializeButtons(Constants.OIMap.Joystick joystick)
