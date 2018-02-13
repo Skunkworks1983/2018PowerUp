@@ -1,6 +1,7 @@
 package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.settings.Constants;
@@ -28,6 +29,9 @@ public class Drivebase extends Subsystem
 
         right2.follow(right1);
         right3.follow(right1);
+
+        left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+        right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
     }
 
     public void initDefaultCommand()
@@ -43,6 +47,16 @@ public class Drivebase extends Subsystem
     public void setRight(ControlMode mode, double value)
     {
         right2.set(mode, value);
+    }
+
+    public double getLeftEncoderValue()
+    {
+        return left1.getSelectedSensorPosition(0);
+    }
+
+    public double getRightEncoderValue()
+    {
+        return right1.getSelectedSensorPosition(0);
     }
 }
 
