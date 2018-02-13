@@ -32,7 +32,7 @@ public class MotionProfile
     private double t_a;
     private double acc;
 
-    public MotionProfile(double distance, double totalTime, double vel_max, double acc_max) throws RuntimeException
+    public MotionProfile(double distance, double totalTime, double vel_max, double acc_max)
     {
         double t_a = (totalTime * Constants.Motion.DEFAULT_MOTIONPROFILE_ACCEL_TIME) / 2;
         double vel_c = distance / (totalTime - t_a);
@@ -60,7 +60,7 @@ public class MotionProfile
         }
         else
         {
-            throw new RuntimeException("Motion Profile undefined (vel_max: " + vel_max + ", vel_c: " + vel_c + ")");
+            throw new IllegalArgumentException("Motion Profile undefined (vel_max: " + vel_max + ", vel_c: " + vel_c + ")");
         }
     }
 
@@ -89,7 +89,7 @@ public class MotionProfile
     }
 
     // evaluates the desired velocity of the profile at a time
-    public double evaluateVelocity(double time) throws RuntimeException
+    public double evaluateVelocity(double time)
     {
         if(0 <= time && time <= totalTime)
         {
@@ -106,12 +106,12 @@ public class MotionProfile
         }
         else
         {
-            throw new RuntimeException("Time " + time + " is not in the domain of motion profile");
+            throw new IllegalArgumentException("Time " + time + " is not in the domain of motion profile");
         }
     }
 
     // evaluates the riemann sum up to a time
-    public double evaluatePosition(double time) throws RuntimeException
+    public double evaluatePosition(double time)
     {
         if(0 <= time && time <= totalTime)
         {
@@ -139,7 +139,7 @@ public class MotionProfile
         }
         else
         {
-            throw new RuntimeException("Time " + time + " is not in the domain of motion profile");
+            throw new IllegalArgumentException("Time " + time + " is not in the domain of motion profile");
         }
     }
 
