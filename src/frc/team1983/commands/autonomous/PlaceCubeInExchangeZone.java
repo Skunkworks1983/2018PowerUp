@@ -5,7 +5,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.Robot;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.TurnAngle;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.Drivebase;
+import org.apache.logging.log4j.core.Logger;
 
 
 /*  This autonomous places the starting cube in the exchange zone, then drives in reverse past the auto line.
@@ -18,8 +20,11 @@ public class PlaceCubeInExchangeZone extends CommandGroup
     private Drivebase drivebase = Robot.getInstance().getDrivebase();
     double distanceFromLeftWall = SmartDashboard.getNumber("Distance from left wall", 0);
 
+    private Logger logger;
+
     public PlaceCubeInExchangeZone()
     {
+        logger = LoggerFactory.createNewLogger(PlaceCubeInExchangeZone.class);
         //these are approximate values! they'll be subbed out later for stuff that works with motion profiling
         super.addSequential(new DriveStraight(5, drivebase));
         super.addSequential(new TurnAngle(90, drivebase));

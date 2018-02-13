@@ -4,11 +4,13 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.StatefulDashboard;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.utilities.PidControllerWrapper;
 import frc.team1983.subsystems.utilities.inputwrappers.ElevatorPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.ElevatorPidOutput;
+import org.apache.logging.log4j.core.Logger;
 
 //This command controls the elevator with a PID. It should be the only class that
 // sets the speed of the elevator winches
@@ -22,10 +24,13 @@ public class ElevatorControl extends CommandBase
 
     private Elevator elevator;
 
+    private Logger logger;
+
     public ElevatorControl(Elevator elevator, StatefulDashboard dashboard)
     {
         this.elevator = elevator;
         this.dashboard = dashboard;
+        logger = LoggerFactory.createNewLogger(ElevatorControl.class);
 
         NAME = Constants.DashboardConstants.ELEVATOR_CONTROL_NAME;
 
