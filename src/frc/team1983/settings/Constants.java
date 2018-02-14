@@ -39,8 +39,9 @@ public class Constants
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = false;
-            public static final boolean RIGHT1_REVERSED = true;
-            public static final boolean RIGHT2_REVERSED = false;
+
+            public static final boolean RIGHT1_REVERSED = false;
+            public static final boolean RIGHT2_REVERSED = true;
         }
 
         public static class Collector

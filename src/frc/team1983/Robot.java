@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.drivebase.TankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
+import frc.team1983.services.SmellyParser.SmellyParser;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
@@ -24,6 +25,8 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private StatefulDashboard dashboard;
+    private SmellyParser smellyParser;
+    private DashboardWrapper dashboardWrapper;
 
     private static Robot instance;
 
@@ -31,7 +34,8 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         robotLogger = LoggerFactory.createNewLogger(Robot.class);
-        dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
+        dashboardWrapper = new DashboardWrapper();
+        dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
         dashboard.populate();
 
         oi = new OI(DriverStation.getInstance());
@@ -40,6 +44,7 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
+        smellyParser = new SmellyParser(dashboardWrapper);
 
         oi.initializeBindings(this);
         robotLogger.info("robotInit");
@@ -68,6 +73,8 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
+        smellyParser.constructPath(); //Needs to happen before SmellyDrive
+
         Scheduler.getInstance().removeAll();
 
         robotLogger.info("AutoInit");

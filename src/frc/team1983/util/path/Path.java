@@ -13,7 +13,7 @@ public class Path
 
     public PathComponent getComponent(int index)
     {
-        if(index + 1 <= components.size())
+        if(index < components.size())
         {
             return components.get(index);
         }

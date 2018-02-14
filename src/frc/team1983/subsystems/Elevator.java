@@ -29,6 +29,8 @@ public class Elevator extends Subsystem
         left2.follow(left1);
         right2.follow(right1);
 
+        right1.follow(left1);
+
         left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 
         //The encoders on the rail
@@ -43,7 +45,6 @@ public class Elevator extends Subsystem
     public void set(ControlMode mode, double value)
     {
         left1.set(mode, value);
-        right1.set(mode, value);
     }
 
     public void setProfile(MotionProfile profile)
