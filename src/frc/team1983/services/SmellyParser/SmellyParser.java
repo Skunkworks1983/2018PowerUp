@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.services.DashboardWrapper;
-import frc.team1983.services.StatefulDashboard;
+import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.settings.Constants;
 import frc.team1983.util.path.Path;
 import frc.team1983.util.path.PathArc;
 import frc.team1983.util.path.PathComponent;
+import org.apache.logging.log4j.core.Logger;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -23,27 +25,25 @@ public class SmellyParser
     private List<PathComponent> components;
     private File[] files;
     private File file;
+    private Logger logger;
     //This puts directly to smartdashboard because we actually don't want this to stick around, as files may change
     private DashboardWrapper dashboard;
-
-    //Things to put in constants
-    public static final File SMELLYFOLDER = new File("/u/");
-    public static final String AUTOPATHKEY = "SmellyPath";
-    public static final File DEFAULTPATH = new File("/lvuser/DefaultSmellyPath.json");
 
     public SmellyParser(DashboardWrapper dashboard)
     {
         this.dashboard = dashboard;
+        logger = LoggerFactory.createNewLogger(this.getClass());
         objectMapper = new ObjectMapper();
         components = new ArrayList<>();
         FilenameFilter filter = (file, name) -> name.toLowerCase().endsWith(".json");
-        SmartDashboard.putNumber(AUTOPATHKEY, 0.0);
+        SmartDashboard.putNumber(Constants.SmellyParser.AUTOPATHKEY, 0.0);
 
-        files = SMELLYFOLDER.listFiles(filter);
+        files = Constants.SmellyParser.SMELLYFOLDER.listFiles(filter);
         if(files == null)
         {
             files = new File[1];
-            files[0] = DEFAULTPATH;
+            files[0] = Constants.SmellyParser.DEFAULTPATH;
+            logger.error("Found no json files on usb drive, using default path");
         }
 
         for(int i = 0; i < files.length; i++)
@@ -54,10 +54,13 @@ public class SmellyParser
 
     public void constructPath()
     {
-        components.clear();
         try
         {
-            file = new File("/u/" + files[dashboard.getNumber(AUTOPATHKEY, 0.0).intValue()] + ".json");
+            components.clear();
+
+            file = new File("/u/" + files[
+                    dashboard.getNumber(Constants.SmellyParser.AUTOPATHKEY, 0.0).intValue()] + ".json");
+            logger.info("Using " + file);
 
             Map<String, String> fileMap = objectMapper.readValue(file, new TypeReference<Map<String,String>>(){});
             List<ControlPoint> controlPoints = objectMapper.readValue(fileMap.get("points"),
@@ -78,7 +81,8 @@ public class SmellyParser
         }
         catch(IOException e)
         {
-            //todo log this
+            logger.error("Exception when constructing path");
+            logger.error(e);
         }
     }
 
