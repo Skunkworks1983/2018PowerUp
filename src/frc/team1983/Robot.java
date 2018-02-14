@@ -3,12 +3,14 @@ package frc.team1983;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.debugging.RunOneMotor;
+import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.TankDrive;
-import frc.team1983.commands.elevator.ElevatorControl;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
@@ -32,7 +34,9 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private StatefulDashboard dashboard;
+
     private static Robot instance;
+
     private RunOneMotor runOneMotor;
 
     @Override
@@ -41,21 +45,29 @@ public class Robot extends IterativeRobot
         robotLogger = LoggerFactory.createNewLogger(Robot.class);
         dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
         dashboard.populate();
+
         oi = new OI(DriverStation.getInstance());
+
         drivebase = new Drivebase();
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
 
-        oi.initialize(this);
+        oi.initializeBindings(this);
         robotLogger.info("robotInit");
     }
 
+    @Override
+    public void robotPeriodic()
+    {
+
+    }
 
     @Override
     public void disabledInit()
     {
         Scheduler.getInstance().removeAll();
+
         dashboard.store();
     }
 
@@ -69,8 +81,7 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
-        dashboard.populate();
-        Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
+
         robotLogger.info("AutoInit");
     }
 
@@ -88,9 +99,8 @@ public class Robot extends IterativeRobot
             runOneMotor.end();
         }
         Scheduler.getInstance().removeAll();
+
         Scheduler.getInstance().add(new TankDrive(drivebase, oi));
-        dashboard.populate();
-        Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
     }
 
     @Override
@@ -102,6 +112,7 @@ public class Robot extends IterativeRobot
     @Override
     public void testInit()
     {
+        Scheduler.getInstance().removeAll();
         ArrayList<Motor> motors;
         motors = new ArrayList<>();
 
@@ -129,6 +140,12 @@ public class Robot extends IterativeRobot
         runOneMotor.initialize(motors, motorUp, motorDown, manualSpeed);
 
     }
+    @Override
+    public void testInit()
+    {
+        Scheduler.getInstance().removeAll();
+    }
+
     @Override
     public void testPeriodic()
     {

@@ -9,89 +9,68 @@ public class Constants
     //MotorMap contains all constants that motors require (ports, reversed values, etc)
     public static class MotorMap
     {
-
         //Ports for the drivebase motors
-        public static class DrivebasePorts
+        public static class Drivebase
         {
-            public static final int LEFT_MASTER_PORT = 0;
-            public static final int LEFT_SLAVE_0_PORT = 1;
-            public static final int LEFT_SLAVE_1_PORT = 2;
-            public static final int RIGHT_MASTER_PORT = 13;
-            public static final int RIGHT_SLAVE_0_PORT = 14;
-            public static final int RIGHT_SLAVE_1_PORT = 15;
+            public static final int LEFT_1 = 1;
+            public static final int LEFT_2 = 0;
+            public static final int LEFT_3 = 2;
+
+            public static final int RIGHT_1 = 14;
+            public static final int RIGHT_2 = 13;
+            public static final int RIGHT_3 = 15;
+
+            public static final boolean LEFT1_REVERSED = true;
+            public static final boolean LEFT2_REVERSED = true;
+            public static final boolean LEFT3_REVERSED = true;
+
+            public static final boolean RIGHT1_REVERSED = false;
+            public static final boolean RIGHT2_REVERSED = false;
+            public static final boolean RIGHT3_REVERSED = false;
         }
 
-        //Constants determining if the drivebase motors should run in the negative direction
-        public static class DrivebaseReversed
+        public static class Elevator
         {
-            public static final boolean LEFT_MASTER_REVERSE = false;
-            public static final boolean LEFT_SLAVE_0_REVERSE = false;
-            public static final boolean LEFT_SLAVE_1_REVERSE = false;
-            public static final boolean RIGHT_MASTER_REVERSE = false;
-            public static final boolean RIGHT_SLAVE_0_REVERSE = false;
-            public static final boolean RIGHT_SLAVE_1_REVERSE = false;
+            public static final int LEFT1 = 0;
+            public static final int LEFT2 = 0;
+
+            public static final int RIGHT1 = 0;
+            public static final int RIGHT2 = 0;
+
+            public static final boolean LEFT1_REVERSED = true;
+            public static final boolean LEFT2_REVERSED = false;
+            public static final boolean RIGHT1_REVERSED = true;
+            public static final boolean RIGHT2_REVERSED = false;
         }
 
-        //Ports for the ramp servos
-        public static class RampPorts
+        public static class Collector
         {
-            public static final int RAMP_LEFT_DROP_PORT = 6; //TODO: find actual port
-            public static final int RAMP_LEFT_PROP_PORT = 7;
-            public static final int RAMP_RIGHT_DROP_PORT = 8;
-            public static final int RAMP_RIGHT_PROP_PORT = 9;
+            public static final int LEFT = 0;
+            public static final int RIGHT = 0;
+
+            public static final boolean LEFT_REVERSED = true;
+            public static final boolean RIGHT_REVERSED = false;
+
+            public static final int LEFT_SWITCH = 0;
+            public static final int RIGHT_SWITCH = 0;
+
+            public static final boolean LEFT_SWITCH_REVERSED = false;
+            public static final boolean RIGHT_SWITCH_REVERSED = false;
         }
 
-        //Ports for the collector motors
-        public static class CollectorPorts
+        public static class Ramps
         {
-            public static final int LEFT_COLLECTOR_PORT = 3;
-            public static final int RIGHT_COLLECTOR_PORT = 12;
-            public static final int LEFT_SWITCH_PORT = 1;
-            public static final int RIGHT_SWITCH_PORT = 2;
-        }
+            public static final int LEFT_RAMPLOCK = 0;
+            public static final int RIGHT_RAMPLOCK = 0;
 
-        //Constants determining if the collector motors should run in the negative direction
-        public static class CollectorReversed
-        {
-            public static final boolean LEFT_COLLECTOR_REVERSE = false;
-            public static final boolean RIGHT_COLLECTOR_REVERSE = true;
-            public static final boolean LEFT_SWITCH_REVERSE = true;
-            public static final boolean RIGHT_SWITCH_REVERSE = true;
+            public static final int LEFT_LEG = 0;
+            public static final int RIGHT_LEG = 0;
         }
 
         //Random and hard to classify drivebase constants
         public static class DrivebaseConstants
         {
             public static final double DRIVEBASE_TICKS_PER_FOOT = 0;
-        }
-
-        //Ports for the Elevator Winches
-        public static class ElevatorWinchPorts
-        {
-            public static final int LEFT_WINCH_PORT = 6;
-            public static final int RIGHT_WINCH_PORT = 7;
-        }
-
-        //Constants to determine if the elevator winches should run in the negative direction
-        public static class ElevatorWinchReversed
-        {
-            public static final boolean LEFT_WINCH_REVERSE = false;
-            public static final boolean RIGHT_WINCH_REVERSE = true;
-        }
-
-        //Constants for the elevator rail encoders
-        public static class RailEncoders
-        {
-            public static final int RAIL_ENCODER_A_PORT = 29; //diO port on the RIO for channel A
-            public static final int RAIL_ENCODER_B_PORT = 30; //diO port on the RIO for channel B
-            public static final boolean RAIL_ENCODER_REVERSE = false;
-
-            /*
-            We give the elevator a double between 0 and 1, but the encoder operates
-            on a currently unknown scale from 0 to whatever, so multiply the the input
-            by this value to have 1 be the maximum
-            */
-            public static final int ELEVATOR_ENCODER_SCALAR = 1;
         }
     }
 
@@ -142,7 +121,6 @@ public class Constants
         //setpoints for motors
         public static class MotorSetpoints
         {
-
             //the position to which the ramp servos rotate.
             public static final double RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
             public static final double RAMP_PROP_SERVO_GOAL = 1;
@@ -157,19 +135,20 @@ public class Constants
     //this contains all values relevant to the OI.
     public static class OIMap
     {
-        public static String CONSOLE_JOYSTICK_NAME = "Skunk Works DS";
+        public static final int LEFTJOY_PORT = 0;
+        public static final int RIGHTJOY_PORT = 1;
+        public static final int PANEL_PORT = 2;
 
-        //Ports for the OI joysticks, buttons, steering wheel, etc.
-        public enum Port
+        public enum Joystick
         {
-            LEFT_JOY, RIGHT_JOY, WHEEL, THROTTLE, BUTTONS
+            LEFT, RIGHT, PANEL
         }
 
-        //Axes of each joystick
-        public static class JoyAxes
+        public class Axis
         {
             public static final int X = 0;
             public static final int Y = 1;
+            public static final int Z = 2;
         }
 
         //Agglomeration of constants relating to the joysticks
@@ -206,5 +185,9 @@ public class Constants
             BOTTOM,
             RESTING
         }
+    }
+
+    public static class Motion {
+        public static final double DEFAULT_MOTIONPROFILE_ACCEL_TIME = 0.5; // [0-1]
     }
 }

@@ -15,11 +15,11 @@ import org.mockito.Mock;
 import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.times;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 public class UT_OI
 {
@@ -31,40 +31,32 @@ public class UT_OI
     private OI oi;
 
     @Mock
-    private DriverStation ds;
+    private Joystick left;
 
     @Mock
-    private Joystick joy1;
+    private Joystick right;
 
     @Mock
-    private Joystick joy2;
+    private Joystick panel;
 
     @Mock
     private JoystickButton joy1button1;
 
-    private HashMap<Integer, Joystick> joysticks;
-    private HashMap<Integer, JoystickButton[]> buttons;
-    private HashMap<Constants.OIMap.Port, Integer> portMap;
+    @Mock
+    private DriverStation ds;
 
     @Before
     public void setup()
     {
         initMocks(this);
 
-        joysticks = new HashMap<>();
-        buttons = new HashMap<>();
-        portMap = new HashMap<>();
+        when(left.getButtonCount()).thenReturn(2);
 
-        joysticks.put(0, joy1);
-        joysticks.put(1, joy2);
+        HashMap joystickButtons = new HashMap<Joystick, JoystickButton[]>();
 
-        buttons.put(0, new JoystickButton[]{joy1button1});
-        buttons.put(1, new JoystickButton[]{});
+        joystickButtons.put(left, joy1button1);
 
-        portMap.put(Constants.OIMap.Port.LEFT_JOY, 0);
-        portMap.put(Constants.OIMap.Port.RIGHT_JOY, 1);
-
-        oi = new OI(joysticks, buttons, portMap);
+        oi = new OI(left, right, panel, joystickButtons);
     }
 
     @After
@@ -74,106 +66,57 @@ public class UT_OI
     }
 
     @Test
-    public void successfullyCreatesJoysticks()
-    {
-        when(ds.getStickButtonCount(0)).thenReturn(1);
-        when(ds.getStickAxisCount(1)).thenReturn(1);
-
-        when(ds.getJoystickName(0)).thenReturn("jimmy");
-        when(ds.getJoystickName(1)).thenReturn("jimmy");
-
-        oi = new OI(ds);
-
-        assertThat(oi.getJoystickCount(), is(2));
-        assertThat(oi.getJoystickButtonCount(Constants.OIMap.Port.LEFT_JOY), is(1));
-        assertThat(oi.getJoystickButtonCount(Constants.OIMap.Port.RIGHT_JOY), is(0));
-    }
-
-    @Test
-    public void createsPortMapSuccessfully()
-    {
-        when(joy1.getAxisCount()).thenReturn(1);
-        when(joy2.getAxisCount()).thenReturn(1);
-
-        when(joy1.getRawAxis(0)).thenReturn(1.0);
-        when(joy2.getRawAxis(0)).thenReturn(0.5);
-
-        assertThat(oi.getRawAxis(Constants.OIMap.Port.LEFT_JOY, 0), is(1.0));
-        assertThat(oi.getRawAxis(Constants.OIMap.Port.RIGHT_JOY, 0), is(0.5));
-    }
-
-    @Test
     public void returnsJoystickValueForValidJoystick()
     {
-        when(joy1.getAxisCount()).thenReturn(1);
-        when(joy1.getRawAxis(0)).thenReturn(1.0);
-        assertThat(oi.getAxis(Constants.OIMap.Port.LEFT_JOY, 0), is(1.0));
+        when(left.getAxisCount()).thenReturn(1);
+        when(left.getRawAxis(0)).thenReturn(1.0);
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
     }
 
     @Test
     public void returnsZeroForNonexistentAxis()
     {
-        when(joy1.getAxisCount()).thenReturn(1);
-        assertThat(oi.getAxis(Constants.OIMap.Port.LEFT_JOY, 1), is(0.0));
+        when(left.getAxisCount()).thenReturn(1);
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 1), is(0.0));
     }
 
     @Test
     public void returnsTrueForExistentButton()
     {
-        when(joy1.getButtonCount()).thenReturn(1);
-        when(joy1.getRawButton(1)).thenReturn(true);
-        assertThat(oi.isDown(Constants.OIMap.Port.LEFT_JOY, 0), is(true));
+        when(left.getButtonCount()).thenReturn(1);
+        when(left.getRawButton(1)).thenReturn(true);
+        assertThat(oi.isDown(Constants.OIMap.Joystick.LEFT, 0), is(true));
     }
 
     @Test
     public void returnsFalseForNonexistentButton()
     {
-        when(joy1.getButtonCount()).thenReturn(1);
-        assertThat(oi.isDown(Constants.OIMap.Port.LEFT_JOY, 1), is(false));
+        when(left.getButtonCount()).thenReturn(1);
+        assertThat(oi.isDown(Constants.OIMap.Joystick.LEFT, 1), is(false));
     }
-
-    @Test
-    public void successfullyBindsCommandToButton()
-    {
-        Command wanted = new CommandGroup();
-
-        when(joy1.getButtonCount()).thenReturn(1);
-        oi.bindToPressed(Constants.OIMap.Port.LEFT_JOY, 0, wanted);
-        verify(joy1button1, times(1)).whenPressed(wanted);
-    }
-
-    @Test
-    public void failsToBindCommandToNonexistentButton()
-    {
-        Command wanted = new CommandGroup();
-
-        when(joy1.getButtonCount()).thenReturn(1);
-        oi.bindToPressed(Constants.OIMap.Port.LEFT_JOY, 1, wanted);
-        verify(joy1button1, times(0)).whenPressed(wanted);
-    }
-
+    
     @Test
     public void returnsDeadzonedValue()
     {
-        when(joy1.getAxisCount()).thenReturn(1);
-        when(joy1.getRawAxis(0)).thenReturn(Constants.OIMap.OIConstants.JOYSTICK_DEADZONE * 0.5);
-        assertThat(oi.getAxis(Constants.OIMap.Port.BUTTONS, 0), is(0.0));
+        when(left.getAxisCount()).thenReturn(1);
+        when(left.getRawAxis(0)).thenReturn(Constants.OIMap.OIConstants.JOYSTICK_DEADZONE * 0.5);
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.PANEL, 0), is(0.0));
     }
 
     @Test
     public void returnsZeroForNonexistentJoystick()
     {
-        assertThat(oi.getAxis(Constants.OIMap.Port.BUTTONS, 0), is(0.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.PANEL, 0), is(0.0));
     }
 
     @Test
     public void joystickGetAxisReturnsOneForOne()
     {
-        when(joy1.getAxisCount()).thenReturn(1);
-        when(joy1.getRawAxis(0)).thenReturn(1.0);
-        assertThat(oi.getAxis(Constants.OIMap.Port.LEFT_JOY, 0), is(1.0));
+        when(left.getAxisCount()).thenReturn(1);
+        when(left.getRawAxis(0)).thenReturn(1.0);
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
 
-        when(joy1.getRawAxis(0)).thenReturn(-1.0);
-        assertThat(oi.getAxis(Constants.OIMap.Port.LEFT_JOY, 0), is(-1.0));
+        when(left.getRawAxis(0)).thenReturn(-1.0);
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(-1.0));
     }
 }
