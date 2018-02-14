@@ -1,8 +1,12 @@
 package frc.team1983.commands.debugging;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.utilities.Motor;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 
 public class RunOneMotor
@@ -11,14 +15,10 @@ public class RunOneMotor
     private boolean continuousPress = false;
     private int motorIndex = 0;
     private ArrayList<Motor> motors;
-    //port is 5
     private DigitalInput motorUp;
-    //port is 4
     private DigitalInput motorDown;
-    //port is 2
     private AnalogInput manualSpeed;
-
-    //the ports for the digital inputs and analog input have to be changed in robot if they're different from this code
+    private static Logger logger;
 
     public RunOneMotor()
     {
@@ -27,6 +27,8 @@ public class RunOneMotor
 
     public void initialize(ArrayList<Motor> motorList, DigitalInput indexUp, DigitalInput indexDown, AnalogInput manSpeed)
     {
+        logger = LoggerFactory.createNewLogger(RunOneMotor.class);
+
         motorUp = indexUp;
         motorDown = indexDown;
         manualSpeed = manSpeed;
@@ -41,7 +43,7 @@ public class RunOneMotor
         double speed = (manualSpeed.getVoltage() / 5.0) - 0.5;
         if(manualSpeed != null)
         {
-            motors.get(motorIndex).set(speed);
+            motors.get(motorIndex).set(ControlMode.PercentOutput, speed);
         }
         // buttons both have to be released in order for this whole loop to run
         if(!continuousPress)
@@ -49,7 +51,7 @@ public class RunOneMotor
             if(motorUp.get())
             {
                 // this would set the speed of any motors currently running to zero, as a precaution
-                motors.get(motorIndex).set(0);
+                motors.get(motorIndex).set(ControlMode.PercentOutput, 0);
                 if(motorIndex == motors.size() - 1)
                 {
                     motorIndex = 0;
@@ -58,14 +60,14 @@ public class RunOneMotor
                 {
                     motorIndex += 1;
                 }
-                System.out.println("New motor index is " + motorIndex + " up");
+                logger.info("New motor index is " + motorIndex + " up");
                 //setting continuous press to true here allows the code to recognize its not free to index again
                 continuousPress = true;
             }
             // the else if allows only one commmand to run, even if both buttons are pressed at the same time
             else if(motorDown.get())
             {
-                motors.get(motorIndex).set(0);
+                motors.get(motorIndex).set(ControlMode.PercentOutput, 0);
                 if(motorIndex == 0)
                 {
                     motorIndex = (motors.size() - 1);
@@ -74,7 +76,7 @@ public class RunOneMotor
                 {
                     motorIndex -= 1;
                 }
-                System.out.println("New motor index is " + motorIndex);
+                logger.info("New motor index is " + motorIndex + " down");
                 continuousPress = true;
             }
         }
@@ -83,7 +85,7 @@ public class RunOneMotor
             // either motorup or motordown are not pressed
             if(!((motorUp.get()) || motorDown.get()))
             {
-                System.out.println("Button released");
+                logger.info("Button released");
                 continuousPress = false;
             }
         }
@@ -91,17 +93,11 @@ public class RunOneMotor
 
     public void end()
     {
-        motors.get(motorIndex).set(0);
+        motors.get(motorIndex).set(ControlMode.PercentOutput, 0);
         for(int i = 0; i < 16; i++)
         {
-            motors.get(motorIndex).set(0);
+            motors.get(motorIndex).set(ControlMode.PercentOutput, 0);
         }
-    }
-
-    // is finished should never be called in this class
-    protected boolean isFinished()
-    {
-        return false;
     }
 
     // used for unit testing purposes, not actually called in class
@@ -114,6 +110,12 @@ public class RunOneMotor
     public double getSpeed()
     {
         return ((manualSpeed.getVoltage() / 5) - 0.5);
+    }
+
+    // is finished should never be called in this class
+    protected boolean isFinished()
+    {
+        return false;
     }
 
 }

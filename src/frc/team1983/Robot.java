@@ -3,12 +3,9 @@ package frc.team1983;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.TankDrive;
 import frc.team1983.services.DashboardWrapper;
@@ -132,18 +129,13 @@ public class Robot extends IterativeRobot
 
         for(int i=0; i<16;i++)
         {
-            motors.add(new Motor(i, NeutralMode.Coast, false));
+            motors.add(new Motor(i, false));
             motors.get(i).setNeutralMode(NeutralMode.Coast);
-            System.out.println("Initialized motor " + i);
+            robotLogger.info("Initialized motor " + i);
         }
 
         runOneMotor.initialize(motors, motorUp, motorDown, manualSpeed);
 
-    }
-    @Override
-    public void testInit()
-    {
-        Scheduler.getInstance().removeAll();
     }
 
     @Override
