@@ -1,13 +1,11 @@
 package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.subsystems.utilities.MotorGroup;
+import frc.team1983.util.motion.MotionProfile;
 import org.apache.logging.log4j.core.Logger;
 
 //The base of the robot. Consists of the drive train motors, slaved to each other.
@@ -20,22 +18,19 @@ public class Drivebase extends Subsystem
 
     public Drivebase()
     {
-        left1 = new Motor(Constants.MotorMap.Drivebase.LEFT_1, Constants.MotorMap.Drivebase.LEFT1_REVERSED, true);
-        left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED, false);
-        left3 = new Motor(Constants.MotorMap.Drivebase.LEFT_3, Constants.MotorMap.Drivebase.LEFT3_REVERSED, false);
+        left1 = new Motor(Constants.Robot.Drivebase.LEFT_1, Constants.Robot.Drivebase.LEFT1_REVERSED, true);
+        left2 = new Motor(Constants.Robot.Drivebase.LEFT_2, Constants.Robot.Drivebase.LEFT2_REVERSED);
+        left3 = new Motor(Constants.Robot.Drivebase.LEFT_3, Constants.Robot.Drivebase.LEFT3_REVERSED);
 
-        right1 = new Motor(Constants.MotorMap.Drivebase.RIGHT_1, Constants.MotorMap.Drivebase.RIGHT1_REVERSED, true);
-        right2 = new Motor(Constants.MotorMap.Drivebase.RIGHT_2, Constants.MotorMap.Drivebase.RIGHT2_REVERSED, false);
-        right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED, false);
+        right1 = new Motor(Constants.Robot.Drivebase.RIGHT_1, Constants.Robot.Drivebase.RIGHT1_REVERSED, true);
+        right2 = new Motor(Constants.Robot.Drivebase.RIGHT_2, Constants.Robot.Drivebase.RIGHT2_REVERSED);
+        right3 = new Motor(Constants.Robot.Drivebase.RIGHT_3, Constants.Robot.Drivebase.RIGHT3_REVERSED);
 
         left2.follow(left1);
         left3.follow(left1);
 
         right2.follow(right1);
         right3.follow(right1);
-
-        left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-        right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 
         logger = LoggerFactory.createNewLogger(Drivebase.class);
     }
@@ -63,6 +58,28 @@ public class Drivebase extends Subsystem
     public double getRightEncoderValue()
     {
         return right1.getSelectedSensorPosition(0);
+    }
+
+    public void setLeftProfile(MotionProfile profile)
+    {
+        left1.setProfile(profile);
+    }
+
+    public void setRightProfile(MotionProfile profile)
+    {
+        right1.setProfile(profile);
+    }
+
+    public void runProfiles()
+    {
+        left1.runProfile();
+        right1.runProfile();
+    }
+
+    public void stopProfiles()
+    {
+        left1.stopProfile();
+        right1.stopProfile();
     }
 }
 

@@ -16,8 +16,8 @@ public class Ramps extends Subsystem
 
     public Ramps()
     {
-        leftLock = new ServoWrapper(Constants.MotorMap.Ramps.LEFT_RAMPLOCK);
-        rightLock = new ServoWrapper(Constants.MotorMap.Ramps.RIGHT_RAMPLOCK);
+        leftLock = new ServoWrapper(Constants.Robot.Ramps.LEFT_RAMPLOCK);
+        rightLock = new ServoWrapper(Constants.Robot.Ramps.RIGHT_RAMPLOCK);
 
         logger = LoggerFactory.createNewLogger(Ramps.class);
     }

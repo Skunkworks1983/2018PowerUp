@@ -1,41 +1,12 @@
 package frc.team1983.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team1983.subsystems.Elevator;
 
-public class MoveElevatorTo extends Command
+public class MoveElevatorTo extends MoveElevatorBy
 {
-    public MoveElevatorTo(double feet)
+    public MoveElevatorTo(Elevator elevator, double feet, double time)
     {
-
-    }
-
-    @Override
-    public void initialize()
-    {
-
-    }
-
-    @Override
-    public void execute()
-    {
-
-    }
-
-    @Override
-    public boolean isFinished()
-    {
-        return true;
-    }
-
-    @Override
-    public void interrupted()
-    {
-        end();
-    }
-
-    @Override
-    public void end()
-    {
-
+        super(elevator, feet - elevator.encoderTicksToFeet(elevator.getEncoderValue()), time);
     }
 }

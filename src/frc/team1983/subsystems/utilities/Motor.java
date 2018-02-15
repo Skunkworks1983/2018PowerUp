@@ -9,7 +9,7 @@ import frc.team1983.util.motion.MotionProfile;
 //Wrapper class around the WpiLib TalonSRX. Allows us to modify the functionality, and for future extendability.
 public class Motor extends TalonSRX
 {
-    private boolean hasEncoder;
+    private boolean hasEncoder = false;
     private ProfileController manager;
 
     public Motor(int port, boolean reversed)
@@ -23,16 +23,12 @@ public class Motor extends TalonSRX
 
     public Motor(int port, boolean reversed, boolean hasEncoder)
     {
-        super(port);
-        setInverted(reversed);
+        this(port, reversed);
 
         if(hasEncoder)
         {
             configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         }
-
-        manager = new ProfileController(this);
-        setProfileRunState(false);
     }
 
     // don't need this method but it makes things look more readable
@@ -46,12 +42,12 @@ public class Motor extends TalonSRX
         manager.setProfile(profile);
     }
 
-    public void runLoadedProfile()
+    public void runProfile()
     {
         setProfileRunState(true);
     }
 
-    public void stopLoadedProfile()
+    public void stopProfile()
     {
         setProfileRunState(false);
     }

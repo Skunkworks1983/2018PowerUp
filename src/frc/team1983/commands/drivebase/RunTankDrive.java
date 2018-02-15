@@ -9,20 +9,20 @@ import frc.team1983.subsystems.Drivebase;
 import org.apache.logging.log4j.core.Logger;
 
 //Default command for drivebase during Teleop
-public class TankDrive extends CommandBase
+public class RunTankDrive extends CommandBase
 {
     private Drivebase drivebase;
     private OI oi;
     private Logger logger;
 
-    public TankDrive(Drivebase drivebase, OI oi)
+    public RunTankDrive(Drivebase drivebase, OI oi)
     {
         requires(drivebase);
 
         this.drivebase = drivebase;
         this.oi = oi;
 
-        logger = LoggerFactory.createNewLogger(TankDrive.class);
+        logger = LoggerFactory.createNewLogger(RunTankDrive.class);
     }
 
     @Override

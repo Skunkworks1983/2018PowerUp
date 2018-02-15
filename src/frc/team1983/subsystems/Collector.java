@@ -1,13 +1,11 @@
 package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.sensors.DigitalInputWrapper;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.subsystems.utilities.MotorGroup;
 import org.apache.logging.log4j.core.Logger;
 
 //Subsystem that will acquire and expel the Power Cubes.
@@ -20,11 +18,11 @@ public class Collector extends Subsystem
 
     public Collector()
     {
-        left = new Motor(Constants.MotorMap.Collector.LEFT, Constants.MotorMap.Collector.LEFT_REVERSED);
-        right = new Motor(Constants.MotorMap.Collector.RIGHT, Constants.MotorMap.Collector.RIGHT_REVERSED);
+        left = new Motor(Constants.Robot.Collector.LEFT, Constants.Robot.Collector.LEFT_REVERSED);
+        right = new Motor(Constants.Robot.Collector.RIGHT, Constants.Robot.Collector.RIGHT_REVERSED);
 
-        leftSwitch = new DigitalInputWrapper(Constants.MotorMap.Collector.LEFT_SWITCH, Constants.MotorMap.Collector.LEFT_SWITCH_REVERSED);
-        rightSwitch = new DigitalInputWrapper(Constants.MotorMap.Collector.RIGHT_SWITCH, Constants.MotorMap.Collector.RIGHT_SWITCH_REVERSED);
+        leftSwitch = new DigitalInputWrapper(Constants.Robot.Collector.LEFT_SWITCH, Constants.Robot.Collector.LEFT_SWITCH_REVERSED);
+        rightSwitch = new DigitalInputWrapper(Constants.Robot.Collector.RIGHT_SWITCH, Constants.Robot.Collector.RIGHT_SWITCH_REVERSED);
 
         logger = LoggerFactory.createNewLogger(Collector.class);
     }

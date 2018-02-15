@@ -6,8 +6,8 @@ import java.io.File;
 //This file contains all constants used across the entire robot, stored within subclasses.
 public class Constants
 {
-    //MotorMap contains all constants that motors require (ports, reversed values, etc)
-    public static class MotorMap
+    //Robot contains all constants that motors require (ports, reversed values, etc)
+    public static class Robot
     {
         //Ports for the drivebase motors
         public static class Drivebase
@@ -27,21 +27,29 @@ public class Constants
             public static final boolean RIGHT1_REVERSED = false;
             public static final boolean RIGHT2_REVERSED = false;
             public static final boolean RIGHT3_REVERSED = false;
+
+            public static final double WHEEL_DIAMETER = 0;
+            public static final double ENCODER_REDUCTION = 0;
+            public static final double ENCODER_RESOLUTION = 0;
         }
 
         public static class Elevator
         {
-            public static final int LEFT1 = 0;
-            public static final int LEFT2 = 0;
+            public static final int LEFT1 = 12;
+            public static final int LEFT2 = 11;
 
-            public static final int RIGHT1 = 0;
-            public static final int RIGHT2 = 0;
+            public static final int RIGHT1 = 3;
+            public static final int RIGHT2 = 4;
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = false;
 
             public static final boolean RIGHT1_REVERSED = false;
             public static final boolean RIGHT2_REVERSED = true;
+
+            public static final double SPROCKET_DIAMETER = 1.888;
+            public static final double TRAVEL_LENGTH = 38;
+            public static final double ENCODER_RESOLUTION = 0;
         }
 
         public static class Collector
@@ -66,12 +74,6 @@ public class Constants
 
             public static final int LEFT_LEG = 0;
             public static final int RIGHT_LEG = 0;
-        }
-
-        //Random and hard to classify drivebase constants
-        public static class DrivebaseConstants
-        {
-            public static final double DRIVEBASE_TICKS_PER_FOOT = 0;
         }
     }
 
