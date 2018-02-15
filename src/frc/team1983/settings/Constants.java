@@ -100,6 +100,8 @@ public class Constants
     //this class contains subclasses that contain PIDF values used in commands.
     public static class PidConstants
     {
+        public static final char[] PIDLETTERS = {'P', 'I', 'D', 'F'};
+
         //PIDF values for the DriveStraight command
         public static class DriveStrightPid
         {

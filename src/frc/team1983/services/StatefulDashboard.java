@@ -209,6 +209,7 @@ public class StatefulDashboard
         try
         {
             outputStream = new PrintWriter(new FileWriter(dir));
+            System.out.println("Opened StatefulDashboards outputstream");
 
             for(String key : keySet)
             {
@@ -236,7 +237,7 @@ public class StatefulDashboard
             }
 
             outputStream.close();
-            System.out.println("Closed outputstream");
+            System.out.println("Closed StatefulDashboard's outputstream");
         }
         catch(IOException e)
         {
