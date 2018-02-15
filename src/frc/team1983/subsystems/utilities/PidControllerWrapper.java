@@ -3,6 +3,8 @@ package frc.team1983.subsystems.utilities;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
+import frc.team1983.services.logger.LoggerFactory;
+import org.apache.logging.log4j.core.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -25,11 +27,13 @@ public class PidControllerWrapper extends PIDController
     private String thisName;
     private DateFormat dateFormat;
     private Date date;
+    private Logger logger;
 
     public PidControllerWrapper(double p, double i, double d, double f, PIDSource source, PIDOutput output)
     {
         super(p, i, d, f, source, output);
         this.initFile();
+        logger = LoggerFactory.createNewLogger(this.getClass());
         constantsValues = new double[4];
     }
 
@@ -48,13 +52,13 @@ public class PidControllerWrapper extends PIDController
         {
             outputStream = new PrintWriter(new FileWriter(
                     new File("/home/lvuser/" + thisName + "-" + dateFormat.format(date) + ".txt")));
-            System.out.println("Opened outputStream for " + thisName);
+            logger.info("Opened outputStream for " + thisName);
             outputStream.println("PIDF Log for " + thisName);
         }
         catch (IOException e)
         {
-            System.out.println("IO exception when creating outputstream for " + thisName);
-            System.out.println("Exception was " + e);
+            logger.error("IO exception when creating outputstream for " + thisName);
+            logger.error(e);
         }
     }
 
@@ -82,6 +86,6 @@ public class PidControllerWrapper extends PIDController
     public void closeFile()
     {
         outputStream.close();
-        System.out.println("Closed outputstream for " + thisName);
+        logger.info("Closed outputstream for " + thisName);
     }
 }
