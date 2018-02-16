@@ -31,37 +31,39 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int LEFT1 = 0;
-            public static final int LEFT2 = 0;
+            public static final int LEFT1 = 11;
+            public static final int LEFT2 = 12;
 
-            public static final int RIGHT1 = 0;
-            public static final int RIGHT2 = 0;
+            public static final int RIGHT1 = 3;
+            public static final int RIGHT2 = 4;
 
             public static final boolean LEFT1_REVERSED = true;
-            public static final boolean LEFT2_REVERSED = false;
-            public static final boolean RIGHT1_REVERSED = true;
+            public static final boolean LEFT2_REVERSED = true;
+            public static final boolean RIGHT1_REVERSED = false;
             public static final boolean RIGHT2_REVERSED = false;
         }
 
         public static class Collector
         {
-            public static final int LEFT = 0;
-            public static final int RIGHT = 0;
+            public static final int LEFT = 10;
+            public static final int RIGHT = 9;
+            public static final int ROTATE = 5;
 
-            public static final boolean LEFT_REVERSED = true;
-            public static final boolean RIGHT_REVERSED = false;
+            public static final boolean LEFT_REVERSED = false;
+            public static final boolean RIGHT_REVERSED = true;
+            public static final boolean ROTATE_REVERSED = false;
 
-            public static final int LEFT_SWITCH = 0;
+            public static final int LEFT_SWITCH = 1;
             public static final int RIGHT_SWITCH = 0;
 
-            public static final boolean LEFT_SWITCH_REVERSED = false;
-            public static final boolean RIGHT_SWITCH_REVERSED = false;
+            public static final boolean LEFT_SWITCH_REVERSED = true;
+            public static final boolean RIGHT_SWITCH_REVERSED = true;
         }
 
         public static class Ramps
         {
             public static final int LEFT_RAMPLOCK = 0;
-            public static final int RIGHT_RAMPLOCK = 0;
+            public static final int RIGHT_RAMPLOCK = 1;
 
             public static final int LEFT_LEG = 0;
             public static final int RIGHT_LEG = 0;
@@ -77,13 +79,13 @@ public class Constants
     public static class MotorSetpoints
     {
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
-        public static final double COLLECTOR_INTAKE_SPEED = 1.0;
-        public static final double COLLECTOR_EXPEL_SPEED = -1.0;
-        public static final double COLLECTOR_ROTATE_SPEED = -0.1;
+        public static final double COLLECTOR_INTAKE_SPEED = 0.75;
+        public static final double COLLECTOR_EXPEL_SPEED = -0.5;
+        public static final double COLLECTOR_ROTATE_SPEED = -0.5;
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
         //is activated that it will always return true (for debouncing)
-        public static final int COLLECTOR_SWITCH_DEBOUNCE_TIME = 10;
+        public static final int COLLECTOR_SWITCH_DEBOUNCE_TIME = 50;
     }
 
     public static class DashboardConstants
@@ -116,6 +118,17 @@ public class Constants
             public static final double I = 0;
             public static final double D = 0;
             public static final double F = 0;
+        }
+
+        public static class CollectorRotate
+        {
+            public static final double P = 0; //TODO: find pid values
+            public static final double I = 0;
+            public static final double D = 0;
+            public static final double F = 0;
+
+            public static final double UP_TICKS = 0;
+            public static final double DOWN_TICKS = 0;
         }
 
         //setpoints for motors
@@ -173,8 +186,8 @@ public class Constants
 
         public static class CollectorButtons
         {
-            public static final int INTAKE = 8;
-            public static final int EXPEL = 9;
+            public static final int INTAKE = 0;
+            public static final int EXPEL = 14;
         }
 
         //Enums for presets
