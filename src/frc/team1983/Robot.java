@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.TankDrive;
 import frc.team1983.services.DashboardWrapper;
-import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
+import frc.team1983.services.OI;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
@@ -91,7 +91,7 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopInit()
     {
-        if (runOneMotor != null)
+        if(runOneMotor != null)
         {
             runOneMotor.end();
         }
@@ -104,6 +104,7 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+        robotLogger.info("Gyro: {}", drivebase.getGyro().getAngle());
     }
 
     @Override
@@ -122,12 +123,12 @@ public class Robot extends IterativeRobot
         manualSpeed = new AnalogInput(2);
 
 
-        if (runOneMotor == null)
+        if(runOneMotor == null)
         {
             runOneMotor = new RunOneMotor();
         }
 
-        for(int i=0; i<16;i++)
+        for(int i = 0; i < 16; i++)
         {
             motors.add(new Motor(i, false));
             motors.get(i).setNeutralMode(NeutralMode.Coast);
