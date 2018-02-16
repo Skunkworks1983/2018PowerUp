@@ -9,15 +9,20 @@ public class Constants
     //Robot contains all constants that motors require (ports, reversed values, etc)
     public static class Robot
     {
+        public enum Mode
+        {
+            DISABLED, AUTO, TELEOP, TEST
+        }
+
         //Ports for the drivebase motors
         public static class Drivebase
         {
-            public static final int LEFT_1 = 1;
-            public static final int LEFT_2 = 0;
+            public static final int LEFT_1 = 0;//1;
+            public static final int LEFT_2 = 1;//0;
             public static final int LEFT_3 = 2;
 
-            public static final int RIGHT_1 = 14;
-            public static final int RIGHT_2 = 13;
+            public static final int RIGHT_1 = 13;//14;
+            public static final int RIGHT_2 = 14;//13;
             public static final int RIGHT_3 = 15;
 
             public static final boolean LEFT1_REVERSED = true;
@@ -49,7 +54,7 @@ public class Constants
 
             public static final double SPROCKET_DIAMETER = 1.888;
             public static final double TRAVEL_LENGTH = 38;
-            public static final double ENCODER_RESOLUTION = 0;
+            public static final double ENCODER_RESOLUTION = 1;
         }
 
         public static class Collector

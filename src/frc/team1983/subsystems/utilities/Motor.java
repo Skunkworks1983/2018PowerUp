@@ -3,6 +3,7 @@ package frc.team1983.subsystems.utilities;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import frc.team1983.Robot;
 import frc.team1983.util.control.ProfileController;
 import frc.team1983.util.motion.MotionProfile;
 
@@ -17,7 +18,7 @@ public class Motor extends TalonSRX
         super(port);
         setInverted(reversed);
 
-        manager = new ProfileController(this);
+        manager = new ProfileController(this, Robot.getInstance());
         setProfileRunState(false);
     }
 

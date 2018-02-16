@@ -13,9 +13,13 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
+import frc.team1983.util.control.ProfileController;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import org.apache.logging.log4j.core.Logger;
+
+import java.util.ArrayList;
+import java.util.Observer;
 
 public class Robot extends IterativeRobot
 {
@@ -26,6 +30,8 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private StatefulDashboard dashboard;
+
+    private ArrayList<ProfileController> profileControllers;
 
     private static Robot instance;
 
@@ -43,6 +49,8 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
         ramps = new Ramps();
 
+        profileControllers = new ArrayList<ProfileController>();
+
         oi.initialize(this);
         robotLogger.info("robotInit");
     }
@@ -57,6 +65,7 @@ public class Robot extends IterativeRobot
     public void disabledInit()
     {
         Scheduler.getInstance().removeAll();
+        updateState(Constants.Robot.Mode.DISABLED);
 
         dashboard.store();
     }
@@ -71,8 +80,7 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
-
-        robotLogger.info("AutoInit");
+        updateState(Constants.Robot.Mode.AUTO);
     }
 
     @Override
@@ -85,6 +93,7 @@ public class Robot extends IterativeRobot
     public void teleopInit()
     {
         Scheduler.getInstance().removeAll();
+        updateState(Constants.Robot.Mode.TELEOP);
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
     }
@@ -99,12 +108,28 @@ public class Robot extends IterativeRobot
     public void testInit()
     {
         Scheduler.getInstance().removeAll();
+        updateState(Constants.Robot.Mode.TEST);
     }
 
     @Override
     public void testPeriodic()
     {
         Scheduler.getInstance().run();
+    }
+
+    public void updateState(Constants.Robot.Mode mode)
+    {
+        robotLogger.info("switched to mode " + mode);
+
+        for(ProfileController controller : profileControllers)
+        {
+            controller.updateRobotState(mode);
+        }
+    }
+
+    public void addProfileController(ProfileController controller)
+    {
+        profileControllers.add(controller);
     }
 
     public Drivebase getDrivebase()

@@ -1,9 +1,11 @@
 package frc.team1983.util.control;
 
 import com.ctre.phoenix.motion.MotionProfileStatus;
+import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import edu.wpi.first.wpilibj.DriverStation;
+import frc.team1983.Robot;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.motion.MotionProfile;
 
@@ -23,9 +25,9 @@ public class ProfileController
 
     private ProfileControllerRunnable runnable;
 
-    private boolean enabled;
+    private boolean enabled = false;
 
-    public ProfileController(Motor parent)
+    public ProfileController(Motor parent, Robot robot)
     {
         this.parent = parent;
         this.parent.changeMotionControlFramePeriod(5);
@@ -38,6 +40,8 @@ public class ProfileController
         thread = new Thread(runnable);
         controllerLock.lock();
         thread.start();
+
+        Robot.getInstance().addProfileController(this);
     }
 
     public void setProfile(MotionProfile profile)
@@ -48,7 +52,7 @@ public class ProfileController
 
     private void streamProfile(MotionProfile profile)
     {
-        //controllerLock.lock();
+        controllerLock.lock();
 
         int durationMs = profile.getPointDuration();
         double duration = durationMs * 0.001;
@@ -79,7 +83,7 @@ public class ProfileController
             parent.pushMotionProfileTrajectory(point);
         }
 
-        //controllerLock.unlock();
+        controllerLock.unlock();
     }
 
     public MotionProfileStatus getProfileStatus()
@@ -101,6 +105,7 @@ public class ProfileController
             if(!controllerLock.isLocked())
             {
                 controllerLock.lock();
+                parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Disable.value);
             }
         }
         else
@@ -110,6 +115,11 @@ public class ProfileController
                 controllerLock.unlock();
             }
         }
+    }
+
+    public void updateRobotState(Constants.Robot.Mode mode)
+    {
+        setEnabled(mode != Constants.Robot.Mode.DISABLED);
     }
 
     protected ReentrantLock getTalonLock()
