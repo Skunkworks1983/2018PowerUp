@@ -34,8 +34,8 @@ public class RunTankDrive extends CommandBase
     @Override
     public void execute()
     {
-        double leftSpeed = oi.getAxis(Constants.OIMap.Port.LEFT_JOY, Constants.OIMap.JoyAxes.Y);
-        double rightSpeed = oi.getAxis(Constants.OIMap.Port.RIGHT_JOY, Constants.OIMap.JoyAxes.Y);
+        double leftSpeed = oi.getAxis(Constants.OIMap.Joystick.LEFT, Constants.OIMap.Axis.Y);
+        double rightSpeed = oi.getAxis(Constants.OIMap.Joystick.RIGHT, Constants.OIMap.Axis.Y);
 
         drivebase.setLeft(ControlMode.PercentOutput, leftSpeed);
         drivebase.setRight(ControlMode.PercentOutput, rightSpeed);

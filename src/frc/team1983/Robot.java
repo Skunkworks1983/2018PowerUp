@@ -1,9 +1,13 @@
 package frc.team1983;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.drivebase.RunTankDrive;
+import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
@@ -14,12 +18,10 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.util.control.ProfileController;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
-import java.util.Observer;
+import frc.team1983.subsystems.utilities.Motor;
 
 public class Robot extends IterativeRobot
 {
@@ -34,6 +36,8 @@ public class Robot extends IterativeRobot
     private ArrayList<ProfileController> profileControllers;
 
     private static Robot instance;
+
+    private RunOneMotor runOneMotor;
 
     @Override
     public void robotInit()
@@ -51,7 +55,7 @@ public class Robot extends IterativeRobot
 
         profileControllers = new ArrayList<ProfileController>();
 
-        oi.initialize(this);
+        oi.initializeBindings(this);
         robotLogger.info("robotInit");
     }
 
@@ -92,6 +96,10 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopInit()
     {
+        if (runOneMotor != null)
+        {
+            runOneMotor.end();
+        }
         Scheduler.getInstance().removeAll();
         updateState(Constants.Robot.Mode.TELEOP);
 
@@ -109,12 +117,38 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
         updateState(Constants.Robot.Mode.TEST);
+
+        ArrayList<Motor> motors;
+        motors = new ArrayList<>();
+
+        DigitalInput motorUp;
+        DigitalInput motorDown;
+        AnalogInput manualSpeed;
+
+        motorUp = new DigitalInput(5);
+        motorDown = new DigitalInput(4);
+        manualSpeed = new AnalogInput(2);
+
+
+        if (runOneMotor == null)
+        {
+            runOneMotor = new RunOneMotor();
+        }
+
+        for(int i=0; i<16;i++)
+        {
+            motors.add(new Motor(i, false));
+            motors.get(i).setNeutralMode(NeutralMode.Coast);
+            robotLogger.info("Initialized motor " + i);
+        }
+
+        runOneMotor.initialize(motors, motorUp, motorDown, manualSpeed);
     }
 
     @Override
     public void testPeriodic()
     {
-        Scheduler.getInstance().run();
+        runOneMotor.execute();
     }
 
     public void updateState(Constants.Robot.Mode mode)
