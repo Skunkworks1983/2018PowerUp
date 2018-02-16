@@ -4,7 +4,8 @@ package frc.team1983.settings;
 import java.io.File;
 
 //This file contains all constants used across the entire robot, stored within subclasses.
-public class Constants
+public class
+Constants
 {
     //MotorMap contains all constants that motors require (ports, reversed values, etc)
     public static class MotorMap

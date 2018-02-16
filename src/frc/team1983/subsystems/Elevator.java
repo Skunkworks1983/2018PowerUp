@@ -2,6 +2,7 @@ package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
@@ -17,6 +18,8 @@ public class Elevator extends Subsystem
     private Motor right1, right2;
 
     private Logger logger;
+
+    private double setpoint;
 
     public Elevator()
     {
@@ -54,5 +57,20 @@ public class Elevator extends Subsystem
     public double getEncoderValue()
     {
         return left1.getSelectedSensorPosition(0);
+    }
+
+    public double getSetpoint()
+    {
+        return setpoint;  //TODO: find and do math required for this to actually work
+    }
+
+    public void setSetpoint()
+    {
+        //TODO: figure out what actually goes in here
+    }
+
+    public void setSetpoint(double newSetpoint)
+    {
+        setpoint = newSetpoint;
     }
 }
