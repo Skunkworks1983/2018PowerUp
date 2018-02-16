@@ -15,8 +15,30 @@ public class DriveStraightPidOutput extends PidOutputWrapper
 
     public void writeHelper(double out)
     {
-        //TODO: Verify directionality
-        drivebase.setLeft(baseSpeed + out);
-        drivebase.setRight(baseSpeed - out);
+        if(baseSpeed + out <= 1 && baseSpeed + out >= -1)
+        {
+            drivebase.setLeft(baseSpeed + out);
+        }
+        else if(baseSpeed + out > 1)
+        {
+            drivebase.setLeft(1);
+        }
+        else if(baseSpeed + out <-1)
+        {
+            drivebase.setLeft(-1);
+        }
+
+        if(baseSpeed - out <=1 && baseSpeed - out >= -1)
+        {
+            drivebase.setRight(baseSpeed - out);
+        }
+        else if(baseSpeed - out > 1)
+        {
+            drivebase.setRight(1);
+        }
+        else if(baseSpeed - out < -1)
+        {
+            drivebase.setRight(-1);
+        }
     }
 }

@@ -6,11 +6,13 @@ import edu.wpi.first.wpilibj.PIDSource;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
-import frc.team1983.subsystems.utilities.PidControllerWrapper;
+import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseRotationPidOutput;
+import frc.team1983.subsystems.sensors.Gyro;
 
 //Turns the robot a number of degrees, as an offset from the Robot's current position.
+//has case for when gyro eventually explodes
 public class TurnAngle extends CommandBase
 {
     private double targetAngle;
@@ -18,27 +20,54 @@ public class TurnAngle extends CommandBase
     private PIDSource pidSource;
     private PIDOutput pidOut;
     private PIDController turnPid;
+    private Gyro gyro;
+    private int counter;
 
     public TurnAngle(double degrees, Drivebase drivebase)
     {
+        this(degrees, drivebase, 3 / 2.);
+    }
+
+    public TurnAngle(double degrees, Drivebase drivebase, double timeout)
+    {
+        super(timeout);
         requires(drivebase);
         this.drivebase = drivebase;
         targetAngle = degrees;
+        gyro = drivebase.getGyro();
+
     }
 
     @Override
     public void initialize()
     {
-        pidSource = new GyroPidInput(drivebase.getGyro());
-        pidOut = new DrivebaseRotationPidOutput(drivebase);
+        if(!gyro.isDead())
+        {
+            pidSource = new GyroPidInput(drivebase.getGyro());
+            pidOut = new DrivebaseRotationPidOutput(drivebase);
+            turnPid = new PIDController(Constants.PidConstants.TurnAnglePid.P,
+                                        Constants.PidConstants.TurnAnglePid.I,
+                                        Constants.PidConstants.TurnAnglePid.D,
+                                        Constants.PidConstants.TurnAnglePid.F,
+                                        pidSource, pidOut);
+            turnPid.setAbsoluteTolerance(5);
+            turnPid.setSetpoint(targetAngle + drivebase.getGyro().getAngle());
+            turnPid.enable();
+        }
+        else if(gyro.isDead()) //switches to encoder if gyro doesn't work
+        {
+            pidSource = new EncoderTurnAnglePidInput(drivebase);
+            pidOut = new DrivebaseRotationPidOutput(drivebase);
+            turnPid = new PIDController(Constants.PidConstants.TurnAnglePid.P,
+                                        Constants.PidConstants.TurnAnglePid.I,
+                                        Constants.PidConstants.TurnAnglePid.D,
+                                        Constants.PidConstants.TurnAnglePid.F,
+                                        pidSource, pidOut);
+            turnPid.setAbsoluteTolerance(5);
+            turnPid.setSetpoint(targetAngle + pidSource.pidGet());
+            turnPid.enable();
 
-        turnPid = new PIDController(Constants.PidConstants.TurnAnglePid.P,
-                                    Constants.PidConstants.TurnAnglePid.I,
-                                    Constants.PidConstants.TurnAnglePid.D,
-                                    Constants.PidConstants.TurnAnglePid.F,
-                                    pidSource, pidOut);
-        turnPid.setSetpoint(targetAngle + drivebase.getGyro().getAngle());
-        turnPid.enable();
+        }
     }
 
     @Override
@@ -50,8 +79,23 @@ public class TurnAngle extends CommandBase
     @Override
     public boolean isFinished()
     {
-        return false;
-        //return turnPid.onTarget();
+        if(turnPid.onTarget())
+        {
+            //counter allows for overshoot and recorrection
+            counter++;
+        }
+        if(!turnPid.onTarget() && counter >= 1)
+        {
+            counter--;
+        }
+        if(isTimedOut() || counter >= 15)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     @Override

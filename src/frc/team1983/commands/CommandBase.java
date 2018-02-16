@@ -4,7 +4,14 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public abstract class CommandBase extends Command
 {
+    public CommandBase()
+    {
 
+    }
+    public CommandBase(double timeout)
+    {
+        super(timeout);
+    }
     @Override
     public abstract void initialize();
 

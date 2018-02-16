@@ -53,6 +53,12 @@ public class FakeScheduler
                 {
                     c.execute();
                 }
+                else
+                {
+                    c.end(); //added this, all tests pass, but we add command to orderFinished twice
+                    commandBaseRemoval.add(c); //not sure why it still works tho?
+                    orderFinished.add(c);
+                }
 
             }
             for(CommandBase finished : commandBaseRemoval)

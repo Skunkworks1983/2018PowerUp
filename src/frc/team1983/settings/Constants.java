@@ -62,7 +62,7 @@ public class Constants
         //Random and hard to classify drivebase constants
         public static class DrivebaseConstants
         {
-            public static final double DRIVEBASE_TICKS_PER_FOOT = 0;
+            public static final double DRIVEBASE_TICKS_PER_FOOT = 3/2.;
         }
 
         //Ports for the Elevator Winches
@@ -162,7 +162,11 @@ public class Constants
 
     public static class AutoValues
     {
-
+        public static final int WHEELBASE_RADIUS = 1234; //TODO: fix magic number
+        public static final double WHEELBASE_CIRCUMFERENCE = 2*Math.PI*WHEELBASE_RADIUS;
+        public static final double WHEELBASE_DEGREES = WHEELBASE_CIRCUMFERENCE/360;
+        public static final double EFFECTIVE_REDUCTION_DRIVEBASE = 18/24;
+        public static final double WHEEL_CIRCUMFERENCE = 6*Math.PI;
     }
 
     //this contains all values relevant to the OI.
