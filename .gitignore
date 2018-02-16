@@ -1,2 +1,8 @@
 .idea/*
 out/*
+*.iml
+*.class
+lib
+build/*
+dist/*
+
