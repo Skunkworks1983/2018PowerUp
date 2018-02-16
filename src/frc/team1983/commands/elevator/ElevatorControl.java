@@ -15,8 +15,8 @@ import frc.team1983.subsystems.utilities.outputwrappers.ElevatorPidOutput;
 public class ElevatorControl extends CommandBase
 {
     private PidControllerWrapper controller;
-    private PIDSource pidIn;
-    private PIDOutput pidOut;
+    private ElevatorPidInput pidIn;
+    private ElevatorPidOutput pidOut;
 
     private Elevator elevator;
 
@@ -43,7 +43,6 @@ public class ElevatorControl extends CommandBase
     //Get the 0-1 range of setpoint, scale it to the encoder range, and make it an integer
     public void execute()
     {
-        //controller.setSetpoint((int) elevator.getSetpoint());
         controller.setSetpoint(elevator.getSetpoint());
     }
 
@@ -57,6 +56,7 @@ public class ElevatorControl extends CommandBase
     public void end()
     {
         controller.disable();
+        //TODO: maybe set speed to 0?
     }
 
     @Override

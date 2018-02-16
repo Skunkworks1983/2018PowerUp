@@ -61,16 +61,11 @@ public class Elevator extends Subsystem
 
     public double getSetpoint()
     {
-        return setpoint;  //TODO: find and do math required for this to actually work
+        return setpoint;
     }
 
-    public void setSetpoint()
+    public void setSetpoint(double setpoint)
     {
-        //TODO: figure out what actually goes in here
-    }
-
-    public void setSetpoint(double newSetpoint)
-    {
-        setpoint = newSetpoint;
+        this.setpoint = setpoint;
     }
 }
