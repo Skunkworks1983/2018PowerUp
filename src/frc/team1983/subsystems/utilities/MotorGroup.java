@@ -1,5 +1,7 @@
 package frc.team1983.subsystems.utilities;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import java.util.ArrayList;
 
 //A collection of Motors, all part of the same subsystem that run simultaneously.
@@ -22,11 +24,11 @@ public class MotorGroup
     {
         if(reverse)
         {
-            master.set(-value);
+            master.set(ControlMode.PercentOutput, -value);
         }
         else
         {
-            master.set(value);
+            master.set(ControlMode.PercentOutput, value);
         }
     }
 

@@ -1,8 +1,11 @@
 package frc.team1983.commands.collector;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.commands.CommandBase;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
+import org.apache.logging.log4j.core.Logger;
 
 //Runs the collector inwards, holding cube in place
 public class CollectorIntake extends CommandBase
@@ -10,8 +13,12 @@ public class CollectorIntake extends CommandBase
     private int leftCounter, rightCounter;
     private Collector collector;
 
+    private Logger logger;
+
     public CollectorIntake(Collector collector)
     {
+        logger = LoggerFactory.createNewLogger(CollectorIntake.class);
+        requires(collector);
         this.collector = collector;
 
         leftCounter = Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME;
@@ -28,30 +35,30 @@ public class CollectorIntake extends CommandBase
     @Override
     public void execute()
     {
-        if(isLeftPressed())
+        if(isLeftSwitchDown())
         {
-            if(isRightPressed())
+            if(isRightSwitchDown())
             {
-                collector.setLeft(0.0);
-                collector.setRight(0.0);
+                collector.setLeft(ControlMode.PercentOutput, 0.0);
+                collector.setRight(ControlMode.PercentOutput, 0.0);
             }
             else
             {
-                collector.setLeft(Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
-                collector.setRight(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+                collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
+                collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
             }
         }
         else
         {
-            if(isRightPressed())
+            if(isRightSwitchDown())
             {
-                collector.setLeft(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
-                collector.setRight(Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
+                collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+                collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
             }
             else
             {
-                collector.setLeft(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
-                collector.setRight(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+                collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+                collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
             }
 
         }
@@ -66,8 +73,8 @@ public class CollectorIntake extends CommandBase
     @Override
     public void end()
     {
-        collector.setLeft(0.0);
-        collector.setRight(0.0);
+        collector.setLeft(ControlMode.PercentOutput, 0.0);
+        collector.setRight(ControlMode.PercentOutput, 0.0);
     }
 
     @Override
@@ -76,9 +83,9 @@ public class CollectorIntake extends CommandBase
         this.end();
     }
 
-    private boolean isLeftPressed()
+    private boolean isLeftSwitchDown()
     {
-        if(collector.isLeftPressed())
+        if(collector.isLeftSwitchDown())
         {
             leftCounter = 0;
             return true;
@@ -86,9 +93,9 @@ public class CollectorIntake extends CommandBase
         return leftCounter++ < Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME;
     }
 
-    private boolean isRightPressed()
+    private boolean isRightSwitchDown()
     {
-        if(collector.isRightPressed())
+        if(collector.isRightSwitchDown())
         {
             rightCounter = 0;
             return true;

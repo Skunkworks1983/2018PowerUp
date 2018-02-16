@@ -12,6 +12,7 @@ public abstract class CommandBase extends Command
     {
         super(timeout);
     }
+
     @Override
     public abstract void initialize();
 

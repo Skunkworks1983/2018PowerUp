@@ -14,7 +14,7 @@ public class EncoderTurnAnglePidInput extends PidInputWrapper
 
     public double pidGet()
     {
-        return (drivebase.getLeftDist() - drivebase.getRightDist()) * Constants.AutoValues.EFFECTIVE_REDUCTION_DRIVEBASE
+        return (drivebase.getLeftEncoderValue() - drivebase.getRightEncoderValue()) * Constants.AutoValues.EFFECTIVE_REDUCTION_DRIVEBASE
                 * Constants.AutoValues.WHEELBASE_DEGREES * Constants.AutoValues.WHEEL_CIRCUMFERENCE;
     }
 }
