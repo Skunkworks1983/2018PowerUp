@@ -77,7 +77,7 @@ public class TurnAngle extends CommandBase
                                         Constants.PidConstants.TurnAnglePid.D,
                                         Constants.PidConstants.TurnAnglePid.F,
                                         pidSource, pidOut);
-            turnPid.setAbsoluteTolerance(5);
+            turnPid.setAbsoluteTolerance(Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE);
             turnPid.setSetpoint(targetAngle + pidSource.pidGet());
             turnPid.enable();
 

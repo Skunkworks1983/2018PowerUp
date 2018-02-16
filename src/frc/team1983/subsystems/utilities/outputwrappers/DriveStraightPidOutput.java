@@ -1,6 +1,9 @@
 package frc.team1983.subsystems.utilities.outputwrappers;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.subsystems.Drivebase;
+
+import javax.naming.ldap.Control;
 
 public class DriveStraightPidOutput extends PidOutputWrapper
 {
@@ -17,28 +20,28 @@ public class DriveStraightPidOutput extends PidOutputWrapper
     {
         if(baseSpeed + out <= 1 && baseSpeed + out >= -1)
         {
-            drivebase.setLeft(baseSpeed + out);
+            drivebase.setLeft(ControlMode.PercentOutput, baseSpeed + out);
         }
         else if(baseSpeed + out > 1)
         {
-            drivebase.setLeft(1);
+            drivebase.setLeft(ControlMode.PercentOutput, 1);
         }
         else if(baseSpeed + out <-1)
         {
-            drivebase.setLeft(-1);
+            drivebase.setLeft(ControlMode.PercentOutput, -1);
         }
 
         if(baseSpeed - out <=1 && baseSpeed - out >= -1)
         {
-            drivebase.setRight(baseSpeed - out);
+            drivebase.setRight(ControlMode.PercentOutput, baseSpeed - out);
         }
         else if(baseSpeed - out > 1)
         {
-            drivebase.setRight(1);
+            drivebase.setRight(ControlMode.PercentOutput, 1);
         }
         else if(baseSpeed - out < -1)
         {
-            drivebase.setRight(-1);
+            drivebase.setRight(ControlMode.PercentOutput, -1);
         }
     }
 }

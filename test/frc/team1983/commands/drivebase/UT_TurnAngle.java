@@ -2,6 +2,7 @@ package frc.team1983.commands.drivebase;
 
 import edu.wpi.first.wpilibj.HLUsageReporting;
 import edu.wpi.first.wpilibj.Timer;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
@@ -94,7 +95,7 @@ public class UT_TurnAngle
         when(gyro.isDead()).thenReturn(true);
         fakeScheduler.add(turnAngle);
         fakeScheduler.run(1);
-        verify(drivebase, atLeastOnce()).getLeftDist();
+        verify(drivebase, atLeastOnce()).getLeftEncoderValue();
 
     }
 
@@ -119,7 +120,7 @@ public class UT_TurnAngle
                 else
                 {
                     counter.set(counter.get() + 1);
-                    return Math.sin(counter.get().doubleValue()) / counter.get().doubleValue() * 6 + 10;
+                    return Math.sin(counter.get().doubleValue()) / counter.get().doubleValue() * (Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE +1) + 10;
                     //mimics oscillation of robot when trying get within absolute tolerance
                 }
 

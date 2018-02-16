@@ -32,9 +32,16 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int LEFT1 = 0;
-            public static final int LEFT2 = 0;
+            public static final int LEFT1 = 3;
+            public static final int LEFT2 = 4;
 
+            public static final int RIGHT1 = 11;
+            public static final int RIGHT2 = 12;
+
+            public static final boolean LEFT1_REVERSED = true;
+            public static final boolean LEFT2_REVERSED = true;
+            public static final boolean RIGHT1_REVERSED = true;
+            public static final boolean RIGHT2_REVERSED = true;
         }
 
         public static class Collector
@@ -119,6 +126,8 @@ public class Constants
             public static final double I = 0;
             public static final double D = 0;
             public static final double F = 0;
+
+            public static final double ABSOLUTE_TOLERANCE = 5;
         }
 
         public static class ElevatorControlPid
@@ -137,15 +146,16 @@ public class Constants
             public static final double RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
             public static final double RAMP_PROP_SERVO_GOAL = 1;
         }
+
     }
 
     public static class AutoValues
     {
-        public static final int WHEELBASE_RADIUS = 1234; //TODO: fix magic number
+        public static final double WHEELBASE_RADIUS = 25.625/2/12; //T fix magic number
         public static final double WHEELBASE_CIRCUMFERENCE = 2 * Math.PI * WHEELBASE_RADIUS;
-        public static final double WHEELBASE_DEGREES = WHEELBASE_CIRCUMFERENCE / 360;
-        public static final double EFFECTIVE_REDUCTION_DRIVEBASE = 18 / 24;
-        public static final double WHEEL_CIRCUMFERENCE = 6 * Math.PI;
+        public static final double WHEELBASE_DEGREES = WHEELBASE_CIRCUMFERENCE / 360.;
+        public static final double EFFECTIVE_REDUCTION_DRIVEBASE = 18 / 24.;
+        public static final double WHEEL_CIRCUMFERENCE = 6/12. * Math.PI;
     }
 
     //this contains all values relevant to the OI.

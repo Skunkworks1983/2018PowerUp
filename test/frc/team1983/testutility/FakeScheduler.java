@@ -55,8 +55,8 @@ public class FakeScheduler
                 }
                 else
                 {
-                    c.end(); //added this, all tests pass, but we add command to orderFinished twice
-                    commandBaseRemoval.add(c); //not sure why it still works tho?
+                    c.end();
+                    commandBaseRemoval.add(c);
                     orderFinished.add(c);
                 }
 
@@ -120,7 +120,6 @@ public class FakeScheduler
                         else
                         {
                             orderFinished.add(command);
-                            //commandGroupRemoval.add(command);
                         }
                     }
                 }
