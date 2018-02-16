@@ -1,56 +1,65 @@
 package frc.team1983.commands.drivebase;
 
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import frc.team1983.commands.CommandBase;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.utilities.PidControllerWrapper;
-import frc.team1983.subsystems.utilities.outputwrappers.TurnAnglePidOutput;
+import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
+import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseRotationPidOutput;
 
-//Turns the robot a specified number of degrees
+//Turns the robot a number of degrees, as an offset from the Robot's current position.
 public class TurnAngle extends CommandBase
 {
-    private double initialAngle;
     private double targetAngle;
     private Drivebase drivebase;
     private PIDSource pidSource;
     private PIDOutput pidOut;
-    private PidControllerWrapper turnPid;
+    private PIDController turnPid;
 
     public TurnAngle(double degrees, Drivebase drivebase)
     {
         requires(drivebase);
         this.drivebase = drivebase;
-
-        //Uses the TurnAngle specific PidWrapper implementations.
-        //pidSource = new TurnAnglePidInput(); Implementation of PidInputWrapper is available on another branch.
-        //Next to touch this file gets to implement the PidInputWrapper.
-        pidOut = new TurnAnglePidOutput(drivebase);
         targetAngle = degrees;
     }
 
     @Override
     public void initialize()
     {
-        initialAngle = 0;
-        //TODO: get p i d values here
-        //turnPid = new PIDController(p, i, d, f, getGyro(), pidOut);
-        turnPid.setSetpoint(targetAngle);
+        pidSource = new GyroPidInput(drivebase.getGyro());
+        pidOut = new DrivebaseRotationPidOutput(drivebase);
+
+        turnPid = new PIDController(Constants.PidConstants.TurnAnglePid.P,
+                                    Constants.PidConstants.TurnAnglePid.I,
+                                    Constants.PidConstants.TurnAnglePid.D,
+                                    Constants.PidConstants.TurnAnglePid.F,
+                                    pidSource, pidOut);
+        turnPid.setSetpoint(targetAngle + drivebase.getGyro().getAngle());
+        turnPid.enable();
     }
 
     @Override
-    public void execute(){}
+    public void execute()
+    {
+        System.out.println("TurnAngle executed");
+    }
 
     @Override
     public boolean isFinished()
     {
-        return turnPid.onTarget();
+        return false;
+        //return turnPid.onTarget();
     }
 
     @Override
     public void end()
     {
         turnPid.disable();
+        drivebase.setLeft(0);
+        drivebase.setRight(0);
     }
 
     @Override

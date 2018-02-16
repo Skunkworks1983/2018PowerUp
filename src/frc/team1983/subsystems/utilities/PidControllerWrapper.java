@@ -16,6 +16,7 @@ public class PidControllerWrapper extends PIDController
     public PidControllerWrapper(double p, double i, double d, double f, PIDSource source, PIDOutput output)
     {
         super(p, i, d, f, source, output);
+        System.out.println("PidControllerWrapper initialized");
     }
 
     public PidControllerWrapper(double p, double i, double d, PIDSource source, PIDOutput output)

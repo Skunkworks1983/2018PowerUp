@@ -1,8 +1,12 @@
 package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1983.Robot;
+import frc.team1983.commands.drivebase.TankDrive;
 import frc.team1983.settings.Constants;
+import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.MotorGroup;
 
@@ -11,6 +15,8 @@ public class Drivebase extends Subsystem
 {
     private MotorGroup left, right;
     private Motor leftMaster, leftSlave0, leftSlave1, rightMaster, rightSlave0, rightSlave1;
+
+    private Gyro gyro;
 
     private static NeutralMode DRIVEBASE_NEUTRAL_MODE = NeutralMode.Coast;
 
@@ -32,6 +38,8 @@ public class Drivebase extends Subsystem
         right.addMotor(rightSlave0);
         right.addMotor(rightSlave1);
 
+        gyro = new Gyro(SPI.Port.kMXP);
+        gyro.initGyro();
     }
 
     //Set the output of the left motorgroup
@@ -48,6 +56,7 @@ public class Drivebase extends Subsystem
 
     protected void initDefaultCommand()
     {
+        //setDefaultCommand(new TankDrive(this, Robot.getInstance().getOI()));
     }
 
     public double getLeftDist()
@@ -58,6 +67,11 @@ public class Drivebase extends Subsystem
     public double getRightDist()
     {
         return rightMaster.getPosition();
+    }
+
+    public Gyro getGyro()
+    {
+        return this.gyro;
     }
 }
 

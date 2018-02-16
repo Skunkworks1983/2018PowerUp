@@ -82,11 +82,11 @@ public class OI
     public void initialize(Robot robot)
     {
         //Elevator presets
-        bindToPressed(Constants.OIMap.Port.BUTTONS, Constants.OIMap.SliderConstants.bottomPreset,
+        bindToPressed(Constants.OIMap.Port.BUTTONS, Constants.OIMap.SliderConstants.BOTTOM_PRESET,
                       new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator(), this));
-        bindToPressed(Constants.OIMap.Port.BUTTONS, Constants.OIMap.SliderConstants.switchPreset,
+        bindToPressed(Constants.OIMap.Port.BUTTONS, Constants.OIMap.SliderConstants.SWITCH_PRESET,
                       new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator(), this));
-        bindToPressed(Constants.OIMap.Port.BUTTONS, Constants.OIMap.SliderConstants.scalePreset,
+        bindToPressed(Constants.OIMap.Port.BUTTONS, Constants.OIMap.SliderConstants.SCALE_PRESET,
                       new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE, robot.getElevator(), this));
 
         //Intake will run until expel is pressed

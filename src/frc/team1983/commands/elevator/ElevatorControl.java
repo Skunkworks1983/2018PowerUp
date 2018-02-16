@@ -15,7 +15,7 @@ import frc.team1983.subsystems.utilities.outputwrappers.ElevatorPidOutput;
 public class ElevatorControl extends CommandBase
 {
     private PidControllerWrapper controller;
-    private PIDSource pidIn;
+    private PIDSource pidSource;
     private PIDOutput pidOut;
     private StatefulDashboard dashboard;
     private String NAME;
@@ -29,25 +29,28 @@ public class ElevatorControl extends CommandBase
 
         NAME = Constants.DashboardConstants.ELEVATOR_CONTROL_NAME;
 
-        dashboard.add(NAME, "P", Constants.DashboardConstants.DEFAULT_DOUBLE);
+        /*dashboard.add(NAME, "P", Constants.DashboardConstants.DEFAULT_DOUBLE);
         dashboard.add(NAME, "I", Constants.DashboardConstants.DEFAULT_DOUBLE);
         dashboard.add(NAME, "D", Constants.DashboardConstants.DEFAULT_DOUBLE);
-        dashboard.add(NAME, "F", Constants.DashboardConstants.DEFAULT_DOUBLE);
+        dashboard.add(NAME, "F", Constants.DashboardConstants.DEFAULT_DOUBLE);*/
 
-        pidIn = new ElevatorPidInput(elevator);
+        pidSource = new ElevatorPidInput(elevator);
         pidOut = new ElevatorPidOutput(elevator);
-
-
     }
 
     @Override
     public void initialize()
     {
-        controller = new PidControllerWrapper(dashboard.getDouble(NAME, "P"),
+        /*controller = new PidControllerWrapper(dashboard.getDouble(NAME, "P"),
                                               dashboard.getDouble(NAME, "I"),
                                               dashboard.getDouble(NAME, "D"),
                                               dashboard.getDouble(NAME, "F"),
-                                              pidIn, pidOut);
+                                              pidIn, pidOut);*/
+        controller = new PidControllerWrapper(Constants.PidConstants.ElevatorControlPid.P,
+                                              Constants.PidConstants.ElevatorControlPid.I,
+                                              Constants.PidConstants.ElevatorControlPid.D,
+                                              Constants.PidConstants.ElevatorControlPid.F,
+                                              pidSource, pidOut);
         controller.enable();
     }
 
@@ -55,10 +58,10 @@ public class ElevatorControl extends CommandBase
     //Get the 0-1 range of setpoint, scale it to the encoder range, and make it an integer
     public void execute()
     {
-        controller.setP(dashboard.getDouble(NAME, "P"));
+        /*controller.setP(dashboard.getDouble(NAME, "P"));
         controller.setI(dashboard.getDouble(NAME, "I"));
         controller.setD(dashboard.getDouble(NAME, "D"));
-        controller.setF(dashboard.getDouble(NAME, "F"));
+        controller.setF(dashboard.getDouble(NAME, "F"));*/
 
         controller.setSetpoint((int) elevator.getSetpoint());
     }

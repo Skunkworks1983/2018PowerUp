@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 */
 public abstract class PidOutputWrapper implements PIDOutput
 {
-    private boolean disabled;
+    private boolean disabled = false;
 
     //DO NOT OVERRIDE. Where logging happens.
     @Override
