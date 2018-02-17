@@ -78,8 +78,9 @@ public class Constants
     public static class SmellyParser
     {
         public static final File SMELLYFOLDER = new File("/u/");
+        public static final File SMELLYUTFOLDER = new File("C:\\Users\\s-4036947\\Documents\\Skunkworks\\2018PowerUp\\test\\frc\\team1983\\util\\");
         public static final String AUTOPATHKEY = "SmellyPath";
-        public static final File DEFAULTPATH = new File("/lvuser/DefaultSmellyPath.json");
+        public static final File DEFAULTPATH = new File("/home/lvuser/DefaultSmellyPath.json");
     }
 
     public static class MotorSetpoints

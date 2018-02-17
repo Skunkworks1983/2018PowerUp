@@ -44,7 +44,7 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
-        smellyParser = new SmellyParser(dashboardWrapper);
+        smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLYFOLDER);
 
         oi.initializeBindings(this);
         robotLogger.info("robotInit");

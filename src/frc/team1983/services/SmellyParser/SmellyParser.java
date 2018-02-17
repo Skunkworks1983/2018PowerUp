@@ -1,13 +1,15 @@
 package frc.team1983.services.SmellyParser;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.util.path.Path;
-import frc.team1983.util.path.PathArc;
+import frc.team1983.util.path.PathTanarc;
 import frc.team1983.util.path.PathComponent;
 import org.apache.logging.log4j.core.Logger;
 
@@ -15,6 +17,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -24,21 +27,22 @@ public class SmellyParser
     private Path path;
     private List<PathComponent> components;
     private File[] files;
-    private File file;
+    private File file, dir;
     private Logger logger;
     //This puts directly to smartdashboard because we actually don't want this to stick around, as files may change
     private DashboardWrapper dashboard;
 
-    public SmellyParser(DashboardWrapper dashboard)
+    public SmellyParser(DashboardWrapper dashboard, File dir)
     {
         this.dashboard = dashboard;
+        this.dir = dir;
         logger = LoggerFactory.createNewLogger(this.getClass());
         objectMapper = new ObjectMapper();
         components = new ArrayList<>();
         FilenameFilter filter = (file, name) -> name.toLowerCase().endsWith(".json");
-        SmartDashboard.putNumber(Constants.SmellyParser.AUTOPATHKEY, 0.0);
+        dashboard.putNumber(Constants.SmellyParser.AUTOPATHKEY, 0.0);
 
-        files = Constants.SmellyParser.SMELLYFOLDER.listFiles(filter);
+        files = dir.listFiles(filter);
         if(files == null)
         {
             files = new File[1];
@@ -48,7 +52,7 @@ public class SmellyParser
 
         for(int i = 0; i < files.length; i++)
         {
-            SmartDashboard.putString("For SmellyPath " + files[i].toString().split(".json")[0] + " use " + i, "");
+            dashboard.putString("For SmellyPath " + files[i].toString().split(".json")[0] + " use " + i, "");
         }
     }
 
@@ -58,26 +62,31 @@ public class SmellyParser
         {
             components.clear();
 
-            file = new File("/u/" + files[
-                    dashboard.getNumber(Constants.SmellyParser.AUTOPATHKEY, 0.0).intValue()] + ".json");
+            file = new File(files[
+                    dashboard.getNumber(Constants.SmellyParser.AUTOPATHKEY, 0.0).intValue()].toString());
             logger.info("Using " + file);
 
-            Map<String, String> fileMap = objectMapper.readValue(file, new TypeReference<Map<String,String>>(){});
-            List<ControlPoint> controlPoints = objectMapper.readValue(fileMap.get("points"),
-                                                                      new TypeReference<List<ControlPoint>>(){});
+            JsonFactory jsonFactory = new JsonFactory();
+            JsonParser parser = jsonFactory.createParser(file);
 
-            for(ControlPoint controlPoint : controlPoints)
+            while(!parser.isClosed())
             {
-                if(controlPoint.getType().equals("arc"))
+                JsonToken token = parser.nextToken();
+                if(JsonToken.FIELD_NAME.equals(token))
                 {
-                    components.add(new PathArc());//components of a patharc
-                }
-                if(controlPoint.getType().equals("straight"))
-                {
-                    components.add(new PathArc());//components of a pathsegment
+                    String fieldName = token.asString();
+
+                    token = parser.nextToken();
+
+                    if(!JsonToken.START_ARRAY.equals(token)) //is meta-data
+                    {
+                    }
+                    else if(JsonToken.START_ARRAY.equals(token))//is control points
+                    {
+
+                    }
                 }
             }
-            path = new Path(components);
         }
         catch(IOException e)
         {
