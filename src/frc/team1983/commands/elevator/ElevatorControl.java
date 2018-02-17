@@ -1,8 +1,5 @@
 package frc.team1983.commands.elevator;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Elevator;
