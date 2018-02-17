@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.debugging.RunOneMotor;
+import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.TankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
@@ -57,7 +58,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotPeriodic()
     {
-
+        //System.out.println("Right encoder value: " + drivebase.getRightEncoderValue());
     }
 
     @Override
@@ -79,6 +80,8 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
 
         robotLogger.info("AutoInit");
+
+        Scheduler.getInstance().add(new DriveStraight(dashboard, 1, drivebase, .3, 1000));
     }
 
     @Override

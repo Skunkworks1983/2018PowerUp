@@ -21,13 +21,13 @@ public class Constants
             public static final int RIGHT_2 = 13;
             public static final int RIGHT_3 = 15;
 
-            public static final boolean LEFT1_REVERSED = true;
-            public static final boolean LEFT2_REVERSED = true;
-            public static final boolean LEFT3_REVERSED = true;
+            public static final boolean LEFT1_REVERSED = false;
+            public static final boolean LEFT2_REVERSED = false;
+            public static final boolean LEFT3_REVERSED = false;
 
-            public static final boolean RIGHT1_REVERSED = false;
-            public static final boolean RIGHT2_REVERSED = false;
-            public static final boolean RIGHT3_REVERSED = false;
+            public static final boolean RIGHT1_REVERSED = true;
+            public static final boolean RIGHT2_REVERSED = true;
+            public static final boolean RIGHT3_REVERSED = true;
         }
 
         public static class Elevator
@@ -73,7 +73,8 @@ public class Constants
         //Random and hard to classify drivebase constants
         public static class DrivebaseConstants
         {
-            public static final double DRIVEBASE_TICKS_PER_FOOT = 3 / 2.;
+            public static final double DRIVEBASE_TICKS_PER_FOOT = 1000 / AutoValues.EFFECTIVE_REDUCTION_DRIVEBASE
+                    / AutoValues.WHEEL_CIRCUMFERENCE;
             public static final int RIGHT1 = 0;
             public static final int RIGHT2 = 0;
 
@@ -163,7 +164,10 @@ public class Constants
         public static final double WHEELBASE_CIRCUMFERENCE = 2 * Math.PI * WHEELBASE_RADIUS;
         public static final double WHEELBASE_DEGREES = WHEELBASE_CIRCUMFERENCE / 360.;
         public static final double EFFECTIVE_REDUCTION_DRIVEBASE = 18 / 24.;
-        public static final double WHEEL_CIRCUMFERENCE = 6/12. * Math.PI;
+        public static final double WHEEL_CIRCUMFERENCE = 6 * Math.PI / 12.;
+
+        public static final double MAX_OUTPUT = 0.5;
+        public static final double DISTANCE_SCALAR = 1000;
     }
 
     //this contains all values relevant to the OI.

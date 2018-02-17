@@ -49,6 +49,9 @@ public class DriveStraight extends CommandBase
     public DriveStraight(StatefulDashboard dashboard, double distance,
                          Drivebase drivebase, double baseSpeed, double timeout)
     {
+        distance *= Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT;
+        this.baseSpeed = baseSpeed;
+        setTimeout(timeout);
 
         logger = LoggerFactory.createNewLogger(DriveStraight.class);
         requires(drivebase);
@@ -61,36 +64,26 @@ public class DriveStraight extends CommandBase
         dashboard.add(this, "kI", 0.0);
         dashboard.add(this, "kD", 0.0);
         dashboard.add(this, "kF", 0.0);
+
+        logger.info("Drivestraight constructed");
     }
 
 
     @Override
     public void initialize()
     {
-        if(!gyro.isDead())
-        {
-            pidSource = new GyroPidInput(drivebase.getGyro());
-            pidOut = new DriveStraightPidOutput(drivebase, baseSpeed);
-            driveStraightPid = new PidControllerWrapper(dashboard.getDouble(this, "kP"),
-                                                        dashboard.getDouble(this, "kI"),
-                                                        dashboard.getDouble(this, "kD"),
-                                                        dashboard.getDouble(this, "kF"),
-                                                        pidSource, pidOut);
-            driveStraightPid.setSetpoint(distance);
-            driveStraightPid.enable();
-        }
-        else if(gyro.isDead()) //switches to encoder values if gyro is dead
-        {
-            pidSource = new EncoderTurnAnglePidInput(drivebase);
-            pidOut = new DriveStraightPidOutput(drivebase, baseSpeed);
-            driveStraightPid = new PidControllerWrapper(dashboard.getDouble(this, "kP"),
-                                                        dashboard.getDouble(this, "kI"),
-                                                        dashboard.getDouble(this, "kD"),
-                                                        dashboard.getDouble(this, "kF"),
-                                                        pidSource, pidOut);
-            driveStraightPid.setSetpoint(distance);
-            driveStraightPid.enable();
-        }
+        pidOut = new DriveStraightPidOutput(drivebase, baseSpeed);
+        pidSource = gyro.isDead() ? new EncoderTurnAnglePidInput(drivebase) : new GyroPidInput(drivebase.getGyro());
+
+        driveStraightPid = new PidControllerWrapper(dashboard.getDouble(this, "kP"),
+                                                    dashboard.getDouble(this, "kI"),
+                                                    dashboard.getDouble(this, "kD"),
+                                                    dashboard.getDouble(this, "kF"),
+                                                    pidSource, pidOut);
+
+        driveStraightPid.setSetpoint(distance);
+        driveStraightPid.setOutputRange(-Constants.AutoValues.MAX_OUTPUT, Constants.AutoValues.MAX_OUTPUT);
+        driveStraightPid.enable();
         leftEncoderStart = drivebase.getLeftEncoderValue();
         rightEncoderStart = drivebase.getRightEncoderValue();
 

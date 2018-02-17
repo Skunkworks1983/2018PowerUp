@@ -59,12 +59,14 @@ public class Drivebase extends Subsystem
     public void setLeft(ControlMode mode, double value)
     {
         left1.set(mode, value);
+        System.out.println("left set to: " + value);
     }
 
     public void setRight(ControlMode mode, double value)
     {
         //setDefaultCommand(new TankDrive(this, Robot.getInstance().getOI()));
         right2.set(mode, value);
+        System.out.println("right set to: " + value);
     }
 
     public double getLeftEncoderValue()

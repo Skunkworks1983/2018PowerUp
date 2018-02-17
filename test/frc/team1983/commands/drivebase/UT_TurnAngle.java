@@ -71,7 +71,7 @@ public class UT_TurnAngle
         HLUsageReporting.SetImplementation(hlUsageReporting);
         fakeScheduler = new FakeScheduler();
         when(drivebase.getGyro()).thenReturn(gyro);
-        turnAngle = new TurnAngle(10, drivebase);
+        //turnAngle = new TurnAngle(10, drivebase);
     }
 
     @After
