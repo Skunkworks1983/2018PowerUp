@@ -2,7 +2,6 @@ package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
@@ -29,8 +28,8 @@ public class Elevator extends Subsystem
         right1 = new Motor(Constants.MotorMap.Elevator.RIGHT1, Constants.MotorMap.Elevator.RIGHT1_REVERSED, true);
         right2 = new Motor(Constants.MotorMap.Elevator.RIGHT2, Constants.MotorMap.Elevator.RIGHT2_REVERSED);
 
-        left2.follow(left1);
-        right2.follow(right1);
+        /*left2.follow(left1);
+        right2.follow(right1);*/
 
         left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 
@@ -46,7 +45,9 @@ public class Elevator extends Subsystem
     public void set(ControlMode mode, double value)
     {
         left1.set(mode, value);
+        left2.set(mode, value);
         right1.set(mode, value);
+        right2.set(mode, value);
     }
 
     public void setProfile(MotionProfile profile)
@@ -67,5 +68,15 @@ public class Elevator extends Subsystem
     public void setSetpoint(double setpoint)
     {
         this.setpoint = setpoint;
+    }
+
+    public double getLeftCurrentDraw()
+    {
+        return (left1.getOutputCurrent() + left2.getOutputCurrent())/2;
+    }
+
+    public double getRightCurrentDraw()
+    {
+        return (right1.getOutputCurrent() + right2.getOutputCurrent())/2;
     }
 }
