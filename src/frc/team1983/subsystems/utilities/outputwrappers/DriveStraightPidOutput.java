@@ -7,8 +7,8 @@ import javax.naming.ldap.Control;
 
 public class DriveStraightPidOutput extends PidOutputWrapper
 {
-    Drivebase drivebase;
-    double baseSpeed;
+    private Drivebase drivebase;
+    private double baseSpeed;
 
     public DriveStraightPidOutput(Drivebase drivebase, double baseSpeed)
     {

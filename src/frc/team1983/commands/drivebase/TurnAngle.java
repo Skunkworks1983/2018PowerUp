@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import frc.team1983.commands.CommandBase;
+import frc.team1983.services.StatefulDashboard;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
@@ -30,17 +31,19 @@ public class TurnAngle extends CommandBase
     private int counter;
 
     private Logger logger;
+    private StatefulDashboard dashboard;
 
-    public TurnAngle(double degrees, Drivebase drivebase)
+    public TurnAngle(StatefulDashboard dashboard, double degrees, Drivebase drivebase)
     {
-        this(degrees, drivebase, 3 / 2.);
+        this(dashboard, degrees, drivebase, Constants.PidConstants.TurnAnglePid.DEFAULT_TIMEOUT);
     }
 
-    public TurnAngle(double degrees, Drivebase drivebase, double timeout)
+    public TurnAngle(StatefulDashboard dashboard, double degrees, Drivebase drivebase, double timeout)
     {
         super(timeout);
         requires(drivebase);
         this.drivebase = drivebase;
+        this.dashboard = dashboard;
         logger = LoggerFactory.createNewLogger(TurnAngle.class);
 
         //Uses the TurnAngle specific PidWrapper implementations.
@@ -50,6 +53,10 @@ public class TurnAngle extends CommandBase
         targetAngle = degrees;
         gyro = drivebase.getGyro();
 
+        dashboard.add(this, "kP", 0.0);
+        dashboard.add(this, "kI", 0.0);
+        dashboard.add(this, "kD", 0.0);
+        dashboard.add(this, "kF", 0.0);
     }
 
     @Override
@@ -59,35 +66,35 @@ public class TurnAngle extends CommandBase
         {
             pidSource = new GyroPidInput(drivebase.getGyro());
             pidOut = new DrivebaseRotationPidOutput(drivebase);
-            turnPid = new PIDController(Constants.PidConstants.TurnAnglePid.P,
-                                        Constants.PidConstants.TurnAnglePid.I,
-                                        Constants.PidConstants.TurnAnglePid.D,
-                                        Constants.PidConstants.TurnAnglePid.F,
+            turnPid = new PIDController(dashboard.getDouble(this, "kP"),
+                                        dashboard.getDouble(this, "kI"),
+                                        dashboard.getDouble(this, "kD"),
+                                        dashboard.getDouble(this, "kF"),
                                         pidSource, pidOut);
             turnPid.setAbsoluteTolerance(5);
             turnPid.setSetpoint(targetAngle + drivebase.getGyro().getAngle());
             turnPid.enable();
         }
+
         else if(gyro.isDead()) //switches to encoder if gyro doesn't work
         {
             pidSource = new EncoderTurnAnglePidInput(drivebase);
             pidOut = new DrivebaseRotationPidOutput(drivebase);
-            turnPid = new PIDController(Constants.PidConstants.TurnAnglePid.P,
-                                        Constants.PidConstants.TurnAnglePid.I,
-                                        Constants.PidConstants.TurnAnglePid.D,
-                                        Constants.PidConstants.TurnAnglePid.F,
+            turnPid = new PIDController(dashboard.getDouble(this, "kP"),
+                                        dashboard.getDouble(this, "kI"),
+                                        dashboard.getDouble(this, "kD"),
+                                        dashboard.getDouble(this, "kF"),
                                         pidSource, pidOut);
             turnPid.setAbsoluteTolerance(Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE);
             turnPid.setSetpoint(targetAngle + pidSource.pidGet());
             turnPid.enable();
-
         }
     }
 
     @Override
     public void execute()
     {
-        System.out.println("TurnAngle executed");
+        logger.debug("TurnAngle executed");
     }
 
     @Override
@@ -95,6 +102,7 @@ public class TurnAngle extends CommandBase
     {
         if(turnPid.onTarget())
         {
+            //todo figure out what "recorrection" is
             //counter allows for overshoot and recorrection
             counter++;
         }
@@ -102,14 +110,7 @@ public class TurnAngle extends CommandBase
         {
             counter--;
         }
-        if(isTimedOut() || counter >= 15)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return isTimedOut() || counter >= 15;
     }
 
     @Override

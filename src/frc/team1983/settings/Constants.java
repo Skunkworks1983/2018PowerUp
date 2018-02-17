@@ -117,6 +117,7 @@ public class Constants
             public static final double F = 0;
 
             public static final double DEFAULT_BASE_SPEED = 0.5;
+            public static final double DEFAULT_TIMEOUT = 3 / 2.;
         }
 
         //PIDF values for the TurnAngle command
@@ -128,6 +129,8 @@ public class Constants
             public static final double F = 0;
 
             public static final double ABSOLUTE_TOLERANCE = 5;
+
+            public static final double DEFAULT_TIMEOUT = 3 / 2.;
         }
 
         public static class ElevatorControlPid
