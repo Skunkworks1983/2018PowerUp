@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.settings.Constants;
 
 import java.util.HashMap;
