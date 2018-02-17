@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.TankDrive;
+import frc.team1983.commands.elevator.ElevatorControl;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.OI;
@@ -97,6 +98,7 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
 
         Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+        Scheduler.getInstance().add(new ElevatorControl(elevator));
     }
 
     @Override
@@ -104,6 +106,7 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
         robotLogger.info("Gyro: {}", drivebase.getGyro().getAngle());
+        robotLogger.info("Elevator position:" + elevator.getEncoderValue());
     }
 
     @Override

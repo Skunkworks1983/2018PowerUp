@@ -35,19 +35,6 @@ public class SetElevatorSetpoint extends CommandBase
     public void execute()
     {
         //Check to see if the oi is in slider position mode. If so, use the slider pos instead of the preset
-        if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ManualControl.MANUAL_SWITCH))
-        {
-            if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ManualControl.ELEVATOR_UP))
-            {
-                elevator.set(ControlMode.PercentOutput, 0.5);
-            }
-            else if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ManualControl.ELEVATOR_DOWN))
-            {
-                elevator.set(ControlMode.PercentOutput, -0.5);
-            }
-        }
-        else
-        {
             switch(setpoint)
             {
                 default:
@@ -65,7 +52,7 @@ public class SetElevatorSetpoint extends CommandBase
                     break;
             }
             elevator.setSetpoint(newSetpoint);
-        }
+
     }
 
     @Override
