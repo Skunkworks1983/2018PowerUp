@@ -152,6 +152,14 @@ public class Constants
             public static final double RAMP_PROP_SERVO_GOAL = 1;
         }
 
+        public static class ElevatorControlPid
+        {
+            public static final double P = 0; //TODO: find actual pid values
+            public static final double I = 0;
+            public static final double D = 0;
+            public static final double F = 0;
+        }
+
     }
 
     public static class AutoValues
@@ -208,6 +216,12 @@ public class Constants
             public static final int EXPEL = 14;
         }
 
+        public static class ManualControl
+        {
+            public static final int ELEVATOR_UP = 5; //button 6 on 2016 oi
+            public static final int ELEVATOR_DOWN = 6; //button 7 on 2016 oi
+            public static final int MANUAL_SWITCH = 8; //button 9 on the 2016 oi
+        }
         //Enums for presets
         public enum Setpoint
         {

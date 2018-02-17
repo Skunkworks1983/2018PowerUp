@@ -1,6 +1,7 @@
 package frc.team1983.commands.elevator;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+// import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.OI;
@@ -34,15 +35,16 @@ public class SetElevatorSetpoint extends CommandBase
     public void execute()
     {
         //Check to see if the oi is in slider position mode. If so, use the slider pos instead of the preset
-        //if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.SliderConstants.SLIDER_PRESETS_TOGGLE))
-        if(oi.isDown(Constants.OIMap.Joystick.PANEL, up button))//TODO: find port
+        if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ManualControl.MANUAL_SWITCH))
         {
-          //  elevator.setSetpoint(oi.getElevatorSliderPos());
-            elevator.set(ControlMode.PercentOutput, output); //TODO: find output
-        }
-        else if(oi.isDown(Constants.OIMap.Joystick.PANEL, down button))//TODO: find port
-        {
-            elevator.set(ControlMode.PercentOutput, output); //TODO: find output
+            if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ManualControl.ELEVATOR_UP))
+            {
+                elevator.set(ControlMode.PercentOutput, 0.5);
+            }
+            else if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ManualControl.ELEVATOR_DOWN))
+            {
+                elevator.set(ControlMode.PercentOutput, -0.5);
+            }
         }
         else
         {
