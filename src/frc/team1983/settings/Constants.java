@@ -17,13 +17,13 @@ public class Constants
         //Ports for the drivebase motors
         public static class Drivebase
         {
-            public static final int LEFT_1 = 0;//1;
-            public static final int LEFT_2 = 1;//0;
-            public static final int LEFT_3 = 2;
+            public static final int LEFT_1 = 14;
+            public static final int LEFT_2 = 13;
+            public static final int LEFT_3 = 15;
 
-            public static final int RIGHT_1 = 13;//14;
-            public static final int RIGHT_2 = 14;//13;
-            public static final int RIGHT_3 = 15;
+            public static final int RIGHT_1 = 1;
+            public static final int RIGHT_2 = 0;
+            public static final int RIGHT_3 = 2;
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = true;
@@ -33,9 +33,9 @@ public class Constants
             public static final boolean RIGHT2_REVERSED = false;
             public static final boolean RIGHT3_REVERSED = false;
 
-            public static final double WHEEL_DIAMETER = 0;
-            public static final double ENCODER_REDUCTION = 0;
-            public static final double ENCODER_RESOLUTION = 0;
+            public static final double WHEEL_CIRCUMFERENCE = (6.0 / 12.0) * Math.PI;
+            public static final double ENCODER_REDUCTION = 18.0 / 24.0;
+            public static final double ENCODER_RESOLUTION = 1000;
         }
 
         public static class Elevator
@@ -46,27 +46,27 @@ public class Constants
             public static final int RIGHT1 = 3;
             public static final int RIGHT2 = 4;
 
-            public static final boolean LEFT1_REVERSED = true;
+            public static final boolean LEFT1_REVERSED = false;
             public static final boolean LEFT2_REVERSED = false;
 
             public static final boolean RIGHT1_REVERSED = false;
-            public static final boolean RIGHT2_REVERSED = true;
+            public static final boolean RIGHT2_REVERSED = false;
 
-            public static final double SPROCKET_DIAMETER = 1.888;
-            public static final double TRAVEL_LENGTH = 38;
-            public static final double ENCODER_RESOLUTION = 1;
+            public static final double SPROCKET_CIRCUMFERENCE = (1.888 / 12.0) * Math.PI;
+            public static final double TRAVEL_LENGTH = 38.0 / 12.0;
+            public static final double ENCODER_RESOLUTION = 4500;
         }
 
         public static class Collector
         {
-            public static final int LEFT = 0;
-            public static final int RIGHT = 0;
+            public static final int LEFT = 10;
+            public static final int RIGHT = 9;
 
             public static final boolean LEFT_REVERSED = true;
             public static final boolean RIGHT_REVERSED = false;
 
-            public static final int LEFT_SWITCH = 0;
-            public static final int RIGHT_SWITCH = 0;
+            public static final int LEFT_SWITCH = 1;
+            public static final int RIGHT_SWITCH = 2;
 
             public static final boolean LEFT_SWITCH_REVERSED = false;
             public static final boolean RIGHT_SWITCH_REVERSED = false;
@@ -74,11 +74,11 @@ public class Constants
 
         public static class Ramps
         {
-            public static final int LEFT_RAMPLOCK = 0;
-            public static final int RIGHT_RAMPLOCK = 0;
+            public static final int LEFT_RAMPLOCK = 1;
+            public static final int RIGHT_RAMPLOCK = 2;
 
-            public static final int LEFT_LEG = 0;
-            public static final int RIGHT_LEG = 0;
+            public static final int LEFT_LEG = 3;
+            public static final int RIGHT_LEG = 4;
         }
     }
 

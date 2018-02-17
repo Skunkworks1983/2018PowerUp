@@ -39,6 +39,8 @@ public class RunTankDrive extends CommandBase
 
         drivebase.setLeft(ControlMode.PercentOutput, leftSpeed);
         drivebase.setRight(ControlMode.PercentOutput, rightSpeed);
+
+        System.out.println(leftSpeed + ", " + rightSpeed);
     }
 
     @Override

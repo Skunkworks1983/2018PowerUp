@@ -1,6 +1,5 @@
 package frc.team1983.commands.elevator;
 
-import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.subsystems.Elevator;
 
 public class MoveElevatorTo extends MoveElevatorBy

@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 import java.util.concurrent.Semaphore;
 
-public class ProfileControllerRunnable implements java.lang.Runnable
+public class ProfileControllerRunnable extends Thread
 {
     private ProfileController controller;
 

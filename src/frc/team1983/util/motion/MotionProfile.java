@@ -1,119 +1,32 @@
 package frc.team1983.util.motion;
 
-import frc.team1983.settings.Constants;
+import java.util.List;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-/*
-all motion profiles are currently trapezoidal velocity functions of time
-profiles are generated given the assumption that half of the profile is
-dedicated to acceleration. documentation to be written later :/
-
-vel_max and acc_max are constants for each subsystem, to be determined
-by math and testing or whatever
-
-all units are in either ms, u/ms, or u/ms/ms
-
-*/
-public class MotionProfile
+public abstract class MotionProfile
 {
-    private ArrayList<MotionSegment> segments;
+    private List<MotionSegment> segments;
 
-    private int pointDuration = 100; // ms
+    protected double distance;
+    protected double t_total;
 
-    private double distance;
-    private double totalTime;
+    protected double vel_max;
+    protected double acc_max;
 
-    private double vel_max;
-    private double acc_max;
+    protected int pointDuration = 100; // ms
 
-    private double vel_c;
-    private double t_a;
-    private double acc;
-
-    public MotionProfile(double distance, double totalTime, double vel_max, double acc_max)
+    public MotionProfile(List<MotionSegment> segments)
     {
-        double t_a = (totalTime * Constants.Motion.DEFAULT_MOTIONPROFILE_ACCEL_TIME) / 2;
-        double vel_c = distance / (totalTime - t_a);
-        double acc = vel_c / t_a;
-
-        // profile is undefined if we need to travel/accelerate faster than is physically possible
-        if(Math.abs(vel_c) <= Math.abs(vel_max) && Math.abs(acc) <= Math.abs(acc_max))
-        {
-            this.distance = distance;
-            this.totalTime = totalTime;
-
-            this.vel_max = vel_max;
-            this.acc_max = acc_max;
-
-            this.t_a = t_a;
-            this.vel_c = vel_c;
-            this.acc = acc;
-
-            // make segments (trapezoidal)
-            segments = new ArrayList<>(Arrays.asList(
-                new MotionSegment(new MotionProfilePoint(0, 0), new MotionProfilePoint(t_a, vel_c)),
-                new MotionSegment(new MotionProfilePoint(t_a, vel_c), new MotionProfilePoint(totalTime - t_a, vel_c)),
-                new MotionSegment(new MotionProfilePoint(totalTime - t_a, vel_c), new MotionProfilePoint(totalTime, 0))
-            ));
-        }
-        else
-        {
-            throw new IllegalArgumentException("Motion Profile undefined (vel_max: " + vel_max + ", vel_c: " + vel_c + ")");
-        }
+        this.segments = segments;
     }
 
-    public MotionProfile(double distance, double totalTime)
+    public List<MotionSegment> getSegments()
     {
-        double t_a = (totalTime * Constants.Motion.DEFAULT_MOTIONPROFILE_ACCEL_TIME) / 2;
-        double vel_c = distance / (totalTime - t_a);
-        double acc = vel_c / t_a;
-
-        this.distance = distance;
-        this.totalTime = totalTime;
-
-        this.vel_max = vel_max;
-        this.acc_max = acc_max;
-
-        this.t_a = t_a;
-        this.vel_c = vel_c;
-        this.acc = acc;
-
-        // make segments (trapezoidal)
-        segments = new ArrayList<>(Arrays.asList(
-                new MotionSegment(new MotionProfilePoint(0, 0), new MotionProfilePoint(t_a, vel_c)),
-                new MotionSegment(new MotionProfilePoint(t_a, vel_c), new MotionProfilePoint(totalTime - t_a, vel_c)),
-                new MotionSegment(new MotionProfilePoint(totalTime - t_a, vel_c), new MotionProfilePoint(totalTime, 0))
-        ));
+         return segments;
     }
 
-    // evaluates the desired velocity of the profile at a time
-    public double evaluateVelocity(double time)
-    {
-        if(0 <= time && time <= totalTime)
-        {
-            // can probably do some fancy math here to find which segment we need to access but i'll keep it simple
-            for(MotionSegment segment : segments)
-            {
-                // segments overlap at one point so we can use bounds of domain
-                if(segment.getStart().getTime() <= time && time <= segment.getEnd().getTime())
-                    return segment.evaluate(time);
-            }
-
-            // guaranteed that code above returns a point but java sucks so we need this
-            return 0;
-        }
-        else
-        {
-            throw new IllegalArgumentException("Time " + time + " is not in the domain of motion profile");
-        }
-    }
-
-    // evaluates the riemann sum up to a time
     public double evaluatePosition(double time)
     {
-        if(0 <= time && time <= totalTime)
+        if(0 <= time && time <= t_total)
         {
             double A = 0;
 
@@ -143,14 +56,25 @@ public class MotionProfile
         }
     }
 
-    public ArrayList<MotionSegment> getSegments()
+    public double evaluateVelocity(double time)
     {
-        return segments;
-    }
+        if(0 <= time && time <= t_total)
+        {
+            // can probably do some fancy math here to find which segment we need to access but i'll keep it simple
+            for(MotionSegment segment : segments)
+            {
+                // segments overlap at one point so we can use bounds of domain
+                //if(segment.getStart().getTime() <= time && time <= segment.getEnd().getTime())
+                    return segment.evaluate(time);
+            }
 
-    public double getTotalTime()
-    {
-        return totalTime;
+            // guaranteed that code above returns a point but java sucks so we need this
+            return 0;
+        }
+        else
+        {
+            throw new IllegalArgumentException("Time " + time + " is not in the domain of motion profile");
+        }
     }
 
     public int getPointDuration()
@@ -158,8 +82,8 @@ public class MotionProfile
         return pointDuration;
     }
 
-    public double getCruiseVelocity()
+    public double getT_total()
     {
-        return vel_c;
+        return t_total;
     }
 }

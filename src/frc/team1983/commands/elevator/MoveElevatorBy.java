@@ -23,8 +23,7 @@ public class MoveElevatorBy extends Command
     @Override
     public void initialize()
     {
-        elevator.setProfile(new MotionProfile(elevator.feetToEncoderTicks(feet), time));
-        elevator.runProfile();
+
     }
 
     @Override

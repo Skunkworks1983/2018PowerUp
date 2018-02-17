@@ -1,11 +1,15 @@
 package frc.team1983;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.services.DashboardWrapper;
@@ -18,6 +22,8 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.util.control.ProfileController;
+import frc.team1983.util.motion.MotionProfile;
+import frc.team1983.util.motion.profiles.TrapezoidalProfile;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
@@ -33,11 +39,9 @@ public class Robot extends IterativeRobot
     private Ramps ramps;
     private StatefulDashboard dashboard;
 
-    private ArrayList<ProfileController> profileControllers;
+    private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
 
     private static Robot instance;
-
-    private RunOneMotor runOneMotor;
 
     @Override
     public void robotInit()
@@ -53,9 +57,7 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
         ramps = new Ramps();
 
-        profileControllers = new ArrayList<ProfileController>();
-
-        oi.initializeBindings(this);
+        //oi.initializeBindings(this);
         robotLogger.info("robotInit");
     }
 
@@ -85,21 +87,20 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
         updateState(Constants.Robot.Mode.AUTO);
+
+        drivebase.setLeftProfile(new TrapezoidalProfile(5000, 5));
     }
 
     @Override
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
+        drivebase.runProfiles();
     }
 
     @Override
     public void teleopInit()
     {
-        if (runOneMotor != null)
-        {
-            runOneMotor.end();
-        }
         Scheduler.getInstance().removeAll();
         updateState(Constants.Robot.Mode.TELEOP);
 
@@ -117,44 +118,16 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
         updateState(Constants.Robot.Mode.TEST);
-
-        ArrayList<Motor> motors;
-        motors = new ArrayList<>();
-
-        DigitalInput motorUp;
-        DigitalInput motorDown;
-        AnalogInput manualSpeed;
-
-        motorUp = new DigitalInput(5);
-        motorDown = new DigitalInput(4);
-        manualSpeed = new AnalogInput(2);
-
-
-        if (runOneMotor == null)
-        {
-            runOneMotor = new RunOneMotor();
-        }
-
-        for(int i=0; i<16;i++)
-        {
-            motors.add(new Motor(i, false));
-            motors.get(i).setNeutralMode(NeutralMode.Coast);
-            robotLogger.info("Initialized motor " + i);
-        }
-
-        runOneMotor.initialize(motors, motorUp, motorDown, manualSpeed);
     }
 
     @Override
     public void testPeriodic()
     {
-        runOneMotor.execute();
+
     }
 
     public void updateState(Constants.Robot.Mode mode)
     {
-        robotLogger.info("switched to mode " + mode);
-
         for(ProfileController controller : profileControllers)
         {
             controller.updateRobotState(mode);

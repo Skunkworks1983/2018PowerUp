@@ -161,7 +161,7 @@ public class OI
 
     public double getAxis(Constants.OIMap.Joystick joystick, int axis)
     {
-        return axisExists(joystick, axis) ? getJoystick(joystick).getRawAxis(axis) : 0;
+        return axisExists(joystick, axis) ? -getJoystick(joystick).getRawAxis(axis) : 0;
     }
 
     public boolean isDown(Constants.OIMap.Joystick joystick, int button)

@@ -18,11 +18,7 @@ public class ProfileController
     protected MotionProfile profile;
     protected MotionProfileStatus status;
 
-    private Thread thread;
-
-    private ReentrantLock talonLock = new ReentrantLock();
     private ReentrantLock controllerLock = new ReentrantLock();
-
     private ProfileControllerRunnable runnable;
 
     private boolean enabled = false;
@@ -35,13 +31,12 @@ public class ProfileController
 
         status = new MotionProfileStatus();
 
+        robot.addProfileController(this);
+
         runnable = new ProfileControllerRunnable(this);
 
-        thread = new Thread(runnable);
         controllerLock.lock();
-        thread.start();
-
-        Robot.getInstance().addProfileController(this);
+        runnable.start();
     }
 
     public void setProfile(MotionProfile profile)
@@ -56,7 +51,7 @@ public class ProfileController
 
         int durationMs = profile.getPointDuration();
         double duration = durationMs * 0.001;
-        int resolution = (int) (profile.getTotalTime() / duration);
+        int resolution = (int) (profile.getT_total() / duration);
 
         parent.clearMotionProfileTrajectories();
         parent.clearMotionProfileHasUnderrun(100);
@@ -120,11 +115,6 @@ public class ProfileController
     public void updateRobotState(Constants.Robot.Mode mode)
     {
         setEnabled(mode != Constants.Robot.Mode.DISABLED);
-    }
-
-    protected ReentrantLock getTalonLock()
-    {
-        return talonLock;
     }
 
     protected ReentrantLock getControllerLock()

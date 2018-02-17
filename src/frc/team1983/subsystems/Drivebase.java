@@ -1,5 +1,6 @@
 package frc.team1983.subsystems;
 
+import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.services.logger.LoggerFactory;
@@ -40,6 +41,26 @@ public class Drivebase extends Subsystem
 
     }
 
+    public double encoderTicksToFeet(double ticks)
+    {
+        double resolution = Constants.Robot.Drivebase.ENCODER_RESOLUTION;
+        double circumference = Constants.Robot.Drivebase.WHEEL_CIRCUMFERENCE;
+        double reduction = Constants.Robot.Drivebase.ENCODER_REDUCTION;
+
+        double feet = (ticks / resolution) * (circumference * reduction);
+        return feet;
+    }
+
+    public double feetToEncoderTicks(double feet)
+    {
+        double resolution = Constants.Robot.Drivebase.ENCODER_RESOLUTION;
+        double circumference = Constants.Robot.Drivebase.WHEEL_CIRCUMFERENCE;
+        double reduction = Constants.Robot.Drivebase.ENCODER_REDUCTION;
+
+        double ticks = (feet / (circumference * reduction)) * resolution;
+        return ticks;
+    }
+
     public void setLeft(ControlMode mode, double value)
     {
         left1.set(mode, value);
@@ -47,7 +68,7 @@ public class Drivebase extends Subsystem
 
     public void setRight(ControlMode mode, double value)
     {
-        right2.set(mode, value);
+        right1.set(mode, value);
     }
 
     public double getLeftEncoderValue()
@@ -80,6 +101,25 @@ public class Drivebase extends Subsystem
     {
         left1.stopProfile();
         right1.stopProfile();
+    }
+
+    public boolean leftProfileIsFinished()
+    {
+        MotionProfileStatus status = new MotionProfileStatus();
+        left1.getMotionProfileStatus(status);
+        return status.isUnderrun || (status.activePointValid && status.isLast);
+    }
+
+    public boolean rightProfileIsFinished()
+    {
+        MotionProfileStatus status = new MotionProfileStatus();
+        right1.getMotionProfileStatus(status);
+        return status.isUnderrun || (status.activePointValid && status.isLast);
+    }
+
+    public boolean profilesAreFinished()
+    {
+        return leftProfileIsFinished() && rightProfileIsFinished();
     }
 }
 

@@ -17,9 +17,6 @@ public class Motor extends TalonSRX
     {
         super(port);
         setInverted(reversed);
-
-        manager = new ProfileController(this, Robot.getInstance());
-        setProfileRunState(false);
     }
 
     public Motor(int port, boolean reversed, boolean hasEncoder)
@@ -29,7 +26,16 @@ public class Motor extends TalonSRX
         if(hasEncoder)
         {
             configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+            setSelectedSensorPosition(0, 0, 0);
         }
+    }
+
+    public void configPIDF(int slot, double p, double i, double d, double f)
+    {
+        config_kP(slot, p, 0);
+        config_kI(slot, i, 0);
+        config_kD(slot, d, 0);
+        config_kF(slot, f, 0);
     }
 
     // don't need this method but it makes things look more readable
@@ -40,6 +46,9 @@ public class Motor extends TalonSRX
 
     public void setProfile(MotionProfile profile)
     {
+        if(manager == null)
+            manager = new ProfileController(this, Robot.getInstance());
+
         manager.setProfile(profile);
     }
 
@@ -55,6 +64,9 @@ public class Motor extends TalonSRX
 
     public void setProfileRunState(boolean run)
     {
+        if(manager == null)
+            manager = new ProfileController(this, Robot.getInstance());
+
         manager.setEnabled(run);
     }
 }
