@@ -2,6 +2,7 @@ package frc.team1983.commands.elevator;
 
 import com.ctre.phoenix.Logger;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.OI;
 import frc.team1983.services.logger.LoggerFactory;
@@ -25,6 +26,7 @@ public class ElevatorControl extends CommandBase
 
     public ElevatorControl(Elevator elevator)
     {
+        oi = new OI(DriverStation.getInstance());
         elevlog = LoggerFactory.createNewLogger(ElevatorControl.class);
         this.elevator = elevator;
 
