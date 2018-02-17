@@ -1,6 +1,7 @@
 package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.services.logger.LoggerFactory;
@@ -14,6 +15,7 @@ import org.apache.logging.log4j.core.Logger;
 public class Collector extends Subsystem
 {
     private Motor left, right;
+    private Motor rotate;
     private DigitalInputWrapper leftSwitch, rightSwitch;
     //The collector subsystem
     private Logger logger;
@@ -22,9 +24,13 @@ public class Collector extends Subsystem
     {
         left = new Motor(Constants.MotorMap.Collector.LEFT, Constants.MotorMap.Collector.LEFT_REVERSED);
         right = new Motor(Constants.MotorMap.Collector.RIGHT, Constants.MotorMap.Collector.RIGHT_REVERSED);
+        rotate = new Motor(Constants.MotorMap.Collector.ROTATE, Constants.MotorMap.Collector.ROTATE_REVERSED);
 
         leftSwitch = new DigitalInputWrapper(Constants.MotorMap.Collector.LEFT_SWITCH, Constants.MotorMap.Collector.LEFT_SWITCH_REVERSED);
         rightSwitch = new DigitalInputWrapper(Constants.MotorMap.Collector.RIGHT_SWITCH, Constants.MotorMap.Collector.RIGHT_SWITCH_REVERSED);
+
+        rotate.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+        rotate.setNeutralMode(NeutralMode.Brake);
 
         logger = LoggerFactory.createNewLogger(Collector.class);
     }
@@ -44,6 +50,11 @@ public class Collector extends Subsystem
         right.set(mode, value);
     }
 
+    public void setRotate(ControlMode mode, double value)
+    {
+        rotate.set(mode, value);
+    }
+
     public boolean isLeftSwitchDown()
     {
         return leftSwitch.get();
@@ -52,6 +63,11 @@ public class Collector extends Subsystem
     public boolean isRightSwitchDown()
     {
         return rightSwitch.get();
+    }
+
+    public double getPosition()
+    {
+        return rotate.getSelectedSensorPosition(0);
     }
 }
 
