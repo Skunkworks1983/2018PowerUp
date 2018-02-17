@@ -15,7 +15,7 @@ public class RunTankDrive extends CommandBase
     private OI oi;
     private Logger logger;
 
-    public RunTankDrive(Drivebase drivebase, OI oi)
+    public RunTankDrive(Drivebase drivebase, frc.team1983.services.OI oi)
     {
         requires(drivebase);
 
@@ -34,13 +34,8 @@ public class RunTankDrive extends CommandBase
     @Override
     public void execute()
     {
-        double leftSpeed = oi.getAxis(Constants.OIMap.Joystick.LEFT, Constants.OIMap.Axis.Y);
-        double rightSpeed = oi.getAxis(Constants.OIMap.Joystick.RIGHT, Constants.OIMap.Axis.Y);
-
-        drivebase.setLeft(ControlMode.PercentOutput, leftSpeed);
-        drivebase.setRight(ControlMode.PercentOutput, rightSpeed);
-
-        System.out.println(leftSpeed + ", " + rightSpeed);
+        drivebase.setLeft(ControlMode.PercentOutput, oi.getFixedAxis(Constants.OI.Joystick.LEFT, Constants.OI.Axis.Y));
+        drivebase.setRight(ControlMode.PercentOutput, oi.getFixedAxis(Constants.OI.Joystick.RIGHT, Constants.OI.Axis.Y));
     }
 
     @Override
@@ -50,17 +45,15 @@ public class RunTankDrive extends CommandBase
     }
 
     @Override
+    public void interrupted()
+    {
+        end();
+    }
+
+    @Override
     public void end()
     {
         drivebase.setLeft(ControlMode.PercentOutput, 0);
         drivebase.setRight(ControlMode.PercentOutput, 0);
     }
-
-    @Override
-    public void interrupted()
-    {
-        this.end();
-    }
-
-
 }

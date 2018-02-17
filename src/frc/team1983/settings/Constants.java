@@ -141,11 +141,14 @@ public class Constants
     }
 
     //this contains all values relevant to the OI.
-    public static class OIMap
+    public static class OI
     {
         public static final int LEFTJOY_PORT = 0;
         public static final int RIGHTJOY_PORT = 1;
         public static final int PANEL_PORT = 2;
+
+        public static final double JOYSTICK_DEADZONE = 0.15;
+        public static final double JOYSTICK_RAMP_EXPONENT = 2;
 
         public enum Joystick
         {
@@ -163,8 +166,6 @@ public class Constants
         public static class OIConstants
         {
             //Joystick constants
-            public static final double JOYSTICK_DEADZONE = 0.15;
-            public static final double JOYSTICK_RAMP_EXPONENT = 2;
             public static final double JOYSTICK_TOLERANCE = 0.5;
 
             //Scalar coefficient of the slider on the OI
