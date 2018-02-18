@@ -32,14 +32,9 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int LEFT1 = 11;
-            public static final int LEFT2 = 12;
-
             public static final int RIGHT1 = 3;
             public static final int RIGHT2 = 4;
 
-            public static final boolean LEFT1_REVERSED = true;
-            public static final boolean LEFT2_REVERSED = true;
             public static final boolean RIGHT1_REVERSED = false;
             public static final boolean RIGHT2_REVERSED = false;
         }
@@ -154,12 +149,15 @@ public class Constants
 
         public static class ElevatorControlPid
         {
-            public static final double P = 0; //TODO: find actual pid values
+            public static final int ELEVATOR_BOTTOM = 0;
+            //Actually negative, but ya know,
+            public static final int ELEVATOR_TOP = 27985 - 485; //Addition is to keep it from hitting the max position
+
+            public static final double P = 0.11; //TODO: find actual pid values
             public static final double I = 0;
             public static final double D = 0;
-            public static final double F = 0;
+            public static final double F = 0.002;
         }
-
     }
 
     public static class AutoValues

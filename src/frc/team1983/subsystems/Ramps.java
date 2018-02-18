@@ -22,6 +22,11 @@ public class Ramps extends Subsystem
         logger = LoggerFactory.createNewLogger(Ramps.class);
     }
 
+    public void set(double value)
+    {
+        leftLock.set(value);
+    }
+
     public void initDefaultCommand()
     {
 
