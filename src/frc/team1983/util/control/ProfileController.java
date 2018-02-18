@@ -5,9 +5,11 @@ import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.Robot;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.motion.MotionProfile;
+import org.apache.logging.log4j.core.Logger;
 
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -21,10 +23,16 @@ public class ProfileController
     private ReentrantLock controllerLock = new ReentrantLock();
     private ProfileControllerRunnable runnable;
 
+    private Thread thread;
+
+    private Logger logger;
+
     private boolean enabled = false;
 
     public ProfileController(Motor parent, Robot robot)
     {
+        logger = LoggerFactory.createNewLogger(this.getClass());
+
         this.parent = parent;
         this.parent.changeMotionControlFramePeriod(5);
         this.parent.clearMotionProfileTrajectories();
@@ -34,9 +42,7 @@ public class ProfileController
         robot.addProfileController(this);
 
         runnable = new ProfileControllerRunnable(this);
-
-        controllerLock.lock();
-        runnable.start();
+        thread = new Thread(runnable);
     }
 
     public void setProfile(MotionProfile profile)
@@ -47,16 +53,17 @@ public class ProfileController
 
     private void streamProfile(MotionProfile profile)
     {
+        logger.info("locked");
         controllerLock.lock();
 
         int durationMs = profile.getPointDuration();
         double duration = durationMs * 0.001;
-        int resolution = (int) (profile.getT_total() / duration);
+        int resolution = (int) (profile.getTotalTime() / duration);
 
         parent.clearMotionProfileTrajectories();
-        parent.clearMotionProfileHasUnderrun(100);
+        parent.clearMotionProfileHasUnderrun(0);
 
-        parent.configMotionProfileTrajectoryPeriod(0, 100);
+        parent.configMotionProfileTrajectoryPeriod(0, 0);
 
         for(int i = 0; i <= resolution; i++)
         {
@@ -79,6 +86,7 @@ public class ProfileController
         }
 
         controllerLock.unlock();
+        logger.info("unlocked");
     }
 
     public MotionProfileStatus getProfileStatus()
@@ -99,15 +107,23 @@ public class ProfileController
         {
             if(!controllerLock.isLocked())
             {
+                logger.info("locked");
                 controllerLock.lock();
-                parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Disable.value);
             }
+
+            parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Disable.value);
         }
         else
         {
             if(controllerLock.isHeldByCurrentThread())
             {
                 controllerLock.unlock();
+                logger.info("unlocked");
+
+                if(!thread.isAlive())
+                {
+                    thread.start();
+                }
             }
         }
     }

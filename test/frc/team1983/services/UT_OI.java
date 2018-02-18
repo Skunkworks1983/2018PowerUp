@@ -96,7 +96,7 @@ public class UT_OI
     public void returnsDeadzonedValue()
     {
         when(left.getAxisCount()).thenReturn(1);
-        when(left.getRawAxis(0)).thenReturn(Constants.OI.OIConstants.JOYSTICK_DEADZONE * 0.5);
+        when(left.getRawAxis(0)).thenReturn(Constants.OI.JOYSTICK_DEADZONE * 0.5);
         assertThat(oi.getAxis(Constants.OI.Joystick.PANEL, 0), is(0.0));
     }
 

@@ -33,6 +33,8 @@ public class Constants
             public static final boolean RIGHT2_REVERSED = false;
             public static final boolean RIGHT3_REVERSED = false;
 
+            public static final double WHEELBASE_WIDTH = 28.0 / 12.0;
+
             public static final double WHEEL_CIRCUMFERENCE = (6.0 / 12.0) * Math.PI;
             public static final double ENCODER_REDUCTION = 18.0 / 24.0;
             public static final double ENCODER_RESOLUTION = 1000;

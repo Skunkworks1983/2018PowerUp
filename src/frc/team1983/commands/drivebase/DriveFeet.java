@@ -1,8 +1,11 @@
 package frc.team1983.commands.drivebase;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.util.motion.MotionProfile;
+import frc.team1983.util.motion.profiles.TrapezoidalProfile;
+import org.apache.logging.log4j.core.Logger;
 
 public class DriveFeet extends Command
 {
@@ -10,29 +13,45 @@ public class DriveFeet extends Command
     private double feet;
     private double time;
 
+    private MotionProfile leftProfile;
+    private MotionProfile rightProfile;
+
+    private Logger logger;
+
     public DriveFeet(Drivebase drivebase, double feet, double time)
     {
+        logger = LoggerFactory.createNewLogger(this.getClass());
+
         this.drivebase = drivebase;
         this.feet = feet;
         this.time = time;
+
+        // will become three-segment based on paths (todo)
+        leftProfile = new TrapezoidalProfile(drivebase.feetToEncoderTicks(feet), time);
+        rightProfile = new TrapezoidalProfile(drivebase.feetToEncoderTicks(feet), time);
     }
 
     @Override
     protected void initialize()
     {
+        //drivebase.setRightProfile(rightProfile);
+        drivebase.setLeftProfile(leftProfile);
 
+        drivebase.runProfiles();
+
+        logger.info("COMMAND STARTED!!!");
     }
 
     @Override
     protected void execute()
     {
-        drivebase.runProfiles();
+        logger.info(drivebase.leftProfileIsFinished());
     }
 
     @Override
     protected boolean isFinished()
     {
-        return false;
+        return drivebase.leftProfileIsFinished();
     }
 
     @Override
@@ -44,6 +63,6 @@ public class DriveFeet extends Command
     @Override
     public void end()
     {
-
+        drivebase.stopProfiles();
     }
 }

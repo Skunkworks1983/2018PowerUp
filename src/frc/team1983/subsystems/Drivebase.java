@@ -12,8 +12,8 @@ import org.apache.logging.log4j.core.Logger;
 //The base of the robot. Consists of the drive train motors, slaved to each other.
 public class Drivebase extends Subsystem
 {
-    private Motor left1, left2, left3;
-    private Motor right1, right2, right3;
+    public Motor left1, left2, left3;
+    public Motor right1, right2, right3;
 
     private Logger logger;
 
@@ -33,7 +33,13 @@ public class Drivebase extends Subsystem
         right2.follow(right1);
         right3.follow(right1);
 
+        left1.setSensorPhase(true);
+        right1.setSensorPhase(true);
+
         logger = LoggerFactory.createNewLogger(Drivebase.class);
+
+        left1.configPIDF(0, 0.2, 0, 0, 0.2);
+        right1.configPIDF(0, 0.2, 0, 0, 0.2);
     }
 
     public void initDefaultCommand()
@@ -81,9 +87,21 @@ public class Drivebase extends Subsystem
         return right1.getSelectedSensorPosition(0);
     }
 
+    public double getLeftEncoderVelocity()
+    {
+        return left1.getSelectedSensorVelocity(0);
+    }
+
+    public double getRightEncoderVelocity()
+    {
+        return right1.getSelectedSensorVelocity(0);
+    }
+
     public void setLeftProfile(MotionProfile profile)
     {
+        logger.info("Setting left profile");
         left1.setProfile(profile);
+        logger.info("Have set left profile");
     }
 
     public void setRightProfile(MotionProfile profile)
@@ -94,20 +112,20 @@ public class Drivebase extends Subsystem
     public void runProfiles()
     {
         left1.runProfile();
-        right1.runProfile();
+        //right1.runProfile();
     }
 
     public void stopProfiles()
     {
         left1.stopProfile();
-        right1.stopProfile();
+        //right1.stopProfile();
     }
 
     public boolean leftProfileIsFinished()
     {
         MotionProfileStatus status = new MotionProfileStatus();
         left1.getMotionProfileStatus(status);
-        return status.isUnderrun || (status.activePointValid && status.isLast);
+        return status.isUnderrun || (status.isLast && status.activePointValid);
     }
 
     public boolean rightProfileIsFinished()

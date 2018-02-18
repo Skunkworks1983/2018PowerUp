@@ -63,9 +63,7 @@ public class Robot extends IterativeRobot
 
     @Override
     public void robotPeriodic()
-    {
-
-    }
+    {}
 
     @Override
     public void disabledInit()
@@ -88,14 +86,21 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         updateState(Constants.Robot.Mode.AUTO);
 
-        drivebase.setLeftProfile(new TrapezoidalProfile(5000, 5));
+        CommandGroup profiles = new CommandGroup();
+
+        profiles.addSequential(new DriveFeet(drivebase, 5, 5));
+        profiles.addSequential(new DriveFeet(drivebase, 5, 5));
+
+        Scheduler.getInstance().add(profiles);
     }
 
     @Override
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
-        drivebase.runProfiles();
+        double left = drivebase.encoderTicksToFeet(drivebase.getLeftEncoderValue());
+        double right = drivebase.encoderTicksToFeet(drivebase.getRightEncoderValue());
+
     }
 
     @Override
