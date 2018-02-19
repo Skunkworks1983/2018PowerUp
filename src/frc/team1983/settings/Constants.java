@@ -200,5 +200,6 @@ public class Constants
 
     public static class Motion {
         public static final double DEFAULT_MOTIONPROFILE_ACCEL_TIME = 0.5; // [0-1]
+        public static final int MIN_POINTS_IN_TALON = 5;
     }
 }

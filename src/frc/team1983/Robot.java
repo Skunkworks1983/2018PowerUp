@@ -1,5 +1,7 @@
 package frc.team1983;
 
+import com.ctre.phoenix.motion.MotionProfileStatus;
+import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -9,6 +11,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.debugging.RunOneMotor;
@@ -83,13 +87,16 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
+        robotLogger.info("-----AUTONOMOUS INIT-----");
+
         Scheduler.getInstance().removeAll();
         updateState(Constants.Robot.Mode.AUTO);
 
         CommandGroup profiles = new CommandGroup();
 
-        profiles.addSequential(new DriveFeet(drivebase, 5, 5));
-        profiles.addSequential(new DriveFeet(drivebase, 5, 5));
+        profiles.addSequential(new DriveFeet(drivebase, 3, 2));
+        profiles.addSequential(new DriveFeet(drivebase, 3, 2));
+        profiles.addSequential(new DriveFeet(drivebase, 3, 2));
 
         Scheduler.getInstance().add(profiles);
     }
@@ -98,9 +105,6 @@ public class Robot extends IterativeRobot
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
-        double left = drivebase.encoderTicksToFeet(drivebase.getLeftEncoderValue());
-        double right = drivebase.encoderTicksToFeet(drivebase.getRightEncoderValue());
-
     }
 
     @Override
@@ -142,6 +146,13 @@ public class Robot extends IterativeRobot
     public void addProfileController(ProfileController controller)
     {
         profileControllers.add(controller);
+    }
+
+    public CommandGroup assembleAutonomous()
+    {
+        CommandGroup auto = new CommandGroup();
+
+        return auto;
     }
 
     public Drivebase getDrivebase()

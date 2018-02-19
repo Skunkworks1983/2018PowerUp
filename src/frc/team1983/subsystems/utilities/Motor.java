@@ -11,7 +11,7 @@ import frc.team1983.util.motion.MotionProfile;
 public class Motor extends TalonSRX
 {
     private boolean hasEncoder = false;
-    private ProfileController manager;
+    public ProfileController manager;
 
     public Motor(int port, boolean reversed)
     {
@@ -68,5 +68,10 @@ public class Motor extends TalonSRX
             manager = new ProfileController(this, Robot.getInstance());
 
         manager.setEnabled(run);
+    }
+
+    public boolean isProfileFinished()
+    {
+        return manager != null && manager.isProfileFinished();
     }
 }

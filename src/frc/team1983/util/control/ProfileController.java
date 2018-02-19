@@ -20,12 +20,12 @@ public class ProfileController
     protected MotionProfile profile;
     protected MotionProfileStatus status;
 
-    private ReentrantLock controllerLock = new ReentrantLock();
+    private ReentrantLock controllerLock;
     private ProfileControllerRunnable runnable;
 
-    private Thread thread;
-
     private Logger logger;
+
+    private Thread thread;
 
     private boolean enabled = false;
 
@@ -41,8 +41,23 @@ public class ProfileController
 
         robot.addProfileController(this);
 
+        controllerLock = new ReentrantLock();
+
         runnable = new ProfileControllerRunnable(this);
         thread = new Thread(runnable);
+    }
+
+    private void reset()
+    {
+        controllerLock.lock();
+
+        runnable.reset();
+
+        parent.clearMotionProfileTrajectories();
+        parent.clearMotionProfileHasUnderrun(0);
+        parent.configMotionProfileTrajectoryPeriod(0, 0);
+
+        controllerLock.unlock();
     }
 
     public void setProfile(MotionProfile profile)
@@ -53,17 +68,13 @@ public class ProfileController
 
     private void streamProfile(MotionProfile profile)
     {
-        logger.info("locked");
         controllerLock.lock();
+
+        reset();
 
         int durationMs = profile.getPointDuration();
         double duration = durationMs * 0.001;
         int resolution = (int) (profile.getTotalTime() / duration);
-
-        parent.clearMotionProfileTrajectories();
-        parent.clearMotionProfileHasUnderrun(0);
-
-        parent.configMotionProfileTrajectoryPeriod(0, 0);
 
         for(int i = 0; i <= resolution; i++)
         {
@@ -86,17 +97,8 @@ public class ProfileController
         }
 
         controllerLock.unlock();
-        logger.info("unlocked");
-    }
 
-    public MotionProfileStatus getProfileStatus()
-    {
-        return status;
-    }
-
-    public boolean isEnabled()
-    {
-        return enabled;
+        logger.info("finished streaming");
     }
 
     public void setEnabled(boolean enabled)
@@ -107,7 +109,6 @@ public class ProfileController
         {
             if(!controllerLock.isLocked())
             {
-                logger.info("locked");
                 controllerLock.lock();
             }
 
@@ -118,19 +119,49 @@ public class ProfileController
             if(controllerLock.isHeldByCurrentThread())
             {
                 controllerLock.unlock();
-                logger.info("unlocked");
-
-                if(!thread.isAlive())
-                {
-                    thread.start();
-                }
+            }
+            else if(!runnable.isRunning())
+            {
+                thread.start();
             }
         }
+
+        logger.info("setEnabled called");
     }
 
     public void updateRobotState(Constants.Robot.Mode mode)
     {
-        setEnabled(mode != Constants.Robot.Mode.DISABLED);
+        setEnabled(false);
+    }
+
+    public boolean isProfileFinished()
+    {
+        controllerLock.lock();
+
+        MotionProfileStatus status = new MotionProfileStatus();
+        parent.getMotionProfileStatus(status);
+
+        controllerLock.unlock();
+
+        return hasProcessedBuffer() && status.btmBufferCnt == 1;
+    }
+
+    public boolean isEnabled()
+    {
+        return enabled;
+    }
+
+    public boolean hasProcessedBuffer()
+    {
+        return runnable.hasProcessedBuffer();
+    }
+
+    public MotionProfileStatus getProfileStatus()
+    {
+        MotionProfileStatus status = new MotionProfileStatus();
+        parent.getMotionProfileStatus(status);
+
+        return status;
     }
 
     protected ReentrantLock getControllerLock()

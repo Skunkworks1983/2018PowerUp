@@ -1,5 +1,6 @@
 package frc.team1983.commands.drivebase;
 
+import com.ctre.phoenix.motion.MotionProfileStatus;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.Drivebase;
@@ -34,24 +35,23 @@ public class DriveFeet extends Command
     @Override
     protected void initialize()
     {
-        //drivebase.setRightProfile(rightProfile);
         drivebase.setLeftProfile(leftProfile);
+        drivebase.setRightProfile(rightProfile);
 
         drivebase.runProfiles();
-
-        logger.info("COMMAND STARTED!!!");
     }
 
     @Override
     protected void execute()
     {
-        logger.info(drivebase.leftProfileIsFinished());
+        logger.info("left count: " + drivebase.left1.manager.getProfileStatus().btmBufferCnt
+                            + " right: " + drivebase.right1.manager.getProfileStatus().btmBufferCnt);
     }
 
     @Override
     protected boolean isFinished()
     {
-        return drivebase.leftProfileIsFinished();
+        return drivebase.profilesAreFinished();
     }
 
     @Override
@@ -63,6 +63,9 @@ public class DriveFeet extends Command
     @Override
     public void end()
     {
+        logger.info("finished with " + drivebase.left1.manager.getProfileStatus().btmBufferCnt + " in left"
+                   + " and " + drivebase.right1.manager.getProfileStatus().btmBufferCnt + " in right");
+
         drivebase.stopProfiles();
     }
 }
