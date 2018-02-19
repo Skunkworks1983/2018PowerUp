@@ -14,7 +14,6 @@ import org.apache.logging.log4j.core.Logger;
 //The elevator subsystem
 public class Elevator extends Subsystem
 {
-    // left1 and right1 could probably be grouped together by the follow() function but we'll investigate
     private Motor right1, right2;
 
     private Logger logger;
@@ -30,7 +29,7 @@ public class Elevator extends Subsystem
 
         right2.follow(right1);
 
-        /*right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+        right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         right1.setSensorPhase(true);
 
         right1.config_kP(0, Constants.PidConstants.ElevatorControlPid.P, 0);
@@ -39,13 +38,14 @@ public class Elevator extends Subsystem
         right1.config_kF(0, Constants.PidConstants.ElevatorControlPid.F, 0);
 
         right1.configClosedloopRamp(0.5, 0);
-        right1.configPeakOutputForward(0.8, 0);
+        right1.configPeakOutputForward(1, 0);
+        //right1.config_IntegralZone(0, )
 
-        right1.set(ControlMode.Position, Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP);
+        //right1.set(ControlMode.Position, Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP);
 
         right1.selectProfileSlot(0, 0);
 
-        logger.info("Error: {}", right1.getClosedLoopError(0));*/
+        logger.info("Error: {}", right1.getClosedLoopError(0));
     }
 
     public void initDefaultCommand()

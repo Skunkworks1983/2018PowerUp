@@ -35,11 +35,14 @@ public class SetElevatorSpeed extends CommandBase
     @Override
     public boolean isFinished()
     {
-        return true;
+        return false;
     }
 
     @Override
-    public void end() {}
+    public void end()
+    {
+        elevator.set(ControlMode.PercentOutput, 0);
+    }
 
     @Override
     public void interrupted()

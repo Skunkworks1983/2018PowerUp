@@ -104,10 +104,9 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-        //robotLogger.info("Gyro: {}", drivebase.getGyro().getAngle());
-        //robotLogger.info("Elevator position:" + elevator.getEncoderValue());
 
-        elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.LEFT, 1));
+        robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
+        elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
     }
 
     @Override

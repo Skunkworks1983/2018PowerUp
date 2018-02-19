@@ -15,11 +15,11 @@ public class Constants
 
             public static final int LEFT_1 = 1;
             public static final int LEFT_2 = 0;
-            public static final int LEFT_3 = 2;
+            //public static final int LEFT_3 = 2;
 
             public static final int RIGHT_1 = 14;
-            public static final int RIGHT_2 = 13;
-            public static final int RIGHT_3 = 15;
+            //public static final int RIGHT_2 = 13;
+            public static final int RIGHT_2 = 15;
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = true;
@@ -32,8 +32,8 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int RIGHT1 = 3;
-            public static final int RIGHT2 = 4;
+            public static final int RIGHT1 = 5;
+            public static final int RIGHT2 = 6;
 
             public static final boolean RIGHT1_REVERSED = false;
             public static final boolean RIGHT2_REVERSED = false;
@@ -43,10 +43,10 @@ public class Constants
         {
             public static final int LEFT = 10;
             public static final int RIGHT = 9;
-            public static final int ROTATE = 5;
+            public static final int ROTATE = 11;
 
-            public static final boolean LEFT_REVERSED = false;
-            public static final boolean RIGHT_REVERSED = true;
+            public static final boolean LEFT_REVERSED = true;
+            public static final boolean RIGHT_REVERSED = false;
             public static final boolean ROTATE_REVERSED = false;
 
             public static final int LEFT_SWITCH = 1;
@@ -58,11 +58,11 @@ public class Constants
 
         public static class Ramps
         {
-            public static final int LEFT_RAMPLOCK = 0;
-            public static final int RIGHT_RAMPLOCK = 1;
+            public static final int LEFT_RAMPLOCK = 1;
+            public static final int RIGHT_RAMPLOCK = 2;
 
             public static final int LEFT_LEG = 0;
-            public static final int RIGHT_LEG = 0;
+            public static final int RIGHT_LEG = 3;
         }
 
         //Random and hard to classify drivebase constants
@@ -88,7 +88,7 @@ public class Constants
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
         //is activated that it will always return true (for debouncing)
-        public static final int COLLECTOR_SWITCH_DEBOUNCE_TIME = 50;
+        public static final int COLLECTOR_SWITCH_DEBOUNCE_TIME = 10;
     }
 
     public static class DashboardConstants
@@ -154,7 +154,7 @@ public class Constants
             public static final int ELEVATOR_TOP = 27985 - 485; //Addition is to keep it from hitting the max position
 
             public static final double P = 0.11; //TODO: find actual pid values
-            public static final double I = 0;
+            public static final double I = (0.15*1023)/8000000;
             public static final double D = 0;
             public static final double F = 0.002;
         }
@@ -175,10 +175,11 @@ public class Constants
         public static final int LEFTJOY_PORT = 0;
         public static final int RIGHTJOY_PORT = 1;
         public static final int PANEL_PORT = 2;
+        public static final int MANUAL_PORT = 3;
 
         public enum Joystick
         {
-            LEFT, RIGHT, PANEL
+            LEFT, RIGHT, PANEL, MANUAL
         }
 
         public class Axis
@@ -210,8 +211,24 @@ public class Constants
 
         public static class CollectorButtons
         {
-            public static final int INTAKE = 0;
-            public static final int EXPEL = 14;
+            public static final int INTAKE = 3;
+            public static final int EXPEL = 4;
+            public static final int MANUAL_ROTATE_UP = 13;
+            public static final int MANUAL_ROTATE_DOWN = 14;
+        }
+
+        public static class ElevatorButtons
+        {
+            public static final int TOP = 0;
+            public static final int MID = 1;
+            public static final int MANUAL_UP = 2;
+            public static final int MANUAL_DOWN = 3;
+        }
+
+        public static class RampButtons
+        {
+            public static final int DROP = 10;
+            public static final int PROP = 6;
         }
 
         public static class ManualControl

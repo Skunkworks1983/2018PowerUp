@@ -26,11 +26,14 @@ public class Collector extends Subsystem
         right = new Motor(Constants.MotorMap.Collector.RIGHT, Constants.MotorMap.Collector.RIGHT_REVERSED);
         rotate = new Motor(Constants.MotorMap.Collector.ROTATE, Constants.MotorMap.Collector.ROTATE_REVERSED);
 
+        left.setNeutralMode(NeutralMode.Brake);
+        right.setNeutralMode(NeutralMode.Brake);
+        rotate.setNeutralMode(NeutralMode.Brake);
+
         leftSwitch = new DigitalInputWrapper(Constants.MotorMap.Collector.LEFT_SWITCH, Constants.MotorMap.Collector.LEFT_SWITCH_REVERSED);
         rightSwitch = new DigitalInputWrapper(Constants.MotorMap.Collector.RIGHT_SWITCH, Constants.MotorMap.Collector.RIGHT_SWITCH_REVERSED);
 
         rotate.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-        rotate.setNeutralMode(NeutralMode.Brake);
 
         logger = LoggerFactory.createNewLogger(Collector.class);
     }
