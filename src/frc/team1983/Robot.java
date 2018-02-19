@@ -29,6 +29,7 @@ public class Robot extends IterativeRobot
     private DashboardWrapper dashboardWrapper;
 
     private static Robot instance;
+    private double startTime;
 
     @Override
     public void robotInit()
@@ -44,7 +45,9 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
+        startTimer();
         smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLYFOLDER);
+        endTimer("smelly parser construction");
 
         oi.initializeBindings(this);
         robotLogger.info("robotInit");
@@ -73,7 +76,9 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
+        startTimer();
         smellyParser.constructPath(); //Needs to happen before SmellyDrive
+        endTimer("Path construction");
 
         Scheduler.getInstance().removeAll();
 
@@ -145,5 +150,15 @@ public class Robot extends IterativeRobot
             instance = new Robot();
         }
         return instance;
+    }
+
+    private void startTimer()
+    {
+        startTime = System.currentTimeMillis();
+    }
+
+    private void endTimer(String name)
+    {
+        robotLogger.info(name + " took " + (System.currentTimeMillis() - startTime));
     }
 }

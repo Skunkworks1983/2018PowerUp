@@ -12,13 +12,13 @@ public class Constants
         //Ports for the drivebase motors
         public static class Drivebase
         {
-            public static final int LEFT_1 = 1;
-            public static final int LEFT_2 = 0;
-            public static final int LEFT_3 = 2;
+            public static final int LEFT_1 = 13;
+            public static final int LEFT_2 = 14;
+            public static final int LEFT_3 = 15;
 
-            public static final int RIGHT_1 = 14;
-            public static final int RIGHT_2 = 13;
-            public static final int RIGHT_3 = 15;
+            public static final int RIGHT_1 = 0;
+            public static final int RIGHT_2 = 1;
+            public static final int RIGHT_3 = 2;
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = true;
@@ -53,7 +53,7 @@ public class Constants
             public static final boolean RIGHT_REVERSED = false;
 
             public static final int LEFT_SWITCH = 0;
-            public static final int RIGHT_SWITCH = 0;
+            public static final int RIGHT_SWITCH = 1;
 
             public static final boolean LEFT_SWITCH_REVERSED = false;
             public static final boolean RIGHT_SWITCH_REVERSED = false;
@@ -61,8 +61,8 @@ public class Constants
 
         public static class Ramps
         {
-            public static final int LEFT_RAMPLOCK = 0;
-            public static final int RIGHT_RAMPLOCK = 0;
+            public static final int LEFT_RAMPLOCK = 2;
+            public static final int RIGHT_RAMPLOCK = 3;
 
             public static final int LEFT_LEG = 0;
             public static final int RIGHT_LEG = 0;
@@ -78,7 +78,8 @@ public class Constants
     public static class SmellyParser
     {
         public static final File SMELLYFOLDER = new File("/u/");
-        public static final File SMELLYUTFOLDER = new File("C:\\Users\\s-4036947\\Documents\\Skunkworks\\2018PowerUp\\test\\frc\\team1983\\util\\");
+        public static final File SMELLYUTFOLDER = new File(
+                "..\\test\\frc\\team1983\\util\\paths");
         public static final String AUTOPATHKEY = "SmellyPath";
         public static final File DEFAULTPATH = new File("/home/lvuser/DefaultSmellyPath.json");
     }

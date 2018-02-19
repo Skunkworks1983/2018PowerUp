@@ -4,8 +4,6 @@ import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.DriverStation;
 
-import java.util.concurrent.Semaphore;
-
 public class ProfileControllerRunnable implements java.lang.Runnable
 {
     private ProfileController controller;

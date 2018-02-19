@@ -2,7 +2,6 @@ package frc.team1983.util.path;
 
 public class PathTanarc extends PathComponent
 {
-    /*
     private double radius, angle;
 
     public double getRadius()
@@ -24,5 +23,4 @@ public class PathTanarc extends PathComponent
     {
         this.angle = angle;
     }
-    */
 }

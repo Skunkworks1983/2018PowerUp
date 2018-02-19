@@ -2,8 +2,6 @@ package frc.team1983.util.control;
 
 import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motion.TrajectoryPoint;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.motion.MotionProfile;
 
