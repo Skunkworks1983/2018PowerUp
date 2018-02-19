@@ -12,13 +12,13 @@ public class Constants
         //Ports for the drivebase motors
         public static class Drivebase
         {
-            public static final int LEFT_1 = 13;
-            public static final int LEFT_2 = 14;
-            public static final int LEFT_3 = 15;
+            public static final int LEFT_1 = 1;
+            public static final int LEFT_2 = 0;
+            public static final int LEFT_3 = 2;
 
-            public static final int RIGHT_1 = 0;
-            public static final int RIGHT_2 = 1;
-            public static final int RIGHT_3 = 2;
+            public static final int RIGHT_1 = 14;
+            public static final int RIGHT_2 = 13;
+            public static final int RIGHT_3 = 15;
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = true;
@@ -31,38 +31,39 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int LEFT1 = 0;
-            public static final int LEFT2 = 0;
+            public static final int LEFT1 = 11;
+            public static final int LEFT2 = 12;
 
-            public static final int RIGHT1 = 0;
-            public static final int RIGHT2 = 0;
+            public static final int RIGHT1 = 3;
+            public static final int RIGHT2 = 4;
 
             public static final boolean LEFT1_REVERSED = true;
-            public static final boolean LEFT2_REVERSED = false;
-
+            public static final boolean LEFT2_REVERSED = true;
             public static final boolean RIGHT1_REVERSED = false;
-            public static final boolean RIGHT2_REVERSED = true;
+            public static final boolean RIGHT2_REVERSED = false;
         }
 
         public static class Collector
         {
-            public static final int LEFT = 0;
-            public static final int RIGHT = 0;
+            public static final int LEFT = 10;
+            public static final int RIGHT = 9;
+            public static final int ROTATE = 5;
 
-            public static final boolean LEFT_REVERSED = true;
-            public static final boolean RIGHT_REVERSED = false;
+            public static final boolean LEFT_REVERSED = false;
+            public static final boolean RIGHT_REVERSED = true;
+            public static final boolean ROTATE_REVERSED = false;
 
-            public static final int LEFT_SWITCH = 0;
-            public static final int RIGHT_SWITCH = 1;
+            public static final int LEFT_SWITCH = 1;
+            public static final int RIGHT_SWITCH = 0;
 
-            public static final boolean LEFT_SWITCH_REVERSED = false;
-            public static final boolean RIGHT_SWITCH_REVERSED = false;
+            public static final boolean LEFT_SWITCH_REVERSED = true;
+            public static final boolean RIGHT_SWITCH_REVERSED = true;
         }
 
         public static class Ramps
         {
-            public static final int LEFT_RAMPLOCK = 2;
-            public static final int RIGHT_RAMPLOCK = 3;
+            public static final int LEFT_RAMPLOCK = 0;
+            public static final int RIGHT_RAMPLOCK = 1;
 
             public static final int LEFT_LEG = 0;
             public static final int RIGHT_LEG = 0;
@@ -71,7 +72,14 @@ public class Constants
         //Random and hard to classify drivebase constants
         public static class DrivebaseConstants
         {
-            public static final double DRIVEBASE_TICKS_PER_FOOT = 0;
+            public static final double DRIVEBASE_TICKS_PER_FOOT = 3 / 2.;
+            public static final int RIGHT1 = 0;
+            public static final int RIGHT2 = 0;
+
+            public static final boolean LEFT1_REVERSED = true;
+            public static final boolean LEFT2_REVERSED = false;
+            public static final boolean RIGHT1_REVERSED = true;
+            public static final boolean RIGHT2_REVERSED = false;
         }
     }
 
@@ -87,13 +95,13 @@ public class Constants
     public static class MotorSetpoints
     {
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
-        public static final double COLLECTOR_INTAKE_SPEED = 1.0;
-        public static final double COLLECTOR_EXPEL_SPEED = -1.0;
-        public static final double COLLECTOR_ROTATE_SPEED = -0.1;
+        public static final double COLLECTOR_INTAKE_SPEED = 0.75;
+        public static final double COLLECTOR_EXPEL_SPEED = -0.5;
+        public static final double COLLECTOR_ROTATE_SPEED = -0.5;
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
         //is activated that it will always return true (for debouncing)
-        public static final int COLLECTOR_SWITCH_DEBOUNCE_TIME = 10;
+        public static final int COLLECTOR_SWITCH_DEBOUNCE_TIME = 50;
     }
 
     public static class DashboardConstants
@@ -113,33 +121,54 @@ public class Constants
         //PIDF values for the DriveStraight command
         public static class DriveStrightPid
         {
-            public static final double P = 0; //TODO: find pid values
+            public static final double P = 0; //TODO: tune pid
             public static final double I = 0;
             public static final double D = 0;
             public static final double F = 0;
+
+            public static final double DEFAULT_BASE_SPEED = 0.5;
         }
 
         //PIDF values for the TurnAngle command
         public static class TurnAnglePid
         {
+            public static final double P = 0.005; //TODO: tune pid
+            public static final double I = 0;
+            public static final double D = 0;
+            public static final double F = 0;
+
+            public static final double ABSOLUTE_TOLERANCE = 5;
+        }
+
+        public static class CollectorRotate
+        {
             public static final double P = 0; //TODO: find pid values
             public static final double I = 0;
             public static final double D = 0;
             public static final double F = 0;
+
+            public static final double UP_TICKS = 0;
+            public static final double DOWN_TICKS = 0;
         }
 
         //setpoints for motors
+        //TODO: Refactor out of this scope
         public static class MotorSetpoints
         {
             //the position to which the ramp servos rotate.
             public static final double RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
             public static final double RAMP_PROP_SERVO_GOAL = 1;
         }
+
     }
 
     public static class AutoValues
     {
-
+        public static final double WHEELBASE_RADIUS = 25.625/2/12; //T fix magic number
+        public static final double WHEELBASE_CIRCUMFERENCE = 2 * Math.PI * WHEELBASE_RADIUS;
+        public static final double WHEELBASE_DEGREES = WHEELBASE_CIRCUMFERENCE / 360.;
+        public static final double EFFECTIVE_REDUCTION_DRIVEBASE = 18 / 24.;
+        public static final double WHEEL_CIRCUMFERENCE = 6/12. * Math.PI;
     }
 
     //this contains all values relevant to the OI.
@@ -175,16 +204,16 @@ public class Constants
 
         public static class SliderConstants
         {
-            public static final int sliderPresetsToggle = 0;
-            public static final int bottomPreset = 1;
-            public static final int switchPreset = 2;
-            public static final int scalePreset = 3;
+            public static final int SLIDER_PRESETS_TOGGLE = 0;
+            public static final int BOTTOM_PRESET = 1;
+            public static final int SWITCH_PRESET = 2;
+            public static final int SCALE_PRESET = 3;
         }
 
         public static class CollectorButtons
         {
-            public static final int INTAKE = 8;
-            public static final int EXPEL = 9;
+            public static final int INTAKE = 0;
+            public static final int EXPEL = 14;
         }
 
         //Enums for presets
@@ -197,7 +226,19 @@ public class Constants
         }
     }
 
-    public static class Motion {
+
+    public static class SensorMap
+    {
+        public static class GyroConstants
+        {
+            public static final int IS_CONNECTED_TIMEOUT = 500;
+            public static final int IS_CALIBRATING_TIMEOUT = 500;
+        }
+    }
+
+    public static class Motion
+    {
         public static final double DEFAULT_MOTIONPROFILE_ACCEL_TIME = 0.5; // [0-1]
+
     }
 }

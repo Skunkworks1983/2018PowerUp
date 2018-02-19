@@ -21,6 +21,7 @@
 
   <!-- Any other property in build.properties can also be overridden. -->
 
+  <property name="team-number" value="1983"/>
   <property file="${user.home}/wpilib/wpilib.properties"/>
   <property file="build.properties"/>
   <property file="${user.home}/wpilib/java/${version}/ant/build.properties"/>

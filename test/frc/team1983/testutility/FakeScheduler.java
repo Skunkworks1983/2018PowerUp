@@ -52,6 +52,12 @@ public class FakeScheduler
                 {
                     c.execute();
                 }
+                else
+                {
+                    c.end();
+                    commandBaseRemoval.add(c);
+                    orderFinished.add(c);
+                }
 
             }
             for(CommandBase finished : commandBaseRemoval)
@@ -113,7 +119,6 @@ public class FakeScheduler
                         else
                         {
                             orderFinished.add(command);
-                            //commandGroupRemoval.add(command);
                         }
                     }
                 }
