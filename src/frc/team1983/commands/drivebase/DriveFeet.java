@@ -34,24 +34,22 @@ public class DriveFeet extends Command
     @Override
     protected void initialize()
     {
-        //drivebase.setRightProfile(rightProfile);
+        drivebase.setRightProfile(rightProfile);
         drivebase.setLeftProfile(leftProfile);
 
         drivebase.runProfiles();
-
-        logger.info("COMMAND STARTED!!!");
     }
 
     @Override
     protected void execute()
     {
-        logger.info(drivebase.leftProfileIsFinished());
+
     }
 
     @Override
     protected boolean isFinished()
     {
-        return drivebase.leftProfileIsFinished();
+        return drivebase.profilesAreFinished();
     }
 
     @Override

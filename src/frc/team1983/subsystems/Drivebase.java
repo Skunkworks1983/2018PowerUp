@@ -99,9 +99,7 @@ public class Drivebase extends Subsystem
 
     public void setLeftProfile(MotionProfile profile)
     {
-        logger.info("Setting left profile");
         left1.setProfile(profile);
-        logger.info("Have set left profile");
     }
 
     public void setRightProfile(MotionProfile profile)
@@ -112,27 +110,23 @@ public class Drivebase extends Subsystem
     public void runProfiles()
     {
         left1.runProfile();
-        //right1.runProfile();
+        right1.runProfile();
     }
 
     public void stopProfiles()
     {
         left1.stopProfile();
-        //right1.stopProfile();
+        right1.stopProfile();
     }
 
     public boolean leftProfileIsFinished()
     {
-        MotionProfileStatus status = new MotionProfileStatus();
-        left1.getMotionProfileStatus(status);
-        return status.isUnderrun || (status.isLast && status.activePointValid);
+        return left1.isProfileFinished();
     }
 
     public boolean rightProfileIsFinished()
     {
-        MotionProfileStatus status = new MotionProfileStatus();
-        right1.getMotionProfileStatus(status);
-        return status.isUnderrun || (status.activePointValid && status.isLast);
+        return right1.isProfileFinished();
     }
 
     public boolean profilesAreFinished()

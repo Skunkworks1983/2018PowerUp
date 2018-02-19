@@ -69,4 +69,9 @@ public class Motor extends TalonSRX
 
         manager.setEnabled(run);
     }
+
+    public boolean isProfileFinished()
+    {
+        return manager != null && manager.isProfileFinished();
+    }
 }
