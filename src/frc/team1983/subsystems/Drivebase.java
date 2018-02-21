@@ -29,20 +29,20 @@ public class Drivebase extends Subsystem
     {
         left1 = new Motor(Constants.MotorMap.Drivebase.LEFT_1, Constants.MotorMap.Drivebase.LEFT1_REVERSED, true);
         left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED, false);
-        //left3 = new Motor(Constants.MotorMap.Drivebase.LEFT_3, Constants.MotorMap.Drivebase.LEFT3_REVERSED, false);
+        left3 = new Motor(Constants.MotorMap.Drivebase.LEFT_3, Constants.MotorMap.Drivebase.LEFT3_REVERSED, false);
 
         gyro = new Gyro(SPI.Port.kMXP);
         gyro.initGyro();
 
         right1 = new Motor(Constants.MotorMap.Drivebase.RIGHT_1, Constants.MotorMap.Drivebase.RIGHT1_REVERSED, true);
         right2 = new Motor(Constants.MotorMap.Drivebase.RIGHT_2, Constants.MotorMap.Drivebase.RIGHT2_REVERSED, false);
-        //right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED, false);
+        right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED, false);
 
         left2.follow(left1);
-        //left3.follow(left1);
+        left3.follow(left1);
 
         right2.follow(right1);
-        //right3.follow(right1);
+        right3.follow(right1);
 
         left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);

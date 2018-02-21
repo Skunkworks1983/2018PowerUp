@@ -15,11 +15,11 @@ public class Constants
 
             public static final int LEFT_1 = 1;
             public static final int LEFT_2 = 0;
-            //public static final int LEFT_3 = 2;
+            public static final int LEFT_3 = 2;
 
             public static final int RIGHT_1 = 14;
-            //public static final int RIGHT_2 = 13;
-            public static final int RIGHT_2 = 15;
+            public static final int RIGHT_2 = 13;
+            public static final int RIGHT_3 = 15;
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = true;
@@ -32,8 +32,8 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int RIGHT1 = 5;
-            public static final int RIGHT2 = 6;
+            public static final int RIGHT1 = 3;
+            public static final int RIGHT2 = 4;
 
             public static final boolean RIGHT1_REVERSED = false;
             public static final boolean RIGHT2_REVERSED = false;
@@ -43,7 +43,7 @@ public class Constants
         {
             public static final int LEFT = 10;
             public static final int RIGHT = 9;
-            public static final int ROTATE = 11;
+            public static final int ROTATE = 5;
 
             public static final boolean LEFT_REVERSED = true;
             public static final boolean RIGHT_REVERSED = false;
@@ -58,10 +58,10 @@ public class Constants
 
         public static class Ramps
         {
-            public static final int LEFT_RAMPLOCK = 1;
+            public static final int LEFT_RAMPLOCK = 0;
             public static final int RIGHT_RAMPLOCK = 2;
 
-            public static final int LEFT_LEG = 0;
+            public static final int LEFT_LEG = 1;
             public static final int RIGHT_LEG = 3;
         }
 
