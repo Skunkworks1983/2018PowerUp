@@ -32,16 +32,17 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int LEFT1 = 11;
-            public static final int LEFT2 = 12;
+            public static final int RIGHT1 = 2;
+            public static final int RIGHT2 = 3;
 
-            public static final int RIGHT1 = 3;
-            public static final int RIGHT2 = 4;
+            public static final int LEFT1 = 12;
+            public static final int LEFT2 = 13;
+
+            public static final boolean RIGHT1_REVERSED = false;
+            public static final boolean RIGHT2_REVERSED = false;
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = true;
-            public static final boolean RIGHT1_REVERSED = false;
-            public static final boolean RIGHT2_REVERSED = false;
         }
 
         public static class Collector
@@ -50,8 +51,8 @@ public class Constants
             public static final int RIGHT = 9;
             public static final int ROTATE = 5;
 
-            public static final boolean LEFT_REVERSED = false;
-            public static final boolean RIGHT_REVERSED = true;
+            public static final boolean LEFT_REVERSED = true;
+            public static final boolean RIGHT_REVERSED = false;
             public static final boolean ROTATE_REVERSED = false;
 
             public static final int LEFT_SWITCH = 1;
@@ -64,10 +65,10 @@ public class Constants
         public static class Ramps
         {
             public static final int LEFT_RAMPLOCK = 0;
-            public static final int RIGHT_RAMPLOCK = 1;
+            public static final int RIGHT_RAMPLOCK = 2;
 
-            public static final int LEFT_LEG = 0;
-            public static final int RIGHT_LEG = 0;
+            public static final int LEFT_LEG = 1;
+            public static final int RIGHT_LEG = 3;
         }
 
         //Random and hard to classify drivebase constants
@@ -96,7 +97,7 @@ public class Constants
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
         //is activated that it will always return true (for debouncing)
-        public static final int COLLECTOR_SWITCH_DEBOUNCE_TIME = 50;
+        public static final int COLLECTOR_SWITCH_DEBOUNCE_TIME = 10;
     }
 
     public static class DashboardConstants
@@ -140,13 +141,13 @@ public class Constants
 
         public static class CollectorRotate
         {
-            public static final double P = 0; //TODO: find pid values
+            public static final double P = 1.8;//.01; //TODO: find pid values
             public static final double I = 0;
             public static final double D = 0;
-            public static final double F = 0;
+            public static final double F = 0;//.002;
 
-            public static final double UP_TICKS = 0;
-            public static final double DOWN_TICKS = 0;
+            public static final double UP_TICKS = -100;
+            public static final double DOWN_TICKS = 3450;
         }
 
         //setpoints for motors
@@ -158,6 +159,17 @@ public class Constants
             public static final double RAMP_PROP_SERVO_GOAL = 1;
         }
 
+        public static class ElevatorControlPid
+        {
+            public static final int ELEVATOR_BOTTOM = 0;
+            //Actually negative, but ya know,
+            public static final int ELEVATOR_TOP = 29000 - 485; //Addition is to keep it from hitting the max position
+
+            public static final double P = 0.13;
+            public static final double I = 0;
+            public static final double D = 3;
+            public static final double F = 0.001;
+        }
     }
 
     public static class AutoValues
@@ -180,10 +192,11 @@ public class Constants
         public static final int LEFTJOY_PORT = 0;
         public static final int RIGHTJOY_PORT = 1;
         public static final int PANEL_PORT = 2;
+        public static final int MANUAL_PORT = 3;
 
         public enum Joystick
         {
-            LEFT, RIGHT, PANEL
+            LEFT, RIGHT, PANEL, MANUAL
         }
 
         public class Axis
@@ -215,10 +228,32 @@ public class Constants
 
         public static class CollectorButtons
         {
-            public static final int INTAKE = 0;
-            public static final int EXPEL = 14;
+            public static final int INTAKE = 3;
+            public static final int EXPEL = 4;
+            public static final int MANUAL_ROTATE_UP = 15;
+            public static final int MANUAL_ROTATE_DOWN = 14;
         }
 
+        public static class ElevatorButtons
+        {
+            public static final int TOP = 0;
+            public static final int MID = 1;
+            public static final int MANUAL_UP = 2;
+            public static final int MANUAL_DOWN = 3;
+        }
+
+        public static class RampButtons
+        {
+            public static final int DROP = 10;
+            public static final int PROP = 6;
+        }
+
+        public static class ManualControl
+        {
+            public static final int ELEVATOR_UP = 5; //button 6 on 2016 oi
+            public static final int ELEVATOR_DOWN = 6; //button 7 on 2016 oi
+            public static final int MANUAL_SWITCH = 8; //button 9 on the 2016 oi
+        }
         //Enums for presets
         public enum Setpoint
         {

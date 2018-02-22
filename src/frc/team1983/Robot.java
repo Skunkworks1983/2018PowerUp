@@ -1,11 +1,13 @@
 package frc.team1983;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.collector.CollectorRotate;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.SimpleTurnAngle;
@@ -65,7 +67,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotPeriodic()
     {
-        //System.out.println("Right encoder value: " + drivebase.getRightEncoderValue());
+
     }
 
     @Override
@@ -125,9 +127,9 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-        //robotLogger.info("Left {}\t Right{}", drivebase.getLeftDist(), drivebase.getRightDist());
-        //robotLogger.info("angle{}", pidSource.pidGet());
-        //robotLogger.info("Gyro: {}", drivebase.getGyro().getAngle()
+
+        robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
+        elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
     }
 
     @Override
