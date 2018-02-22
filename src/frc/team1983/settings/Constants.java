@@ -213,7 +213,7 @@ public class Constants
         {
             public static final int INTAKE = 3;
             public static final int EXPEL = 4;
-            public static final int MANUAL_ROTATE_UP = 13;
+            public static final int MANUAL_ROTATE_UP = 15;
             public static final int MANUAL_ROTATE_DOWN = 14;
         }
 

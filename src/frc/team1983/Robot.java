@@ -106,7 +106,7 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
 
         robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
-        elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
+        elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
     }
 
     @Override
