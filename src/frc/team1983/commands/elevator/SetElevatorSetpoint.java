@@ -48,7 +48,7 @@ public class SetElevatorSetpoint extends CommandBase
                 break;
 
             case SCALE:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP;
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP-100;
                 break;
 
             case BOTTOM:
