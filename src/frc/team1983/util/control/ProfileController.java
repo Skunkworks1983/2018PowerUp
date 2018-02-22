@@ -63,8 +63,6 @@ public class ProfileController
         // lock runnable
         signal.setEnabled(false);
 
-        logger.info("streamed to motor" + parent.getDeviceID());
-
         reset();
 
         int durationMs = profile.getPointDuration();
@@ -116,18 +114,13 @@ public class ProfileController
 
         if(enabled)
         {
-            logger.info("enabled motor" + parent.getDeviceID());
-
             if(!runnable.isRunning() && !runnable.isDead())
             {
-                logger.info("started thread on motor" + parent.getDeviceID());
                 thread.start();
             }
         }
         else
         {
-            logger.info("stopped and reset motor" + parent.getDeviceID());
-
             reset();
             parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Disable.value);
         }

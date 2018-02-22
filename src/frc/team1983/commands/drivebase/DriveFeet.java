@@ -34,8 +34,6 @@ public class DriveFeet extends Command
     @Override
     protected void initialize()
     {
-        logger.info("started command");
-
         drivebase.setRightProfile(rightProfile);
         drivebase.setLeftProfile(leftProfile);
 
@@ -64,6 +62,5 @@ public class DriveFeet extends Command
     public void end()
     {
         drivebase.stopProfiles();
-        logger.info("finished command");
     }
 }
