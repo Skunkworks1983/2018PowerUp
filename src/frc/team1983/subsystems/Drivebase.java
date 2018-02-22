@@ -38,8 +38,8 @@ public class Drivebase extends Subsystem
 
         logger = LoggerFactory.createNewLogger(Drivebase.class);
 
-        left1.configPIDF(0, 0, 0, 0, 0.3);
-        right1.configPIDF(0, 0, 0, 0, 0.3);
+        left1.configPIDF(0, 0.3, 0, 0, 0.2);
+        right1.configPIDF(0, 0.3, 0, 0, 0.2);
     }
 
     public void initDefaultCommand()

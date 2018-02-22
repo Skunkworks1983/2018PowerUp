@@ -11,53 +11,44 @@ import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.motion.MotionProfile;
 import org.apache.logging.log4j.core.Logger;
 
-import java.util.concurrent.locks.ReentrantLock;
-
 public class ProfileController
 {
     protected Motor parent;
 
     protected MotionProfile profile;
-    protected MotionProfileStatus status;
+    protected ProfileSignal signal;
 
-    private ReentrantLock controllerLock;
     private ProfileControllerRunnable runnable;
-
-    private Logger logger;
-
     private Thread thread;
 
-    private boolean enabled = false;
+    private Logger logger;
 
     public ProfileController(Motor parent, Robot robot)
     {
         logger = LoggerFactory.createNewLogger(this.getClass());
 
         this.parent = parent;
-        this.parent.changeMotionControlFramePeriod(5);
-        this.parent.clearMotionProfileTrajectories();
 
-        status = new MotionProfileStatus();
+        signal = new ProfileSignal();
 
-        robot.addProfileController(this);
-
-        controllerLock = new ReentrantLock();
-
-        runnable = new ProfileControllerRunnable(this);
+        runnable = new ProfileControllerRunnable(this, signal);
         thread = new Thread(runnable);
+
+        reset();
+        robot.addProfileController(this);
     }
 
     private void reset()
     {
-        controllerLock.lock();
-
-        runnable.reset();
-
         parent.clearMotionProfileTrajectories();
         parent.clearMotionProfileHasUnderrun(0);
+
         parent.configMotionProfileTrajectoryPeriod(0, 0);
 
-        controllerLock.unlock();
+        parent.changeMotionControlFramePeriod(5);
+        parent.clearMotionProfileTrajectories();
+
+        runnable.reset();
     }
 
     public void setProfile(MotionProfile profile)
@@ -68,7 +59,11 @@ public class ProfileController
 
     private void streamProfile(MotionProfile profile)
     {
-        controllerLock.lock();
+        boolean state = signal.isEnabled();
+        // lock runnable
+        signal.setEnabled(false);
+
+        logger.info("streamed to motor" + parent.getDeviceID());
 
         reset();
 
@@ -96,64 +91,8 @@ public class ProfileController
             parent.pushMotionProfileTrajectory(point);
         }
 
-        controllerLock.unlock();
-
-        logger.info("finished streaming");
-    }
-
-    public void setEnabled(boolean enabled)
-    {
-        this.enabled = enabled;
-
-        if(!enabled)
-        {
-            if(!controllerLock.isLocked())
-            {
-                controllerLock.lock();
-            }
-
-            parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Disable.value);
-        }
-        else
-        {
-            if(controllerLock.isHeldByCurrentThread())
-            {
-                controllerLock.unlock();
-            }
-            else if(!runnable.isRunning())
-            {
-                thread.start();
-            }
-        }
-
-        logger.info("setEnabled called");
-    }
-
-    public void updateRobotState(Constants.Robot.Mode mode)
-    {
-        setEnabled(false);
-    }
-
-    public boolean isProfileFinished()
-    {
-        controllerLock.lock();
-
-        MotionProfileStatus status = new MotionProfileStatus();
-        parent.getMotionProfileStatus(status);
-
-        controllerLock.unlock();
-
-        return hasProcessedBuffer() && status.btmBufferCnt == 1;
-    }
-
-    public boolean isEnabled()
-    {
-        return enabled;
-    }
-
-    public boolean hasProcessedBuffer()
-    {
-        return runnable.hasProcessedBuffer();
+        // unlock runnable
+        signal.setEnabled(state);
     }
 
     public MotionProfileStatus getProfileStatus()
@@ -164,11 +103,42 @@ public class ProfileController
         return status;
     }
 
-    protected ReentrantLock getControllerLock()
+    public boolean isProfileFinished()
     {
-        return controllerLock;
+        MotionProfileStatus status = getProfileStatus();
+
+        return runnable.hasProcessed() && (status.isUnderrun || (status.btmBufferCnt == 1 || status.btmBufferCnt == 0));
     }
 
+    public void setEnabled(boolean enabled)
+    {
+        signal.setEnabled(enabled);
+
+        if(enabled)
+        {
+            logger.info("enabled motor" + parent.getDeviceID());
+
+            if(!runnable.isRunning() && !runnable.isDead())
+            {
+                logger.info("started thread on motor" + parent.getDeviceID());
+                thread.start();
+            }
+        }
+        else
+        {
+            logger.info("stopped and reset motor" + parent.getDeviceID());
+
+            reset();
+            parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Disable.value);
+        }
+    }
+
+    public void updateRobotState(Constants.Robot.Mode mode)
+    {
+        setEnabled(false);
+
+        reset();
+    }
     protected Motor getParent()
     {
         return parent;

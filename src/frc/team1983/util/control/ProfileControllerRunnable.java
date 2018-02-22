@@ -1,6 +1,5 @@
 package frc.team1983.util.control;
 
-import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -13,37 +12,40 @@ import java.util.concurrent.Semaphore;
 public class ProfileControllerRunnable implements Runnable
 {
     private ProfileController controller;
-    private boolean running = false;
-    private boolean hasProcessed = false;
-    Logger logger;
+    private ProfileSignal signal;
 
-    public ProfileControllerRunnable(ProfileController controller)
+    private boolean running = false;
+    private boolean dead = false;
+    private boolean hasProcessed = false;
+
+    private Logger logger;
+
+    public ProfileControllerRunnable(ProfileController controller, ProfileSignal signal)
     {
         logger = LoggerFactory.createNewLogger(this.getClass());
         this.controller = controller;
+        this.signal = signal;
     }
 
     public void run()
     {
         this.running = true;
 
-        while(true)
+        while(!dead)
         {
-            controller.getControllerLock().lock();
-            controller.getControllerLock().unlock();
-
-            controller.parent.processMotionProfileBuffer();
-            MotionProfileStatus status = controller.getProfileStatus();
-
-            // wait until we've processed a minimum number of points to check if we're finished
-            if(!hasProcessed && status.btmBufferCnt > Constants.Motion.MIN_POINTS_IN_TALON)
+            while(!signal.enabled)
             {
-                logger.info("motor" + controller.parent.getDeviceID() + " processed");
-                hasProcessed = true;
+                // wait for signal to run
+                // Thread.yield();
             }
 
+            controller.parent.processMotionProfileBuffer();
+
+            if(!hasProcessed && controller.getProfileStatus().btmBufferCnt > Constants.Motion.MIN_POINTS_IN_TALON)
+                hasProcessed = true;
+
             // true if the talon runs out of trajectory points (times out or finishes profile)
-            if(status.isUnderrun || status.btmBufferCnt == 0)
+            if(controller.isProfileFinished())
             {
                 controller.parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Hold.value);
             }
@@ -56,17 +58,27 @@ public class ProfileControllerRunnable implements Runnable
         }
     }
 
-    public void reset()
+    public synchronized void reset()
     {
         this.hasProcessed = false;
     }
 
-    public boolean isRunning()
+    public synchronized void kill()
     {
-        return running;
+        this.dead = true;
     }
 
-    public boolean hasProcessedBuffer()
+    public synchronized boolean isRunning()
+    {
+        return running && !dead;
+    }
+
+    public synchronized boolean isDead()
+    {
+        return dead;
+    }
+
+    public synchronized boolean hasProcessed()
     {
         return hasProcessed;
     }
