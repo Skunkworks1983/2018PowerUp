@@ -126,7 +126,7 @@ public class ProfileController
         }
     }
 
-    public void updateRobotState(Constants.Robot.Mode mode)
+    public void updateRobotState(Constants.MotorMap.Mode mode)
     {
         setEnabled(false);
 

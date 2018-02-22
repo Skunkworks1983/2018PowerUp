@@ -4,8 +4,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team1983.Robot;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.util.control.ProfileController;
 import frc.team1983.util.motion.MotionProfile;
+import org.apache.logging.log4j.core.Logger;
 
 //Wrapper class around the WpiLib TalonSRX. Allows us to modify the functionality, and for future extendability.
 public class Motor extends TalonSRX
@@ -73,5 +75,11 @@ public class Motor extends TalonSRX
     public boolean isProfileFinished()
     {
         return manager != null && manager.isProfileFinished();
+    }
+
+    @Override
+    public void set(ControlMode mode, double value)
+    {
+        super.set(mode, value);
     }
 }

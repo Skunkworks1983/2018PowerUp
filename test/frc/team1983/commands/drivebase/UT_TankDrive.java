@@ -40,8 +40,8 @@ public class UT_TankDrive
     @Test
     public void tankDriveSetsBothLeftAndRightToZero()
     {
-        when(oi.getAxis(Constants.OI.Joystick.LEFT, 1)).thenReturn(0.0);
-        when(oi.getAxis(Constants.OI.Joystick.RIGHT, 1)).thenReturn(0.0);
+        when(oi.getAxis(Constants.OIMap.Joystick.LEFT, 1)).thenReturn(0.0);
+        when(oi.getAxis(Constants.OIMap.Joystick.RIGHT, 1)).thenReturn(0.0);
         tankDrive.execute();
         verify(drivebase, times(1)).setLeft(ControlMode.PercentOutput, 0.0);
         verify(drivebase, times(1)).setRight(ControlMode.PercentOutput, 0.0);
@@ -50,8 +50,8 @@ public class UT_TankDrive
     @Test
     public void tankDriveSetsBothLeftAndRightToOne()
     {
-        when(oi.getAxis(Constants.OI.Joystick.LEFT, 1)).thenReturn(1.0);
-        when(oi.getAxis(Constants.OI.Joystick.RIGHT, 1)).thenReturn(1.0);
+        when(oi.getAxis(Constants.OIMap.Joystick.LEFT, 1)).thenReturn(1.0);
+        when(oi.getAxis(Constants.OIMap.Joystick.RIGHT, 1)).thenReturn(1.0);
         tankDrive.execute();
         verify(drivebase, times(1)).setLeft(ControlMode.PercentOutput, 1.0);
         verify(drivebase, times(1)).setRight(ControlMode.PercentOutput, 1.0);
@@ -60,8 +60,8 @@ public class UT_TankDrive
     @Test
     public void tankDriveSetsBothLeftAndRightToNegativeOne()
     {
-        when(oi.getAxis(Constants.OI.Joystick.LEFT, 1)).thenReturn(-1.0);
-        when(oi.getAxis(Constants.OI.Joystick.RIGHT, 1)).thenReturn(-1.0);
+        when(oi.getAxis(Constants.OIMap.Joystick.LEFT, 1)).thenReturn(-1.0);
+        when(oi.getAxis(Constants.OIMap.Joystick.RIGHT, 1)).thenReturn(-1.0);
         tankDrive.execute();
         verify(drivebase, times(1)).setLeft(ControlMode.PercentOutput, -1.0);
         verify(drivebase, times(1)).setRight(ControlMode.PercentOutput, -1.0);
@@ -70,8 +70,8 @@ public class UT_TankDrive
     @Test
     public void tankDriveSetsLeftAndRightToDifferentValues()
     {
-        when(oi.getAxis(Constants.OI.Joystick.LEFT, 1)).thenReturn(-1.0);
-        when(oi.getAxis(Constants.OI.Joystick.RIGHT, 1)).thenReturn(1.0);
+        when(oi.getAxis(Constants.OIMap.Joystick.LEFT, 1)).thenReturn(-1.0);
+        when(oi.getAxis(Constants.OIMap.Joystick.RIGHT, 1)).thenReturn(1.0);
         tankDrive.execute();
         verify(drivebase, times(1)).setRight(ControlMode.PercentOutput, 1.0);
         verify(drivebase, times(1)).setLeft(ControlMode.PercentOutput, -1.0);

@@ -1,10 +1,11 @@
 package frc.team1983.subsystems;
 
-import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
+import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.motion.MotionProfile;
 import org.apache.logging.log4j.core.Logger;
@@ -12,20 +13,24 @@ import org.apache.logging.log4j.core.Logger;
 //The base of the robot. Consists of the drive train motors, slaved to each other.
 public class Drivebase extends Subsystem
 {
-    public Motor left1, left2, left3;
-    public Motor right1, right2, right3;
+    private Motor left1, left2, left3;
+    private Motor right1, right2, right3;
+    private Gyro gyro;
 
     private Logger logger;
 
     public Drivebase()
     {
-        left1 = new Motor(Constants.Robot.Drivebase.LEFT_1, Constants.Robot.Drivebase.LEFT1_REVERSED, true);
-        left2 = new Motor(Constants.Robot.Drivebase.LEFT_2, Constants.Robot.Drivebase.LEFT2_REVERSED);
-        left3 = new Motor(Constants.Robot.Drivebase.LEFT_3, Constants.Robot.Drivebase.LEFT3_REVERSED);
+        left1 = new Motor(Constants.MotorMap.Drivebase.LEFT_1, Constants.MotorMap.Drivebase.LEFT1_REVERSED, true);
+        left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED);
+        left3 = new Motor(Constants.MotorMap.Drivebase.LEFT_3, Constants.MotorMap.Drivebase.LEFT3_REVERSED);
 
-        right1 = new Motor(Constants.Robot.Drivebase.RIGHT_1, Constants.Robot.Drivebase.RIGHT1_REVERSED, true);
-        right2 = new Motor(Constants.Robot.Drivebase.RIGHT_2, Constants.Robot.Drivebase.RIGHT2_REVERSED);
-        right3 = new Motor(Constants.Robot.Drivebase.RIGHT_3, Constants.Robot.Drivebase.RIGHT3_REVERSED);
+        right1 = new Motor(Constants.MotorMap.Drivebase.RIGHT_1, Constants.MotorMap.Drivebase.RIGHT1_REVERSED, true);
+        right2 = new Motor(Constants.MotorMap.Drivebase.RIGHT_2, Constants.MotorMap.Drivebase.RIGHT2_REVERSED);
+        right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED);
+
+        gyro = new Gyro(SPI.Port.kMXP);
+        gyro.initGyro();
 
         left2.follow(left1);
         left3.follow(left1);
@@ -44,14 +49,14 @@ public class Drivebase extends Subsystem
 
     public void initDefaultCommand()
     {
-
+        //setDefaultCommand(new TankDrive(this, MotorMap.getInstance().getOI()));
     }
 
     public double encoderTicksToFeet(double ticks)
     {
-        double resolution = Constants.Robot.Drivebase.ENCODER_RESOLUTION;
-        double circumference = Constants.Robot.Drivebase.WHEEL_CIRCUMFERENCE;
-        double reduction = Constants.Robot.Drivebase.ENCODER_REDUCTION;
+        double resolution = Constants.MotorMap.Drivebase.ENCODER_RESOLUTION;
+        double circumference = Constants.MotorMap.Drivebase.WHEEL_CIRCUMFERENCE;
+        double reduction = Constants.MotorMap.Drivebase.ENCODER_REDUCTION;
 
         double feet = (ticks / resolution) * (circumference * reduction);
         return feet;
@@ -59,9 +64,9 @@ public class Drivebase extends Subsystem
 
     public double feetToEncoderTicks(double feet)
     {
-        double resolution = Constants.Robot.Drivebase.ENCODER_RESOLUTION;
-        double circumference = Constants.Robot.Drivebase.WHEEL_CIRCUMFERENCE;
-        double reduction = Constants.Robot.Drivebase.ENCODER_REDUCTION;
+        double resolution = Constants.MotorMap.Drivebase.ENCODER_RESOLUTION;
+        double circumference = Constants.MotorMap.Drivebase.WHEEL_CIRCUMFERENCE;
+        double reduction = Constants.MotorMap.Drivebase.ENCODER_REDUCTION;
 
         double ticks = (feet / (circumference * reduction)) * resolution;
         return ticks;
@@ -132,6 +137,11 @@ public class Drivebase extends Subsystem
     public boolean profilesAreFinished()
     {
         return leftProfileIsFinished() && rightProfileIsFinished();
+    }
+
+    public Gyro getGyro()
+    {
+        return this.gyro;
     }
 }
 

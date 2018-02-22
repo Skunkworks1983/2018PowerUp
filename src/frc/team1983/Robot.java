@@ -1,34 +1,29 @@
 package frc.team1983;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.services.DashboardWrapper;
-import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
+import frc.team1983.services.OI;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
+import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.control.ProfileController;
-import frc.team1983.util.motion.MotionProfile;
-import frc.team1983.util.motion.profiles.TrapezoidalProfile;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
-import frc.team1983.subsystems.utilities.Motor;
 
 public class Robot extends IterativeRobot
 {
@@ -41,6 +36,8 @@ public class Robot extends IterativeRobot
     private StatefulDashboard dashboard;
 
     private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
+
+    private RunOneMotor runOneMotor;
 
     private static Robot instance;
 
@@ -64,13 +61,15 @@ public class Robot extends IterativeRobot
 
     @Override
     public void robotPeriodic()
-    {}
+    {
+
+    }
 
     @Override
     public void disabledInit()
     {
         Scheduler.getInstance().removeAll();
-        updateState(Constants.Robot.Mode.DISABLED);
+        updateState(Constants.MotorMap.Mode.DISABLED);
 
         dashboard.store();
     }
@@ -78,14 +77,13 @@ public class Robot extends IterativeRobot
     @Override
     public void disabledPeriodic()
     {
-        Scheduler.getInstance().run();
     }
 
     @Override
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
-        updateState(Constants.Robot.Mode.AUTO);
+        updateState(Constants.MotorMap.Mode.AUTO);
 
         CommandGroup profiles = new CommandGroup();
 
@@ -104,8 +102,12 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopInit()
     {
+        if(runOneMotor != null)
+        {
+            runOneMotor.end();
+        }
         Scheduler.getInstance().removeAll();
-        updateState(Constants.Robot.Mode.TELEOP);
+        updateState(Constants.MotorMap.Mode.TELEOP);
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
     }
@@ -114,22 +116,52 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+        robotLogger.info("Gyro: {}", drivebase.getGyro().getAngle());
     }
 
     @Override
     public void testInit()
     {
         Scheduler.getInstance().removeAll();
-        updateState(Constants.Robot.Mode.TEST);
+        updateState(Constants.MotorMap.Mode.TEST);
+
+        Scheduler.getInstance().removeAll();
+
+        ArrayList<Motor> motors;
+        motors = new ArrayList<>();
+
+        DigitalInput motorUp;
+        DigitalInput motorDown;
+        AnalogInput manualSpeed;
+
+        motorUp = new DigitalInput(5);
+        motorDown = new DigitalInput(4);
+        manualSpeed = new AnalogInput(2);
+
+
+        if(runOneMotor == null)
+        {
+            runOneMotor = new RunOneMotor();
+        }
+
+        for(int i = 0; i < 16; i++)
+        {
+            motors.add(new Motor(i, false));
+            motors.get(i).setNeutralMode(NeutralMode.Coast);
+            robotLogger.info("Initialized motor " + i);
+        }
+
+        runOneMotor.initialize(motors, motorUp, motorDown, manualSpeed);
+
     }
 
     @Override
     public void testPeriodic()
     {
-
+        runOneMotor.execute();
     }
 
-    public void updateState(Constants.Robot.Mode mode)
+    public void updateState(Constants.MotorMap.Mode mode)
     {
         for(ProfileController controller : profileControllers)
         {

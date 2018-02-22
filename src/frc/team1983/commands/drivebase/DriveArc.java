@@ -28,7 +28,7 @@ public class DriveArc extends Command
         this.time = time;
 
         // todo investigate +/- left/right
-        double width = Constants.Robot.Drivebase.WHEELBASE_WIDTH;
+        double width = Constants.MotorMap.Drivebase.WHEELBASE_WIDTH;
 
         double leftCircumference = (2 * (radius + (width / 2))) * Math.PI;
         double rightCircumference = (2 * (radius - (width / 2))) * Math.PI;

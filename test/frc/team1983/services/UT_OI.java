@@ -67,14 +67,14 @@ public class UT_OI
     {
         when(left.getAxisCount()).thenReturn(1);
         when(left.getRawAxis(0)).thenReturn(1.0);
-        assertThat(oi.getAxis(Constants.OI.Joystick.LEFT, 0), is(1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
     }
 
     @Test
     public void returnsZeroForNonexistentAxis()
     {
         when(left.getAxisCount()).thenReturn(1);
-        assertThat(oi.getAxis(Constants.OI.Joystick.LEFT, 1), is(0.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 1), is(0.0));
     }
 
     @Test
@@ -82,28 +82,28 @@ public class UT_OI
     {
         when(left.getButtonCount()).thenReturn(1);
         when(left.getRawButton(1)).thenReturn(true);
-        assertThat(oi.isDown(Constants.OI.Joystick.LEFT, 0), is(true));
+        assertThat(oi.isDown(Constants.OIMap.Joystick.LEFT, 0), is(true));
     }
 
     @Test
     public void returnsFalseForNonexistentButton()
     {
         when(left.getButtonCount()).thenReturn(1);
-        assertThat(oi.isDown(Constants.OI.Joystick.LEFT, 1), is(false));
+        assertThat(oi.isDown(Constants.OIMap.Joystick.LEFT, 1), is(false));
     }
     
     @Test
     public void returnsDeadzonedValue()
     {
         when(left.getAxisCount()).thenReturn(1);
-        when(left.getRawAxis(0)).thenReturn(Constants.OI.JOYSTICK_DEADZONE * 0.5);
-        assertThat(oi.getAxis(Constants.OI.Joystick.PANEL, 0), is(0.0));
+        when(left.getRawAxis(0)).thenReturn(Constants.OIMap.JOYSTICK_DEADZONE * 0.5);
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.PANEL, 0), is(0.0));
     }
 
     @Test
     public void returnsZeroForNonexistentJoystick()
     {
-        assertThat(oi.getAxis(Constants.OI.Joystick.PANEL, 0), is(0.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.PANEL, 0), is(0.0));
     }
 
     @Test
@@ -111,9 +111,9 @@ public class UT_OI
     {
         when(left.getAxisCount()).thenReturn(1);
         when(left.getRawAxis(0)).thenReturn(1.0);
-        assertThat(oi.getAxis(Constants.OI.Joystick.LEFT, 0), is(1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
 
         when(left.getRawAxis(0)).thenReturn(-1.0);
-        assertThat(oi.getAxis(Constants.OI.Joystick.LEFT, 0), is(-1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(-1.0));
     }
 }
