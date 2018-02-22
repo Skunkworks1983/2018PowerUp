@@ -3,6 +3,7 @@ package frc.team1983.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.Robot;
@@ -31,12 +32,14 @@ public class Drivebase extends Subsystem
         left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED, false);
         left3 = new Motor(Constants.MotorMap.Drivebase.LEFT_3, Constants.MotorMap.Drivebase.LEFT3_REVERSED, false);
 
-        gyro = new Gyro(SPI.Port.kMXP);
-        gyro.initGyro();
+        gyro = new Gyro(I2C.Port.kOnboard);
 
         right1 = new Motor(Constants.MotorMap.Drivebase.RIGHT_1, Constants.MotorMap.Drivebase.RIGHT1_REVERSED, true);
         right2 = new Motor(Constants.MotorMap.Drivebase.RIGHT_2, Constants.MotorMap.Drivebase.RIGHT2_REVERSED, false);
         right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED, false);
+
+        left1.setSensorPhase(true);
+        right1.setSensorPhase(true);
 
         left2.follow(left1);
         left3.follow(left1);
@@ -48,7 +51,6 @@ public class Drivebase extends Subsystem
         right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 
         logger = LoggerFactory.createNewLogger(Drivebase.class);
-
     }
 
     public void initDefaultCommand()
@@ -59,14 +61,12 @@ public class Drivebase extends Subsystem
     public void setLeft(ControlMode mode, double value)
     {
         left1.set(mode, value);
-        System.out.println("left set to: " + value);
     }
 
     public void setRight(ControlMode mode, double value)
     {
         //setDefaultCommand(new TankDrive(this, Robot.getInstance().getOI()));
         right2.set(mode, value);
-        System.out.println("right set to: " + value);
     }
 
     public double getLeftEncoderValue()
@@ -82,6 +82,39 @@ public class Drivebase extends Subsystem
     public Gyro getGyro()
     {
         return this.gyro;
+    }
+
+    public double getLeftDist()
+    {
+        return (getLeftEncoderValue()/Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT)*Constants.AutoValues.DRIVEBASE_ENCODER_FUDGE_FACTOR;
+    }
+    public double getRightDist()
+    {
+        return (getRightEncoderValue()/Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT)*Constants.AutoValues.DRIVEBASE_ENCODER_FUDGE_FACTOR;
+    }
+    public void setBrakeMode(boolean isBrake)
+    {
+        if(isBrake)
+        {
+            left1.setNeutralMode(NeutralMode.Brake);
+            left2.setNeutralMode(NeutralMode.Brake);
+            left3.setNeutralMode(NeutralMode.Brake);
+
+            right1.setNeutralMode(NeutralMode.Brake);
+            right2.setNeutralMode(NeutralMode.Brake);
+            right3.setNeutralMode(NeutralMode.Brake);
+        }
+        else
+        {
+            left1.setNeutralMode(NeutralMode.Coast);
+            left2.setNeutralMode(NeutralMode.Coast);
+            left3.setNeutralMode(NeutralMode.Coast);
+
+            right1.setNeutralMode(NeutralMode.Coast);
+            right2.setNeutralMode(NeutralMode.Coast);
+            right3.setNeutralMode(NeutralMode.Coast);
+        }
+
     }
 }
 

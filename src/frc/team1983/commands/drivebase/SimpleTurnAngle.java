@@ -13,14 +13,12 @@ import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseRotationPidOutput;
 import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.subsystems.Drivebase;
-import frc.team1983.subsystems.utilities.PidControllerWrapper;
-import frc.team1983.subsystems.utilities.outputwrappers.TurnAnglePidOutput;
+import frc.team1983.subsystems.utilities.outputwrappers.SimpleTurnAnglePidOutput;
 import org.apache.logging.log4j.core.Logger;
 
 //Turns the robot a number of degrees, as an offset from the Robot's current position.
 //has case for when gyro eventually explodes
-public class TurnAngle extends CommandBase
+public class SimpleTurnAngle extends CommandBase
 {
     private double targetAngle;
     private Drivebase drivebase;
@@ -33,23 +31,23 @@ public class TurnAngle extends CommandBase
     private Logger logger;
     private StatefulDashboard dashboard;
 
-    public TurnAngle(StatefulDashboard dashboard, double degrees, Drivebase drivebase)
+    public SimpleTurnAngle(StatefulDashboard dashboard, double degrees, Drivebase drivebase)
     {
         this(dashboard, degrees, drivebase, Constants.PidConstants.TurnAnglePid.DEFAULT_TIMEOUT);
     }
 
-    public TurnAngle(StatefulDashboard dashboard, double degrees, Drivebase drivebase, double timeout)
+    public SimpleTurnAngle(StatefulDashboard dashboard, double degrees, Drivebase drivebase, double timeout)
     {
         super(timeout);
         requires(drivebase);
         this.drivebase = drivebase;
         this.dashboard = dashboard;
-        logger = LoggerFactory.createNewLogger(TurnAngle.class);
+        logger = LoggerFactory.createNewLogger(SimpleTurnAngle.class);
 
-        //Uses the TurnAngle specific PidWrapper implementations.
-        //pidSource = new TurnAnglePidInput(); Implementation of PidInputWrapper is available on another branch.
+        //Uses the SimpleTurnAngle specific PidWrapper implementations.
+        //pidSource = new DifferentialTurnAnglePidInput(); Implementation of PidInputWrapper is available on another branch.
         //Next to touch this file gets to implement the PidInputWrapper.
-        pidOut = new TurnAnglePidOutput(drivebase);
+        pidOut = new SimpleTurnAnglePidOutput(drivebase);
         targetAngle = degrees;
         gyro = drivebase.getGyro();
 
@@ -71,8 +69,9 @@ public class TurnAngle extends CommandBase
                                         dashboard.getDouble(this, "kD"),
                                         dashboard.getDouble(this, "kF"),
                                         pidSource, pidOut);
-            turnPid.setAbsoluteTolerance(5);
+            turnPid.setAbsoluteTolerance(Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE);
             turnPid.setSetpoint(targetAngle + drivebase.getGyro().getAngle());
+            turnPid.setOutputRange(-0.5, 0.5);
             turnPid.enable();
         }
 
@@ -87,14 +86,17 @@ public class TurnAngle extends CommandBase
                                         pidSource, pidOut);
             turnPid.setAbsoluteTolerance(Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE);
             turnPid.setSetpoint(targetAngle + pidSource.pidGet());
+            turnPid.setOutputRange(-0.5, 0.5);
             turnPid.enable();
         }
+
     }
 
     @Override
     public void execute()
     {
-        logger.debug("TurnAngle executed");
+        logger.debug("SimpleTurnAngle executed");
+        //logger.info("SimpleTurnAngle error{}", turnPid.getError());
     }
 
     @Override
@@ -103,6 +105,7 @@ public class TurnAngle extends CommandBase
         if(turnPid.onTarget())
         {
             //todo figure out what "recorrection" is
+            //todo figure out why erik is a salty boi
             //counter allows for overshoot and recorrection
             counter++;
         }

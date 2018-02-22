@@ -6,8 +6,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.debugging.RunOneMotor;
-import frc.team1983.commands.drivebase.DriveStraight;
+import frc.team1983.commands.drivebase.SimpleTurnAngle;
 import frc.team1983.commands.drivebase.TankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
@@ -19,6 +20,7 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
+import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
@@ -32,6 +34,9 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private StatefulDashboard dashboard;
+    private Subsystem subsystem;
+    //private EncoderTurnAnglePidInput pidSource;
+    private GyroPidInput pidSource;
 
     private static Robot instance;
 
@@ -50,6 +55,8 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
+        //pidSource = new EncoderTurnAnglePidInput(drivebase);
+        pidSource = new GyroPidInput(drivebase.getGyro());
 
         oi.initializeBindings(this);
         robotLogger.info("robotInit");
@@ -77,17 +84,28 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
+        robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
 
-        robotLogger.info("AutoInit");
+        drivebase.getGyro().initGyro();
 
-        Scheduler.getInstance().add(new DriveStraight(dashboard, 1, drivebase, .3, 1000));
+        drivebase.setBrakeMode(true);
+        //Scheduler.getInstance().add(new DriveStraight(dashboard, 5, drivebase, .6, 1000));
+        Scheduler.getInstance().add(new SimpleTurnAngle(dashboard, 90, drivebase));
+
+        //testing autos
+        //Scheduler.getInstance().add(new PlaceCubeInExchangeZone(dashboard, drivebase));
+        //Scheduler.getInstance().add(new PlaceCubeInScale(dashboard));
+        //Scheduler.getInstance().add(new PlaceCubeInSwitch(dashboard));
+
     }
 
     @Override
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
+        //robotLogger.info("yaw {}\t roll{}\t pitch{}", drivebase.getGyro().getYaw(), drivebase.getGyro().getRoll(), drivebase.getGyro().getPitch());
+
     }
 
     @Override
@@ -98,15 +116,18 @@ public class Robot extends IterativeRobot
             runOneMotor.end();
         }
         Scheduler.getInstance().removeAll();
-
         Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+
+        drivebase.setBrakeMode(false);
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-        robotLogger.info("Gyro: {}", drivebase.getGyro().getAngle());
+        //robotLogger.info("Left {}\t Right{}", drivebase.getLeftDist(), drivebase.getRightDist());
+        //robotLogger.info("angle{}", pidSource.pidGet());
+        //robotLogger.info("Gyro: {}", drivebase.getGyro().getAngle()
     }
 
     @Override

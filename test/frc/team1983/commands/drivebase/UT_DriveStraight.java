@@ -32,6 +32,8 @@ public class UT_DriveStraight
 {
     private DriveStraight driveStraight;
     private FakeScheduler fakeScheduler;
+    @Mock
+    private StatefulDashboard dashboard;
     //private PidControllerWrapper driveStraightPid;
 
     @Mock
@@ -73,7 +75,7 @@ public class UT_DriveStraight
         HLUsageReporting.SetImplementation(hlUsageReporting);
         fakeScheduler = new FakeScheduler();
         when(drivebase.getGyro()).thenReturn(gyro);
-        //driveStraight = new DriveStraight(, 5, drivebase, 5);
+        driveStraight = new DriveStraight(dashboard, 5, drivebase, 5);
     }
 
     @After
@@ -99,14 +101,14 @@ public class UT_DriveStraight
         fakeScheduler.add(driveStraight);
         fakeScheduler.run(1);
         Thread.sleep(100);
-        verify(drivebase, atLeastOnce()).getLeftEncoderValue();
+        verify(drivebase, atLeastOnce()).getLeftDist();
     }
 
     @Test
     public void driveStraightContinuesIfDistanceIsNotMet()
     {
-        when(drivebase.getLeftEncoderValue()).thenReturn(2.0);
-        when(drivebase.getRightEncoderValue()).thenReturn(2.1);
+        when(drivebase.getLeftDist()).thenReturn(2.0);
+        when(drivebase.getRightDist()).thenReturn(2.1);
         fakeScheduler.add(driveStraight);
         fakeScheduler.run(10);
         driveStraight.isFinished();
@@ -121,7 +123,7 @@ public class UT_DriveStraight
         //this test assumes gyro is dead because we have better access to encoderPidSource
         when(gyro.isDead()).thenReturn(true);
         AtomicReference<Integer> counter = new AtomicReference<>(0);
-        when(drivebase.getLeftEncoderValue()).then(new Answer<Double>()
+        when(drivebase.getLeftDist()).then(new Answer<Double>()
         {
             @Override
             public Double answer(InvocationOnMock invocationOnMock) throws Throwable
@@ -139,7 +141,7 @@ public class UT_DriveStraight
                 }
             }
         });
-        when(drivebase.getRightEncoderValue()).then(new Answer<Double>()
+        when(drivebase.getRightDist()).then(new Answer<Double>()
         {
             @Override
             public Double answer(InvocationOnMock invocationOnMock) throws Throwable
