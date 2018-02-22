@@ -10,6 +10,7 @@ import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.TankDrive;
 import frc.team1983.services.DashboardWrapper;
+import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.OI;
 import frc.team1983.services.logger.LoggerFactory;
@@ -67,6 +68,8 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
 
         dashboard.store();
+
+        GameDataPoller.resetGameData();
     }
 
     @Override
@@ -87,6 +90,8 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousPeriodic()
     {
+        GameDataPoller.pollGameData();
+
         Scheduler.getInstance().run();
     }
 
