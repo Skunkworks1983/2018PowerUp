@@ -1,11 +1,13 @@
 package frc.team1983;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.collector.CollectorRotate;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.TankDrive;
 import frc.team1983.services.DashboardWrapper;
@@ -96,14 +98,17 @@ public class Robot extends IterativeRobot
         }
         Scheduler.getInstance().removeAll();
 
-        Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+        //Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+        Scheduler.getInstance().add(new CollectorRotate(collector, true));
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-        robotLogger.info("Gyro: {}", drivebase.getGyro().getAngle());
+
+        robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
+        elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
     }
 
     @Override

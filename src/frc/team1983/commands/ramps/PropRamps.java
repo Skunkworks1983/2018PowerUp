@@ -27,6 +27,7 @@ public class PropRamps extends CommandBase
     @Override
     public void execute()
     {
+        ramp.prop();
     }
 
     @Override
@@ -38,7 +39,7 @@ public class PropRamps extends CommandBase
     @Override
     public void end()
     {
-
+        ramp.unprop();
     }
 
     @Override
