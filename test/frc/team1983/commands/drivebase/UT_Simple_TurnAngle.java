@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 
-public class UT_Simpole_TurnAngle
+public class UT_Simple_TurnAngle
 {
     private SimpleTurnAngle simpleTurnAngle;
     private FakeScheduler fakeScheduler;
@@ -95,7 +95,7 @@ public class UT_Simpole_TurnAngle
         when(gyro.isDead()).thenReturn(true);
         fakeScheduler.add(simpleTurnAngle);
         fakeScheduler.run(1);
-        verify(drivebase, atLeastOnce()).getLeftEncoderValue();
+        verify(drivebase, atLeastOnce()).getLeftDist();
 
     }
 
