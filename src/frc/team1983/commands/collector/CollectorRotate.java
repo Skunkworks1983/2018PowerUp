@@ -1,5 +1,6 @@
 package frc.team1983.commands.collector;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
@@ -13,23 +14,12 @@ public class CollectorRotate extends CommandBase
     private boolean up;
     private Collector collector;
 
-    private PidControllerWrapper controller;
-    private CollectorPidInput input;
-    private CollectorPidOutput output;
-
     private double setpoint;
 
     public CollectorRotate(Collector collector, boolean up)
     {
         this.up = up;
         this.collector = collector;
-
-        controller = new PidControllerWrapper(Constants.PidConstants.CollectorRotate.P,
-                                              Constants.PidConstants.CollectorRotate.I,
-                                              Constants.PidConstants.CollectorRotate.D,
-                                              Constants.PidConstants.CollectorRotate.F,
-                                              input, output);
-        controller.disable();
 
         if(up)
         {
@@ -44,8 +34,7 @@ public class CollectorRotate extends CommandBase
     @Override
     public void initialize()
     {
-        controller.setSetpoint(setpoint);
-        controller.enable();
+        collector.setRotate(ControlMode.Position, setpoint);
     }
 
     @Override

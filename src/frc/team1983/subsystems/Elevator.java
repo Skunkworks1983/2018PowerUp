@@ -15,6 +15,7 @@ import org.apache.logging.log4j.core.Logger;
 public class Elevator extends Subsystem
 {
     private Motor right1, right2;
+    private Motor left1, left2;
 
     private Logger logger;
 
@@ -27,7 +28,12 @@ public class Elevator extends Subsystem
         right1 = new Motor(Constants.MotorMap.Elevator.RIGHT1, Constants.MotorMap.Elevator.RIGHT1_REVERSED, true);
         right2 = new Motor(Constants.MotorMap.Elevator.RIGHT2, Constants.MotorMap.Elevator.RIGHT2_REVERSED);
 
+        left1 = new Motor(Constants.MotorMap.Elevator.LEFT1, Constants.MotorMap.Elevator.LEFT1_REVERSED);
+        left2 = new Motor(Constants.MotorMap.Elevator.LEFT2, Constants.MotorMap.Elevator.LEFT2_REVERSED);
+
         right2.follow(right1);
+        left1.follow(right1);
+        left2.follow(right1);
 
         right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         right1.setSensorPhase(true);
@@ -38,10 +44,10 @@ public class Elevator extends Subsystem
         right1.config_kF(0, Constants.PidConstants.ElevatorControlPid.F, 0);
 
         right1.configClosedloopRamp(0.5, 0);
-        right1.configPeakOutputForward(1, 0);
+        right1.configPeakOutputForward(0.90, 0);
         //right1.config_IntegralZone(0, )
 
-        //right1.set(ControlMode.Position, Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP);
+        //right1.set(ControlMode.Position, Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 100);
 
         right1.selectProfileSlot(0, 0);
 
@@ -79,6 +85,12 @@ public class Elevator extends Subsystem
     {
         this.setpoint = setpoint;
         right1.set(ControlMode.Position, setpoint);
+    }
+
+    @Override
+    public void periodic()
+    {
+        logger.info("Error: {}", right1.getClosedLoopError(0));
     }
 
     public double getCurrentDraw()

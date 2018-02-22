@@ -16,6 +16,7 @@ public class Collector extends Subsystem
 {
     private Motor left, right;
     private Motor rotate;
+    private double setpoint;
     private DigitalInputWrapper leftSwitch, rightSwitch;
     //The collector subsystem
     private Logger logger;
@@ -24,7 +25,7 @@ public class Collector extends Subsystem
     {
         left = new Motor(Constants.MotorMap.Collector.LEFT, Constants.MotorMap.Collector.LEFT_REVERSED);
         right = new Motor(Constants.MotorMap.Collector.RIGHT, Constants.MotorMap.Collector.RIGHT_REVERSED);
-        rotate = new Motor(Constants.MotorMap.Collector.ROTATE, Constants.MotorMap.Collector.ROTATE_REVERSED);
+        rotate = new Motor(Constants.MotorMap.Collector.ROTATE, Constants.MotorMap.Collector.ROTATE_REVERSED, true);
 
         left.setNeutralMode(NeutralMode.Brake);
         right.setNeutralMode(NeutralMode.Brake);
@@ -33,7 +34,15 @@ public class Collector extends Subsystem
         leftSwitch = new DigitalInputWrapper(Constants.MotorMap.Collector.LEFT_SWITCH, Constants.MotorMap.Collector.LEFT_SWITCH_REVERSED);
         rightSwitch = new DigitalInputWrapper(Constants.MotorMap.Collector.RIGHT_SWITCH, Constants.MotorMap.Collector.RIGHT_SWITCH_REVERSED);
 
-        rotate.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+        rotate.config_kP(0, Constants.PidConstants.CollectorRotate.P, 0);
+        rotate.config_kI(0, Constants.PidConstants.CollectorRotate.I, 0);
+        rotate.config_kD(0, Constants.PidConstants.CollectorRotate.D, 0);
+        rotate.config_kF(0, Constants.PidConstants.CollectorRotate.F, 0);
+
+        rotate.configClosedloopRamp(0.25, 0);
+        rotate.configPeakOutputForward(0.75, 0);
+
+        rotate.selectProfileSlot(0, 0);
 
         logger = LoggerFactory.createNewLogger(Collector.class);
     }
@@ -55,6 +64,7 @@ public class Collector extends Subsystem
 
     public void setRotate(ControlMode mode, double value)
     {
+        logger.info("Set rotate");
         rotate.set(mode, value);
     }
 
