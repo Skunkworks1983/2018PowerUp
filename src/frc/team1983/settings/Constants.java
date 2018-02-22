@@ -32,11 +32,17 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int RIGHT1 = 5;
-            public static final int RIGHT2 = 6;
+            public static final int RIGHT1 = 2;
+            public static final int RIGHT2 = 3;
+
+            public static final int LEFT1 = 12;
+            public static final int LEFT2 = 13;
 
             public static final boolean RIGHT1_REVERSED = false;
             public static final boolean RIGHT2_REVERSED = false;
+
+            public static final boolean LEFT1_REVERSED = true;
+            public static final boolean LEFT2_REVERSED = true;
         }
 
         public static class Collector
@@ -129,13 +135,13 @@ public class Constants
 
         public static class CollectorRotate
         {
-            public static final double P = 0; //TODO: find pid values
+            public static final double P = 1.8;//.01; //TODO: find pid values
             public static final double I = 0;
             public static final double D = 0;
-            public static final double F = 0;
+            public static final double F = 0;//.002;
 
-            public static final double UP_TICKS = 0;
-            public static final double DOWN_TICKS = 0;
+            public static final double UP_TICKS = -100;
+            public static final double DOWN_TICKS = 3450;
         }
 
         //setpoints for motors
@@ -151,12 +157,12 @@ public class Constants
         {
             public static final int ELEVATOR_BOTTOM = 0;
             //Actually negative, but ya know,
-            public static final int ELEVATOR_TOP = 27985 - 485; //Addition is to keep it from hitting the max position
+            public static final int ELEVATOR_TOP = 29000 - 485; //Addition is to keep it from hitting the max position
 
-            public static final double P = 0.11; //TODO: find actual pid values
-            public static final double I = (0.15*1023)/8000000;
-            public static final double D = 0;
-            public static final double F = 0.002;
+            public static final double P = 0.13;
+            public static final double I = 0;
+            public static final double D = 3;
+            public static final double F = 0.001;
         }
     }
 
