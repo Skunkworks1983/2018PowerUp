@@ -22,25 +22,25 @@ public class LoggerFactory
     private static Logger createNewLogger(Class clazz, Level level) {
 
         String name = clazz.getName();
-        ConfigurationBuilder< BuiltConfiguration > builder = ConfigurationBuilderFactory.newConfigurationBuilder();
+        ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
 
-        builder.setStatusLevel( level);
+        builder.setStatusLevel(level);
         builder.setConfigurationName("RollingBuilder");
 // create a console appender
         AppenderComponentBuilder appenderBuilder = builder.newAppender("Stdout", "CONSOLE").addAttribute("target",
-                                                                                                         ConsoleAppender.Target.SYSTEM_OUT);
-        appenderBuilder.add(builder.newLayout("PatternLayout")
-                                   .addAttribute("pattern", "%d [%t] %-5level: %msg%n%throwable"));
+                                                                                                           ConsoleAppender.Target.SYSTEM_OUT);
+        LayoutComponentBuilder layout = builder.newLayout("PatternLayout")
+                                         .addAttribute("pattern", "%d [%t] %-5level %C{1}: %msg%n%throwable");
+        appenderBuilder.add(layout);
         builder.add( appenderBuilder );
 
 
 // create a rolling file appender
-        LayoutComponentBuilder layoutBuilder = builder.newLayout("PatternLayout").addAttribute("pattern", "%d [%t] %-5level: %msg%n");
         ComponentBuilder triggeringPolicy = builder.newComponent("Policies").addComponent(builder.newComponent("OnStartupTriggeringPolicy"));
         appenderBuilder = builder.newAppender("rolling", "RollingFile")
-                                 .addAttribute("fileName", "src/Log.txt")
-                                 .addAttribute("filePattern", "2018PowerUp/logs/app-%d{MM-dd-yyyy}-%i.log.txt")
-                                 .add(layoutBuilder)
+                                 .addAttribute("fileName", "/home/lvuser//logs/log.txt")
+                                 .addAttribute("filePattern", "/home/lvuser/logs/%d{MM-dd-yyyy}-%i-log.txt")
+                                 .add(layout)
                                  .addComponent(triggeringPolicy);
 
         builder.add(appenderBuilder);

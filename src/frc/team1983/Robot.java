@@ -63,7 +63,6 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         dashboard.populate();
         Scheduler.getInstance().add(new ElevatorControl(elevator, dashboard));
-        robotLogger.info("AutoInit");
     }
 
     @Override
