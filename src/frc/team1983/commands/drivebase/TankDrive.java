@@ -1,5 +1,6 @@
 package frc.team1983.commands.drivebase;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.OI;
 import frc.team1983.services.logger.LoggerFactory;
@@ -17,6 +18,7 @@ public class TankDrive extends CommandBase
     public TankDrive(Drivebase drivebase, OI oi)
     {
         requires(drivebase);
+
         this.drivebase = drivebase;
         this.oi = oi;
 
@@ -26,20 +28,20 @@ public class TankDrive extends CommandBase
     @Override
     public void initialize()
     {
-        //TODO: look into talon setEnabled()
+
     }
 
     @Override
     public void execute()
     {
-        double leftSpeed = oi.getAxis(Constants.OIMap.Port.LEFT_JOY, Constants.OIMap.JoyAxes.Y);
-        double rightSpeed = oi.getAxis(Constants.OIMap.Port.RIGHT_JOY, Constants.OIMap.JoyAxes.Y);
+        double leftSpeed = oi.getAxis(Constants.OIMap.Joystick.LEFT, Constants.OIMap.Axis.Y);
+        double rightSpeed = oi.getAxis(Constants.OIMap.Joystick.RIGHT, Constants.OIMap.Axis.Y);
 
-        drivebase.setLeft(leftSpeed);
-        drivebase.setRight(rightSpeed);
+        logger.info("Left: {}, Right: {}", leftSpeed, rightSpeed);
 
+        drivebase.setLeft(ControlMode.PercentOutput, leftSpeed);
+        drivebase.setRight(ControlMode.PercentOutput, rightSpeed);
     }
-
 
     @Override
     public boolean isFinished()
@@ -50,8 +52,8 @@ public class TankDrive extends CommandBase
     @Override
     public void end()
     {
-        drivebase.setLeft(0);
-        drivebase.setRight(0);
+        drivebase.setLeft(ControlMode.PercentOutput, 0);
+        drivebase.setRight(ControlMode.PercentOutput, 0);
     }
 
     @Override

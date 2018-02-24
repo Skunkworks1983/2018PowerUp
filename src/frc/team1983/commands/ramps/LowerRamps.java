@@ -19,12 +19,15 @@ public class LowerRamps extends CommandBase
     }
 
     @Override
-    public void initialize(){}
+    public void initialize()
+    {
+
+    }
 
     @Override
     public void execute()
     {
-        ramp.drop();
+        ramp.unlock();
     }
 
     @Override
@@ -34,8 +37,14 @@ public class LowerRamps extends CommandBase
     }
 
     @Override
-    public void end(){}
+    public void end()
+    {
+        ramp.lock();
+    }
 
     @Override
-    public void interrupted(){this.end();}
+    public void interrupted()
+    {
+        end();
+    }
 }

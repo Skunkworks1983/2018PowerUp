@@ -19,7 +19,10 @@ public class PropRamps extends CommandBase
     }
 
     @Override
-    public void initialize() {}
+    public void initialize()
+    {
+
+    }
 
     @Override
     public void execute()
@@ -34,8 +37,14 @@ public class PropRamps extends CommandBase
     }
 
     @Override
-    public void end() {}
+    public void end()
+    {
+        ramp.unprop();
+    }
 
     @Override
-    public void interrupted(){this.end();}
+    public void interrupted()
+    {
+        end();
+    }
 }

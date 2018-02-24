@@ -1,5 +1,6 @@
 package frc.team1983.subsystems.utilities.outputwrappers;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.subsystems.Drivebase;
 
 /*
@@ -20,7 +21,7 @@ public class TurnAnglePidOutput extends PidOutputWrapper
     public void writeHelper(double out)
     {
         //TODO: Check directionality
-        drivebase.setLeft(out);
-        drivebase.setRight(-out);
+        drivebase.setLeft(ControlMode.PercentOutput, out);
+        drivebase.setRight(ControlMode.PercentOutput, -out);
     }
 }

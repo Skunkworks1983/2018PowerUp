@@ -9,33 +9,49 @@ import org.apache.logging.log4j.core.Logger;
 //The ramps of the robot, managing the servos that release the different parts of the mechanism.
 public class Ramps extends Subsystem
 {
-    private ServoWrapper leftDrop, leftProp, rightDrop, rightProp;
+    private ServoWrapper leftLock, rightLock; // locks for the keys attached to the elevator
+    private ServoWrapper leftLeg, rightLeg; // locks for the keys attached to the gas shocks
+
     private Logger logger;
 
     public Ramps()
     {
-        leftDrop = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_LEFT_DROP_PORT);
-        leftProp = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_LEFT_PROP_PORT);
-        rightDrop = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_RIGHT_DROP_PORT);
-        rightProp = new ServoWrapper(Constants.MotorMap.RampPorts.RAMP_RIGHT_PROP_PORT);
-        logger = LoggerFactory.createNewLogger(Ramps.class);
+        leftLock = new ServoWrapper(Constants.MotorMap.Ramps.LEFT_RAMPLOCK);
+        rightLock = new ServoWrapper(Constants.MotorMap.Ramps.RIGHT_RAMPLOCK);
 
+        leftLeg = new ServoWrapper(Constants.MotorMap.Ramps.LEFT_LEG);
+        rightLeg = new ServoWrapper(Constants.MotorMap.Ramps.RIGHT_LEG);
+
+        logger = LoggerFactory.createNewLogger(Ramps.class);
     }
 
-    public void drop()
+    public void lock()
     {
-        leftDrop.set(Constants.PidConstants.MotorSetpoints.RAMP_DROP_SERVO_GOAL);
-        rightDrop.set(Constants.PidConstants.MotorSetpoints.RAMP_DROP_SERVO_GOAL);
+        leftLock.set(0);
+        rightLock.set(0);
+    }
+
+    public void unlock()
+    {
+        leftLock.set(1);
+        rightLock.set(1);
+    }
+
+    public void unprop()
+    {
+        leftLeg.set(1);
+        rightLeg.set(1);
     }
 
     public void prop()
     {
-        leftProp.set(Constants.PidConstants.MotorSetpoints.RAMP_PROP_SERVO_GOAL);
-        rightProp.set(Constants.PidConstants.MotorSetpoints.RAMP_PROP_SERVO_GOAL);
+        leftLeg.set(0);
+        rightLeg.set(0);
     }
 
     public void initDefaultCommand()
     {
+
     }
 }
 

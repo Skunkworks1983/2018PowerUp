@@ -1,5 +1,6 @@
-package frc.team1983.commands;
+package frc.team1983.commands.collector;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.hal.HAL;
 import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.settings.Constants;
@@ -52,49 +53,49 @@ public class UT_CollectorIntake
     @Test
     public void neitherSwitchActiveFullIntake()
     {
-        when(collector.isLeftPressed()).thenReturn(false);
-        when(collector.isRightPressed()).thenReturn(false);
+        when(collector.isLeftSwitchDown()).thenReturn(false);
+        when(collector.isRightSwitchDown()).thenReturn(false);
 
         collectorIntake.execute();
 
-        verify(collector).setLeft(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
-        verify(collector).setRight(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+        verify(collector).setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+        verify(collector).setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
     }
 
     @Test
     public void leftSwitchActiveRightFullIntakeLeftRotate()
     {
-        when(collector.isLeftPressed()).thenReturn(true);
-        when(collector.isRightPressed()).thenReturn(false);
+        when(collector.isLeftSwitchDown()).thenReturn(true);
+        when(collector.isRightSwitchDown()).thenReturn(false);
 
         collectorIntake.execute();
 
-        verify(collector).setLeft(Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
-        verify(collector).setRight(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+        verify(collector).setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
+        verify(collector).setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
     }
 
     @Test
     public void rightSwitchActiveLeftFullIntakeRightRotate()
     {
-        when(collector.isLeftPressed()).thenReturn(false);
-        when(collector.isRightPressed()).thenReturn(true);
+        when(collector.isLeftSwitchDown()).thenReturn(false);
+        when(collector.isRightSwitchDown()).thenReturn(true);
 
         collectorIntake.execute();
 
-        verify(collector).setLeft(Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
-        verify(collector).setRight(Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
+        verify(collector).setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+        verify(collector).setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
     }
 
     @Test
     public void bothSwitchesActiveDoNothing()
     {
-        when(collector.isLeftPressed()).thenReturn(true);
-        when(collector.isRightPressed()).thenReturn(true);
+        when(collector.isLeftSwitchDown()).thenReturn(true);
+        when(collector.isRightSwitchDown()).thenReturn(true);
 
         collectorIntake.execute();
 
-        verify(collector).setLeft(0.0);
-        verify(collector).setRight(0.0);
+        verify(collector).setLeft(ControlMode.PercentOutput, 0.0);
+        verify(collector).setRight(ControlMode.PercentOutput, 0.0);
     }
 
     @Test
@@ -106,10 +107,10 @@ public class UT_CollectorIntake
 
         counter = 0;
 
-        when(collector.isLeftPressed()).thenAnswer((Answer<Boolean>) invocationOnMock ->
+        when(collector.isLeftSwitchDown()).thenAnswer((Answer<Boolean>) invocationOnMock ->
                 counter == 0 || counter == Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME + 1);
 
-        when(collector.isRightPressed()).thenAnswer((Answer<Boolean>) invocationOnMock -> {
+        when(collector.isRightSwitchDown()).thenAnswer((Answer<Boolean>) invocationOnMock -> {
             boolean answer = counter == 0 || counter == Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME * 2 + 2;
             counter++;
             return answer;
@@ -132,8 +133,8 @@ public class UT_CollectorIntake
         {
             for(int i = 0; i < Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME; i++)
             {
-                inOrder.verify(collector).setLeft(thisSpeed[0]);
-                inOrder.verify(collector).setRight(thisSpeed[1]);
+                inOrder.verify(collector).setLeft(ControlMode.PercentOutput, thisSpeed[0]);
+                inOrder.verify(collector).setRight(ControlMode.PercentOutput, thisSpeed[1]);
             }
         }
     }
