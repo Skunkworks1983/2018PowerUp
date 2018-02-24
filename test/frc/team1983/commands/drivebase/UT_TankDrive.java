@@ -1,6 +1,7 @@
 package frc.team1983.commands.drivebase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import frc.team1983.services.OI;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import org.junit.After;
@@ -21,7 +22,7 @@ public class UT_TankDrive
     @Mock
     private Drivebase drivebase;
     @Mock
-    private frc.team1983.services.OI oi;
+    private OI oi;
 
 
     @Before
