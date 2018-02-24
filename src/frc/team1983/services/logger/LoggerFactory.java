@@ -15,7 +15,6 @@ import org.apache.logging.log4j.spi.LoggerContext;
 
 public class LoggerFactory
 {
-    public LoggerFactory() {    }
 
     public static Logger createNewLogger(Class clazz) { return createNewLogger(clazz, Level.INFO); }
 
@@ -26,17 +25,18 @@ public class LoggerFactory
 
         builder.setStatusLevel(level);
         builder.setConfigurationName("RollingBuilder");
-// create a console appender
-        AppenderComponentBuilder appenderBuilder = builder.newAppender("Stdout", "CONSOLE").addAttribute("target",
-                                                                                                           ConsoleAppender.Target.SYSTEM_OUT);
-        LayoutComponentBuilder layout = builder.newLayout("PatternLayout")
-                                         .addAttribute("pattern", "%d [%t] %-5level %C{1}: %msg%n%throwable");
-        appenderBuilder.add(layout);
-        builder.add( appenderBuilder );
 
+// create a console appender
+        AppenderComponentBuilder appenderBuilder = builder.newAppender("Stdout", "CONSOLE")
+                                 .addAttribute("target", ConsoleAppender.Target.SYSTEM_OUT);
+        LayoutComponentBuilder layout = builder.newLayout("PatternLayout")
+                                 .addAttribute("pattern", "%d [%t] %-5level %C{1}: %msg%n%throwable");
+        appenderBuilder.add(layout);
+        builder.add(appenderBuilder);
 
 // create a rolling file appender
-        ComponentBuilder triggeringPolicy = builder.newComponent("Policies").addComponent(builder.newComponent("OnStartupTriggeringPolicy"));
+        ComponentBuilder triggeringPolicy = builder.newComponent("Policies")
+                                 .addComponent(builder.newComponent("OnStartupTriggeringPolicy"));
         appenderBuilder = builder.newAppender("rolling", "RollingFile")
                                  .addAttribute("fileName", "/home/lvuser//logs/log.txt")
                                  .addAttribute("filePattern", "/home/lvuser/logs/%d{MM-dd-yyyy}-%i-log.txt")
@@ -46,11 +46,14 @@ public class LoggerFactory
         builder.add(appenderBuilder);
 
 // create the new logger
-        builder.add( builder.newLogger( name, level).add( builder.newAppenderRef( "Stdout" ) ).addAttribute( "additivity", false )
-                            .add( builder.newAppenderRef( "rolling") ).addAttribute( "additivity", false ) );
+        builder.add( builder.newLogger( name, level).add( builder.newAppenderRef( "Stdout" ) )
+                            .addAttribute( "additivity",false)
+                            .add( builder.newAppenderRef("rolling"))
+                            .addAttribute( "additivity",false));
 
         builder.add( builder.newRootLogger( Level.INFO )
-                            .add( builder.newAppenderRef( "rolling" ) ).add(builder.newAppenderRef("Stdout")) );
+                            .add( builder.newAppenderRef("rolling"))
+                            .add(builder.newAppenderRef("Stdout")));
 
         LoggerContext ctx = Configurator.initialize(builder.build());
 
