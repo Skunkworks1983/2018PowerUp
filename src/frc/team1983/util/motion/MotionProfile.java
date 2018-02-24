@@ -47,22 +47,27 @@ public class MotionProfile
         {
             double area = 0;
 
+            // trapezoidal sum of all segments to find area
             for(MotionSegment segment : segments)
             {
                 double vel_1 = segment.getStart().getVelocity();
                 double vel_2 = 0, dt = 0;
 
+                // check if we are trying to evaluate a portion of a segment or a whole segment
                 if(segment.getEnd().getTime() < time)
                 {
+                    // evaluate the whole segment
                     vel_2 = segment.getEnd().getVelocity();
                     dt = (segment.getEnd().getTime() - segment.getStart().getTime());
                 }
                 else if(segment.getStart().getTime() <= time)
                 {
+                    // evaluate a portion of the segment, [start, time]
                     vel_2 = segment.evaluate(time);
                     dt = time - segment.getStart().getTime();
                 }
 
+                // area of a trapezoid
                 area += ((vel_1 + vel_2) / 2) * dt;
             }
 

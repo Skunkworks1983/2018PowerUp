@@ -15,13 +15,13 @@ public class UT_TrapezoidalProfile
     private double distance = 10000;
     private double duration = 5;
 
-    private double t_a1 = 1;
-    private double t_a2 = 1;
+    private double accelTime1 = 1;
+    private double accelTime2 = 1;
 
     @Before
     public void setup()
     {
-        profile = new TrapezoidalProfile(distance, duration, t_a1, t_a2);
+        profile = new TrapezoidalProfile(distance, duration, accelTime1, accelTime2);
     }
 
     @After

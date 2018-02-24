@@ -19,16 +19,16 @@ public class UT_ThreeSegmentProfile
     private double vel_max;
     private double acc_max;
 
-    private double t_a1 = 1;
-    private double t_a2 = 1;
+    private double accelTime1 = 1;
+    private double accelTime2 = 1;
 
-    private double v_i = 500;
-    private double v_f = 0;
+    private double initialVelocity = 500;
+    private double finalVelocity = 0;
 
     @Before
     public void setup()
     {
-        profile = new ThreeSegmentProfile(distance, duration, t_a1, t_a2, v_i, v_f);
+        profile = new ThreeSegmentProfile(distance, duration, accelTime1, accelTime2, initialVelocity, finalVelocity);
     }
 
     @After
@@ -40,11 +40,11 @@ public class UT_ThreeSegmentProfile
     @Test
     public void correctVelocityOutput()
     {
-        assertThat(profile.evaluateVelocity(0), is(v_i));
+        assertThat(profile.evaluateVelocity(0), is(initialVelocity));
         assertThat(profile.evaluateVelocity(profile.getAccelerationTime1()), is(profile.getCruiseVelocity()));
         assertThat(profile.evaluateVelocity(duration / 2), is(profile.getCruiseVelocity()));
         assertThat(profile.evaluateVelocity(profile.getAccelerationTime2()), is(profile.getCruiseVelocity()));
-        assertThat(profile.evaluateVelocity(duration), is(v_f));
+        assertThat(profile.evaluateVelocity(duration), is(finalVelocity));
     }
 
     @Test
