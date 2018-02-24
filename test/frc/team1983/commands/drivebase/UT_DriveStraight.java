@@ -160,4 +160,3 @@ public class UT_DriveStraight
         assertThat(fakeScheduler.getOrderFinished().get(0), is(driveStraight));
     }
 }
-

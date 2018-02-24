@@ -39,7 +39,7 @@ public class Constants
             public static final double ENCODER_REDUCTION = 18.0 / 24.0;
             public static final double ENCODER_RESOLUTION = 1000;
 
-            public static final double DRIVEBASE_TICKS_PER_FOOT = 0;
+            public static final double DRIVEBASE_TICKS_PER_FOOT = 1;
         }
 
         public static class Elevator

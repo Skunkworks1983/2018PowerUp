@@ -67,7 +67,7 @@ public class UT_OI
     {
         when(left.getAxisCount()).thenReturn(1);
         when(left.getRawAxis(0)).thenReturn(1.0);
-        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(-1.0));
     }
 
     @Test
@@ -111,9 +111,9 @@ public class UT_OI
     {
         when(left.getAxisCount()).thenReturn(1);
         when(left.getRawAxis(0)).thenReturn(1.0);
-        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(-1.0));
 
         when(left.getRawAxis(0)).thenReturn(-1.0);
-        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(-1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
     }
 }
