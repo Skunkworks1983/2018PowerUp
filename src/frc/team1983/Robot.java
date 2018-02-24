@@ -38,7 +38,6 @@ public class Robot extends IterativeRobot
     private Ramps ramps;
     private StatefulDashboard dashboard;
     private Subsystem subsystem;
-    //private EncoderTurnAnglePidInput pidSource;
     private GyroPidInput pidSource;
 
     private static Robot instance;
@@ -58,7 +57,6 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
-        //pidSource = new EncoderTurnAnglePidInput(drivebase);
         pidSource = new GyroPidInput(drivebase.getGyro());
 
         oi.initializeBindings(this);
@@ -66,10 +64,7 @@ public class Robot extends IterativeRobot
     }
 
     @Override
-    public void robotPeriodic()
-    {
-
-    }
+    public void robotPeriodic(){}
 
     @Override
     public void disabledInit()
@@ -82,37 +77,22 @@ public class Robot extends IterativeRobot
     }
 
     @Override
-    public void disabledPeriodic()
-    {
-    }
+    public void disabledPeriodic(){}
 
     @Override
     public void autonomousInit()
     {
         robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
-
         drivebase.getGyro().initGyro();
-
         drivebase.setBrakeMode(true);
-        //Scheduler.getInstance().add(new DriveStraight(dashboard, 5, drivebase, .6, 1000));
-        Scheduler.getInstance().add(new SimpleTurnAngle(dashboard, 90, drivebase));
-
-        //testing autos
-        //Scheduler.getInstance().add(new PlaceCubeInExchangeZone(dashboard, drivebase));
-        //Scheduler.getInstance().add(new PlaceCubeInScale(dashboard));
-        //Scheduler.getInstance().add(new PlaceCubeInSwitch(dashboard));
-
     }
 
     @Override
     public void autonomousPeriodic()
     {
         GameDataPoller.pollGameData();
-
         Scheduler.getInstance().run();
-        //robotLogger.info("yaw {}\t roll{}\t pitch{}", drivebase.getGyro().getYaw(), drivebase.getGyro().getRoll(), drivebase.getGyro().getPitch());
-
     }
 
     @Override
@@ -151,7 +131,6 @@ public class Robot extends IterativeRobot
         motorUp = new DigitalInput(5);
         motorDown = new DigitalInput(4);
         manualSpeed = new AnalogInput(2);
-
 
         if(runOneMotor == null)
         {

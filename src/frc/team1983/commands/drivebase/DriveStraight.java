@@ -118,10 +118,8 @@ public class DriveStraight extends CommandBase
     @Override
     public boolean isFinished()
     {
-        //Average the two offset distances traveled to tell if we're beyond the distance we want
-        logger.info("distance{}", (((drivebase.getLeftDist() - leftEncoderStart) +
-                (drivebase.getRightDist() - rightEncoderStart))) / 2);
-        //logger.info("leftEncoderStart{}\t leftDist{} \t rightEncoderStart{}\t rightDist{} ", leftEncoderStart, drivebase.getLeftDist(), rightEncoderStart, drivebase.getRightDist());
+        //condition checks if command is timed out or if we have gone the desired distance
+        //using the average of the two offset distances travelled
         return isTimedOut() || (((drivebase.getLeftDist() - leftEncoderStart) +
                 (drivebase.getRightDist() - rightEncoderStart))) / 2 >= distance;
     }

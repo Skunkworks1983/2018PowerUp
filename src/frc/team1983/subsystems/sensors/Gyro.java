@@ -5,8 +5,6 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SPI;
 import frc.team1983.settings.Constants.SensorMap.GyroConstants;
 
-
-
 //Class designed for the NavX-MXP that we use on the robot. We only ever need to get the Y axis ("yaw" of the robot),
 //so that's the only exposed method.
 public class Gyro extends AHRS
@@ -47,7 +45,7 @@ public class Gyro extends AHRS
             while(!isCalibrating())
             {
                 counter++;
-                if(counter > GyroConstants.IS_CALIBRATING_TIMEOUT)
+                if(counter > GyroConstants.IS_CALIBRATING_TIMEOUT) //TODO: figure out if this works
                 {
                     isDead = true;
                     break;

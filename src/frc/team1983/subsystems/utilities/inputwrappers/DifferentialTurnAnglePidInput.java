@@ -1,7 +1,9 @@
 package frc.team1983.subsystems.utilities.inputwrappers;
 
 import frc.team1983.subsystems.Drivebase;
-
+//time-sensitive initialization
+//Implementation of PidInputWrapper, specifically for DifferentialTurnAngle command.
+//gets the difference of distance travelled by each side
 public class DifferentialTurnAnglePidInput extends PidInputWrapper
 {
     private double leftEncoderStart;

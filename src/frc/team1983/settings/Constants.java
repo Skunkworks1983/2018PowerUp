@@ -18,8 +18,8 @@ public class Constants
             public static final int LEFT_3 = 15;
 
             public static final int RIGHT_1 = 1;
-            public static final int RIGHT_2 = 0;
-            public static final int RIGHT_3 = 2;
+            public static final int RIGHT_2 = 2;
+            public static final int RIGHT_3 = 0;
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = true;
@@ -179,7 +179,7 @@ public class Constants
         public static final double WHEELBASE_DEGREES = WHEELBASE_CIRCUMFERENCE / 360.;
         public static final double EFFECTIVE_REDUCTION_DRIVEBASE = 18 / 24.;
         public static final double WHEEL_CIRCUMFERENCE = 6 * Math.PI / 12.;
-
+        public static final double DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT = 1.4;
         public static final double DRIVEBASE_ENCODER_FUDGE_FACTOR = 6/6.3;
 
         public static final double MAX_OUTPUT = 0.5;

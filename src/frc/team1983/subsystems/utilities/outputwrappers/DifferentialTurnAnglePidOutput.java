@@ -12,6 +12,10 @@ public class DifferentialTurnAnglePidOutput extends PidOutputWrapper
         this.drivebase = drivebase;
         this.baseSpeed = baseSpeed;
     }
+    public void setBaseSpeed(double speed)
+    {
+        baseSpeed = speed;
+    }
 
     public void writeHelper(double out)
     {

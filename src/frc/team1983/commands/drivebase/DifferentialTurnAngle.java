@@ -14,7 +14,7 @@ import frc.team1983.subsystems.utilities.inputwrappers.DifferentialTurnAnglePidI
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DifferentialTurnAnglePidOutput;
 import org.apache.logging.log4j.core.Logger;
-
+//turns robot based off of distance each side has travelled, not the heading of the robot
 public class DifferentialTurnAngle extends CommandBase
 {
     private double targetAngle;
@@ -40,7 +40,6 @@ public class DifferentialTurnAngle extends CommandBase
         this.drivebase = drivebase;
         this.dashboard = dashboard;
         encoderTurnAnglePidInput = new EncoderTurnAnglePidInput(drivebase);
-        pidOut = new DifferentialTurnAnglePidOutput(drivebase, .5); //magic number
         targetAngle = degrees;
 
         dashboard.add(this, "kP", 0.0);
