@@ -18,7 +18,7 @@ public class LoggerFactory
 
     public static Logger createNewLogger(Class clazz) { return createNewLogger(clazz, Level.INFO); }
 
-    private static Logger createNewLogger(Class clazz, Level level) {
+    public static Logger createNewLogger(Class clazz, Level level) {
 
         String name = clazz.getName();
         ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
@@ -30,7 +30,7 @@ public class LoggerFactory
         AppenderComponentBuilder appenderBuilder = builder.newAppender("Stdout", "CONSOLE")
                                  .addAttribute("target", ConsoleAppender.Target.SYSTEM_OUT);
         LayoutComponentBuilder layout = builder.newLayout("PatternLayout")
-                                 .addAttribute("pattern", "%d [%t] %-5level %C{1}: %msg%n%throwable");
+                                 .addAttribute("pattern", "%d{DEFAULT} [%t] %-5level %C{1}: %msg%n%throwable");
         appenderBuilder.add(layout);
         builder.add(appenderBuilder);
 
@@ -39,7 +39,7 @@ public class LoggerFactory
                                  .addComponent(builder.newComponent("OnStartupTriggeringPolicy"));
         appenderBuilder = builder.newAppender("rolling", "RollingFile")
                                  .addAttribute("fileName", "/home/lvuser//logs/log.txt")
-                                 .addAttribute("filePattern", "/home/lvuser/logs/%d{MM-dd-yyyy}-%i-log.txt")
+                                 .addAttribute("filePattern", "/home/lvuser/logs/%d{yyyy-MM-dd}-%i-log.txt")
                                  .add(layout)
                                  .addComponent(triggeringPolicy);
 
@@ -51,7 +51,9 @@ public class LoggerFactory
                             .add( builder.newAppenderRef("rolling"))
                             .addAttribute( "additivity",false));
 
-        builder.add( builder.newRootLogger( Level.INFO )
+
+
+        builder.add( builder.newRootLogger( Level.TRACE )
                             .add( builder.newAppenderRef("rolling"))
                             .add(builder.newAppenderRef("Stdout")));
 
