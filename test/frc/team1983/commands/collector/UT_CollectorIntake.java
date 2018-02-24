@@ -1,4 +1,4 @@
-package frc.team1983.commands;
+package frc.team1983.commands.collector;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.hal.HAL;

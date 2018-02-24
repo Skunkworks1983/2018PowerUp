@@ -27,7 +27,7 @@ public class LowerRamps extends CommandBase
     @Override
     public void execute()
     {
-
+        ramp.unlock();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class LowerRamps extends CommandBase
     @Override
     public void end()
     {
-
+        ramp.lock();
     }
 
     @Override
