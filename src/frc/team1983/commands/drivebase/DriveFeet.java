@@ -27,8 +27,8 @@ public class DriveFeet extends Command
         this.time = time;
 
         // will become three-segment based on paths (todo)
-        leftProfile = new TrapezoidalProfile(drivebase.feetToEncoderTicks(feet), time);
-        rightProfile = new TrapezoidalProfile(drivebase.feetToEncoderTicks(feet), time);
+        leftProfile = new TrapezoidalProfile(drivebase.getTicks(feet), time);
+        rightProfile = new TrapezoidalProfile(drivebase.getTicks(feet), time);
     }
 
     @Override

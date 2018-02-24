@@ -37,8 +37,8 @@ public class DriveArc extends Command
         double rightDistance = (angle / 360) * rightCircumference;
 
         // will become three-segment based on paths (todo)
-        leftProfile = new TrapezoidalProfile(drivebase.feetToEncoderTicks(leftDistance), time);
-        rightProfile = new TrapezoidalProfile(drivebase.feetToEncoderTicks(rightDistance), time);
+        leftProfile = new TrapezoidalProfile(drivebase.getTicks(leftDistance), time);
+        rightProfile = new TrapezoidalProfile(drivebase.getTicks(rightDistance), time);
     }
 
     @Override

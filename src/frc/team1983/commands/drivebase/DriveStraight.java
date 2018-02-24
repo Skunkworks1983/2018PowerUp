@@ -50,7 +50,7 @@ public class DriveStraight extends CommandBase
         logger = LoggerFactory.createNewLogger(DriveStraight.class);
         requires(drivebase);
         this.drivebase = drivebase;
-        this.distance = distance * Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT;
+        this.distance = distance * Constants.MotorMap.Drivebase.DRIVEBASE_TICKS_PER_FOOT; // move this math
         gyro = drivebase.getGyro();
     }
 

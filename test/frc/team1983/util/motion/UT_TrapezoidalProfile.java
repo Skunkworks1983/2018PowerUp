@@ -13,7 +13,7 @@ public class UT_TrapezoidalProfile
     private TrapezoidalProfile profile;
 
     private double distance = 10000;
-    private double t_total = 5;
+    private double duration = 5;
 
     private double t_a1 = 1;
     private double t_a2 = 1;
@@ -21,7 +21,7 @@ public class UT_TrapezoidalProfile
     @Before
     public void setup()
     {
-        profile = new TrapezoidalProfile(distance, t_total, t_a1, t_a2);
+        profile = new TrapezoidalProfile(distance, duration, t_a1, t_a2);
     }
 
     @After
@@ -34,6 +34,6 @@ public class UT_TrapezoidalProfile
     public void returnsZeroForBoundsInputs()
     {
         assertThat(profile.evaluateVelocity(0), is(0.0));
-        assertThat(profile.evaluateVelocity(t_total), is(0.0));
+        assertThat(profile.evaluateVelocity(duration), is(0.0));
     }
 }

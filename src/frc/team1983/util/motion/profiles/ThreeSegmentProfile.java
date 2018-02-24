@@ -10,39 +10,39 @@ import java.util.List;
 
 public class ThreeSegmentProfile extends MotionProfile
 {
-    protected double t_a1;
-    protected double t_a2;
+    protected double t_acc1;
+    protected double t_acc2;
 
-    protected double v_i;
-    protected double v_f;
+    protected double vel_i;
+    protected double vel_f;
 
     protected double v_cruise;
 
-    public ThreeSegmentProfile(double distance, double t_total, double t_a1, double t_a2, double v_i, double v_f)
+    public ThreeSegmentProfile(double distance, double duration, double t_acc1, double t_a2, double v_i, double v_f)
     {
-        super(generate(distance, t_total, t_a1, t_a2, v_i, v_f));
+        super(generate(distance, duration, t_acc1, t_a2, v_i, v_f));
 
         this.distance = distance;
-        this.t_total = t_total;
+        this.duration = duration;
 
-        this.t_a1 = t_a1;
-        this.t_a2 = t_a2;
+        this.t_acc1 = t_acc1;
+        this.t_acc2 = t_a2;
 
-        this.v_i = v_i;
-        this.v_f = v_f;
+        this.vel_i = v_i;
+        this.vel_f = v_f;
     }
 
-    protected static List<MotionSegment> generate(double distance, double t_total, double t_a1, double t_a2, double v_i, double v_f)
+    protected static List<MotionSegment> generate(double distance, double duration, double t_a1, double t_a2, double v_i, double v_f)
     {
         // constrains
-        if(t_a1 + t_a2 <= t_total && t_a1 != 0 && t_a2 != 0)
+        if(t_a1 + t_a2 <= duration && t_a1 != 0 && t_a2 != 0)
         {
-            double v_cruise = ((2 * distance) - (t_a1 * v_i) - (t_a2 * v_f)) / ((2 * t_total) - t_a1 - t_a2);
+            double v_cruise = ((2 * distance) - (t_a1 * v_i) - (t_a2 * v_f)) / ((2 * duration) - t_a1 - t_a2);
 
             List<MotionSegment> segments = new ArrayList<>(Arrays.asList(
                 new MotionSegment(new MotionProfilePoint(0, v_i), new MotionProfilePoint(t_a1, v_cruise)),
-                new MotionSegment(new MotionProfilePoint(t_a1, v_cruise), new MotionProfilePoint(t_total - t_a2, v_cruise)),
-                new MotionSegment(new MotionProfilePoint(t_total - t_a2, v_cruise), new MotionProfilePoint(t_total, v_f))
+                new MotionSegment(new MotionProfilePoint(t_a1, v_cruise), new MotionProfilePoint(duration - t_a2, v_cruise)),
+                new MotionSegment(new MotionProfilePoint(duration - t_a2, v_cruise), new MotionProfilePoint(duration, v_f))
                                                                         ));
 
             return segments;
@@ -55,26 +55,26 @@ public class ThreeSegmentProfile extends MotionProfile
 
     public double getAccelerationTime1()
     {
-        return t_a1;
+        return t_acc1;
     }
 
     public double getAccelerationTime2()
     {
-        return t_a2;
+        return t_acc2;
     }
 
     public double getInitialVelocity()
     {
-        return v_i;
+        return vel_i;
     }
 
     public double getFinalVelocity()
     {
-        return v_f;
+        return vel_f;
     }
 
     public double getCruiseVelocity()
     {
-        return ((2 * distance) - (t_a1 * v_i) - (t_a2 * v_f)) / ((2 * t_total) - t_a1 - t_a2);
+        return ((2 * distance) - (t_acc1 * vel_i) - (t_acc2 * vel_f)) / ((2 * duration) - t_acc1 - t_acc2);
     }
 }

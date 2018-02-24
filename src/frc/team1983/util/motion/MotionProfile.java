@@ -7,10 +7,10 @@ public class MotionProfile
     protected List<MotionSegment> segments;
 
     protected double distance;
-    protected double t_total;
+    protected double duration;
 
-    protected double v_max;
-    protected double a_max;
+    protected double vel_max;
+    protected double acc_max;
 
     protected int pointDuration = 100; // ms
 
@@ -22,7 +22,7 @@ public class MotionProfile
     public double evaluateVelocity(double time)
     {
         // check if time is in domain of profile
-        if(0 <= time && time <= t_total)
+        if(0 <= time && time <= duration)
         {
             for(MotionSegment segment : segments)
             {
@@ -43,30 +43,30 @@ public class MotionProfile
     public double evaluatePosition(double time)
     {
         // check if time is in domain of profile
-        if(0 <= time && time <= t_total)
+        if(0 <= time && time <= duration)
         {
-            double A = 0;
+            double area = 0;
 
             for(MotionSegment segment : segments)
             {
-                double a = segment.getStart().getVelocity();
-                double b = 0, dt = 0;
+                double vel_1 = segment.getStart().getVelocity();
+                double vel_2 = 0, dt = 0;
 
                 if(segment.getEnd().getTime() < time)
                 {
-                    b = segment.getEnd().getVelocity();
+                    vel_2 = segment.getEnd().getVelocity();
                     dt = (segment.getEnd().getTime() - segment.getStart().getTime());
                 }
                 else if(segment.getStart().getTime() <= time)
                 {
-                    b = segment.evaluate(time);
+                    vel_2 = segment.evaluate(time);
                     dt = time - segment.getStart().getTime();
                 }
 
-                A += ((a + b) / 2) * dt;
+                area += ((vel_1 + vel_2) / 2) * dt;
             }
 
-            return A;
+            return area;
         }
         else
         {
@@ -81,17 +81,17 @@ public class MotionProfile
 
     public double getTotalTime()
     {
-        return t_total;
+        return duration;
     }
 
     public double getMaxVelocity()
     {
-        return v_max;
+        return vel_max;
     }
 
     public double getMaxAcceleration()
     {
-        return a_max;
+        return acc_max;
     }
 
     public int getPointDuration()

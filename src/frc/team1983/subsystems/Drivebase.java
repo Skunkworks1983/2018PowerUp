@@ -52,7 +52,7 @@ public class Drivebase extends Subsystem
         //setDefaultCommand(new TankDrive(this, MotorMap.getInstance().getOI()));
     }
 
-    public double encoderTicksToFeet(double ticks)
+    public double getFeet(double ticks)
     {
         double resolution = Constants.MotorMap.Drivebase.ENCODER_RESOLUTION;
         double circumference = Constants.MotorMap.Drivebase.WHEEL_CIRCUMFERENCE;
@@ -62,7 +62,7 @@ public class Drivebase extends Subsystem
         return feet;
     }
 
-    public double feetToEncoderTicks(double feet)
+    public double getTicks(double feet)
     {
         double resolution = Constants.MotorMap.Drivebase.ENCODER_RESOLUTION;
         double circumference = Constants.MotorMap.Drivebase.WHEEL_CIRCUMFERENCE;
