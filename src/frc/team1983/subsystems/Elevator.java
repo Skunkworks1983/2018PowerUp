@@ -34,30 +34,8 @@ public class Elevator extends Subsystem
 
         right2.follow(right1);
 
-        left1 = new Motor(Constants.MotorMap.Elevator.LEFT1, Constants.MotorMap.Elevator.LEFT1_REVERSED);
-        left2 = new Motor(Constants.MotorMap.Elevator.LEFT2, Constants.MotorMap.Elevator.LEFT2_REVERSED);
-
-        right2.follow(right1);
         left1.follow(right1);
         left2.follow(right1);
-
-        right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-        right1.setSensorPhase(true);
-
-        right1.config_kP(0, Constants.PidConstants.ElevatorControlPid.P, 0);
-        right1.config_kI(0, Constants.PidConstants.ElevatorControlPid.I, 0);
-        right1.config_kD(0, Constants.PidConstants.ElevatorControlPid.D, 0);
-        right1.config_kF(0, Constants.PidConstants.ElevatorControlPid.F, 0);
-
-        right1.configClosedloopRamp(0.5, 0);
-        right1.configPeakOutputForward(0.90, 0);
-        //right1.config_IntegralZone(0, )
-
-        //right1.set(ControlMode.Position, Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 100);
-
-        right1.selectProfileSlot(0, 0);
-
-        logger.info("Error: {}", right1.getClosedLoopError(0));
     }
 
     public void initDefaultCommand()
