@@ -37,6 +37,8 @@ public class LoggerFactory
 // create a rolling file appender
         ComponentBuilder triggeringPolicy = builder.newComponent("Policies")
                                  .addComponent(builder.newComponent("OnStartupTriggeringPolicy"));
+
+        //This is a rolling appender that writes to log files in the roborio whose names increment.
         appenderBuilder = builder.newAppender("rolling", "RollingFile")
                                  .addAttribute("fileName", "/home/lvuser//logs/log.txt")
                                  .addAttribute("filePattern", "/home/lvuser/logs/%d{yyyy-MM-dd}-%i-log.txt")
@@ -46,10 +48,9 @@ public class LoggerFactory
         builder.add(appenderBuilder);
 
 // create the new logger
-        builder.add( builder.newLogger( name, level).add( builder.newAppenderRef( "Stdout" ) )
-                            .addAttribute( "additivity",false)
-                            .add( builder.newAppenderRef("rolling"))
-                            .addAttribute( "additivity",false));
+        builder.add( builder.newLogger( name, level)
+                            .add( builder.newAppenderRef("Stdout" )).addAttribute( "additivity",false)
+                            .add( builder.newAppenderRef("rolling")).addAttribute( "additivity",false));
 
 
 
