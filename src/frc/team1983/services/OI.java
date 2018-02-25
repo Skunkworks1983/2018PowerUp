@@ -12,9 +12,12 @@ import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.commands.elevator.SetElevatorSpeed;
 import frc.team1983.commands.ramps.LowerRamps;
 import frc.team1983.commands.ramps.PropRamps;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
+import org.apache.logging.log4j.core.Logger;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /*
     notes:
@@ -27,33 +30,27 @@ public class OI
     private Joystick left, right, panel, manual;
     private HashMap<Joystick, JoystickButton[]> joystickButtons;
 
+    private Logger logger;
+
     public OI(DriverStation ds)
     {
+        this(new Joystick(Constants.OIMap.LEFTJOY_PORT), new Joystick(Constants.OIMap.RIGHTJOY_PORT),
+             new Joystick(Constants.OIMap.PANEL_PORT), new HashMap<>());
         this.ds = ds;
 
-        left = new Joystick(Constants.OIMap.LEFTJOY_PORT);
-        right = new Joystick(Constants.OIMap.RIGHTJOY_PORT);
-        panel = new Joystick(Constants.OIMap.PANEL_PORT);
         manual = new Joystick(Constants.OIMap.MANUAL_PORT);
 
-        joystickButtons = new HashMap<>();
-
-        initializeButtons(Constants.OIMap.Joystick.LEFT);
-        initializeButtons(Constants.OIMap.Joystick.RIGHT);
-        initializeButtons(Constants.OIMap.Joystick.PANEL);
         initializeButtons(Constants.OIMap.Joystick.MANUAL);
     }
 
-    protected OI(Joystick left, Joystick right, Joystick panel, HashMap joystickButtons)
+    protected OI(Joystick left, Joystick right, Joystick panel, HashMap<Joystick, JoystickButton[]> joystickButtons)
     {
+        logger = LoggerFactory.createNewLogger(this.getClass());
+
         this.left = left;
         this.right = right;
         this.panel = panel;
         this.joystickButtons = joystickButtons;
-
-        //this.joystickButtons = joystickButtons;
-
-        joystickButtons = new HashMap<>();
 
         initializeButtons(Constants.OIMap.Joystick.LEFT);
         initializeButtons(Constants.OIMap.Joystick.RIGHT);
@@ -63,6 +60,7 @@ public class OI
     // put your command bindings in here :)
     public void initializeBindings(Robot robot)
     {
+
         //Intake will run until expel is pressed
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
                       new CollectorIntake(robot.getCollector()));
@@ -74,15 +72,20 @@ public class OI
         bindToPressed(Constants.OIMap.Joystick.RIGHT, 0,
                       new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator(), this));
 
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP,
-                      new LowerRamps(robot.getRamps()));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP,
-                      new PropRamps(robot.getRamps()));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_LEFT,
+                      new LowerRamps(robot.getRamps(), true));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_RIGHT,
+                      new LowerRamps(robot.getRamps(), false));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP_LEFT,
+                      new PropRamps(robot.getRamps(), true));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP_RIGHT,
+                      new PropRamps(robot.getRamps(), true));
 
-        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.MANUAL_ROTATE_UP,
+        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_UP,
                       new SetRotateSpeed(this, robot.getCollector(), -0.5));
-        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.MANUAL_ROTATE_DOWN,
+        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_DOWN,
                       new SetRotateSpeed(this, robot.getCollector(), 0.2));
+
     }
 
     public double getElevatorSliderPos()
@@ -113,6 +116,7 @@ public class OI
             for(int i = 0; i < joy.getButtonCount(); i++)
             {
                 buttons[i] = new JoystickButton(joy, i + 1);
+                logger.info("Created button {}", i);
             }
 
             joystickButtons.put(joy, buttons);
@@ -157,7 +161,7 @@ public class OI
         return new Joystick(0);
     }
 
-    private JoystickButton[] getJoystickButtons(Constants.OIMap.Joystick joystick)
+    public JoystickButton[] getJoystickButtons(Constants.OIMap.Joystick joystick)
     {
         if(joystickExists(joystick))
         {

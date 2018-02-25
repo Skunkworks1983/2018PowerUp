@@ -182,6 +182,7 @@ public class Constants
         public static final int RIGHTJOY_PORT = 1;
         public static final int PANEL_PORT = 2;
         public static final int MANUAL_PORT = 3;
+        public static final int MANUAL_SWITCH = 4; //button 9 on the 2016 oi
 
         public enum Joystick
         {
@@ -217,31 +218,40 @@ public class Constants
 
         public static class CollectorButtons
         {
-            public static final int INTAKE = 3;
-            public static final int EXPEL = 4;
-            public static final int MANUAL_ROTATE_UP = 15;
-            public static final int MANUAL_ROTATE_DOWN = 14;
+            public static final int INTAKE = 17;
+            public static final int EXPEL = 19;
+            public static final int BOOP = 13;
+            public static final int M_INTAKE = 1;
+            public static final int M_EXPEL = 0;
+            public static final int UP = 18;
+            public static final int DOWN = 16;
+            public static final int M_UP = 2;
+            public static final int M_DOWN = 3;
         }
 
         public static class ElevatorButtons
         {
-            public static final int TOP = 0;
-            public static final int MID = 1;
+            public static final int TOP = 8;
+            public static final int MID = 9;
+            public static final int LOW = 10;
+            public static final int SWITCH = 11;
+            public static final int BOTTOM = 12;
             public static final int MANUAL_UP = 2;
             public static final int MANUAL_DOWN = 3;
         }
 
         public static class RampButtons
         {
-            public static final int DROP = 10;
-            public static final int PROP = 6;
+            public static final int DROP_LEFT = 20;
+            public static final int DROP_RIGHT = 21;
+            public static final int PROP_LEFT = 22;
+            public static final int PROP_RIGHT = 23;
         }
 
         public static class ManualControl
         {
             public static final int ELEVATOR_UP = 5; //button 6 on 2016 oi
             public static final int ELEVATOR_DOWN = 6; //button 7 on 2016 oi
-            public static final int MANUAL_SWITCH = 8; //button 9 on the 2016 oi
         }
         //Enums for presets
         public enum Setpoint

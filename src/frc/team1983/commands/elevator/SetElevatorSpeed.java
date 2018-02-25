@@ -26,7 +26,7 @@ public class SetElevatorSpeed extends CommandBase
     public void execute()
     {
         //If the manual switch is not pressed, don't do anything.
-        if(oi.isPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ManualControl.MANUAL_SWITCH)) //has not been tested
+        if(oi.isPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH)) //has not been tested
         {
             elevator.set(ControlMode.PercentOutput, speed);
         }

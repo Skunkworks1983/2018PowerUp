@@ -10,11 +10,13 @@ public class PropRamps extends CommandBase
 {
     private Ramps ramp;
     private Logger logger;
+    private boolean left;
 
-    public PropRamps(Ramps ramp)
+    public PropRamps(Ramps ramp, boolean left)
     {
         requires(ramp);
         this.ramp = ramp;
+        this.left = left;
         logger = LoggerFactory.createNewLogger(PropRamps.class);
     }
 
@@ -27,7 +29,7 @@ public class PropRamps extends CommandBase
     @Override
     public void execute()
     {
-        ramp.prop();
+        ramp.prop(left);
     }
 
     @Override
@@ -39,7 +41,7 @@ public class PropRamps extends CommandBase
     @Override
     public void end()
     {
-        ramp.unprop();
+        ramp.unprop(left);
     }
 
     @Override

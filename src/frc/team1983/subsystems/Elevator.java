@@ -90,7 +90,7 @@ public class Elevator extends Subsystem
     @Override
     public void periodic()
     {
-        logger.info("Error: {}", right1.getClosedLoopError(0));
+        logger.debug("Error: {}", right1.getClosedLoopError(0));
     }
 
     public double getCurrentDraw()
