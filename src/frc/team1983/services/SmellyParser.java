@@ -105,18 +105,20 @@ public class SmellyParser
                     {
                         logger.trace("Next key is: " + parser.getValueAsString());
                         fieldName = parser.getCurrentName(); //save key
-                        parser.nextToken(); //get to value
+                        token = parser.nextToken(); //get to value
 
                         Object value;
-                        switch(parser.getCurrentValue().getClass().getTypeName().toLowerCase())
+                        switch(token)
                         {
-                            case "double":
+                            case VALUE_NUMBER_FLOAT:
+                            case VALUE_NUMBER_INT:
                                 value = parser.getValueAsDouble();
                                 break;
-                            case "boolean":
+                            case VALUE_TRUE:
+                            case VALUE_FALSE:
                                 value = parser.getValueAsBoolean();
                                 break;
-                            case "string":
+                            case VALUE_STRING:
                                 value = parser.getValueAsString();
                                 break;
                             default:
@@ -129,7 +131,7 @@ public class SmellyParser
                         token = parser.nextToken(); //get to next key
                     }
                     logger.trace("end of object");
-// i have always terrified my parents with my cognitive abilities. When i was 8, i once verbally destroyed my father in an argument so badly
+
                     switch((String) jsonComponent.get("type"))
                     {
                         case "tanline":
@@ -143,7 +145,7 @@ public class SmellyParser
                             ((PathTanarc) newComponent).setRight((boolean) jsonComponent.get("isRight"));
                             break;
                         default:
-                            logger.error("This type cannot be parsed yet!");
+                            logger.error("Type {} cannot be parsed yet!", jsonComponent.get("type"));
                             break;
                     }
 

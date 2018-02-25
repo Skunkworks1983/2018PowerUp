@@ -66,16 +66,4 @@ public class UT_Smelly_Parser
         }
 
     }
-
-    @Test
-    public void testValues()
-    {
-        when(dashboard.getNumber(Constants.SmellyParser.AUTOPATHKEY, 0.0)).thenReturn(4.0);
-
-        assertThat(parser.getPath().getComponent(0).getType(), is("tanline"));
-        assertThat(((PathTanline) parser.getPath().getComponent(0)).getDistance(),
-                   new IsCloseTo(107.99999999999999, 0.000001));
-        assertThat((parser.getPath().getComponent(0)).getTime(),
-                   new IsCloseTo(2.0, 0.00001));
-    }
 }
