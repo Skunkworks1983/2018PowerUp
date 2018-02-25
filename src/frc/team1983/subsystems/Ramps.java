@@ -29,11 +29,11 @@ public class Ramps extends Subsystem
     {
         if(left)
         {
-            leftLock.set(0);
+            leftLock.set(0.2);
         }
         else
         {
-            rightLock.set(0);
+            rightLock.set(0.2);
         }
     }
 

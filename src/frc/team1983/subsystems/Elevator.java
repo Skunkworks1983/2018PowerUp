@@ -24,16 +24,15 @@ public class Elevator extends Subsystem
 
     public Elevator()
     {
+        logger = LoggerFactory.createNewLogger(Elevator.class);
+
         left1 = new Motor(Constants.MotorMap.Elevator.LEFT1, Constants.MotorMap.Elevator.LEFT1_REVERSED, true);
         left2 = new Motor(Constants.MotorMap.Elevator.LEFT2, Constants.MotorMap.Elevator.LEFT2_REVERSED);
-
-        logger = LoggerFactory.createNewLogger(Elevator.class);
 
         right1 = new Motor(Constants.MotorMap.Elevator.RIGHT1, Constants.MotorMap.Elevator.RIGHT1_REVERSED, true);
         right2 = new Motor(Constants.MotorMap.Elevator.RIGHT2, Constants.MotorMap.Elevator.RIGHT2_REVERSED);
 
         right2.follow(right1);
-
         left1.follow(right1);
         left2.follow(right1);
     }
@@ -66,6 +65,8 @@ public class Elevator extends Subsystem
     public void set(ControlMode mode, double value)
     {
         right1.set(mode, value);
+        logger.debug("Set elevator to: {}", value);
+        logger.debug("Mode: {}", mode.toString());
     }
 
     public double getEncoderValue()
@@ -107,7 +108,7 @@ public class Elevator extends Subsystem
     @Override
     public void periodic()
     {
-        logger.debug("Error: {}", right1.getClosedLoopError(0));
+        //logger.debug("Error: {}", right1.getClosedLoopError(0));
     }
 
     public double getCurrentDraw()

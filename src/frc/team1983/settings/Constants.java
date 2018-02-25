@@ -50,8 +50,8 @@ public class Constants
             public static final int LEFT1 = 9;
             public static final int LEFT2 = 4;
 
-            public static final boolean LEFT1_REVERSED = false;
-            public static final boolean LEFT2_REVERSED = false;
+            public static final boolean LEFT1_REVERSED = true;
+            public static final boolean LEFT2_REVERSED = true;
 
             public static final boolean RIGHT1_REVERSED = false;
             public static final boolean RIGHT2_REVERSED = false;
@@ -68,8 +68,8 @@ public class Constants
 
             public static final int ROTATE = 12;
 
-            public static final boolean LEFT_REVERSED = true;
-            public static final boolean RIGHT_REVERSED = false;
+            public static final boolean LEFT_REVERSED = false;
+            public static final boolean RIGHT_REVERSED = true;
             public static final boolean ROTATE_REVERSED = false;
 
             public static final int LEFT_SWITCH = 1;
@@ -108,6 +108,7 @@ public class Constants
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
         public static final double COLLECTOR_INTAKE_SPEED = 0.75;
         public static final double COLLECTOR_EXPEL_SPEED = -0.5;
+        public static final double COLLECTOR_SLOW_EXPEL_SPEED = -0.2;
         public static final double COLLECTOR_ROTATE_SPEED = -0.5;
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
@@ -161,8 +162,8 @@ public class Constants
             public static final double D = 0;
             public static final double F = 0;//.002;
 
-            public static final double UP_TICKS = -100;
-            public static final double DOWN_TICKS = 3450;
+            public static final double UP_TICKS = 0;
+            public static final double DOWN_TICKS = -1300;
         }
 
         //setpoints for motors
@@ -263,8 +264,8 @@ public class Constants
             public static final int LOW = 10;
             public static final int SWITCH = 11;
             public static final int BOTTOM = 12;
-            public static final int MANUAL_UP = 2;
-            public static final int MANUAL_DOWN = 3;
+            public static final int M_UP = 6;
+            public static final int M_DOWN = 5;
         }
 
         public static class RampButtons
@@ -278,10 +279,11 @@ public class Constants
         //Enums for presets
         public enum Setpoint
         {
-            SCALE,
-            SWITCH,
             BOTTOM,
-            RESTING
+            SWITCH,
+            LOW,
+            MID,
+            TOP
         }
     }
 

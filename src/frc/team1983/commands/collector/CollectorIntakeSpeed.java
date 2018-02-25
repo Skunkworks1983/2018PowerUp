@@ -1,94 +1,69 @@
 package frc.team1983.commands.collector;
 
-import edu.wpi.first.wpilibj.command.Command;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import frc.team1983.commands.CommandBase;
+import frc.team1983.services.OI;
+import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.settings.Constants;
+import frc.team1983.subsystems.Collector;
+import org.apache.logging.log4j.core.Logger;
 
-
-public class CollectorIntakeSpeed extends Command
+//Runs the collector inwards, holding cube in place
+public class CollectorIntakeSpeed extends CommandBase
 {
-    public CollectorIntakeSpeed()
+    private Collector collector;
+    private OI oi;
+
+    private Logger logger;
+    private double speed;
+    private boolean isFinished;
+
+    public CollectorIntakeSpeed(Collector collector, OI oi, double speed)
     {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+        logger = LoggerFactory.createNewLogger(this.getClass());
+        requires(collector);
+        this.collector = collector;
+        this.oi = oi;
+        this.speed = speed;
+
+        isFinished = false;
     }
 
-
-    /**
-     * The initialize method is called just before the first time
-     * this Command is run after being started.
-     */
     @Override
-    protected void initialize()
+    public void initialize()
     {
-
+        if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH))
+        {
+            collector.setLeft(ControlMode.PercentOutput, speed);
+            collector.setRight(ControlMode.PercentOutput, speed);
+        }
     }
 
-
-    /**
-     * The execute method is called repeatedly when this Command is
-     * scheduled to run until this Command either finishes or is canceled.
-     */
     @Override
-    protected void execute()
+    public void execute()
     {
-
+        if(!oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH))
+        {
+            this.isFinished = true;
+        }
     }
 
-
-    /**
-     * <p>
-     * Returns whether this command is finished. If it is, then the command will be removed and
-     * {@link #end()} will be called.
-     * </p><p>
-     * It may be useful for a team to reference the {@link #isTimedOut()}
-     * method for time-sensitive commands.
-     * </p><p>
-     * Returning false will result in the command never ending automatically. It may still be
-     * cancelled manually or interrupted by another command. Returning true will result in the
-     * command executing once and finishing immediately. It is recommended to use
-     * {@link edu.wpi.first.wpilibj.command.InstantCommand} (added in 2017) for this.
-     * </p>
-     *
-     * @return whether this command is finished.
-     * @see Command#isTimedOut() isTimedOut()
-     */
     @Override
-    protected boolean isFinished()
+    public boolean isFinished() //isFinished when expel starts
     {
-        // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
+        return isFinished;
     }
 
-
-    /**
-     * Called once when the command ended peacefully; that is it is called once
-     * after {@link #isFinished()} returns true. This is where you may want to
-     * wrap up loose ends, like shutting off a motor that was being used in the
-     * command.
-     */
     @Override
-    protected void end()
+    public void end()
     {
-
+        collector.setLeft(ControlMode.PercentOutput, 0.0);
+        collector.setRight(ControlMode.PercentOutput, 0.0);
     }
 
-
-    /**
-     * <p>
-     * Called when the command ends because somebody called {@link #cancel()} or
-     * another command shared the same requirements as this one, and booted it out. For example,
-     * it is called when another command which requires one or more of the same
-     * subsystems is scheduled to run.
-     * </p><p>
-     * This is where you may want to wrap up loose ends, like shutting off a motor that was being
-     * used in the command.
-     * </p><p>
-     * Generally, it is useful to simply call the {@link #end()} method within this
-     * method, as done here.
-     * </p>
-     */
     @Override
-    protected void interrupted()
+    public void interrupted()
     {
-        super.interrupted();
+        this.end();
     }
 }
