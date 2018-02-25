@@ -21,19 +21,9 @@ public class Constants
             public static final int LEFT_2 = 13;
             public static final int LEFT_3 = 15;
 
-<<<<<<< HEAD
             public static final int RIGHT_1 = 1;
             public static final int RIGHT_2 = 0;
             public static final int RIGHT_3 = 2;
-=======
-            public static final int LEFT_1 = 14;
-            public static final int LEFT_2 = 13;
-            public static final int LEFT_3 = 15;
-
-            public static final int RIGHT_1 = 1;
-            public static final int RIGHT_2 = 2;
-            public static final int RIGHT_3 = 0;
->>>>>>> dev
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = true;
@@ -94,12 +84,8 @@ public class Constants
             public static final int LEFT_RAMPLOCK = 1;
             public static final int RIGHT_RAMPLOCK = 2;
 
-<<<<<<< HEAD
             public static final int LEFT_LEG = 3;
             public static final int RIGHT_LEG = 4;
-=======
-            public static final int LEFT_LEG = 1;
-            public static final int RIGHT_LEG = 3;
         }
 
         //Random and hard to classify drivebase constants
@@ -114,9 +100,6 @@ public class Constants
             public static final boolean LEFT2_REVERSED = false;
             public static final boolean RIGHT1_REVERSED = true;
             public static final boolean RIGHT2_REVERSED = false;
-
-
->>>>>>> dev
         }
     }
 
@@ -292,11 +275,6 @@ public class Constants
             public static final int PROP_RIGHT = 23;
         }
 
-        public static class ManualControl
-        {
-            public static final int ELEVATOR_UP = 5; //button 6 on 2016 oi
-            public static final int ELEVATOR_DOWN = 6; //button 7 on 2016 oi
-        }
         //Enums for presets
         public enum Setpoint
         {
