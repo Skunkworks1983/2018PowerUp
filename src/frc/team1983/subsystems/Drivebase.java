@@ -49,7 +49,7 @@ public class Drivebase extends Subsystem
 
     public void initDefaultCommand()
     {
-        //setDefaultCommand(new TankDrive(this, MotorMap.getInstance().getOI()));
+
     }
 
     public double getFeet(double ticks)
@@ -82,24 +82,52 @@ public class Drivebase extends Subsystem
         right1.set(mode, value);
     }
 
+    // u
     public double getLeftEncoderValue()
     {
         return left1.getSelectedSensorPosition(0);
     }
 
+    // u
     public double getRightEncoderValue()
     {
         return right1.getSelectedSensorPosition(0);
     }
 
+    // u/100ms
     public double getLeftEncoderVelocity()
     {
         return left1.getSelectedSensorVelocity(0);
     }
 
+    // u/100ms
     public double getRightEncoderVelocity()
     {
         return right1.getSelectedSensorVelocity(0);
+    }
+
+    // feet
+    public double getLeftDistance()
+    {
+        return getFeet(getLeftEncoderValue());
+    }
+
+    // feet
+    public double getRightDistance()
+    {
+        return getFeet(getRightEncoderValue());
+    }
+
+    // feet/s
+    public double getLeftVelocity()
+    {
+        return getFeet(getLeftEncoderVelocity() * 10);
+    }
+
+    // feet/s
+    public double getRightVelocity()
+    {
+        return getFeet(getRightEncoderVelocity() * 10);
     }
 
     public void setLeftProfile(MotionProfile profile)
@@ -144,37 +172,15 @@ public class Drivebase extends Subsystem
         return this.gyro;
     }
 
-    public double getLeftDist()
+    public void setBrakeMode(boolean brake)
     {
-        return (getLeftEncoderValue()/Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT)*Constants.AutoValues.DRIVEBASE_ENCODER_FUDGE_FACTOR;
-    }
-    public double getRightDist()
-    {
-        return (getRightEncoderValue()/Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT)*Constants.AutoValues.DRIVEBASE_ENCODER_FUDGE_FACTOR;
-    }
-    public void setBrakeMode(boolean isBrake)
-    {
-        if(isBrake)
-        {
-            left1.setNeutralMode(NeutralMode.Brake);
-            left2.setNeutralMode(NeutralMode.Brake);
-            left3.setNeutralMode(NeutralMode.Brake);
+        left1.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        left2.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        left3.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
 
-            right1.setNeutralMode(NeutralMode.Brake);
-            right2.setNeutralMode(NeutralMode.Brake);
-            right3.setNeutralMode(NeutralMode.Brake);
-        }
-        else
-        {
-            left1.setNeutralMode(NeutralMode.Coast);
-            left2.setNeutralMode(NeutralMode.Coast);
-            left3.setNeutralMode(NeutralMode.Coast);
-
-            right1.setNeutralMode(NeutralMode.Coast);
-            right2.setNeutralMode(NeutralMode.Coast);
-            right3.setNeutralMode(NeutralMode.Coast);
-        }
-
+        right1.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        right2.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        right3.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
     }
 }
 

@@ -87,8 +87,8 @@ public class DriveStraight extends CommandBase
         driveStraightPid.setSetpoint(pidSource.pidGet());
         driveStraightPid.setOutputRange(-Constants.AutoValues.MAX_OUTPUT, Constants.AutoValues.MAX_OUTPUT);
         driveStraightPid.enable();
-        leftEncoderStart = drivebase.getLeftDist();
-        rightEncoderStart = drivebase.getRightDist();
+        leftEncoderStart = drivebase.getLeftDistance();
+        rightEncoderStart = drivebase.getRightDistance();
 
         if(distance < 0)
         {
@@ -104,8 +104,8 @@ public class DriveStraight extends CommandBase
             driveStraightPid.setSetpoint(pidSource.pidGet());
             driveStraightPid.setOutputRange(-Constants.AutoValues.MAX_OUTPUT, Constants.AutoValues.MAX_OUTPUT);
             driveStraightPid.enable();
-            leftEncoderStart = drivebase.getLeftDist();
-            rightEncoderStart = drivebase.getRightDist();
+            leftEncoderStart = drivebase.getLeftDistance();
+            rightEncoderStart = drivebase.getRightDistance();
         }
 
     }
@@ -121,8 +121,8 @@ public class DriveStraight extends CommandBase
     {
         //condition checks if command is timed out or if we have gone the desired distance
         //using the average of the two offset distances travelled
-        return isTimedOut() || (((drivebase.getLeftDist() - leftEncoderStart) +
-                (drivebase.getRightDist() - rightEncoderStart))) / 2 >= distance;
+        return isTimedOut() || (((drivebase.getLeftDistance() - leftEncoderStart) +
+                (drivebase.getRightDistance() - rightEncoderStart))) / 2 >= distance;
     }
 
     @Override

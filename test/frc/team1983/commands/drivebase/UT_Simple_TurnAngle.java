@@ -95,7 +95,7 @@ public class UT_Simple_TurnAngle
         when(gyro.isDead()).thenReturn(true);
         fakeScheduler.add(simpleTurnAngle);
         fakeScheduler.run(1);
-        verify(drivebase, atLeastOnce()).getLeftDist();
+        verify(drivebase, atLeastOnce()).getLeftDistance();
 
     }
 
