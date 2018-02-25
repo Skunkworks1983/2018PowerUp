@@ -56,8 +56,9 @@ public class DriveStraight extends CommandBase
         logger = LoggerFactory.createNewLogger(DriveStraight.class);
         requires(drivebase);
         this.drivebase = drivebase;
-        this.dashboard = dashboard;
         this.distance = distance;
+        this.dashboard = dashboard;
+
         gyro = drivebase.getGyro();
 
         dashboard.add(this, "kP", 0.0);

@@ -7,11 +7,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.commands.collector.CollectorRotate;
+import frc.team1983.commands.drivebase.RunTankDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.debugging.RunOneMotor;
-import frc.team1983.commands.drivebase.SimpleTurnAngle;
-import frc.team1983.commands.drivebase.TankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.StatefulDashboard;
@@ -23,6 +21,7 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
+import frc.team1983.util.control.ProfileController;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import org.apache.logging.log4j.core.Logger;
 
@@ -40,9 +39,11 @@ public class Robot extends IterativeRobot
     private Subsystem subsystem;
     private GyroPidInput pidSource;
 
-    private static Robot instance;
+    private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
 
     private RunOneMotor runOneMotor;
+
+    private static Robot instance;
 
     @Override
     public void robotInit()
@@ -59,7 +60,7 @@ public class Robot extends IterativeRobot
         ramps = new Ramps();
         pidSource = new GyroPidInput(drivebase.getGyro());
 
-        oi.initializeBindings(this);
+        //oi.initializeBindings(this);
         robotLogger.info("robotInit");
     }
 
@@ -70,6 +71,7 @@ public class Robot extends IterativeRobot
     public void disabledInit()
     {
         Scheduler.getInstance().removeAll();
+        updateState(Constants.MotorMap.Mode.DISABLED);
 
         dashboard.store();
 
@@ -103,7 +105,7 @@ public class Robot extends IterativeRobot
             runOneMotor.end();
         }
         Scheduler.getInstance().removeAll();
-        Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+        Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 
         drivebase.setBrakeMode(false);
     }
@@ -121,6 +123,10 @@ public class Robot extends IterativeRobot
     public void testInit()
     {
         Scheduler.getInstance().removeAll();
+        updateState(Constants.MotorMap.Mode.TEST);
+
+        Scheduler.getInstance().removeAll();
+
         ArrayList<Motor> motors;
         motors = new ArrayList<>();
 
@@ -152,6 +158,19 @@ public class Robot extends IterativeRobot
     public void testPeriodic()
     {
         runOneMotor.execute();
+    }
+
+    public void updateState(Constants.MotorMap.Mode mode)
+    {
+        for(ProfileController controller : profileControllers)
+        {
+            controller.updateRobotState(mode);
+        }
+    }
+
+    public void addProfileController(ProfileController controller)
+    {
+        profileControllers.add(controller);
     }
 
     public Drivebase getDrivebase()

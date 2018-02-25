@@ -16,7 +16,7 @@ import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.utilities.outputwrappers.SimpleTurnAnglePidOutput;
 import org.apache.logging.log4j.core.Logger;
 
-//Turns the robot a number of degrees, as an offset from the Robot's current position.
+//Turns the robot a number of degrees, as an offset from the MotorMap's current position.
 //has case for when gyro eventually explodes
 public class SimpleTurnAngle extends CommandBase
 {
