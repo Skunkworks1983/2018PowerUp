@@ -65,7 +65,7 @@ public class OI
     {
         //Intake will run until expel is pressed
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
-                      new CollectorIntake(robot.getCollector()));
+                   new CollectorIntake(robot.getCollector()));
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.EXPEL,
                    new CollectorExpel(robot.getCollector()));
 
@@ -87,7 +87,7 @@ public class OI
 
     public double getElevatorSliderPos()
     {
-        //The 2017 slider on the OI was a joystick axis. All code taken from 2017
+        //The 2017 slider on the OIMap was a joystick axis. All code taken from 2017
         double x = getAxis(Constants.OIMap.Joystick.PANEL, 0);
         x = Math.pow(x, 10);
         x = x / Constants.OIMap.OIConstants.SLIDER_SCALAR;
@@ -99,8 +99,8 @@ public class OI
     {
         double raw = getAxis(joystick, axis);
         double sign = raw < 0 ? -1 : 1;
-        double deadzoned = (Math.abs(raw) > Constants.OIMap.OIConstants.JOYSTICK_DEADZONE ? raw : 0);
-        return Math.pow(deadzoned, Constants.OIMap.OIConstants.JOYSTICK_RAMP_EXPONENT) * sign;
+        double deadzoned = (Math.abs(raw) > Constants.OIMap.JOYSTICK_DEADZONE ? raw : 0);
+        return Math.pow(deadzoned, Constants.OIMap.JOYSTICK_RAMP_EXPONENT) * sign;
     }
 
     public void initializeButtons(Constants.OIMap.Joystick joystick)
@@ -189,7 +189,7 @@ public class OI
 
     public double getAxis(Constants.OIMap.Joystick joystick, int axis)
     {
-        return axisExists(joystick, axis) ? getJoystick(joystick).getRawAxis(axis) : 0;
+        return axisExists(joystick, axis) ? -getJoystick(joystick).getRawAxis(axis) : 0;
     }
 
     public boolean isDown(Constants.OIMap.Joystick joystick, int button)

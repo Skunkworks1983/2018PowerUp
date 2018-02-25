@@ -8,7 +8,6 @@ import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.sensors.DigitalInputWrapper;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.subsystems.utilities.MotorGroup;
 import org.apache.logging.log4j.core.Logger;
 
 //Subsystem that will acquire and expel the Power Cubes.
