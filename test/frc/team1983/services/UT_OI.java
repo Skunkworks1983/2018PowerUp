@@ -66,7 +66,7 @@ public class UT_OI
     {
         when(left.getAxisCount()).thenReturn(1);
         when(left.getRawAxis(0)).thenReturn(1.0);
-        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(-1.0));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class UT_OI
     public void returnsDeadzonedValue()
     {
         when(left.getAxisCount()).thenReturn(1);
-        when(left.getRawAxis(0)).thenReturn(Constants.OIMap.OIConstants.JOYSTICK_DEADZONE * 0.5);
+        when(left.getRawAxis(0)).thenReturn(Constants.OIMap.JOYSTICK_DEADZONE * 0.5);
         assertThat(oi.getAxis(Constants.OIMap.Joystick.PANEL, 0), is(0.0));
     }
 
@@ -110,9 +110,9 @@ public class UT_OI
     {
         when(left.getAxisCount()).thenReturn(1);
         when(left.getRawAxis(0)).thenReturn(1.0);
-        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(-1.0));
 
         when(left.getRawAxis(0)).thenReturn(-1.0);
-        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(-1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
     }
 }

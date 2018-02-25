@@ -7,6 +7,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
+import frc.team1983.commands.collector.SetRotateSpeed;
+import frc.team1983.commands.elevator.SetElevatorSetpoint;
+import frc.team1983.commands.elevator.SetElevatorSpeed;
+import frc.team1983.commands.ramps.LowerRamps;
+import frc.team1983.commands.ramps.PropRamps;
 import frc.team1983.settings.Constants;
 
 import java.util.HashMap;
@@ -19,7 +24,7 @@ public class OI
 {
     private DriverStation ds;
 
-    private Joystick left, right, panel;
+    private Joystick left, right, panel, manual;
     private HashMap<Joystick, JoystickButton[]> joystickButtons;
 
     public OI(DriverStation ds)
@@ -29,12 +34,14 @@ public class OI
         left = new Joystick(Constants.OIMap.LEFTJOY_PORT);
         right = new Joystick(Constants.OIMap.RIGHTJOY_PORT);
         panel = new Joystick(Constants.OIMap.PANEL_PORT);
+        manual = new Joystick(Constants.OIMap.MANUAL_PORT);
 
         joystickButtons = new HashMap<>();
 
         initializeButtons(Constants.OIMap.Joystick.LEFT);
         initializeButtons(Constants.OIMap.Joystick.RIGHT);
         initializeButtons(Constants.OIMap.Joystick.PANEL);
+        initializeButtons(Constants.OIMap.Joystick.MANUAL);
     }
 
     protected OI(Joystick left, Joystick right, Joystick panel, HashMap joystickButtons)
@@ -58,14 +65,29 @@ public class OI
     {
         //Intake will run until expel is pressed
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
-                      new CollectorIntake(robot.getCollector()));
+                   new CollectorIntake(robot.getCollector()));
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.EXPEL,
                    new CollectorExpel(robot.getCollector()));
+
+        bindToPressed(Constants.OIMap.Joystick.LEFT, 0,
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE, robot.getElevator(), this));
+        bindToPressed(Constants.OIMap.Joystick.RIGHT, 0,
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator(), this));
+
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP,
+                      new LowerRamps(robot.getRamps()));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP,
+                      new PropRamps(robot.getRamps()));
+
+        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.MANUAL_ROTATE_UP,
+                      new SetRotateSpeed(this, robot.getCollector(), -0.5));
+        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.MANUAL_ROTATE_DOWN,
+                      new SetRotateSpeed(this, robot.getCollector(), 0.2));
     }
 
     public double getElevatorSliderPos()
     {
-        //The 2017 slider on the OI was a joystick axis. All code taken from 2017
+        //The 2017 slider on the OIMap was a joystick axis. All code taken from 2017
         double x = getAxis(Constants.OIMap.Joystick.PANEL, 0);
         x = Math.pow(x, 10);
         x = x / Constants.OIMap.OIConstants.SLIDER_SCALAR;
@@ -77,8 +99,8 @@ public class OI
     {
         double raw = getAxis(joystick, axis);
         double sign = raw < 0 ? -1 : 1;
-        double deadzoned = (Math.abs(raw) > Constants.OIMap.OIConstants.JOYSTICK_DEADZONE ? raw : 0);
-        return Math.pow(deadzoned, Constants.OIMap.OIConstants.JOYSTICK_RAMP_EXPONENT) * sign;
+        double deadzoned = (Math.abs(raw) > Constants.OIMap.JOYSTICK_DEADZONE ? raw : 0);
+        return Math.pow(deadzoned, Constants.OIMap.JOYSTICK_RAMP_EXPONENT) * sign;
     }
 
     public void initializeButtons(Constants.OIMap.Joystick joystick)
@@ -107,6 +129,8 @@ public class OI
                 return right != null;
             case PANEL:
                 return panel != null;
+            case MANUAL:
+                return manual != null;
         }
 
         return false;
@@ -124,6 +148,8 @@ public class OI
                     return right;
                 case PANEL:
                     return panel;
+                case MANUAL:
+                    return manual;
             }
         }
 
@@ -143,6 +169,8 @@ public class OI
                     return joystickButtons.get(right);
                 case PANEL:
                     return joystickButtons.get(panel);
+                case MANUAL:
+                    return joystickButtons.get(manual);
             }
         }
 
@@ -161,7 +189,7 @@ public class OI
 
     public double getAxis(Constants.OIMap.Joystick joystick, int axis)
     {
-        return axisExists(joystick, axis) ? getJoystick(joystick).getRawAxis(axis) : 0;
+        return axisExists(joystick, axis) ? -getJoystick(joystick).getRawAxis(axis) : 0;
     }
 
     public boolean isDown(Constants.OIMap.Joystick joystick, int button)

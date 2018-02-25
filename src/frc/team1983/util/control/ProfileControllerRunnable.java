@@ -3,61 +3,83 @@ package frc.team1983.util.control;
 import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.settings.Constants;
+import org.apache.logging.log4j.core.Logger;
 
-public class ProfileControllerRunnable implements java.lang.Runnable
+import java.util.concurrent.Semaphore;
+
+public class ProfileControllerRunnable implements Runnable
 {
     private ProfileController controller;
-    private int a = 0;
+    private ProfileSignal signal;
 
-    public ProfileControllerRunnable(ProfileController controller)
+    private boolean running = false;
+    private boolean dead = false;
+    private boolean hasProcessed = false;
+
+    private Logger logger;
+
+    public ProfileControllerRunnable(ProfileController controller, ProfileSignal signal)
     {
+        logger = LoggerFactory.createNewLogger(this.getClass());
         this.controller = controller;
+        this.signal = signal;
     }
 
     public void run()
     {
-        while(true)
+        this.running = true;
+
+        while(!dead)
         {
-            if(!DriverStation.getInstance().isDisabled())
+            while(!signal.enabled)
             {
-                controller.getControllerLock().lock();
-                controller.getControllerLock().unlock();
+                // wait for signal to run
+                // Thread.yield();
+            }
 
-                controller.getTalonLock().lock();
-                controller.parent.processMotionProfileBuffer();
-                controller.parent.getMotionProfileStatus(controller.status);
-                controller.getTalonLock().unlock();
+            controller.parent.processMotionProfileBuffer();
 
-                if(controller.isEnabled())
-                {
-                    // true if the talon runs out of trajectory points (times out or finishes profile)
-                    if(controller.status.isUnderrun || (controller.status.isLast && controller.status.activePointValid))
-                    {
-                        controller.getTalonLock().lock();
-                        controller.parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Hold.value);
-                        controller.getTalonLock().unlock();
-                    }
-                    else
-                    {
-                        controller.getTalonLock().lock();
-                        controller.parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Enable.value);
-                        controller.getTalonLock().unlock();
-                    }
-                }
+            if(!hasProcessed && controller.getProfileStatus().btmBufferCnt > Constants.Motion.MIN_POINTS_IN_TALON)
+                hasProcessed = true;
+
+            // true if the talon runs out of trajectory points (times out or finishes profile)
+            if(controller.isProfileFinished())
+            {
+                controller.parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Hold.value);
             }
             else
             {
-                if(controller.isEnabled())
-                {
-                    controller.getTalonLock().lock();
-                    controller.parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Disable.value);
-                    controller.getTalonLock().unlock();
-
-                    controller.setEnabled(false);
-                }
+                controller.parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Enable.value);
             }
 
             Thread.yield();
         }
+    }
+
+    public synchronized void reset()
+    {
+        this.hasProcessed = false;
+    }
+
+    public synchronized void kill()
+    {
+        this.dead = true;
+    }
+
+    public synchronized boolean isRunning()
+    {
+        return running && !dead;
+    }
+
+    public synchronized boolean isDead()
+    {
+        return dead;
+    }
+
+    public synchronized boolean hasProcessed()
+    {
+        return hasProcessed;
     }
 }

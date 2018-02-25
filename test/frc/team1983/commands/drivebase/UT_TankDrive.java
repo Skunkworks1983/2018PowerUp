@@ -16,7 +16,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class UT_TankDrive
 {
-    private TankDrive tankDrive;
+    private RunTankDrive tankDrive;
     @Mock
     private Drivebase drivebase;
     @Mock
@@ -27,7 +27,7 @@ public class UT_TankDrive
     public void setup()
     {
         initMocks(this);
-        tankDrive = new TankDrive(drivebase, oi);
+        tankDrive = new RunTankDrive(drivebase, oi);
     }
 
     @After
