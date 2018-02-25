@@ -49,6 +49,7 @@ public class SetElevatorSetpoint extends CommandBase
 
             case SCALE:
                 newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP-100;
+                logger.info("Elevator set to scale");
                 break;
 
             case BOTTOM:
@@ -57,6 +58,7 @@ public class SetElevatorSetpoint extends CommandBase
 
             case SWITCH:
                 newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP/2;
+                logger.info("Elevator set to switch");
                 break;
         }
         elevator.setSetpoint(newSetpoint);

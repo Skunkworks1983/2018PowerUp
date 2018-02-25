@@ -38,10 +38,23 @@ public class Elevator extends Subsystem
         right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         right1.setSensorPhase(true);
 
-        right1.config_kP(0, Constants.PidConstants.ElevatorControlPid.P, 0);
-        right1.config_kI(0, Constants.PidConstants.ElevatorControlPid.I, 0);
-        right1.config_kD(0, Constants.PidConstants.ElevatorControlPid.D, 0);
-        right1.config_kF(0, Constants.PidConstants.ElevatorControlPid.F, 0);
+        right1.config_kP(Constants.PidConstants.ElevatorControlPid.Up.slot,
+                         Constants.PidConstants.ElevatorControlPid.Up.P, 0);
+        right1.config_kI(Constants.PidConstants.ElevatorControlPid.Up.slot,
+                         Constants.PidConstants.ElevatorControlPid.Up.I, 0);
+        right1.config_kD(Constants.PidConstants.ElevatorControlPid.Up.slot,
+                         Constants.PidConstants.ElevatorControlPid.Up.D, 0);
+        right1.config_kF(Constants.PidConstants.ElevatorControlPid.Up.slot,
+                         Constants.PidConstants.ElevatorControlPid.Up.F , 0);
+
+        right1.config_kP(Constants.PidConstants.ElevatorControlPid.Down.slot,
+                         Constants.PidConstants.ElevatorControlPid.Down.P, 0);
+        right1.config_kI(Constants.PidConstants.ElevatorControlPid.Down.slot,
+                         Constants.PidConstants.ElevatorControlPid.Down.I, 0);
+        right1.config_kD(Constants.PidConstants.ElevatorControlPid.Down.slot,
+                         Constants.PidConstants.ElevatorControlPid.Down.D, 0);
+        right1.config_kF(Constants.PidConstants.ElevatorControlPid.Down.slot,
+                         Constants.PidConstants.ElevatorControlPid.Down.F, 0);
 
         right1.configClosedloopRamp(0.5, 0);
         right1.configPeakOutputForward(0.90, 0);
@@ -49,7 +62,7 @@ public class Elevator extends Subsystem
 
         //right1.set(ControlMode.Position, Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 100);
 
-        right1.selectProfileSlot(0, 0);
+        right1.selectProfileSlot(Constants.PidConstants.ElevatorControlPid.Up.slot, 0);
 
         logger.info("Error: {}", right1.getClosedLoopError(0));
     }
@@ -84,7 +97,18 @@ public class Elevator extends Subsystem
     public void setSetpoint(double setpoint)
     {
         this.setpoint = setpoint;
+        // code to select correct pid values dependent on direction of elevator travel
+        // note: the higher the elevator is, the more negative the value is
+        if(this.setpoint < this.getEncoderValue())
+        {
+            right1.selectProfileSlot(Constants.PidConstants.ElevatorControlPid.Up.slot, 0);
+        }
+        else
+        {
+            right1.selectProfileSlot(Constants.PidConstants.ElevatorControlPid.Down.slot, 0);
+        }
         right1.set(ControlMode.Position, setpoint);
+        logger.info("Value is {}", setpoint);
     }
 
     @Override
