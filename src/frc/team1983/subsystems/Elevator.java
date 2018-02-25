@@ -1,5 +1,6 @@
 package frc.team1983.subsystems;
 
+import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -23,35 +24,18 @@ public class Elevator extends Subsystem
 
     public Elevator()
     {
+        left1 = new Motor(Constants.MotorMap.Elevator.LEFT1, Constants.MotorMap.Elevator.LEFT1_REVERSED, true);
+        left2 = new Motor(Constants.MotorMap.Elevator.LEFT2, Constants.MotorMap.Elevator.LEFT2_REVERSED);
+
         logger = LoggerFactory.createNewLogger(Elevator.class);
 
         right1 = new Motor(Constants.MotorMap.Elevator.RIGHT1, Constants.MotorMap.Elevator.RIGHT1_REVERSED, true);
         right2 = new Motor(Constants.MotorMap.Elevator.RIGHT2, Constants.MotorMap.Elevator.RIGHT2_REVERSED);
 
-        left1 = new Motor(Constants.MotorMap.Elevator.LEFT1, Constants.MotorMap.Elevator.LEFT1_REVERSED);
-        left2 = new Motor(Constants.MotorMap.Elevator.LEFT2, Constants.MotorMap.Elevator.LEFT2_REVERSED);
-
         right2.follow(right1);
+
         left1.follow(right1);
         left2.follow(right1);
-
-        right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-        right1.setSensorPhase(true);
-
-        right1.config_kP(0, Constants.PidConstants.ElevatorControlPid.P, 0);
-        right1.config_kI(0, Constants.PidConstants.ElevatorControlPid.I, 0);
-        right1.config_kD(0, Constants.PidConstants.ElevatorControlPid.D, 0);
-        right1.config_kF(0, Constants.PidConstants.ElevatorControlPid.F, 0);
-
-        right1.configClosedloopRamp(0.5, 0);
-        right1.configPeakOutputForward(0.90, 0);
-        //right1.config_IntegralZone(0, )
-
-        //right1.set(ControlMode.Position, Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 100);
-
-        right1.selectProfileSlot(0, 0);
-
-        logger.info("Error: {}", right1.getClosedLoopError(0));
     }
 
     public void initDefaultCommand()
@@ -59,21 +43,54 @@ public class Elevator extends Subsystem
 
     }
 
-    //Called only for testing and manual override
+    // calculates ticks given vertical change in position of the carriage
+    public double feetToEncoderTicks(double feet)
+    {
+        double resolution = Constants.MotorMap.Elevator.ENCODER_RESOLUTION;
+        double circumference = Constants.MotorMap.Elevator.SPROCKET_CIRCUMFERENCE;
+        double ticks = (feet / circumference) * resolution;
+
+        return ticks;
+    }
+
+    // calculates vertical change in position of the carriage given ticks
+    public double encoderTicksToFeet(double ticks)
+    {
+        double resolution = Constants.MotorMap.Elevator.ENCODER_RESOLUTION;
+        double circumference = Constants.MotorMap.Elevator.SPROCKET_CIRCUMFERENCE;
+        double feet = (ticks / resolution) * circumference;
+
+        return feet;
+    }
+
     public void set(ControlMode mode, double value)
     {
         right1.set(mode, value);
-        right2.set(mode, value);
-    }
-
-    public void setProfile(MotionProfile profile)
-    {
-
     }
 
     public double getEncoderValue()
     {
         return right1.getSelectedSensorPosition(0);
+    }
+
+    public void setProfile(MotionProfile profile)
+    {
+        right1.setProfile(profile);
+    }
+
+    public void runProfile()
+    {
+        right1.runProfile();
+    }
+
+    public void stopProfile()
+    {
+        right1.stopProfile();
+    }
+
+    public boolean isProfileFinished()
+    {
+        return left1.isProfileFinished();
     }
 
     public double getSetpoint()

@@ -7,11 +7,12 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.commands.collector.CollectorRotate;
+import frc.team1983.commands.drivebase.RunTankDrive;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.debugging.DisplayButtonPresses;
 import frc.team1983.commands.debugging.RunOneMotor;
-import frc.team1983.commands.drivebase.TankDrive;
 import frc.team1983.services.DashboardWrapper;
+import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.OI;
 import frc.team1983.services.logger.LoggerFactory;
@@ -21,6 +22,8 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
+import frc.team1983.util.control.ProfileController;
+import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
@@ -34,10 +37,14 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private StatefulDashboard dashboard;
+    private Subsystem subsystem;
+    private GyroPidInput pidSource;
 
-    private static Robot instance;
+    private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
 
     private RunOneMotor runOneMotor;
+
+    private static Robot instance;
 
     @Override
     public void robotInit()
@@ -52,6 +59,7 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
+        pidSource = new GyroPidInput(drivebase.getGyro());
 
         oi.initializeBindings(this);
         robotLogger.info("robotInit");
@@ -67,8 +75,11 @@ public class Robot extends IterativeRobot
     public void disabledInit()
     {
         Scheduler.getInstance().removeAll();
+        updateState(Constants.MotorMap.Mode.DISABLED);
 
         dashboard.store();
+
+        GameDataPoller.resetGameData();
     }
 
     @Override
@@ -79,14 +90,16 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
-        Scheduler.getInstance().removeAll();
-
         robotLogger.info("AutoInit");
+        Scheduler.getInstance().removeAll();
+        drivebase.getGyro().initGyro();
+        drivebase.setBrakeMode(true);
     }
 
     @Override
     public void autonomousPeriodic()
     {
+        GameDataPoller.pollGameData();
         Scheduler.getInstance().run();
     }
 
@@ -98,7 +111,9 @@ public class Robot extends IterativeRobot
             runOneMotor.end();
         }
         Scheduler.getInstance().removeAll();
+        Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 
+        drivebase.setBrakeMode(false);
         //Scheduler.getInstance().add(new TankDrive(drivebase, oi));
         //Scheduler.getInstance().add(new CollectorRotate(collector, true));
 
@@ -110,14 +125,18 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
 
-        //robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
-        //elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
+        robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
+        elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
     }
 
     @Override
     public void testInit()
     {
         Scheduler.getInstance().removeAll();
+        updateState(Constants.MotorMap.Mode.TEST);
+
+        Scheduler.getInstance().removeAll();
+
         ArrayList<Motor> motors;
         motors = new ArrayList<>();
 
@@ -150,6 +169,19 @@ public class Robot extends IterativeRobot
     public void testPeriodic()
     {
         runOneMotor.execute();
+    }
+
+    public void updateState(Constants.MotorMap.Mode mode)
+    {
+        for(ProfileController controller : profileControllers)
+        {
+            controller.updateRobotState(mode);
+        }
+    }
+
+    public void addProfileController(ProfileController controller)
+    {
+        profileControllers.add(controller);
     }
 
     public Drivebase getDrivebase()
