@@ -7,10 +7,12 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.commands.drivebase.RunTankDrive;
+import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
+import frc.team1983.commands.collector.CollectorRotate;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.debugging.DisplayButtonPresses;
 import frc.team1983.commands.debugging.RunOneMotor;
+import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.StatefulDashboard;
@@ -94,6 +96,8 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
+
+        Scheduler.getInstance().add(new PlaceCubeInExchangeZone(dashboard, drivebase));
     }
 
     @Override

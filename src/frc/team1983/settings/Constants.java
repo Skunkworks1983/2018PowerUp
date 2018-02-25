@@ -22,8 +22,8 @@ public class Constants
             public static final int LEFT_3 = 15;
 
             public static final int RIGHT_1 = 1;
-            public static final int RIGHT_2 = 0;
-            public static final int RIGHT_3 = 2;
+            public static final int RIGHT_2 = 2;
+            public static final int RIGHT_3 = 0;
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = true;
@@ -44,11 +44,11 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int RIGHT1 = 2;
-            public static final int RIGHT2 = 3;
+            public static final int RIGHT1 = 6;
+            public static final int RIGHT2 = 5;
 
-            public static final int LEFT1 = 12;
-            public static final int LEFT2 = 13;
+            public static final int LEFT1 = 9;
+            public static final int LEFT2 = 4;
 
             public static final boolean LEFT1_REVERSED = false;
             public static final boolean LEFT2_REVERSED = false;
@@ -64,9 +64,9 @@ public class Constants
         public static class Collector
         {
             public static final int LEFT = 10;
-            public static final int RIGHT = 9;
+            public static final int RIGHT = 11;
 
-            public static final int ROTATE = 5;
+            public static final int ROTATE = 12;
 
             public static final boolean LEFT_REVERSED = true;
             public static final boolean RIGHT_REVERSED = false;
@@ -81,11 +81,11 @@ public class Constants
 
         public static class Ramps
         {
-            public static final int LEFT_RAMPLOCK = 1;
+            public static final int LEFT_RAMPLOCK = 0;
             public static final int RIGHT_RAMPLOCK = 2;
 
-            public static final int LEFT_LEG = 3;
-            public static final int RIGHT_LEG = 4;
+            public static final int LEFT_LEG = 1;
+            public static final int RIGHT_LEG = 3;
         }
 
         //Random and hard to classify drivebase constants
