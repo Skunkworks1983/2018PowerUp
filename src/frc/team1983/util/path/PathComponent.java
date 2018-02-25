@@ -2,8 +2,8 @@ package frc.team1983.util.path;
 
 public class PathComponent
 {
-    private double time;
-    private String type;
+    private double time, delay;
+    private String type, action;
 
     public PathComponent()
     {
@@ -27,5 +27,25 @@ public class PathComponent
     public void setType(String type)
     {
         this.type = type;
+    }
+
+    public String getAction()
+    {
+        return action;
+    }
+
+    public void setAction(String action)
+    {
+        this.action = action;
+    }
+
+    public double getDelay()
+    {
+        return delay;
+    }
+
+    public void setDelay(double delay)
+    {
+        this.delay = delay;
     }
 }

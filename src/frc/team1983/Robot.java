@@ -13,9 +13,8 @@ import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
-import frc.team1983.services.SmellyParser.SmellyParser;
+import frc.team1983.services.SmellyParser;
 import frc.team1983.services.StatefulDashboard;
-import frc.team1983.services.OI;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
@@ -48,8 +47,6 @@ public class Robot extends IterativeRobot
     private double startTime;
 
     private RunOneMotor runOneMotor;
-
-    private static Robot instance;
 
     @Override
     public void robotInit()

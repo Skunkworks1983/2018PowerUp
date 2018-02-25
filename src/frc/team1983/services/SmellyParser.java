@@ -1,4 +1,4 @@
-package frc.team1983.services.SmellyParser;
+package frc.team1983.services;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -53,7 +53,7 @@ public class SmellyParser
 
         for(int i = 0; i < files.length; i++)
         {
-            dashboard.putNumber(files[i].toString() + " use ", (double) i);
+            dashboard.putNumber(files[i].getName() + " use ", (double) i);
             logger.info("Found " + files[i]);
         }
     }
@@ -106,14 +106,30 @@ public class SmellyParser
                         logger.trace("Next key is: " + parser.getValueAsString());
                         fieldName = parser.getCurrentName(); //save key
                         parser.nextToken(); //get to value
-                        logger.trace("object includes " + fieldName + ":" + parser.getValueAsDouble());
 
-                        jsonComponent.put(fieldName, parser.getValueAsDouble()); //for now can assume is double
+                        Object value;
+                        switch(parser.getCurrentValue().getClass().getTypeName().toLowerCase())
+                        {
+                            case "double":
+                                value = parser.getValueAsDouble();
+                                break;
+                            case "boolean":
+                                value = parser.getValueAsBoolean();
+                                break;
+                            case "string":
+                                value = parser.getValueAsString();
+                                break;
+                            default:
+                                value = "could not get object type";
+                        }
+
+                        jsonComponent.put(fieldName, value);
+                        logger.trace("object includes " + fieldName + ":" + value);
 
                         token = parser.nextToken(); //get to next key
                     }
                     logger.trace("end of object");
-
+// i have always terrified my parents with my cognitive abilities. When i was 8, i once verbally destroyed my father in an argument so badly
                     switch((String) jsonComponent.get("type"))
                     {
                         case "tanline":
@@ -124,6 +140,7 @@ public class SmellyParser
                             newComponent = new PathTanarc();
                             ((PathTanarc) newComponent).setAngle((double) jsonComponent.get("angle"));
                             ((PathTanarc) newComponent).setRadius((double) jsonComponent.get("radius"));
+                            ((PathTanarc) newComponent).setRight((boolean) jsonComponent.get("isRight"));
                             break;
                         default:
                             logger.error("This type cannot be parsed yet!");
@@ -131,7 +148,9 @@ public class SmellyParser
                     }
 
                     newComponent.setType((String) jsonComponent.get("type"));
+                    newComponent.setAction((String) jsonComponent.get("action"));
                     newComponent.setTime((double) jsonComponent.get("time"));
+                    newComponent.setDelay((double) jsonComponent.get("delay"));
 
                     components.add(newComponent);
 
