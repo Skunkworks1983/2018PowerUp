@@ -2,6 +2,8 @@ package frc.team1983.commands.drivebase;
 
 import edu.wpi.first.wpilibj.HLUsageReporting;
 import edu.wpi.first.wpilibj.Timer;
+import frc.team1983.services.DashboardWrapper;
+import frc.team1983.services.StatefulDashboard;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.subsystems.utilities.PidControllerWrapper;
@@ -30,6 +32,8 @@ public class UT_DriveStraight
 {
     private DriveStraight driveStraight;
     private FakeScheduler fakeScheduler;
+    @Mock
+    private StatefulDashboard dashboard;
     //private PidControllerWrapper driveStraightPid;
 
     @Mock
@@ -71,7 +75,7 @@ public class UT_DriveStraight
         HLUsageReporting.SetImplementation(hlUsageReporting);
         fakeScheduler = new FakeScheduler();
         when(drivebase.getGyro()).thenReturn(gyro);
-        driveStraight = new DriveStraight(5, drivebase, 5);
+        driveStraight = new DriveStraight(dashboard, 5, drivebase, 5);
     }
 
     @After
@@ -97,14 +101,14 @@ public class UT_DriveStraight
         fakeScheduler.add(driveStraight);
         fakeScheduler.run(1);
         Thread.sleep(100);
-        verify(drivebase, atLeastOnce()).getLeftEncoderValue();
+        verify(drivebase, atLeastOnce()).getLeftDistance();
     }
 
     @Test
     public void driveStraightContinuesIfDistanceIsNotMet()
     {
-        when(drivebase.getLeftEncoderValue()).thenReturn(2.0);
-        when(drivebase.getRightEncoderValue()).thenReturn(2.1);
+        when(drivebase.getLeftDistance()).thenReturn(2.0);
+        when(drivebase.getRightDistance()).thenReturn(2.1);
         fakeScheduler.add(driveStraight);
         fakeScheduler.run(10);
         driveStraight.isFinished();
@@ -119,7 +123,7 @@ public class UT_DriveStraight
         //this test assumes gyro is dead because we have better access to encoderPidSource
         when(gyro.isDead()).thenReturn(true);
         AtomicReference<Integer> counter = new AtomicReference<>(0);
-        when(drivebase.getLeftEncoderValue()).then(new Answer<Double>()
+        when(drivebase.getLeftDistance()).then(new Answer<Double>()
         {
             @Override
             public Double answer(InvocationOnMock invocationOnMock) throws Throwable
@@ -137,7 +141,7 @@ public class UT_DriveStraight
                 }
             }
         });
-        when(drivebase.getRightEncoderValue()).then(new Answer<Double>()
+        when(drivebase.getRightDistance()).then(new Answer<Double>()
         {
             @Override
             public Double answer(InvocationOnMock invocationOnMock) throws Throwable
@@ -160,4 +164,3 @@ public class UT_DriveStraight
         assertThat(fakeScheduler.getOrderFinished().get(0), is(driveStraight));
     }
 }
-

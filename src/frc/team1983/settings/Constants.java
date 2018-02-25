@@ -9,17 +9,21 @@ public class Constants
     //MotorMap contains all constants that motors require (ports, reversed values, etc)
     public static class MotorMap
     {
+        public enum Mode
+        {
+            DISABLED, AUTO, TELEOP, TEST
+        }
+
         //Ports for the drivebase motors
         public static class Drivebase
         {
+            public static final int LEFT_1 = 14;
+            public static final int LEFT_2 = 13;
+            public static final int LEFT_3 = 15;
 
-            public static final int LEFT_1 = 1;
-            public static final int LEFT_2 = 0;
-            public static final int LEFT_3 = 2;
-
-            public static final int RIGHT_1 = 14;
-            public static final int RIGHT_2 = 13;
-            public static final int RIGHT_3 = 15;
+            public static final int RIGHT_1 = 1;
+            public static final int RIGHT_2 = 0;
+            public static final int RIGHT_3 = 2;
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = true;
@@ -28,6 +32,14 @@ public class Constants
             public static final boolean RIGHT1_REVERSED = false;
             public static final boolean RIGHT2_REVERSED = false;
             public static final boolean RIGHT3_REVERSED = false;
+
+            public static final double WHEELBASE_WIDTH = 28.0 / 12.0;
+
+            public static final double WHEEL_CIRCUMFERENCE = (6.0 / 12.0) * Math.PI;
+            public static final double ENCODER_REDUCTION = 18.0 / 24.0;
+            public static final double ENCODER_RESOLUTION = 1000;
+
+            public static final double DRIVEBASE_TICKS_PER_FOOT = 1;
         }
 
         public static class Elevator
@@ -38,17 +50,22 @@ public class Constants
             public static final int LEFT1 = 12;
             public static final int LEFT2 = 13;
 
+            public static final boolean LEFT1_REVERSED = false;
+            public static final boolean LEFT2_REVERSED = false;
+
             public static final boolean RIGHT1_REVERSED = false;
             public static final boolean RIGHT2_REVERSED = false;
 
-            public static final boolean LEFT1_REVERSED = true;
-            public static final boolean LEFT2_REVERSED = true;
+            public static final double SPROCKET_CIRCUMFERENCE = (1.888 / 12.0) * Math.PI;
+            public static final double TRAVEL_LENGTH = 38.0 / 12.0;
+            public static final double ENCODER_RESOLUTION = 4500;
         }
 
         public static class Collector
         {
             public static final int LEFT = 10;
             public static final int RIGHT = 9;
+
             public static final int ROTATE = 5;
 
             public static final boolean LEFT_REVERSED = true;
@@ -64,7 +81,7 @@ public class Constants
 
         public static class Ramps
         {
-            public static final int LEFT_RAMPLOCK = 0;
+            public static final int LEFT_RAMPLOCK = 1;
             public static final int RIGHT_RAMPLOCK = 2;
 
             public static final int LEFT_LEG = 1;
@@ -74,7 +91,8 @@ public class Constants
         //Random and hard to classify drivebase constants
         public static class DrivebaseConstants
         {
-            public static final double DRIVEBASE_TICKS_PER_FOOT = 3 / 2.;
+            public static final double DRIVEBASE_TICKS_PER_FOOT = 1000 / AutoValues.EFFECTIVE_REDUCTION_DRIVEBASE
+                    / AutoValues.WHEEL_CIRCUMFERENCE;
             public static final int RIGHT1 = 0;
             public static final int RIGHT2 = 0;
 
@@ -114,15 +132,16 @@ public class Constants
         //PIDF values for the DriveStraight command
         public static class DriveStrightPid
         {
-            public static final double P = 0; //TODO: tune pid
+            public static final double P = 0.11;
             public static final double I = 0;
             public static final double D = 0;
             public static final double F = 0;
 
             public static final double DEFAULT_BASE_SPEED = 0.5;
+            public static final double DEFAULT_TIMEOUT = 3;
         }
 
-        //PIDF values for the TurnAngle command
+        //PIDF values for the SimpleTurnAngle command
         public static class TurnAnglePid
         {
             public static final double P = 0.005; //TODO: tune pid
@@ -131,6 +150,8 @@ public class Constants
             public static final double F = 0;
 
             public static final double ABSOLUTE_TOLERANCE = 5;
+
+            public static final double DEFAULT_TIMEOUT = 3 / 2.;
         }
 
         public static class CollectorRotate
@@ -172,16 +193,24 @@ public class Constants
         public static final double WHEELBASE_CIRCUMFERENCE = 2 * Math.PI * WHEELBASE_RADIUS;
         public static final double WHEELBASE_DEGREES = WHEELBASE_CIRCUMFERENCE / 360.;
         public static final double EFFECTIVE_REDUCTION_DRIVEBASE = 18 / 24.;
-        public static final double WHEEL_CIRCUMFERENCE = 6/12. * Math.PI;
+        public static final double WHEEL_CIRCUMFERENCE = 6 * Math.PI / 12.;
+        public static final double DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT = 1.4;
+        public static final double DRIVEBASE_ENCODER_FUDGE_FACTOR = 6/6.3;
+
+        public static final double MAX_OUTPUT = 0.5;
+        public static final double DISTANCE_SCALAR = 1000;
     }
 
-    //this contains all values relevant to the OI.
+    //this contains all values relevant to the OIMap.
     public static class OIMap
     {
         public static final int LEFTJOY_PORT = 0;
         public static final int RIGHTJOY_PORT = 1;
         public static final int PANEL_PORT = 2;
         public static final int MANUAL_PORT = 3;
+
+        public static final double JOYSTICK_DEADZONE = 0.15;
+        public static final double JOYSTICK_RAMP_EXPONENT = 2;
 
         public enum Joystick
         {
@@ -199,11 +228,9 @@ public class Constants
         public static class OIConstants
         {
             //Joystick constants
-            public static final double JOYSTICK_DEADZONE = 0.15;
-            public static final double JOYSTICK_RAMP_EXPONENT = 2;
             public static final double JOYSTICK_TOLERANCE = 0.5;
 
-            //Scalar coefficient of the slider on the OI
+            //Scalar coefficient of the slider on the OIMap
             public static final double SLIDER_SCALAR = 0.618726;
         }
 
@@ -266,6 +293,6 @@ public class Constants
     public static class Motion
     {
         public static final double DEFAULT_MOTIONPROFILE_ACCEL_TIME = 0.5; // [0-1]
-
+        public static final int MIN_POINTS_IN_TALON = 3;
     }
 }

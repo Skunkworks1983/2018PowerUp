@@ -3,6 +3,7 @@ package frc.team1983.subsystems.utilities;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import frc.team1983.Robot;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.util.control.ProfileController;
 import frc.team1983.util.motion.MotionProfile;
@@ -11,37 +12,32 @@ import org.apache.logging.log4j.core.Logger;
 //Wrapper class around the WpiLib TalonSRX. Allows us to modify the functionality, and for future extendability.
 public class Motor extends TalonSRX
 {
-    private boolean hasEncoder;
-    private ProfileController manager;
-    private Logger logger;
+    private boolean hasEncoder = false;
+    public ProfileController manager;
 
     public Motor(int port, boolean reversed)
     {
         super(port);
-
-        logger = LoggerFactory.createNewLogger(this.getClass());
-
         setInverted(reversed);
-
-        //manager = new ProfileController(this);
-        //setProfileRunState(false);
     }
 
     public Motor(int port, boolean reversed, boolean hasEncoder)
     {
-        super(port);
-
-        logger = LoggerFactory.createNewLogger(this.getClass());
-
-        setInverted(reversed);
+        this(port, reversed);
 
         if(hasEncoder)
         {
             configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+            setSelectedSensorPosition(0, 0, 0);
         }
+    }
 
-        //manager = new ProfileController(this);
-        //setProfileRunState(false);
+    public void configPIDF(int slot, double p, double i, double d, double f)
+    {
+        config_kP(slot, p, 0);
+        config_kI(slot, i, 0);
+        config_kD(slot, d, 0);
+        config_kF(slot, f, 0);
     }
 
     // don't need this method but it makes things look more readable
@@ -52,22 +48,33 @@ public class Motor extends TalonSRX
 
     public void setProfile(MotionProfile profile)
     {
+        if(manager == null)
+            manager = new ProfileController(this, Robot.getInstance());
+
         manager.setProfile(profile);
     }
 
-    public void runLoadedProfile()
+    public void runProfile()
     {
         setProfileRunState(true);
     }
 
-    public void stopLoadedProfile()
+    public void stopProfile()
     {
         setProfileRunState(false);
     }
 
     public void setProfileRunState(boolean run)
     {
+        if(manager == null)
+            manager = new ProfileController(this, Robot.getInstance());
+
         manager.setEnabled(run);
+    }
+
+    public boolean isProfileFinished()
+    {
+        return manager != null && manager.isProfileFinished();
     }
 
     @Override

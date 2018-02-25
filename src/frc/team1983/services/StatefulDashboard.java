@@ -1,6 +1,8 @@
 package frc.team1983.services;
 
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
+import org.apache.logging.log4j.core.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,13 +26,15 @@ public class StatefulDashboard
     private String[] splitLine;
     private Set<String> keySet = new HashSet<>();
     private DashboardWrapper dashboardWrapper;
-
+    private Logger logger;
     private PrintWriter outputStream;
 
     public StatefulDashboard(DashboardWrapper dashboardWrapper, File dir)
     {
         this.dir = dir;
         this.dashboardWrapper = dashboardWrapper;
+
+        logger = LoggerFactory.createNewLogger(this.getClass());
     }
 
     //For unit testing
@@ -41,27 +45,27 @@ public class StatefulDashboard
     
     //The add functions are for adding a variable to the dashboard, the value given is only a default, and will
     //not be used if the variable already exists (like if the variable is already in the file)
-    public void add(String command, String key, Double defaultValue)
+    public void add(Object object, String key, Double defaultValue)
     {
-        key = constructKey(command, key);
+        key = constructKey(object, key);
         if(keySet.add(key))
         {
             dashboardWrapper.putNumber(key, defaultValue);
         }
     }
 
-    public void add(String command, String key, Boolean defaultValue)
+    public void add(Object object, String key, Boolean defaultValue)
     {
-        key = constructKey(command, key);
+        key = constructKey(object, key);
         if(keySet.add(key))
         {
             dashboardWrapper.putBoolean(key, defaultValue);
         }
     }
 
-    public void add(String command, String key, String defaultValue)
+    public void add(Object object, String key, String defaultValue)
     {
-        key = constructKey(command, key);
+        key = constructKey(object, key);
         if(keySet.add(key))
         {
             dashboardWrapper.putString(key, defaultValue);
@@ -69,31 +73,31 @@ public class StatefulDashboard
     }
 
     //The set functions will replace the value at the given key with a new provided value
-    public void set(String command, String key, Double value)
+    public void set(Object object, String key, Double value)
     {
-        key = constructKey(command, key);
+        key = constructKey(object, key);
         keySet.add(key);
         dashboardWrapper.putNumber(key, value);
     }
 
-    public void set(String command, String key, Boolean value)
+    public void set(Object object, String key, Boolean value)
     {
-        key = constructKey(command, key);
+        key = constructKey(object, key);
         keySet.add(key);
         dashboardWrapper.putBoolean(key, value);
     }
 
-    public void set(String command, String key, String value)
+    public void set(Object object, String key, String value)
     {
-        key = constructKey(command, key);
+        key = constructKey(object, key);
         keySet.add(key);
         dashboardWrapper.putString(key, value);
     }
 
     //The get functions get the value from Smartdashboard, and if it does not exist returns a default value
-    public double getDouble(String command, String key)
+    public double getDouble(Object object, String key)
     {
-        key = constructKey(command, key);
+        key = constructKey(object, key);
         if(keySet.contains(key))
         {
             return dashboardWrapper.getNumber(key, Constants.DashboardConstants.DEFAULT_DOUBLE);
@@ -106,9 +110,9 @@ public class StatefulDashboard
         }
     }
 
-    public boolean getBoolean(String command, String key)
+    public boolean getBoolean(Object object, String key)
     {
-        key = constructKey(command, key);
+        key = constructKey(object, key);
         if(keySet.contains(key))
         {
             bool = dashboardWrapper.getBoolean(key, Constants.DashboardConstants.DEFAULT_BOOLEAN);
@@ -122,9 +126,9 @@ public class StatefulDashboard
         return bool;
     }
 
-    public String getString(String command, String key)
+    public String getString(Object object, String key)
     {
-        key = constructKey(command, key);
+        key = constructKey(object, key);
         if(keySet.contains(key))
         {
             return dashboardWrapper.getString(key, Constants.DashboardConstants.DEFAULT_STRING);
@@ -157,7 +161,7 @@ public class StatefulDashboard
             while((line = inputStream.readLine()) != null)
             {
                 System.out.println("Populating with " + line);
-                splitLine = line.split(Constants.DashboardConstants.VALUE_SEPARATOR); //Split into command/key and value
+                splitLine = line.split(Constants.DashboardConstants.VALUE_SEPARATOR); //Split into object/key and value
 
                 valueType = getTypeFromString(splitLine[1]); //get the valueType
 
@@ -166,7 +170,7 @@ public class StatefulDashboard
                 {
                     bool = Boolean.valueOf(splitLine[1]); //set bool to parsed boolean
                     dashboardWrapper.putBoolean(splitLine[0], bool);
-                    splitLine = splitLine[0].split(Constants.DashboardConstants.KEY_SEPARATOR); //Split command/key into command and key
+                    splitLine = splitLine[0].split(Constants.DashboardConstants.KEY_SEPARATOR); //Split object/key into object and key
                     add(splitLine[0], splitLine[1], bool);
                     continue;
                 }
@@ -174,7 +178,7 @@ public class StatefulDashboard
                 {
                     doub = Double.parseDouble(splitLine[1]); //set doub to parsed double
                     dashboardWrapper.putNumber(splitLine[0], doub);
-                    splitLine = splitLine[0].split(Constants.DashboardConstants.KEY_SEPARATOR); //Split command/key into command and key
+                    splitLine = splitLine[0].split(Constants.DashboardConstants.KEY_SEPARATOR); //Split object/key into object and key
                     add(splitLine[0], splitLine[1], doub);
                     continue;
                 }
@@ -196,9 +200,9 @@ public class StatefulDashboard
     }
 
     //Removes a value from the keyset and smartdashboard
-    public void remove(String command, String key)
+    public void remove(Object object, String key)
     {
-        key = constructKey(command, key);
+        key = constructKey(object, key);
         dashboardWrapper.delete(key);
         keySet.remove(key);
     }
@@ -217,7 +221,7 @@ public class StatefulDashboard
                 if(valueType == null)
                 {
                     valueType = "unknown";
-                    System.out.println("unknown data type");
+                    logger.warn("unknown data type");
                 }
                 if(valueType.equals("boolean"))
                 {
@@ -268,8 +272,8 @@ public class StatefulDashboard
     }
 
     //Construct the key that smartdashboard will use
-    private String constructKey(String command, String key)
+    private String constructKey(Object object, String key)
     {
-        return command + Constants.DashboardConstants.KEY_SEPARATOR + key;
+        return object + Constants.DashboardConstants.KEY_SEPARATOR + key;
     }
 }
