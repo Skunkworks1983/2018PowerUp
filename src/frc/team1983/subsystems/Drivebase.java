@@ -1,7 +1,8 @@
 package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import edu.wpi.first.wpilibj.SPI;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
@@ -21,6 +22,8 @@ public class Drivebase extends Subsystem
 
     public Drivebase()
     {
+        logger = LoggerFactory.createNewLogger(Drivebase.class);
+
         left1 = new Motor(Constants.MotorMap.Drivebase.LEFT_1, Constants.MotorMap.Drivebase.LEFT1_REVERSED, true);
         left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED);
         left3 = new Motor(Constants.MotorMap.Drivebase.LEFT_3, Constants.MotorMap.Drivebase.LEFT3_REVERSED);
@@ -29,8 +32,7 @@ public class Drivebase extends Subsystem
         right2 = new Motor(Constants.MotorMap.Drivebase.RIGHT_2, Constants.MotorMap.Drivebase.RIGHT2_REVERSED);
         right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED);
 
-        gyro = new Gyro(SPI.Port.kMXP);
-        gyro.initGyro();
+        gyro = new Gyro(I2C.Port.kOnboard);
 
         left2.follow(left1);
         left3.follow(left1);
@@ -40,8 +42,6 @@ public class Drivebase extends Subsystem
 
         left1.setSensorPhase(true);
         right1.setSensorPhase(true);
-
-        logger = LoggerFactory.createNewLogger(Drivebase.class);
 
         left1.configPIDF(0, 0.3, 0, 0, 0.2);
         right1.configPIDF(0, 0.3, 0, 0, 0.2);
@@ -142,6 +142,39 @@ public class Drivebase extends Subsystem
     public Gyro getGyro()
     {
         return this.gyro;
+    }
+
+    public double getLeftDist()
+    {
+        return (getLeftEncoderValue()/Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT)*Constants.AutoValues.DRIVEBASE_ENCODER_FUDGE_FACTOR;
+    }
+    public double getRightDist()
+    {
+        return (getRightEncoderValue()/Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT)*Constants.AutoValues.DRIVEBASE_ENCODER_FUDGE_FACTOR;
+    }
+    public void setBrakeMode(boolean isBrake)
+    {
+        if(isBrake)
+        {
+            left1.setNeutralMode(NeutralMode.Brake);
+            left2.setNeutralMode(NeutralMode.Brake);
+            left3.setNeutralMode(NeutralMode.Brake);
+
+            right1.setNeutralMode(NeutralMode.Brake);
+            right2.setNeutralMode(NeutralMode.Brake);
+            right3.setNeutralMode(NeutralMode.Brake);
+        }
+        else
+        {
+            left1.setNeutralMode(NeutralMode.Coast);
+            left2.setNeutralMode(NeutralMode.Coast);
+            left3.setNeutralMode(NeutralMode.Coast);
+
+            right1.setNeutralMode(NeutralMode.Coast);
+            right2.setNeutralMode(NeutralMode.Coast);
+            right3.setNeutralMode(NeutralMode.Coast);
+        }
+
     }
 }
 

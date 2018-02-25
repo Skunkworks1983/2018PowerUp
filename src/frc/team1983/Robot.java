@@ -6,13 +6,12 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
-import frc.team1983.commands.collector.CollectorRotate;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.services.DashboardWrapper;
+import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.OI;
 import frc.team1983.services.logger.LoggerFactory;
@@ -23,6 +22,7 @@ import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.control.ProfileController;
+import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
@@ -36,6 +36,8 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private StatefulDashboard dashboard;
+    private Subsystem subsystem;
+    private GyroPidInput pidSource;
 
     private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
 
@@ -56,16 +58,14 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
+        pidSource = new GyroPidInput(drivebase.getGyro());
 
         //oi.initializeBindings(this);
         robotLogger.info("robotInit");
     }
 
     @Override
-    public void robotPeriodic()
-    {
-
-    }
+    public void robotPeriodic(){}
 
     @Override
     public void disabledInit()
@@ -74,30 +74,26 @@ public class Robot extends IterativeRobot
         updateState(Constants.MotorMap.Mode.DISABLED);
 
         dashboard.store();
+
+        GameDataPoller.resetGameData();
     }
 
     @Override
-    public void disabledPeriodic()
-    {
-    }
+    public void disabledPeriodic(){}
 
     @Override
     public void autonomousInit()
     {
+        robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
-        updateState(Constants.MotorMap.Mode.AUTO);
-
-        CommandGroup profiles = new CommandGroup();
-
-        profiles.addSequential(new DriveFeet(drivebase, 5, 3));
-        profiles.addSequential(new DriveFeet(drivebase, -5, 3));
-
-        Scheduler.getInstance().add(profiles);
+        drivebase.getGyro().initGyro();
+        drivebase.setBrakeMode(true);
     }
 
     @Override
     public void autonomousPeriodic()
     {
+        GameDataPoller.pollGameData();
         Scheduler.getInstance().run();
     }
 
@@ -109,10 +105,9 @@ public class Robot extends IterativeRobot
             runOneMotor.end();
         }
         Scheduler.getInstance().removeAll();
-        updateState(Constants.MotorMap.Mode.TELEOP);
-
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
-        Scheduler.getInstance().add(new CollectorRotate(collector, true));
+
+        drivebase.setBrakeMode(false);
     }
 
     @Override
@@ -142,7 +137,6 @@ public class Robot extends IterativeRobot
         motorUp = new DigitalInput(5);
         motorDown = new DigitalInput(4);
         manualSpeed = new AnalogInput(2);
-
 
         if(runOneMotor == null)
         {
