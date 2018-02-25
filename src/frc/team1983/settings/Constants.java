@@ -13,13 +13,13 @@ public class Constants
         public static class Drivebase
         {
 
-            public static final int LEFT_1 = 1;
-            public static final int LEFT_2 = 0;
-            public static final int LEFT_3 = 2;
+            public static final int LEFT_1 = 14;
+            public static final int LEFT_2 = 13;
+            public static final int LEFT_3 = 15;
 
-            public static final int RIGHT_1 = 14;
-            public static final int RIGHT_2 = 13;
-            public static final int RIGHT_3 = 15;
+            public static final int RIGHT_1 = 1;
+            public static final int RIGHT_2 = 2;
+            public static final int RIGHT_3 = 0;
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = true;
@@ -74,7 +74,8 @@ public class Constants
         //Random and hard to classify drivebase constants
         public static class DrivebaseConstants
         {
-            public static final double DRIVEBASE_TICKS_PER_FOOT = 3 / 2.;
+            public static final double DRIVEBASE_TICKS_PER_FOOT = 1000 / AutoValues.EFFECTIVE_REDUCTION_DRIVEBASE
+                    / AutoValues.WHEEL_CIRCUMFERENCE;
             public static final int RIGHT1 = 0;
             public static final int RIGHT2 = 0;
 
@@ -82,6 +83,8 @@ public class Constants
             public static final boolean LEFT2_REVERSED = false;
             public static final boolean RIGHT1_REVERSED = true;
             public static final boolean RIGHT2_REVERSED = false;
+
+
         }
     }
 
@@ -114,15 +117,16 @@ public class Constants
         //PIDF values for the DriveStraight command
         public static class DriveStrightPid
         {
-            public static final double P = 0; //TODO: tune pid
+            public static final double P = 0.11;
             public static final double I = 0;
             public static final double D = 0;
             public static final double F = 0;
 
             public static final double DEFAULT_BASE_SPEED = 0.5;
+            public static final double DEFAULT_TIMEOUT = 3;
         }
 
-        //PIDF values for the TurnAngle command
+        //PIDF values for the SimpleTurnAngle command
         public static class TurnAnglePid
         {
             public static final double P = 0.005; //TODO: tune pid
@@ -131,6 +135,8 @@ public class Constants
             public static final double F = 0;
 
             public static final double ABSOLUTE_TOLERANCE = 5;
+
+            public static final double DEFAULT_TIMEOUT = 3 / 2.;
         }
 
         public static class CollectorRotate
@@ -172,7 +178,12 @@ public class Constants
         public static final double WHEELBASE_CIRCUMFERENCE = 2 * Math.PI * WHEELBASE_RADIUS;
         public static final double WHEELBASE_DEGREES = WHEELBASE_CIRCUMFERENCE / 360.;
         public static final double EFFECTIVE_REDUCTION_DRIVEBASE = 18 / 24.;
-        public static final double WHEEL_CIRCUMFERENCE = 6/12. * Math.PI;
+        public static final double WHEEL_CIRCUMFERENCE = 6 * Math.PI / 12.;
+        public static final double DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT = 1.4;
+        public static final double DRIVEBASE_ENCODER_FUDGE_FACTOR = 6/6.3;
+
+        public static final double MAX_OUTPUT = 0.5;
+        public static final double DISTANCE_SCALAR = 1000;
     }
 
     //this contains all values relevant to the OI.

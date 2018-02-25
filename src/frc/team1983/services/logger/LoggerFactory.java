@@ -17,7 +17,7 @@ public class LoggerFactory
 
     public static Logger createNewLogger(Class clazz) { return createNewLogger(clazz, Level.INFO); }
 
-    private static Logger createNewLogger(Class clazz, Level level) {
+    public static Logger createNewLogger(Class clazz, Level level) {
 
         String name = clazz.getName();
         Logger newLogger;
