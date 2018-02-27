@@ -52,7 +52,7 @@ public class LoggerFactory
                             .add( builder.newAppenderRef("Stdout" )).addAttribute( "additivity",false)
                             .add( builder.newAppenderRef("rolling")).addAttribute( "additivity",false));
 
-        builder.add( builder.newRootLogger( Level.TRACE )
+        builder.add( builder.newRootLogger( Level.ALL )
                             .add( builder.newAppenderRef("rolling"))
                             .add(builder.newAppenderRef("Stdout")));
 
