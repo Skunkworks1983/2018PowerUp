@@ -22,4 +22,9 @@ public class Path
             throw new IllegalArgumentException("index " + index + " is out of bounds");
         }
     }
+
+    public List<PathComponent> getPath()
+    {
+        return components;
+    }
 }

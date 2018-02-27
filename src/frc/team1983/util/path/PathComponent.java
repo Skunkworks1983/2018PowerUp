@@ -1,9 +1,11 @@
 package frc.team1983.util.path;
 
-public class PathComponent
+import edu.wpi.first.wpilibj.command.Command;
+
+abstract public class PathComponent
 {
-    private double time, delay;
-    private String type, action;
+    protected double time, delay;
+    protected String type, action;
 
     public PathComponent()
     {
@@ -48,4 +50,6 @@ public class PathComponent
     {
         this.delay = delay;
     }
+
+    abstract public Command getCommand();
 }

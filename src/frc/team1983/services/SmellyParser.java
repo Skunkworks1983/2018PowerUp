@@ -3,6 +3,7 @@ package frc.team1983.services;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
@@ -172,5 +173,17 @@ public class SmellyParser
     public Path getPath()
     {
         return path;
+    }
+
+    public CommandGroup getAuto()
+    {
+        CommandGroup group = new CommandGroup();
+
+        for(PathComponent component : path.getPath())
+        {
+            group.addSequential(component.getCommand());
+        }
+
+        return group;
     }
 }

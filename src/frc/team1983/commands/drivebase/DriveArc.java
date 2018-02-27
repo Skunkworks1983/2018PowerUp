@@ -17,7 +17,7 @@ public class DriveArc extends Command
     private MotionProfile rightProfile;
 
     // feet, degrees, seconds
-    public DriveArc(Drivebase drivebase, double radius, double angle, double time)
+    public DriveArc(Drivebase drivebase, double radius, double angle, double time, boolean flipped)
     {
         requires(drivebase);
 
@@ -29,9 +29,18 @@ public class DriveArc extends Command
 
         // todo investigate +/- left/right
         double width = Constants.MotorMap.Drivebase.WHEELBASE_WIDTH;
+        double leftCircumference, rightCircumference;
 
-        double leftCircumference = (2 * (radius + (width / 2))) * Math.PI;
-        double rightCircumference = (2 * (radius - (width / 2))) * Math.PI;
+        if(flipped)
+        {
+            leftCircumference = (2 * (radius - (width / 2))) * Math.PI;
+            rightCircumference = (2 * (radius + (width / 2))) * Math.PI;
+        }
+        else
+        {
+            leftCircumference = (2 * (radius + (width / 2))) * Math.PI;
+            rightCircumference = (2 * (radius - (width / 2))) * Math.PI;
+        }
 
         double leftDistance = (angle / 360) * leftCircumference;
         double rightDistance = (angle / 360) * rightCircumference;
@@ -39,6 +48,11 @@ public class DriveArc extends Command
         // will become three-segment based on paths (todo)
         leftProfile = new TrapezoidalProfile(drivebase.getTicks(leftDistance), time);
         rightProfile = new TrapezoidalProfile(drivebase.getTicks(rightDistance), time);
+    }
+
+    public DriveArc(Drivebase drivebase, double radius, double angle, double time)
+    {
+        this(drivebase, radius, angle, time, false);
     }
 
     @Override
