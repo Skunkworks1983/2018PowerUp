@@ -40,7 +40,7 @@ public class Elevator extends Subsystem
         right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         right1.setSensorPhase(true);
 
-        right1.config_kP(Constants.PidConstants.ElevatorControlPid.Up.slot,
+        /* right1.config_kP(Constants.PidConstants.ElevatorControlPid.Up.slot,
                          Constants.PidConstants.ElevatorControlPid.Up.P, 0);
         right1.config_kI(Constants.PidConstants.ElevatorControlPid.Up.slot,
                          Constants.PidConstants.ElevatorControlPid.Up.I, 0);
@@ -56,7 +56,7 @@ public class Elevator extends Subsystem
         right1.config_kD(Constants.PidConstants.ElevatorControlPid.Down.slot,
                          Constants.PidConstants.ElevatorControlPid.Down.D, 0);
         right1.config_kF(Constants.PidConstants.ElevatorControlPid.Down.slot,
-                         Constants.PidConstants.ElevatorControlPid.Down.F, 0);
+                         Constants.PidConstants.ElevatorControlPid.Down.F, 0); */
 
         right1.configClosedloopRamp(0.5, 0);
         right1.configPeakOutputForward(0.90, 0);

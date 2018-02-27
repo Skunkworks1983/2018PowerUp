@@ -44,14 +44,14 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int RIGHT1 = 6;
-            public static final int RIGHT2 = 5;
+            public static final int RIGHT1 = 5;
+            public static final int RIGHT2 = 6;
 
-            public static final int LEFT1 = 9;
-            public static final int LEFT2 = 4;
+            public static final int LEFT1 = 4;
+            public static final int LEFT2 = 9;
 
-            public static final boolean LEFT1_REVERSED = false;
-            public static final boolean LEFT2_REVERSED = false;
+            public static final boolean LEFT1_REVERSED = true;
+            public static final boolean LEFT2_REVERSED = true;
 
             public static final boolean RIGHT1_REVERSED = false;
             public static final boolean RIGHT2_REVERSED = false;
@@ -183,18 +183,18 @@ public class Constants
             public static class Up
             {
                 public static final int slot = 0;
-                public static final double P = 0.13;
+                public static final double P = 0.068;
                 public static final double I = 0;
-                public static final double D = 3;
-                public static final double F = 0.001;
+                public static final double D = 0.000003;
+                public static final double F = 0;
             }
             public static class Down
             {
                 public static final int slot = 1;
-                public static final double P = 0.065;
+                public static final double P = 0.05;
                 public static final double I = 0;
-                public static final double D = 3;
-                public static final double F = 0.001;
+                public static final double D = 0.000003;
+                public static final double F = 0;
             }
         }
     }

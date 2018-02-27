@@ -40,6 +40,7 @@ public class SetElevatorSetpoint extends CommandBase
     @Override
     public void execute()
     {
+        logger.info("setpoint is being regiestered {}", elevator.getSetpoint());
         //Check to see if the oi is in slider position mode. If so, use the slider pos instead of the preset
         switch(setpoint)
         {
@@ -62,6 +63,7 @@ public class SetElevatorSetpoint extends CommandBase
                 break;
         }
         elevator.setSetpoint(newSetpoint);
+        logger.info("setpoint is {}", elevator.getSetpoint());
 
     }
 
@@ -76,6 +78,7 @@ public class SetElevatorSetpoint extends CommandBase
     {
 
     }
+
 
     @Override
     public void interrupted()

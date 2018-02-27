@@ -62,7 +62,7 @@ public class Robot extends IterativeRobot
         ramps = new Ramps();
         pidSource = new GyroPidInput(drivebase.getGyro());
 
-        //oi.initializeBindings(this);
+        oi.initializeBindings(this);
         robotLogger.info("robotInit");
     }
 
@@ -120,7 +120,7 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
 
         robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
-        elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
+        //elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
     }
 
     @Override
