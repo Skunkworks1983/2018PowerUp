@@ -4,6 +4,8 @@ import java.util.List;
 
 public class MotionProfile
 {
+    protected double Ks = 0, Kv = 0, Ka = 0;
+
     protected List<MotionSegment> segments;
 
     protected double distance;
@@ -19,25 +21,9 @@ public class MotionProfile
         this.segments = segments;
     }
 
-    public double evaluateVelocity(double time)
+    public double evaluateOutput(double time)
     {
-        // check if time is in domain of profile
-        if(0 <= time && time <= duration)
-        {
-            for(MotionSegment segment : segments)
-            {
-                if(segment.getStart().getTime() <= time && time <= segment.getEnd().getTime())
-                {
-                    return segment.evaluate(time);
-                }
-            }
-
-            return 0;
-        }
-        else
-        {
-            throw new IllegalArgumentException("time " + time + " is not in domain of profile");
-        }
+        return (evaluateVelocity(time) * Kv) + (evaluateAccelertion(time) * Ka) + Ks;
     }
 
     public double evaluatePosition(double time)
@@ -77,6 +63,43 @@ public class MotionProfile
         {
             throw new IllegalArgumentException("time " + time + " is not in domain of profile");
         }
+    }
+
+    public double evaluateVelocity(double time)
+    {
+        return getSegment(time).evaluate(time);
+    }
+
+    public double evaluateAccelertion(double time)
+    {
+        return getSegment(time).getAcceleration();
+    }
+
+    protected MotionSegment getSegment(double time)
+    {
+        if(0 <= time && time <= segments.size())
+        {
+            for(MotionSegment segment : segments)
+            {
+                if(segment.getStart().getTime() <= time && time <= segment.getEnd().getTime())
+                {
+                    return segment;
+                }
+            }
+
+            return null;
+        }
+        else
+        {
+            throw new IllegalArgumentException("segment " + time + " is not in domain of profile");
+        }
+    }
+
+    public void configSVA(double Ks, double Kv, double Ka)
+    {
+        this.Ks = Ks;
+        this.Kv = Kv;
+        this.Ka = Ka;
     }
 
     public double getDistance()

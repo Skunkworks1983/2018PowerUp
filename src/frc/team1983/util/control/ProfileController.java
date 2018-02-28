@@ -76,7 +76,7 @@ public class ProfileController
             TrajectoryPoint point = new TrajectoryPoint();
 
             point.position = profile.evaluatePosition(t);
-            point.velocity = profile.evaluateVelocity(t);
+            point.velocity = profile.evaluateOutput(t);
 
             point.profileSlotSelect0 = 0;
             point.profileSlotSelect1 = 0;
@@ -124,6 +124,8 @@ public class ProfileController
             reset();
             parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Disable.value);
         }
+
+        parent.config_kF(0, enabled ? 1 : 0, 0);
     }
 
     public void updateRobotState(Constants.MotorMap.Mode mode)

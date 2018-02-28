@@ -14,8 +14,8 @@ import org.apache.logging.log4j.core.Logger;
 //The base of the robot. Consists of the drive train motors, slaved to each other.
 public class Drivebase extends Subsystem
 {
-    private Motor left1, left2, left3;
-    private Motor right1, right2, right3;
+    public Motor left1, left2, left3;
+    public Motor right1, right2, right3;
     private Gyro gyro;
 
     private Logger logger;
@@ -25,26 +25,31 @@ public class Drivebase extends Subsystem
         logger = LoggerFactory.createNewLogger(Drivebase.class);
 
         left1 = new Motor(Constants.MotorMap.Drivebase.LEFT_1, Constants.MotorMap.Drivebase.LEFT1_REVERSED, true);
-        left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED);
+        //left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED);
         left3 = new Motor(Constants.MotorMap.Drivebase.LEFT_3, Constants.MotorMap.Drivebase.LEFT3_REVERSED);
 
         right1 = new Motor(Constants.MotorMap.Drivebase.RIGHT_1, Constants.MotorMap.Drivebase.RIGHT1_REVERSED, true);
         right2 = new Motor(Constants.MotorMap.Drivebase.RIGHT_2, Constants.MotorMap.Drivebase.RIGHT2_REVERSED);
-        right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED);
+        //right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED);
 
         gyro = new Gyro(I2C.Port.kOnboard);
 
-        left2.follow(left1);
+        //left2.follow(left1);
         left3.follow(left1);
 
         right2.follow(right1);
-        right3.follow(right1);
+        //right3.follow(right1);
 
         left1.setSensorPhase(true);
         right1.setSensorPhase(true);
 
-        left1.configPIDF(0, 0.3, 0, 0, 0.2);
-        right1.configPIDF(0, 0.3, 0, 0, 0.2);
+        left1.configPIDF(0, Constants.PidConstants.Drivebase.Left.Kp,
+                            Constants.PidConstants.Drivebase.Left.Ki,
+                            Constants.PidConstants.Drivebase.Left.Kd, 0);
+
+        right1.configPIDF(0, Constants.PidConstants.Drivebase.Right.Kp,
+                             Constants.PidConstants.Drivebase.Right.Ki,
+                             Constants.PidConstants.Drivebase.Right.Kd, 0);
     }
 
     public void initDefaultCommand()
@@ -132,11 +137,19 @@ public class Drivebase extends Subsystem
 
     public void setLeftProfile(MotionProfile profile)
     {
+        profile.configSVA(Constants.PidConstants.Drivebase.Left.Ks,
+                          Constants.PidConstants.Drivebase.Left.Kv,
+                          Constants.PidConstants.Drivebase.Left.Ka);
+
         left1.setProfile(profile);
     }
 
     public void setRightProfile(MotionProfile profile)
     {
+        profile.configSVA(Constants.PidConstants.Drivebase.Right.Ks,
+                          Constants.PidConstants.Drivebase.Right.Kv,
+                          Constants.PidConstants.Drivebase.Right.Ka);
+
         right1.setProfile(profile);
     }
 
@@ -175,12 +188,12 @@ public class Drivebase extends Subsystem
     public void setBrakeMode(boolean brake)
     {
         left1.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
-        left2.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        //left2.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
         left3.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
 
         right1.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
         right2.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
-        right3.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        //right3.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
     }
 }
 

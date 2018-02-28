@@ -6,7 +6,11 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.commands.drivebase.DriveArc;
+import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.debugging.RunOneMotor;
@@ -57,15 +61,20 @@ public class Robot extends IterativeRobot
         drivebase = new Drivebase();
         collector = new Collector();
         elevator = new Elevator();
-        ramps = new Ramps();
+        //ramps = new Ramps();
         pidSource = new GyroPidInput(drivebase.getGyro());
 
         //oi.initializeBindings(this);
         robotLogger.info("robotInit");
+
+
     }
 
     @Override
-    public void robotPeriodic(){}
+    public void robotPeriodic()
+    {
+
+    }
 
     @Override
     public void disabledInit()
@@ -79,7 +88,10 @@ public class Robot extends IterativeRobot
     }
 
     @Override
-    public void disabledPeriodic(){}
+    public void disabledPeriodic()
+    {
+
+    }
 
     @Override
     public void autonomousInit()
@@ -87,7 +99,13 @@ public class Robot extends IterativeRobot
         robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
         drivebase.getGyro().initGyro();
-        drivebase.setBrakeMode(true);
+
+        CommandGroup profiles = new CommandGroup();
+
+        profiles.addSequential(new DriveFeet(drivebase, 6, 2));
+        profiles.addSequential(new DriveArc(drivebase, 3, 90, 2));
+
+        Scheduler.getInstance().add(profiles);
     }
 
     @Override
@@ -114,9 +132,6 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-
-        robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
-        elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
     }
 
     @Override

@@ -35,6 +35,8 @@ public class ThreeSegmentProfile extends MotionProfile
 
         this.initialVelocity = initialVelocity;
         this.finalVelocity = finalVelocity;
+
+        this.v_cruise = getCruiseVelocity();
     }
 
     protected static List<MotionSegment> generate(double distance, double duration, double accelTime1, double accelTime2, double initialVelocity, double finalVelocity)
@@ -56,6 +58,11 @@ public class ThreeSegmentProfile extends MotionProfile
         {
             throw new IllegalArgumentException("motion profile does not exist with given time constraints");
         }
+    }
+
+    public static void stitch(TrapezoidalProfile profile1, TrapezoidalProfile profile2)
+    {
+
     }
 
     public double getAccelerationTime1()

@@ -129,6 +129,29 @@ public class Constants
     //this class contains subclasses that contain PIDF values used in commands.
     public static class PidConstants
     {
+        public static class Drivebase
+        {
+            public class Left
+            {
+                public static final double Kp = 0.5;
+                public static final double Ki = 0;
+                public static final double Kd = 0.15;
+                public static final double Kv = 1 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC;
+                public static final double Ka = 1 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75);
+                public static final double Ks = 0;
+            }
+
+            public class Right
+            {
+                public static final double Kp = 0.5;
+                public static final double Ki = 0;
+                public static final double Kd = 0.15;
+                public static final double Kv = 1 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC;
+                public static final double Ka = 1 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75);
+                public static final double Ks = 0;
+            }
+        }
+
         //PIDF values for the DriveStraight command
         public static class DriveStrightPid
         {
@@ -294,5 +317,8 @@ public class Constants
     {
         public static final double DEFAULT_MOTIONPROFILE_ACCEL_TIME = 0.5; // [0-1]
         public static final int MIN_POINTS_IN_TALON = 3;
+
+        public static final double DRIVEBASE_LEFT_MAX_TICKS_PER_SEC = 13600.0;
+        public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14300.0;
     }
 }

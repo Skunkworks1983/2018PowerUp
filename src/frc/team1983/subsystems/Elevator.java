@@ -104,12 +104,6 @@ public class Elevator extends Subsystem
         right1.set(ControlMode.Position, setpoint);
     }
 
-    @Override
-    public void periodic()
-    {
-        logger.info("Error: {}", right1.getClosedLoopError(0));
-    }
-
     public double getCurrentDraw()
     {
         return (right1.getOutputCurrent() + right2.getOutputCurrent())/2;
