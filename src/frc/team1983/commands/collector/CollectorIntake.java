@@ -35,6 +35,7 @@ public class CollectorIntake extends CommandBase
     @Override
     public void execute()
     {
+        logger.info("INTAKE EXECUTING");
         if(isLeftSwitchDown())
         {
             if(isRightSwitchDown())

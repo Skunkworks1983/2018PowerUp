@@ -6,8 +6,12 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
+import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.commands.collector.CollectorRotate;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.debugging.DisplayButtonPresses;
@@ -47,6 +51,8 @@ public class Robot extends IterativeRobot
     private RunOneMotor runOneMotor;
 
     private static Robot instance;
+
+    private Joystick panel;
 
     @Override
     public void robotInit()
@@ -122,12 +128,25 @@ public class Robot extends IterativeRobot
         //Scheduler.getInstance().add(new CollectorRotate(collector, true));
 
         Scheduler.getInstance().add(new DisplayButtonPresses(oi));
+
+        panel = new Joystick(2);
+        Button button9 = new JoystickButton(panel, 9);
+        button9.whenPressed(new CollectorIntake(collector));
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+
+        if(oi.buttonExists(Constants.OIMap.Joystick.PANEL, 9))
+        {
+            robotLogger.info("9 exists");
+        }
+        else
+        {
+            robotLogger.info("9 does not exist");
+        }
 
         //robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
         //elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);

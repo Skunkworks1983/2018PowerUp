@@ -36,11 +36,15 @@ public class OI
 
     public OI(DriverStation ds)
     {
-        this(new Joystick(Constants.OIMap.LEFTJOY_PORT), new Joystick(Constants.OIMap.RIGHTJOY_PORT),
-             new Joystick(Constants.OIMap.PANEL_PORT), new HashMap<>());
+        this(new Joystick(Constants.OIMap.Joystick.LEFT.ordinal()), new Joystick(Constants.OIMap.Joystick.RIGHT.ordinal()),
+             new Joystick(Constants.OIMap.Joystick.PANEL.ordinal()), new HashMap<>());
+        logger = LoggerFactory.createNewLogger(this.getClass());
+
+        logger.info("OI Instantiated");
+
         this.ds = ds;
 
-        manual = new Joystick(Constants.OIMap.MANUAL_PORT);
+        manual = new Joystick(Constants.OIMap.Joystick.MANUAL.ordinal());
 
         initializeButtons(Constants.OIMap.Joystick.MANUAL);
     }
@@ -62,7 +66,7 @@ public class OI
     // put your command bindings in here :)
     public void initializeBindings(Robot robot)
     {
-
+        logger.info("Beginning binding");
         //Collector intake/expel
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
                    new CollectorIntake(robot.getCollector()));
@@ -75,8 +79,8 @@ public class OI
         //Collector rotate
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.UP,
                   new CollectorRotate(robot.getCollector(), true));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.DOWN,
-                      new CollectorRotate(robot.getCollector(), false));
+        //bindToPressed(Constants.OIMap.Joystick.PANEL, 9,
+                      //new CollectorRotate(robot.getCollector(), false));
 
         //TODO tune this pid
         //Elevator setpoints
@@ -103,6 +107,8 @@ public class OI
 
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH,
                    new Manual(this, robot.getCollector(), robot.getElevator()));
+
+        logger.info("End binding");
     }
 
     public double getElevatorSliderPos()
@@ -230,7 +236,10 @@ public class OI
     public void bindToPressed(Constants.OIMap.Joystick joystick, int button, Command command)
     {
         if(buttonExists(joystick, button))
+        {
+            logger.info("COMMAND BOUND TO {}", button);
             getJoystickButtons(joystick)[button].whenPressed(command);
+        }
     }
 
     public void bindToHeld(Constants.OIMap.Joystick joystick, int button, Command command)
