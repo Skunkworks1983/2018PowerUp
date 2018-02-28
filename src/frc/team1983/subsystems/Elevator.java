@@ -64,7 +64,8 @@ public class Elevator extends Subsystem
 
         //right1.set(ControlMode.Position, Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 100);
 
-        right1.selectProfileSlot(Constants.PidConstants.ElevatorControlPid.Up.slot, 0);
+        //right1.selectProfileSlot(Constants.PidConstants.ElevatorControlPid.Up.slot, 0);
+        right1.selectProfileSlot(0,0);
 
         logger.info("Error: {}", right1.getClosedLoopError(0));
     }
@@ -136,14 +137,14 @@ public class Elevator extends Subsystem
         this.setpoint = setpoint;
         // code to select correct pid values dependent on direction of elevator travel
         // note: the higher the elevator is, the more negative the value is
-        if(this.setpoint < this.getEncoderValue())
+       /* if(this.setpoint < this.getEncoderValue())
         {
             right1.selectProfileSlot(Constants.PidConstants.ElevatorControlPid.Up.slot, 0);
         }
         else
         {
             right1.selectProfileSlot(Constants.PidConstants.ElevatorControlPid.Down.slot, 0);
-        }
+        } */
         right1.set(ControlMode.Position, setpoint);
         logger.info("Value is {}", setpoint);
     }

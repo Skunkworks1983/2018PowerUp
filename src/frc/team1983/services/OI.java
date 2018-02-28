@@ -88,8 +88,8 @@ public class OI
                   new SetElevatorSetpoint(Constants.OIMap.Setpoint.LOW, robot.getElevator(), this));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.MID,
                   new SetElevatorSetpoint(Constants.OIMap.Setpoint.MID, robot.getElevator(), this));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.TOP,
-                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, robot.getElevator(), this));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.SCALE,
+                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE, robot.getElevator(), this));
 
         //Drop/Prop
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_LEFT,

@@ -180,22 +180,22 @@ public class Constants
             public static final int ELEVATOR_BOTTOM = 0;
             //Actually negative, but ya know,
             public static final int ELEVATOR_TOP = 29000 - 485; //Addition is to keep it from hitting the max position
-            public static class Up
-            {
-                public static final int slot = 0;
+           // public static class Up
+           // {
+                //public static final int slot = 0;
                 public static final double P = 0.068;
                 public static final double I = 0;
                 public static final double D = 0.000003;
                 public static final double F = 0;
-            }
-            public static class Down
+            // }
+            /* public static class Down
             {
                 public static final int slot = 1;
                 public static final double P = 0.05;
                 public static final double I = 0;
                 public static final double D = 0.000003;
                 public static final double F = 0;
-            }
+            } */
         }
     }
 
@@ -270,7 +270,7 @@ public class Constants
 
         public static class ElevatorButtons
         {
-            public static final int TOP = 8;
+            public static final int SCALE = 8;
             public static final int MID = 9;
             public static final int LOW = 10;
             public static final int SWITCH = 11;
@@ -294,7 +294,8 @@ public class Constants
             SWITCH,
             LOW,
             MID,
-            TOP
+            TOP,
+            SCALE
         }
     }
 

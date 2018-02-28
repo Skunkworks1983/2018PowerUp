@@ -58,7 +58,7 @@ public class Manual extends Command
         }
         if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_DOWN))
         {
-            collector.setRotate(ControlMode.PercentOutput, .2);
+            collector.setRotate(ControlMode.PercentOutput, .3);
         }
         if(!oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_DOWN) &&
                         !oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_UP))
