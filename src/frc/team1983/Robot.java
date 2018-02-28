@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
 import frc.team1983.commands.collector.CollectorRotate;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1983.commands.debugging.DisplayButtonPresses;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
@@ -62,12 +63,15 @@ public class Robot extends IterativeRobot
         ramps = new Ramps();
         pidSource = new GyroPidInput(drivebase.getGyro());
 
-        //oi.initializeBindings(this);
+        oi.initializeBindings(this);
         robotLogger.info("robotInit");
     }
 
     @Override
-    public void robotPeriodic(){}
+    public void robotPeriodic()
+    {
+
+    }
 
     @Override
     public void disabledInit()
@@ -81,7 +85,9 @@ public class Robot extends IterativeRobot
     }
 
     @Override
-    public void disabledPeriodic(){}
+    public void disabledPeriodic()
+    {
+    }
 
     @Override
     public void autonomousInit()
@@ -112,6 +118,10 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 
         drivebase.setBrakeMode(false);
+        //Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+        //Scheduler.getInstance().add(new CollectorRotate(collector, true));
+
+        Scheduler.getInstance().add(new DisplayButtonPresses(oi));
     }
 
     @Override
@@ -119,8 +129,8 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
 
-        robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
-        elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
+        //robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
+        //elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
     }
 
     @Override
@@ -141,6 +151,7 @@ public class Robot extends IterativeRobot
         motorUp = new DigitalInput(5);
         motorDown = new DigitalInput(4);
         manualSpeed = new AnalogInput(2);
+
 
         if(runOneMotor == null)
         {

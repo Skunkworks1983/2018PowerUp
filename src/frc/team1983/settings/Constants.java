@@ -50,8 +50,8 @@ public class Constants
             public static final int LEFT1 = 9;
             public static final int LEFT2 = 4;
 
-            public static final boolean LEFT1_REVERSED = false;
-            public static final boolean LEFT2_REVERSED = false;
+            public static final boolean LEFT1_REVERSED = true;
+            public static final boolean LEFT2_REVERSED = true;
 
             public static final boolean RIGHT1_REVERSED = false;
             public static final boolean RIGHT2_REVERSED = false;
@@ -68,8 +68,8 @@ public class Constants
 
             public static final int ROTATE = 12;
 
-            public static final boolean LEFT_REVERSED = true;
-            public static final boolean RIGHT_REVERSED = false;
+            public static final boolean LEFT_REVERSED = false;
+            public static final boolean RIGHT_REVERSED = true;
             public static final boolean ROTATE_REVERSED = false;
 
             public static final int LEFT_SWITCH = 1;
@@ -100,7 +100,6 @@ public class Constants
             public static final boolean LEFT2_REVERSED = false;
             public static final boolean RIGHT1_REVERSED = true;
             public static final boolean RIGHT2_REVERSED = false;
-
         }
     }
 
@@ -109,6 +108,7 @@ public class Constants
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
         public static final double COLLECTOR_INTAKE_SPEED = 0.75;
         public static final double COLLECTOR_EXPEL_SPEED = -0.5;
+        public static final double COLLECTOR_SLOW_EXPEL_SPEED = -0.2;
         public static final double COLLECTOR_ROTATE_SPEED = -0.5;
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
@@ -162,8 +162,8 @@ public class Constants
             public static final double D = 0;
             public static final double F = 0;//.002;
 
-            public static final double UP_TICKS = -100;
-            public static final double DOWN_TICKS = 3450;
+            public static final double UP_TICKS = 0;
+            public static final double DOWN_TICKS = -1300;
         }
 
         //setpoints for motors
@@ -209,6 +209,7 @@ public class Constants
         public static final int RIGHTJOY_PORT = 1;
         public static final int PANEL_PORT = 2;
         public static final int MANUAL_PORT = 3;
+        public static final int MANUAL_SWITCH = 4; //button 9 on the 2016 oi
 
         public static final double JOYSTICK_DEADZONE = 0.15;
         public static final double JOYSTICK_RAMP_EXPONENT = 2;
@@ -245,39 +246,44 @@ public class Constants
 
         public static class CollectorButtons
         {
-            public static final int INTAKE = 3;
-            public static final int EXPEL = 4;
-            public static final int MANUAL_ROTATE_UP = 15;
-            public static final int MANUAL_ROTATE_DOWN = 14;
+            public static final int INTAKE = 17;
+            public static final int EXPEL = 19;
+            public static final int BOOP = 13;
+            public static final int M_INTAKE = 1;
+            public static final int M_EXPEL = 0;
+            public static final int UP = 18;
+            public static final int DOWN = 16;
+            public static final int M_UP = 2;
+            public static final int M_DOWN = 3;
         }
 
         public static class ElevatorButtons
         {
-            public static final int TOP = 0;
-            public static final int MID = 1;
-            public static final int MANUAL_UP = 2;
-            public static final int MANUAL_DOWN = 3;
+            public static final int TOP = 8;
+            public static final int MID = 9;
+            public static final int LOW = 10;
+            public static final int SWITCH = 11;
+            public static final int BOTTOM = 12;
+            public static final int M_UP = 6;
+            public static final int M_DOWN = 5;
         }
 
         public static class RampButtons
         {
-            public static final int DROP = 10;
-            public static final int PROP = 6;
+            public static final int DROP_LEFT = 20;
+            public static final int DROP_RIGHT = 21;
+            public static final int PROP_LEFT = 22;
+            public static final int PROP_RIGHT = 23;
         }
 
-        public static class ManualControl
-        {
-            public static final int ELEVATOR_UP = 5; //button 6 on 2016 oi
-            public static final int ELEVATOR_DOWN = 6; //button 7 on 2016 oi
-            public static final int MANUAL_SWITCH = 8; //button 9 on the 2016 oi
-        }
         //Enums for presets
         public enum Setpoint
         {
-            SCALE,
-            SWITCH,
             BOTTOM,
-            RESTING
+            SWITCH,
+            LOW,
+            MID,
+            TOP
         }
     }
 
