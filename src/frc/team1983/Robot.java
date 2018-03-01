@@ -68,8 +68,6 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
         ramps = new Ramps();
         pidSource = new GyroPidInput(drivebase.getGyro());
-
-        oi.initializeBindings(this);
         robotLogger.info("robotInit");
     }
 
@@ -116,11 +114,14 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopInit()
     {
+        Scheduler.getInstance().removeAll();
+        oi.initializeBindings(this);
+
         if(runOneMotor != null)
         {
             runOneMotor.end();
         }
-        Scheduler.getInstance().removeAll();
+
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 
         drivebase.setBrakeMode(false);
@@ -128,10 +129,6 @@ public class Robot extends IterativeRobot
         //Scheduler.getInstance().add(new CollectorRotate(collector, true));
 
         Scheduler.getInstance().add(new DisplayButtonPresses(oi));
-
-        panel = new Joystick(2);
-        Button button9 = new JoystickButton(panel, 9);
-        button9.whenPressed(new CollectorIntake(collector));
     }
 
     @Override

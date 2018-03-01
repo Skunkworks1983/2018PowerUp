@@ -22,6 +22,7 @@ public class CollectorRotate extends CommandBase
 
     public CollectorRotate(Collector collector, boolean up)
     {
+        requires(collector);
         logger = LoggerFactory.createNewLogger(this.getClass());
         this.up = up;
         this.collector = collector;

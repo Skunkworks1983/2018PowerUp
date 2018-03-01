@@ -29,7 +29,7 @@ public class OI
 {
     private DriverStation ds;
 
-    private Joystick left, right, panel, manual;
+    public Joystick left, right, panel, manual;
     private HashMap<Joystick, JoystickButton[]> joystickButtons;
 
     private Logger logger;
@@ -58,15 +58,25 @@ public class OI
         this.panel = panel;
         this.joystickButtons = joystickButtons;
 
-        initializeButtons(Constants.OIMap.Joystick.LEFT);
-        initializeButtons(Constants.OIMap.Joystick.RIGHT);
-        initializeButtons(Constants.OIMap.Joystick.PANEL);
+//        initializeButtons(Constants.OIMap.Joystick.LEFT);
+//        initializeButtons(Constants.OIMap.Joystick.RIGHT);
+//        initializeButtons(Constants.OIMap.Joystick.PANEL);
     }
 
     // put your command bindings in here :)
     public void initializeBindings(Robot robot)
     {
         logger.info("Beginning binding");
+
+        initializeButtons(Constants.OIMap.Joystick.LEFT);
+        initializeButtons(Constants.OIMap.Joystick.RIGHT);
+        initializeButtons(Constants.OIMap.Joystick.PANEL);
+
+        if(manual != null)
+        {
+            initializeButtons(Constants.OIMap.Joystick.MANUAL);
+        }
+
         //Collector intake/expel
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
                    new CollectorIntake(robot.getCollector()));
@@ -79,8 +89,8 @@ public class OI
         //Collector rotate
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.UP,
                   new CollectorRotate(robot.getCollector(), true));
-        //bindToPressed(Constants.OIMap.Joystick.PANEL, 9,
-                      //new CollectorRotate(robot.getCollector(), false));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.DOWN,
+                      new CollectorRotate(robot.getCollector(), false));
 
         //TODO tune this pid
         //Elevator setpoints
