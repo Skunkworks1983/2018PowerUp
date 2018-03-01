@@ -179,14 +179,14 @@ public class Constants
         {
             public static final int ELEVATOR_BOTTOM = 0;
             //Actually negative, but ya know,
-            public static final int ELEVATOR_TOP = 29000 - 485; //Addition is to keep it from hitting the max position
+            public static final int ELEVATOR_TOP = 29000 - 85; //Addition is to keep it from hitting the max position
            // public static class Up
            // {
                 //public static final int slot = 0;
-                public static final double P = 0.068;
+                public static final double P = 0;
                 public static final double I = 0;
-                public static final double D = 0.000003;
-                public static final double F = 0;
+                public static final double D = 0;
+                public static final double F = 0.0042;
             // }
             /* public static class Down
             {
@@ -277,6 +277,7 @@ public class Constants
             public static final int BOTTOM = 12;
             public static final int M_UP = 6;
             public static final int M_DOWN = 5;
+            public static final int JOYDOWN = 1;
         }
 
         public static class RampButtons

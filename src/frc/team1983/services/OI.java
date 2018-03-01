@@ -17,6 +17,7 @@ import frc.team1983.commands.ramps.LowerRamps;
 import frc.team1983.commands.ramps.PropRamps;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
+import frc.team1983.subsystems.Elevator;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.HashMap;
@@ -90,6 +91,8 @@ public class OI
                   new SetElevatorSetpoint(Constants.OIMap.Setpoint.MID, robot.getElevator(), this));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.SCALE,
                   new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE, robot.getElevator(), this));
+        bindToHeld(Constants.OIMap.Joystick.LEFT, Constants.OIMap.ElevatorButtons.JOYDOWN,
+                    new SetElevatorSpeed(robot.getElevator(), -0.2));
 
         //Drop/Prop
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_LEFT,
