@@ -8,12 +8,19 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
+=======
+import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
+import frc.team1983.commands.collector.CollectorRotate;
+>>>>>>> dev
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1983.commands.debugging.DisplayButtonPresses;
 import frc.team1983.commands.debugging.RunOneMotor;
+import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.StatefulDashboard;
@@ -64,7 +71,7 @@ public class Robot extends IterativeRobot
         //ramps = new Ramps();
         pidSource = new GyroPidInput(drivebase.getGyro());
 
-        //oi.initializeBindings(this);
+        oi.initializeBindings(this);
         robotLogger.info("robotInit");
 
 
@@ -90,7 +97,10 @@ public class Robot extends IterativeRobot
     @Override
     public void disabledPeriodic()
     {
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
     }
 
     @Override
@@ -99,6 +109,7 @@ public class Robot extends IterativeRobot
         robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
         drivebase.getGyro().initGyro();
+<<<<<<< HEAD
 
         CommandGroup profiles = new CommandGroup();
 
@@ -106,6 +117,11 @@ public class Robot extends IterativeRobot
         profiles.addSequential(new DriveArc(drivebase, 3, 90, 2));
 
         Scheduler.getInstance().add(profiles);
+=======
+        drivebase.setBrakeMode(true);
+
+        Scheduler.getInstance().add(new PlaceCubeInExchangeZone(dashboard, drivebase));
+>>>>>>> dev
     }
 
     @Override
@@ -126,12 +142,16 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 
         drivebase.setBrakeMode(false);
+        //Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+        //Scheduler.getInstance().add(new CollectorRotate(collector, true));
+
+        Scheduler.getInstance().add(new DisplayButtonPresses(oi));
     }
 
     @Override
     public void teleopPeriodic()
     {
-        Scheduler.getInstance().run();
+        
     }
 
     @Override
@@ -152,6 +172,7 @@ public class Robot extends IterativeRobot
         motorUp = new DigitalInput(5);
         motorDown = new DigitalInput(4);
         manualSpeed = new AnalogInput(2);
+
 
         if(runOneMotor == null)
         {

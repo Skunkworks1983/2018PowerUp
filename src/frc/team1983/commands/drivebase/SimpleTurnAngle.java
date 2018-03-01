@@ -60,6 +60,7 @@ public class SimpleTurnAngle extends CommandBase
     @Override
     public void initialize()
     {
+        logger.info("initialize start");
         if(!gyro.isDead())
         {
             pidSource = new GyroPidInput(drivebase.getGyro());
@@ -77,6 +78,7 @@ public class SimpleTurnAngle extends CommandBase
 
         else if(gyro.isDead()) //switches to encoder if gyro doesn't work
         {
+            logger.info("using encoders");
             pidSource = new EncoderTurnAnglePidInput(drivebase);
             pidOut = new DrivebaseRotationPidOutput(drivebase);
             turnPid = new PIDController(dashboard.getDouble(this, "kP"),
@@ -89,19 +91,20 @@ public class SimpleTurnAngle extends CommandBase
             turnPid.setOutputRange(-0.5, 0.5);
             turnPid.enable();
         }
-
+    logger.info("initialized finished");
     }
 
     @Override
     public void execute()
     {
-        logger.debug("SimpleTurnAngle executed");
+        logger.info("SimpleTurnAngle executed");
         //logger.info("SimpleTurnAngle error{}", turnPid.getError());
     }
 
     @Override
     public boolean isFinished()
     {
+        logger.info("heading{}", pidSource.pidGet());
         if(turnPid.onTarget())
         {
             //todo figure out what "recorrection" is
@@ -119,6 +122,7 @@ public class SimpleTurnAngle extends CommandBase
     @Override
     public void end()
     {
+        logger.info("SimpleTurnAngle ends, which means it began in the first place");
         turnPid.disable();
         drivebase.setLeft(ControlMode.PercentOutput, 0);
         drivebase.setRight(ControlMode.PercentOutput, 0);
