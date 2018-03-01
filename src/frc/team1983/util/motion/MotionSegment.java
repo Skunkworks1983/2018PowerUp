@@ -13,14 +13,15 @@ public class MotionSegment
 
         this.start = start;
         this.end = end;
-        this.acceleration = (end.getVelocity() - start.getVelocity()) / (end.getTime() - start.getTime());
+
+        this.acceleration = calculateAcceleration();
     }
 
     public double evaluate(double time) throws RuntimeException
     {
         if(start.getTime() <= time && time <= end.getTime())
         {
-            return start.getVelocity() + (time - start.getTime()) * acceleration;
+            return start.getVelocity() + (time - start.getTime()) * calculateAcceleration();
         }
         else
         {
@@ -30,7 +31,12 @@ public class MotionSegment
 
     public double getAcceleration()
     {
-        return acceleration;
+        return calculateAcceleration();
+    }
+
+    protected double calculateAcceleration()
+    {
+        return (end.getVelocity() - start.getVelocity()) / (end.getTime() - start.getTime());
     }
 
     public MotionProfilePoint getStart()

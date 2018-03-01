@@ -36,7 +36,7 @@ public class ThreeSegmentProfile extends MotionProfile
         this.initialVelocity = initialVelocity;
         this.finalVelocity = finalVelocity;
 
-        this.v_cruise = getCruiseVelocity();
+        this.v_cruise = calculateCruiseVelocity(distance, duration, accelTime1, accelTime2, initialVelocity, finalVelocity);
     }
 
     protected static List<MotionSegment> generate(double distance, double duration, double accelTime1, double accelTime2, double initialVelocity, double finalVelocity)
@@ -60,9 +60,9 @@ public class ThreeSegmentProfile extends MotionProfile
         }
     }
 
-    public static void stitch(TrapezoidalProfile profile1, TrapezoidalProfile profile2)
+    protected static double calculateCruiseVelocity(double distance, double duration, double accelTime1, double accelTime2, double initialVelocity, double finalVelocity)
     {
-
+        return ((2 * distance) - (accelTime1 * initialVelocity) - (accelTime2 * finalVelocity)) / ((2 * duration) - accelTime1 - accelTime2);
     }
 
     public double getAccelerationTime1()
@@ -87,6 +87,6 @@ public class ThreeSegmentProfile extends MotionProfile
 
     public double getCruiseVelocity()
     {
-        return ((2 * distance) - (accelTime1 * initialVelocity) - (accelTime2 * finalVelocity)) / ((2 * duration) - accelTime1 - accelTime2);
+        return v_cruise;
     }
 }
