@@ -1,6 +1,5 @@
 package frc.team1983;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -8,19 +7,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-<<<<<<< HEAD
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
-=======
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
-import frc.team1983.commands.collector.CollectorRotate;
->>>>>>> dev
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.debugging.DisplayButtonPresses;
 import frc.team1983.commands.debugging.RunOneMotor;
-import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.StatefulDashboard;
@@ -97,10 +90,7 @@ public class Robot extends IterativeRobot
     @Override
     public void disabledPeriodic()
     {
-<<<<<<< HEAD
 
-=======
->>>>>>> dev
     }
 
     @Override
@@ -109,7 +99,6 @@ public class Robot extends IterativeRobot
         robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
         drivebase.getGyro().initGyro();
-<<<<<<< HEAD
 
         CommandGroup profiles = new CommandGroup();
 
@@ -117,11 +106,9 @@ public class Robot extends IterativeRobot
         profiles.addSequential(new DriveArc(drivebase, 3, 90, 2));
 
         Scheduler.getInstance().add(profiles);
-=======
         drivebase.setBrakeMode(true);
 
         Scheduler.getInstance().add(new PlaceCubeInExchangeZone(dashboard, drivebase));
->>>>>>> dev
     }
 
     @Override
@@ -151,7 +138,7 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic()
     {
-        
+
     }
 
     @Override
