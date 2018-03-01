@@ -44,7 +44,7 @@ public class ThreeSegmentProfile extends MotionProfile
         // constrains
         if(accelTime1 + accelTime2 <= duration && accelTime1 != 0 && accelTime2 != 0)
         {
-            double v_cruise = ((2 * distance) - (accelTime1 * initialVelocity) - (accelTime2 * finalVelocity)) / ((2 * duration) - accelTime1 - accelTime2);
+            double v_cruise = ((2.0 * distance) - (accelTime1 * initialVelocity) - (accelTime2 * finalVelocity)) / ((2 * duration) - accelTime1 - accelTime2);
 
             List<MotionSegment> segments = new ArrayList<>(Arrays.asList(
                 new MotionSegment(new MotionProfilePoint(0, initialVelocity), new MotionProfilePoint(accelTime1, v_cruise)),
@@ -87,6 +87,6 @@ public class ThreeSegmentProfile extends MotionProfile
 
     public double getCruiseVelocity()
     {
-        return v_cruise;
+        return calculateCruiseVelocity(distance, duration, accelTime1, accelTime2, initialVelocity, finalVelocity);
     }
 }

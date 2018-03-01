@@ -1,19 +1,25 @@
 package frc.team1983.subsystems.utilities;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team1983.Robot;
-import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.util.control.ProfileController;
 import frc.team1983.util.motion.MotionProfile;
-import org.apache.logging.log4j.core.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 //Wrapper class around the WpiLib TalonSRX. Allows us to modify the functionality, and for future extendability.
 public class Motor extends TalonSRX
 {
+    protected double Kp, Ki, Kd, Ks, Kv, Ka;
+
     private boolean hasEncoder = false;
     public ProfileController manager;
+
+    public List<PidControllerWrapper> pids = new ArrayList<PidControllerWrapper>();
 
     public Motor(int port, boolean reversed)
     {
@@ -40,6 +46,13 @@ public class Motor extends TalonSRX
         config_kF(slot, f, 0);
     }
 
+    public void configSVA(int slot, double s, double v, double a)
+    {
+        this.Ks = s;
+        this.Kv = v;
+        this.Ka = a;
+    }
+
     // don't need this method but it makes things look more readable
     public void follow(Motor leader)
     {
@@ -48,6 +61,8 @@ public class Motor extends TalonSRX
 
     public void setProfile(MotionProfile profile)
     {
+        profile.configSVA(Ks, Kv, Ka);
+
         if(manager == null)
             manager = new ProfileController(this, Robot.getInstance());
 
@@ -80,6 +95,52 @@ public class Motor extends TalonSRX
     @Override
     public void set(ControlMode mode, double value)
     {
-        super.set(mode, value);
+        if(mode == ControlMode.MotionProfile)
+        {
+            value = Kp * super.getClosedLoopError(0) +
+                    Ki * super.getIntegralAccumulator(0) +
+                    Kd * super.getErrorDerivative(0) +
+                    Ks +
+                    Kv * super.getActiveTrajectoryVelocity();
+
+            for(PidControllerWrapper controller : pids)
+            {
+                value += controller.get();
+            }
+
+            super.set(mode, value);
+        }
+        else
+        {
+            super.set(mode, value);
+        }
+    }
+
+    @Override
+    public ErrorCode config_kP(int slotIdx, double value, int timeout)
+    {
+        this.Kp = value;
+        return super.config_kP(slotIdx, value, timeout);
+    }
+
+    @Override
+    public ErrorCode config_kI(int slotIdx, double value, int timeout)
+    {
+        this.Ki = value;
+        return super.config_kP(slotIdx, value, timeout);
+    }
+
+    @Override
+    public ErrorCode config_kD(int slotIdx, double value, int timeout)
+    {
+        this.Kd = value;
+        return super.config_kP(slotIdx, value, timeout);
+    }
+
+    @Override
+    public ErrorCode config_kF(int slotIdx, double value, int timeout)
+    {
+        this.Ks = value;
+        return super.config_kP(slotIdx, value, timeout);
     }
 }

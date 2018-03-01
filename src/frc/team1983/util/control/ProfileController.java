@@ -63,6 +63,8 @@ public class ProfileController
         // lock runnable
         signal.setEnabled(false);
 
+        logger.info("streamed");
+
         reset();
 
         int durationMs = profile.getPointDuration();
