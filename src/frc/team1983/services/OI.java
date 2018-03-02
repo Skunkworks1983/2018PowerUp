@@ -37,11 +37,13 @@ public class OI
 
     public OI(DriverStation ds)
     {
-        this(new Joystick(Constants.OIMap.LEFTJOY_PORT), new Joystick(Constants.OIMap.RIGHTJOY_PORT),
-             new Joystick(Constants.OIMap.PANEL_PORT), new HashMap<>());
+        this(new Joystick(Constants.OIMap.Joystick.LEFT.ordinal()), new Joystick(Constants.OIMap.Joystick.RIGHT.ordinal()),
+             new Joystick(Constants.OIMap.Joystick.PANEL.ordinal()), new HashMap<>());
+        logger = LoggerFactory.createNewLogger(this.getClass());
+
         this.ds = ds;
 
-        manual = new Joystick(Constants.OIMap.MANUAL_PORT);
+        manual = new Joystick(Constants.OIMap.Joystick.MANUAL.ordinal());
 
         initializeButtons(Constants.OIMap.Joystick.MANUAL);
     }
@@ -54,15 +56,19 @@ public class OI
         this.right = right;
         this.panel = panel;
         this.joystickButtons = joystickButtons;
-
-        initializeButtons(Constants.OIMap.Joystick.LEFT);
-        initializeButtons(Constants.OIMap.Joystick.RIGHT);
-        initializeButtons(Constants.OIMap.Joystick.PANEL);
     }
 
     // put your command bindings in here :)
     public void initializeBindings(Robot robot)
     {
+        initializeButtons(Constants.OIMap.Joystick.LEFT);
+        initializeButtons(Constants.OIMap.Joystick.RIGHT);
+        initializeButtons(Constants.OIMap.Joystick.PANEL);
+
+        if(manual != null)
+        {
+            initializeButtons(Constants.OIMap.Joystick.MANUAL);
+        }
 
         //Collector intake/expel
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
@@ -233,7 +239,9 @@ public class OI
     public void bindToPressed(Constants.OIMap.Joystick joystick, int button, Command command)
     {
         if(buttonExists(joystick, button))
+        {
             getJoystickButtons(joystick)[button].whenPressed(command);
+        }
     }
 
     public void bindToHeld(Constants.OIMap.Joystick joystick, int button, Command command)

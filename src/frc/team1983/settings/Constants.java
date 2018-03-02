@@ -219,10 +219,6 @@ public class Constants
     //this contains all values relevant to the OIMap.
     public static class OIMap
     {
-        public static final int LEFTJOY_PORT = 0;
-        public static final int RIGHTJOY_PORT = 1;
-        public static final int PANEL_PORT = 2;
-        public static final int MANUAL_PORT = 3;
         public static final int MANUAL_SWITCH = 4; //button 9 on the 2016 oi
 
         public static final double JOYSTICK_DEADZONE = 0.15;
