@@ -1,22 +1,24 @@
 package frc.team1983;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
-import frc.team1983.commands.collector.CollectorRotate;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
+import frc.team1983.commands.autonomous.PlaceCubeInScale;
+import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
 import frc.team1983.commands.debugging.DisplayButtonPresses;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
-import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.OI;
+import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
@@ -24,8 +26,8 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.util.control.ProfileController;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
+import frc.team1983.util.control.ProfileController;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
@@ -48,6 +50,9 @@ public class Robot extends IterativeRobot
 
     private static Robot instance;
 
+    private SendableChooser autoSelector;
+    private Command autonomousCommand;
+
     @Override
     public void robotInit()
     {
@@ -65,6 +70,10 @@ public class Robot extends IterativeRobot
 
         oi.initializeBindings(this);
         robotLogger.info("robotInit");
+        autoSelector = new SendableChooser();
+        autoSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
+        autoSelector.addObject("Scale", new PlaceCubeInScale(dashboard, drivebase));
+        autoSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
     }
 
     @Override
@@ -97,7 +106,8 @@ public class Robot extends IterativeRobot
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
 
-        Scheduler.getInstance().add(new PlaceCubeInExchangeZone(dashboard, drivebase));
+        autonomousCommand = (Command) autoSelector.getSelected();
+        Scheduler.getInstance().add(autonomousCommand);
     }
 
     @Override

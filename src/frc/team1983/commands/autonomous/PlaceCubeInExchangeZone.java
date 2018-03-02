@@ -24,7 +24,7 @@ public class PlaceCubeInExchangeZone extends CommandGroup
 
     private Logger logger;
 
-    public PlaceCubeInExchangeZone(StatefulDashboard dashboard, Drivebase drivebase)
+    public PlaceCubeInExchangeZone(Drivebase drivebase, StatefulDashboard dashboard)
     {
         this.drivebase = drivebase;
         logger = LoggerFactory.createNewLogger(PlaceCubeInExchangeZone.class);
