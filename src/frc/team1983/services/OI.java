@@ -29,7 +29,7 @@ public class OI
 {
     private DriverStation ds;
 
-    public Joystick left, right, panel, manual;
+    private Joystick left, right, panel, manual;
     private HashMap<Joystick, JoystickButton[]> joystickButtons;
 
     private Logger logger;
@@ -39,8 +39,6 @@ public class OI
         this(new Joystick(Constants.OIMap.Joystick.LEFT.ordinal()), new Joystick(Constants.OIMap.Joystick.RIGHT.ordinal()),
              new Joystick(Constants.OIMap.Joystick.PANEL.ordinal()), new HashMap<>());
         logger = LoggerFactory.createNewLogger(this.getClass());
-
-        logger.info("OI Instantiated");
 
         this.ds = ds;
 
@@ -57,17 +55,11 @@ public class OI
         this.right = right;
         this.panel = panel;
         this.joystickButtons = joystickButtons;
-
-//        initializeButtons(Constants.OIMap.Joystick.LEFT);
-//        initializeButtons(Constants.OIMap.Joystick.RIGHT);
-//        initializeButtons(Constants.OIMap.Joystick.PANEL);
     }
 
     // put your command bindings in here :)
     public void initializeBindings(Robot robot)
     {
-        logger.info("Beginning binding");
-
         initializeButtons(Constants.OIMap.Joystick.LEFT);
         initializeButtons(Constants.OIMap.Joystick.RIGHT);
         initializeButtons(Constants.OIMap.Joystick.PANEL);
@@ -117,8 +109,6 @@ public class OI
 
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH,
                    new Manual(this, robot.getCollector(), robot.getElevator()));
-
-        logger.info("End binding");
     }
 
     public double getElevatorSliderPos()
@@ -247,7 +237,6 @@ public class OI
     {
         if(buttonExists(joystick, button))
         {
-            logger.info("COMMAND BOUND TO {}", button);
             getJoystickButtons(joystick)[button].whenPressed(command);
         }
     }

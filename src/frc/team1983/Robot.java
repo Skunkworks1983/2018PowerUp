@@ -43,16 +43,12 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private StatefulDashboard dashboard;
-    private Subsystem subsystem;
-    private GyroPidInput pidSource;
 
     private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
 
     private RunOneMotor runOneMotor;
 
     private static Robot instance;
-
-    private Joystick panel;
 
     @Override
     public void robotInit()
@@ -67,7 +63,6 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
-        pidSource = new GyroPidInput(drivebase.getGyro());
         robotLogger.info("robotInit");
     }
 
@@ -125,28 +120,14 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 
         drivebase.setBrakeMode(false);
-        //Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+        Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
         //Scheduler.getInstance().add(new CollectorRotate(collector, true));
-
-        Scheduler.getInstance().add(new DisplayButtonPresses(oi));
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-
-        if(oi.buttonExists(Constants.OIMap.Joystick.PANEL, 9))
-        {
-            robotLogger.info("9 exists");
-        }
-        else
-        {
-            robotLogger.info("9 does not exist");
-        }
-
-        //robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
-        //elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
     }
 
     @Override
