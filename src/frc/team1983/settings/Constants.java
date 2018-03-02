@@ -179,8 +179,11 @@ public class Constants
         {
             public static final int ELEVATOR_BOTTOM = 0;
             //Actually negative, but ya know,
-            public static final int ELEVATOR_TOP = 29000 - 85; //Addition is to keep it from hitting the max position
-           // public static class Up
+            public static final int SCALE_TOP = 29000 - 85; //Addition is to keep it from hitting the max position
+            public static final int SCALE_NEUTRAL = 25950;
+            public static final int SCALE_LOW = 21435;
+            public static final int SWITCH = 9150;
+            // public static class Up
            // {
                 //public static final int slot = 0;
                 public static final double P = 0;
@@ -293,10 +296,9 @@ public class Constants
         {
             BOTTOM,
             SWITCH,
-            LOW,
-            MID,
-            TOP,
-            SCALE
+            SCALE_LOW,
+            SCALE_MID,
+            SCALE_TOP
         }
     }
 

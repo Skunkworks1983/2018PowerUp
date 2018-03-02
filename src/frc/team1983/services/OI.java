@@ -86,11 +86,11 @@ public class OI
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.SWITCH,
                   new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator(), this));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.LOW,
-                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.LOW, robot.getElevator(), this));
+                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE_LOW, robot.getElevator(), this));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.MID,
-                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.MID, robot.getElevator(), this));
+                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE_MID, robot.getElevator(), this));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.SCALE,
-                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE, robot.getElevator(), this));
+                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.SCALE_TOP, robot.getElevator(), this));
         bindToHeld(Constants.OIMap.Joystick.LEFT, Constants.OIMap.ElevatorButtons.JOYDOWN,
                     new SetElevatorSpeed(robot.getElevator(), -0.2));
 

@@ -45,29 +45,25 @@ public class SetElevatorSetpoint extends CommandBase
         switch(setpoint)
         {
             case BOTTOM:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_BOTTOM;
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_BOTTOM + 250;
                 break;
 
-            case SCALE:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP;
+            case SCALE_TOP:
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.SCALE_TOP-100;
                 logger.info("Elevator set to scale");
                 break;
 
-            case LOW:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 1100;
+            case SCALE_MID:
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.SCALE_NEUTRAL;
                 break;
 
-            case MID:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 600;
+            case SCALE_LOW:
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.SCALE_LOW;
                 break;
-
-           /* case TOP:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 100;
-                break; */
 
             case SWITCH:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP/2;
-                logger.info("Elevator set to switch");
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.SWITCH;
+                break;
 
             default:
                 newSetpoint = 0;
