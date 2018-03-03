@@ -1,7 +1,10 @@
 package frc.team1983.util.path;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team1983.services.parser.SmellyDeserializer;
 
+@JsonDeserialize(using = SmellyDeserializer.class)
 abstract public class PathComponent
 {
     protected double time, delay;

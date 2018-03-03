@@ -2,6 +2,7 @@ package frc.team1983.services;
 
 import edu.wpi.first.wpilibj.hal.HAL;
 import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.services.parser.SmellyParser;
 import frc.team1983.settings.Constants;
 import org.apache.logging.log4j.core.Logger;
 import org.junit.After;
@@ -11,7 +12,6 @@ import org.mockito.Mock;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

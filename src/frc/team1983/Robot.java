@@ -1,26 +1,19 @@
 package frc.team1983;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
-import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.commands.collector.CollectorRotate;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1983.commands.debugging.DisplayButtonPresses;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
-import frc.team1983.services.SmellyParser;
+import frc.team1983.services.parser.SmellyParser;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
