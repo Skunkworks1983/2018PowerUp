@@ -3,9 +3,7 @@ package frc.team1983.services;
 import edu.wpi.first.wpilibj.hal.HAL;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
-import frc.team1983.util.path.PathTanline;
 import org.apache.logging.log4j.core.Logger;
-import org.hamcrest.number.IsCloseTo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,13 +32,13 @@ public class UT_Smelly_Parser
     private DashboardWrapper dashboard;
 
     @Before
-    public void setup() throws IOException
+    public void setup()
     {
         logger = LoggerFactory.createNewLogger(this.getClass());
 
         initMocks(this);
 
-        parser = new SmellyParser(dashboard, Constants.SmellyParser.SMELLYUTFOLDER);
+        parser = new SmellyParser(dashboard, Constants.SmellyParser.SMELLY_UT_FOLDER);
     }
 
     @After
@@ -54,13 +52,13 @@ public class UT_Smelly_Parser
     {
         FilenameFilter filter = (file, name) -> name.toLowerCase().endsWith(".json");
 
-        File[] files = Constants.SmellyParser.SMELLYUTFOLDER.listFiles(filter);
+        File[] files = Constants.SmellyParser.SMELLY_UT_FOLDER.listFiles(filter);
 
         for(double i = 0; i < files.length; i++)
         {
             logger.info("Found json {}", files[(int) i].toString());
 
-            when(dashboard.getNumber(Constants.SmellyParser.AUTOPATHKEY, 0.0)).thenReturn(i);
+            when(dashboard.getNumber(Constants.SmellyParser.AUTO_PATH_KEY, 0.0)).thenReturn(i);
 
             parser.constructPath();
         }
