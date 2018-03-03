@@ -327,5 +327,8 @@ public class Constants
 
         public static final double DRIVEBASE_LEFT_MAX_TICKS_PER_SEC = 13600.0;
         public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14300.0;
+
+        public static final double DRIVEBASE_TICKS_END_RANGE = 100;
+        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.5;
     }
 }

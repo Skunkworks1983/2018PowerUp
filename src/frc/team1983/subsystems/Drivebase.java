@@ -57,7 +57,7 @@ public class Drivebase extends Subsystem
 
     }
 
-    public double getFeet(double ticks)
+    public static double getFeet(double ticks)
     {
         double resolution = Constants.MotorMap.Drivebase.ENCODER_RESOLUTION;
         double circumference = Constants.MotorMap.Drivebase.WHEEL_CIRCUMFERENCE;
@@ -67,7 +67,7 @@ public class Drivebase extends Subsystem
         return feet;
     }
 
-    public double getTicks(double feet)
+    public static double getTicks(double feet)
     {
         double resolution = Constants.MotorMap.Drivebase.ENCODER_RESOLUTION;
         double circumference = Constants.MotorMap.Drivebase.WHEEL_CIRCUMFERENCE;

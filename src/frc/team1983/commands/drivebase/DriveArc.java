@@ -1,84 +1,29 @@
 package frc.team1983.commands.drivebase;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.util.motion.MotionProfile;
+import frc.team1983.util.motion.profiles.CruiseProfile;
 import frc.team1983.util.motion.profiles.TrapezoidalProfile;
-import org.apache.logging.log4j.core.Logger;
 
-public class DriveArc extends Command
+public class DriveArc extends DriveProfile
 {
-    private Logger logger;
-    private Drivebase drivebase;
-    private double radius;
-    private double angle;
-    private double time;
-
-    private double leftFeet;
-    private double rightFeet;
-
-    private MotionProfile leftProfile;
-    private MotionProfile rightProfile;
-
-    // feet, degrees, seconds
     public DriveArc(Drivebase drivebase, double radius, double angle, double time)
     {
-        requires(drivebase);
-
-        this.logger = LoggerFactory.createNewLogger(this.getClass());
-
-        this.drivebase = drivebase;
-
-        this.radius = radius;
-        this.angle = angle;
-        this.time = time;
-
-        // todo investigate +/- left/right
-        double width = Constants.MotorMap.Drivebase.WHEELBASE_WIDTH;
-
-        double leftCircumference = (2 * (radius + (width / 2))) * Math.PI;
-        double rightCircumference = (2 * (radius - (width / 2))) * Math.PI;
-
-        this.leftFeet = (angle / 360) * leftCircumference;
-        this.rightFeet = (angle / 360) * rightCircumference;
-
-        // will become three-segment based on paths (todo)
-        leftProfile = new TrapezoidalProfile(drivebase.getTicks(this.leftFeet), time);
-        rightProfile = new TrapezoidalProfile(drivebase.getTicks(this.rightFeet), time);
+        super(drivebase, generateLeftProfile(drivebase, radius, angle, time), generateRightProfile(drivebase, radius, angle, time));
     }
 
-    @Override
-    protected void initialize()
+    private static CruiseProfile generateLeftProfile(Drivebase drivebase, double radius, double angle, double time)
     {
-        drivebase.setLeftProfile(leftProfile);
-        drivebase.setRightProfile(rightProfile);
-
-        drivebase.runProfiles();
+        double leftCircumference = 2 * (radius + Constants.AutoValues.WHEELBASE_RADIUS) * Math.PI;
+        double leftDistance = (angle / 360) * leftCircumference;
+        return new TrapezoidalProfile(Drivebase.getTicks(leftDistance), time);
     }
 
-    @Override
-    protected void execute()
+    private static CruiseProfile generateRightProfile(Drivebase drivebase, double radius, double angle, double time)
     {
-
-    }
-
-    @Override
-    protected boolean isFinished()
-    {
-        return drivebase.profilesAreFinished();
-    }
-
-    @Override
-    protected void interrupted()
-    {
-        end();
-    }
-
-    @Override
-    public void end()
-    {
-        drivebase.stopProfiles();
+        double rightCircumference = 2 * (radius - Constants.AutoValues.WHEELBASE_RADIUS) * Math.PI;
+        double rightDistance = (angle / 360) * rightCircumference;
+        return new TrapezoidalProfile(Drivebase.getTicks(rightDistance), time);
     }
 }

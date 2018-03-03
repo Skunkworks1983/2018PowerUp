@@ -1,15 +1,21 @@
 package frc.team1983.commands.drivebase;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.subsystems.Drivebase;
-import frc.team1983.util.motion.MotionProfile;
-import frc.team1983.util.motion.profiles.TrapezoidalProfile;
 import frc.team1983.util.path.Path;
+import frc.team1983.util.path.PathArc;
+import frc.team1983.util.path.PathComponent;
+import frc.team1983.util.path.PathSegment;
 
-public class FollowPath extends Command
+import java.util.ArrayList;
+import java.util.List;
+
+public class FollowPath extends CommandGroup
 {
     private Drivebase drivebase;
     private Path path;
+
+    private List<DriveProfile> commands;
 
     public FollowPath(Drivebase drivebase, Path path)
     {
@@ -17,6 +23,28 @@ public class FollowPath extends Command
 
         this.drivebase = drivebase;
         this.path = path;
+
+        commands = new ArrayList<>();
+
+        for(int i = 0; i < path.getComponentCount(); i++)
+        {
+            PathComponent component = path.getComponent(i);
+
+            // barf, please kill me
+            if(component.getClass() == PathSegment.class)
+            {
+                PathSegment segment = (PathSegment) component;
+            }
+            else if(component.getClass() == PathArc.class)
+            {
+                PathArc arc = (PathArc) component;
+            }
+        }
+
+        for(DriveProfile command : commands)
+        {
+            addSequential(command);
+        }
     }
 
     @Override
