@@ -51,7 +51,7 @@ public class SimpleTurnAngle extends CommandBase
         targetAngle = degrees;
         gyro = drivebase.getGyro();
 
-        dashboard.add(this, "kP", 0.0);
+        dashboard.add(this, "kP", 0.11);
         dashboard.add(this, "kI", 0.0);
         dashboard.add(this, "kD", 0.0);
         dashboard.add(this, "kF", 0.0);
@@ -64,34 +64,18 @@ public class SimpleTurnAngle extends CommandBase
         if(!gyro.isDead())
         {
             pidSource = new GyroPidInput(drivebase.getGyro());
-            pidOut = new DrivebaseRotationPidOutput(drivebase);
-            turnPid = new PIDController(dashboard.getDouble(this, "kP"),
-                                        dashboard.getDouble(this, "kI"),
-                                        dashboard.getDouble(this, "kD"),
-                                        dashboard.getDouble(this, "kF"),
-                                        pidSource, pidOut);
-            turnPid.setAbsoluteTolerance(Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE);
-            turnPid.setSetpoint(targetAngle + drivebase.getGyro().getAngle());
-            turnPid.setOutputRange(-0.5, 0.5);
-            turnPid.enable();
         }
-
         else if(gyro.isDead()) //switches to encoder if gyro doesn't work
         {
-            logger.info("using encoders");
             pidSource = new EncoderTurnAnglePidInput(drivebase);
-            pidOut = new DrivebaseRotationPidOutput(drivebase);
-            turnPid = new PIDController(dashboard.getDouble(this, "kP"),
-                                        dashboard.getDouble(this, "kI"),
-                                        dashboard.getDouble(this, "kD"),
-                                        dashboard.getDouble(this, "kF"),
-                                        pidSource, pidOut);
-            turnPid.setAbsoluteTolerance(Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE);
-            turnPid.setSetpoint(targetAngle + pidSource.pidGet());
-            turnPid.setOutputRange(-0.5, 0.5);
-            turnPid.enable();
         }
-    logger.info("initialized finished");
+        pidOut = new DrivebaseRotationPidOutput(drivebase);
+        turnPid = new PIDController(.11, 0, 0, 0, pidSource, pidOut);
+        turnPid.setAbsoluteTolerance(Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE);
+        turnPid.setSetpoint(targetAngle + drivebase.getGyro().getAngle());
+        turnPid.setOutputRange(-0.5, 0.5);
+        turnPid.enable();
+        logger.info("initialized finished");
     }
 
     @Override
@@ -107,9 +91,8 @@ public class SimpleTurnAngle extends CommandBase
         logger.info("heading{}", pidSource.pidGet());
         if(turnPid.onTarget())
         {
-            //todo figure out what "recorrection" is
-            //todo figure out why erik is a salty boi
             //counter allows for overshoot and recorrection
+            logger.info("on target");
             counter++;
         }
         if(!turnPid.onTarget() && counter >= 1)

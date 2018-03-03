@@ -152,7 +152,7 @@ public class Constants
 
             public static final double ABSOLUTE_TOLERANCE = 5;
 
-            public static final double DEFAULT_TIMEOUT = 3 / 2.;
+            public static final double DEFAULT_TIMEOUT = 30.;
         }
 
         public static class CollectorRotate
@@ -200,6 +200,8 @@ public class Constants
 
         public static final double MAX_OUTPUT = 0.5;
         public static final double DISTANCE_SCALAR = 1000;
+
+        public static final double DIFFERENTIAL_TURN_ANGLE_BASESPEED = .2;
     }
 
     //this contains all values relevant to the OIMap.
