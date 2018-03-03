@@ -29,16 +29,6 @@ public class FollowPath extends CommandGroup
         for(int i = 0; i < path.getComponentCount(); i++)
         {
             PathComponent component = path.getComponent(i);
-
-            // barf, please kill me
-            if(component.getClass() == PathSegment.class)
-            {
-                PathSegment segment = (PathSegment) component;
-            }
-            else if(component.getClass() == PathArc.class)
-            {
-                PathArc arc = (PathArc) component;
-            }
         }
 
         for(DriveProfile command : commands)
