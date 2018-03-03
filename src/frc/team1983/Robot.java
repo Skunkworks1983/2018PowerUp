@@ -50,7 +50,7 @@ public class Robot extends IterativeRobot
 
     private static Robot instance;
 
-    private SendableChooser autoSelector;
+    private SendableChooser autonomousSelector;
     private Command autonomousCommand;
 
     @Override
@@ -70,10 +70,10 @@ public class Robot extends IterativeRobot
 
         oi.initializeBindings(this);
         robotLogger.info("robotInit");
-        autoSelector = new SendableChooser();
-        autoSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
-        autoSelector.addObject("Scale", new PlaceCubeInScale(dashboard, drivebase));
-        autoSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
+        autonomousSelector = new SendableChooser();
+        autonomousSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
+        autonomousSelector.addObject("Scale", new PlaceCubeInScale(dashboard, drivebase));
+        autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
     }
 
     @Override
@@ -106,7 +106,7 @@ public class Robot extends IterativeRobot
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
 
-        autonomousCommand = (Command) autoSelector.getSelected();
+        autonomousCommand = (Command) autonomousSelector.getSelected();
         Scheduler.getInstance().add(autonomousCommand);
     }
 
