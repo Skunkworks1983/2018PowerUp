@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
 import frc.team1983.commands.autonomous.PlaceCubeInScale;
 import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
@@ -66,6 +67,7 @@ public class Robot extends IterativeRobot
         autonomousSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
         autonomousSelector.addObject("Scale", new PlaceCubeInScale(drivebase, dashboard));
         autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
+        SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
     }
 
     @Override
@@ -99,6 +101,7 @@ public class Robot extends IterativeRobot
         drivebase.setBrakeMode(true);
 
         autonomousCommand = (Command) autonomousSelector.getSelected();
+        robotLogger.info(autonomousSelector.getSelected());
         Scheduler.getInstance().add(autonomousCommand);
     }
 
