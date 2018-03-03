@@ -163,7 +163,7 @@ public class Constants
             public static final double F = 0;//.002;
 
             public static final double UP_TICKS = 0;
-            public static final double DOWN_TICKS = -1300;
+            public static final double DOWN_TICKS = 1300;
         }
 
         //setpoints for motors
@@ -187,10 +187,11 @@ public class Constants
            // {
                 //public static final int slot = 0;
             //TODO: Big ol fill these in when we have a robot
-                public static final double P = 0;
-                public static final double I = 0;
-                public static final double D = 0;
-                public static final double F = 0.0042;
+                public static final double P = 0.09;
+                public static final double I = 0.00005;
+                public static final double D = 0.15;
+                public static final double F = 0.01;
+                public static final int I_ZONE = 500;
             // }
             /* public static class Down
             {

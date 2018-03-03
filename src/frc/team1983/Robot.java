@@ -120,8 +120,6 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 
         drivebase.setBrakeMode(false);
-        Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
-        //Scheduler.getInstance().add(new CollectorRotate(collector, true));
     }
 
     @Override

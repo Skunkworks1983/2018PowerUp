@@ -30,7 +30,7 @@ public class OI
 {
     private DriverStation ds;
 
-    private Joystick left, right, panel, manual;
+    public Joystick left, right, panel, manual;
     private HashMap<Joystick, JoystickButton[]> joystickButtons;
 
     private Logger logger;
