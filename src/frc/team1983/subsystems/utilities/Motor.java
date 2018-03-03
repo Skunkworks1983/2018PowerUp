@@ -61,8 +61,6 @@ public class Motor extends TalonSRX
 
     public void setProfile(MotionProfile profile)
     {
-        profile.configSVA(Ks, Kv, Ka);
-
         if(manager == null)
             manager = new ProfileController(this, Robot.getInstance());
 
@@ -90,30 +88,6 @@ public class Motor extends TalonSRX
     public boolean isProfileFinished()
     {
         return manager != null && manager.isProfileFinished();
-    }
-
-    @Override
-    public void set(ControlMode mode, double value)
-    {
-        if(mode == ControlMode.MotionProfile)
-        {
-            value = Kp * super.getClosedLoopError(0) +
-                    Ki * super.getIntegralAccumulator(0) +
-                    Kd * super.getErrorDerivative(0) +
-                    Ks +
-                    Kv * super.getActiveTrajectoryVelocity();
-
-            for(PidControllerWrapper controller : pids)
-            {
-                value += controller.get();
-            }
-
-            super.set(mode, value);
-        }
-        else
-        {
-            super.set(mode, value);
-        }
     }
 
     @Override

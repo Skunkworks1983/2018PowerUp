@@ -60,6 +60,8 @@ public class ProfileController
     private void streamProfile(MotionProfile profile)
     {
         boolean state = signal.isEnabled();
+
+        /*
         // lock runnable
         signal.setEnabled(false);
 
@@ -90,7 +92,7 @@ public class ProfileController
 
             parent.pushMotionProfileTrajectory(point);
         }
-
+        */
         // unlock runnable
         signal.setEnabled(state);
     }

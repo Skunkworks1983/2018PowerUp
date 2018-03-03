@@ -4,32 +4,23 @@ import java.util.List;
 
 public class MotionProfile
 {
-    protected double Ks = 0, Kv = 0, Ka = 0;
-
     protected List<MotionSegment> segments;
 
-    protected double distance;
     protected double duration;
 
-    protected double vel_max;
-    protected double acc_max;
-
-    protected int pointDuration = 100; // ms
+    // constraints
+    protected double maxVelocity;
+    protected double maxAccel;
 
     public MotionProfile(List<MotionSegment> segments)
     {
         this.segments = segments;
     }
 
-    public double evaluateOutput(double time)
-    {
-        return (evaluateVelocity(time) * Kv) + (evaluateAccelertion(time) * Ka) + Ks;
-    }
-
     public double evaluatePosition(double time)
     {
         // check if time is in domain of profile
-        if(0 <= time && time <= duration)
+        if(0 <= time && time <= getDuration())
         {
             double area = 0;
 
@@ -49,7 +40,7 @@ public class MotionProfile
                 else if(segment.getStart().getTime() <= time)
                 {
                     // evaluate a portion of the segment, [start, time]
-                    vel_2 = segment.evaluate(time);
+                    vel_2 = segment.evaluateVelocity(time);
                     dt = time - segment.getStart().getTime();
                 }
 
@@ -67,17 +58,17 @@ public class MotionProfile
 
     public double evaluateVelocity(double time)
     {
-        return getSegment(time).evaluate(time);
+        return getSegment(time).evaluateVelocity(time);
     }
 
-    public double evaluateAccelertion(double time)
+    public double evaluateAcceleration(double time)
     {
-        return getSegment(time).getAcceleration();
+        return getSegment(time).evaluateAcceleration();
     }
 
     protected MotionSegment getSegment(double time)
     {
-        if(0 <= time && time <= segments.size())
+        if(0 <= time && time <= getDuration())
         {
             for(MotionSegment segment : segments)
             {
@@ -95,35 +86,60 @@ public class MotionProfile
         }
     }
 
-    public void configSVA(double Ks, double Kv, double Ka)
+    public boolean isContinuous()
     {
-        this.Ks = Ks;
-        this.Kv = Kv;
-        this.Ka = Ka;
+        boolean continuous = true;
+
+        for(int i = 0; i < segments.size(); i++)
+        {
+            if(i > 1)
+            {
+                if(segments.get(i).getStart().getVelocity() != segments.get(i - 1).getEnd().getVelocity() ||
+                        segments.get(i).getStart().getTime() != segments.get(i - 1).getEnd().getTime())
+                    continuous = false;
+            }
+        }
+
+        return continuous;
     }
 
-    public double getDistance()
-    {
-        return distance;
-    }
-
-    public double getTotalTime()
+    public double getDuration()
     {
         return duration;
     }
 
+    public double getDistance()
+    {
+        return evaluatePosition(getDuration());
+    }
+
+    public double getInitialVelocity()
+    {
+        return evaluateVelocity(0);
+    }
+
+    protected void setInitialVelocity(double velocity)
+    {
+        getSegment(0).getStart().setVelocity(velocity);
+    }
+
+    public double getFinalVelocity()
+    {
+        return evaluateVelocity(duration);
+    }
+
+    protected void setFinalVelocity(double velocity)
+    {
+        getSegment(duration).getEnd().setVelocity(velocity);
+    }
+
     public double getMaxVelocity()
     {
-        return vel_max;
+        return maxVelocity;
     }
 
     public double getMaxAcceleration()
     {
-        return acc_max;
-    }
-
-    public int getPointDuration()
-    {
-        return pointDuration;
+        return maxAccel;
     }
 }

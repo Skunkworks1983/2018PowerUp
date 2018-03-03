@@ -137,19 +137,11 @@ public class Drivebase extends Subsystem
 
     public void setLeftProfile(MotionProfile profile)
     {
-        profile.configSVA(Constants.PidConstants.Drivebase.Left.Ks,
-                          Constants.PidConstants.Drivebase.Left.Kv,
-                          Constants.PidConstants.Drivebase.Left.Ka);
-
         left1.setProfile(profile);
     }
 
     public void setRightProfile(MotionProfile profile)
     {
-        profile.configSVA(Constants.PidConstants.Drivebase.Right.Ks,
-                          Constants.PidConstants.Drivebase.Right.Kv,
-                          Constants.PidConstants.Drivebase.Right.Ka);
-
         right1.setProfile(profile);
     }
 
