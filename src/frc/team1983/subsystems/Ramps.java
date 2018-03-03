@@ -73,6 +73,14 @@ public class Ramps extends Subsystem
         }
     }
 
+    public void reset()
+    {
+        unprop(true);
+        unprop(false);
+        lock(true);
+        lock(false);
+    }
+
     public void initDefaultCommand()
     {
 
