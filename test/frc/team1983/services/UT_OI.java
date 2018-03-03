@@ -48,9 +48,9 @@ public class UT_OI
 
         when(left.getButtonCount()).thenReturn(2);
 
-        HashMap joystickButtons = new HashMap<Joystick, JoystickButton[]>();
+        HashMap<Joystick, JoystickButton[]> joystickButtons = new HashMap<>();
 
-        joystickButtons.put(left, joy1button1);
+        joystickButtons.put(left, new JoystickButton[]{joy1button1});
 
         oi = new OI(left, right, panel, joystickButtons);
     }
