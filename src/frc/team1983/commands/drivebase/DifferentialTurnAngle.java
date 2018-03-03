@@ -53,10 +53,6 @@ public class DifferentialTurnAngle extends CommandBase
         targetAngle = degrees;
         counter = 0;
         logger.info("targetAngle{}", targetAngle);
-        if(targetAngle < 0)
-        {
-
-        }
 
         dashboard.add(this, "kP", 0.0);
         dashboard.add(this, "kI", 0.0);
