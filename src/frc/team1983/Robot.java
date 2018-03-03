@@ -62,10 +62,11 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
-        smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLY_FOLDER);
-        pidSource = new GyroPidInput(drivebase.getGyro());
+        
+        startTimer();
+        smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLYFOLDER);
+        endTimer("smelly parser construction");
 
-        oi.initializeBindings(this);
         robotLogger.info("robotInit");
     }
 
