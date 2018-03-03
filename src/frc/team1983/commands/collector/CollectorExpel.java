@@ -13,19 +13,29 @@ public class CollectorExpel extends CommandBase
     private Collector collector;
 
     private Logger logger;
+    private boolean shoot;
 
-    public CollectorExpel(Collector collector)
+    public CollectorExpel(Collector collector, boolean shoot)
     {
         logger = LoggerFactory.createNewLogger(CollectorExpel.class);
         requires(collector);
         this.collector = collector;
+        this.shoot = shoot;
     }
 
     @Override
     public void initialize()
     {
-        collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
-        collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
+        if(shoot)
+        {
+            collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
+            collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
+        }
+        else
+        {
+            collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_SLOW_EXPEL_SPEED);
+            collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_SLOW_EXPEL_SPEED);
+        }
     }
 
     @Override

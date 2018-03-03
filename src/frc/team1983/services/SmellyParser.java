@@ -84,6 +84,7 @@ public class SmellyParser
 
             if(!parser.currentName().equals("points")) //is meta-data
             {
+                //TODO: if there's metadata at some point, do something here
             }
             else
             {
@@ -95,7 +96,7 @@ public class SmellyParser
                     parser.nextToken(); //get to first key, which we know is "type"
                     logger.trace("First key: " + parser.getValueAsString());
                     parser.nextToken(); //get to the type value
-                    logger.trace("First value: " +parser.getValueAsString());
+                    logger.trace("First value: " + parser.getValueAsString());
 
                     jsonComponent = new HashMap<>();
                     jsonComponent.put("type", parser.getValueAsString());
@@ -151,7 +152,7 @@ public class SmellyParser
                     }
 
                     newComponent.setType((String) jsonComponent.get("type"));
-                    newComponent.setAction((String) jsonComponent.get("action"));
+                    newComponent.setAction((PathComponent.Action) jsonComponent.get("action"));
                     newComponent.setTime((double) jsonComponent.get("time"));
                     newComponent.setDelay((double) jsonComponent.get("delay"));
 

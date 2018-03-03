@@ -3,33 +3,35 @@ package frc.team1983.commands.elevator;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.OI;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Elevator;
+import org.apache.logging.log4j.core.Logger;
 
 public class SetElevatorSpeed extends CommandBase
 {
-    private OI oi;
     private Elevator elevator;
     private double speed;
+    private Logger logger;
 
-    public SetElevatorSpeed(OI oi, Elevator elevator, double speed)
+    public SetElevatorSpeed(Elevator elevator, double speed)
     {
-        this.oi = oi;
         this.elevator = elevator;
         this.speed = speed;
+
+        logger = LoggerFactory.createNewLogger(this.getClass());
     }
 
     @Override
-    public void initialize() {}
+    public void initialize()
+    {
+        logger.debug("Set elevator to {}", speed);
+        elevator.set(ControlMode.PercentOutput, speed);
+    }
 
     @Override
     public void execute()
     {
-        //If the manual switch is not pressed, don't do anything.
-        if(oi.isPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ManualControl.MANUAL_SWITCH)) //has not been tested
-        {
-            elevator.set(ControlMode.PercentOutput, speed);
-        }
     }
 
     @Override

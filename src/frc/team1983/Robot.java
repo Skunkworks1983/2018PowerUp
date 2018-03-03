@@ -6,10 +6,17 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.commands.drivebase.RunTankDrive;
+import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
+import frc.team1983.commands.collector.CollectorIntake;
+import frc.team1983.commands.collector.CollectorRotate;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1983.commands.debugging.DisplayButtonPresses;
 import frc.team1983.commands.debugging.RunOneMotor;
+import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
@@ -62,12 +69,11 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
+        
         startTimer();
         smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLYFOLDER);
         endTimer("smelly parser construction");
-        pidSource = new GyroPidInput(drivebase.getGyro());
 
-        oi.initializeBindings(this);
         robotLogger.info("robotInit");
     }
 
@@ -89,7 +95,9 @@ public class Robot extends IterativeRobot
     }
 
     @Override
-    public void disabledPeriodic(){}
+    public void disabledPeriodic()
+    {
+    }
 
     @Override
     public void autonomousInit()
@@ -102,6 +110,8 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
+
+        Scheduler.getInstance().add(new PlaceCubeInExchangeZone(dashboard, drivebase));
     }
 
     @Override
@@ -114,23 +124,25 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopInit()
     {
+        Scheduler.getInstance().removeAll();
+        oi.initializeBindings(this);
+
         if(runOneMotor != null)
         {
             runOneMotor.end();
         }
-        Scheduler.getInstance().removeAll();
+
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 
         drivebase.setBrakeMode(false);
+        Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
+        //Scheduler.getInstance().add(new CollectorRotate(collector, true));
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-
-        robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
-        elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
     }
 
     @Override
@@ -151,6 +163,7 @@ public class Robot extends IterativeRobot
         motorUp = new DigitalInput(5);
         motorDown = new DigitalInput(4);
         manualSpeed = new AnalogInput(2);
+
 
         if(runOneMotor == null)
         {

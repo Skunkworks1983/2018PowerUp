@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team1983.Robot;
+import frc.team1983.commands.CommandBase;
 import frc.team1983.commands.drivebase.DriveArc;
 
 public class PathTanarc extends PathComponent
@@ -45,6 +46,7 @@ public class PathTanarc extends PathComponent
     public Command getCommand()
     {
         CommandGroup group = new CommandGroup();
+        CommandBase action = super.getAction();
         group.addSequential(new DriveArc(Robot.getInstance().getDrivebase(), radius, angle, time, isRight));
         group.addSequential(new WaitCommand(delay));
 
