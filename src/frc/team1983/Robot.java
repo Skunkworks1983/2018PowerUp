@@ -6,7 +6,13 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
+import frc.team1983.commands.collector.CollectorIntake;
+import frc.team1983.commands.collector.CollectorRotate;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
@@ -41,8 +47,6 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private StatefulDashboard dashboard;
-    private Subsystem subsystem;
-    private GyroPidInput pidSource;
 
     private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
 
@@ -66,9 +70,6 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
-        pidSource = new GyroPidInput(drivebase.getGyro());
-
-        oi.initializeBindings(this);
         robotLogger.info("robotInit");
         autonomousSelector = new SendableChooser();
         autonomousSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
@@ -120,27 +121,25 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopInit()
     {
+        Scheduler.getInstance().removeAll();
+        oi.initializeBindings(this);
+
         if(runOneMotor != null)
         {
             runOneMotor.end();
         }
-        Scheduler.getInstance().removeAll();
+
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 
         drivebase.setBrakeMode(false);
-        //Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+        Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
         //Scheduler.getInstance().add(new CollectorRotate(collector, true));
-
-        Scheduler.getInstance().add(new DisplayButtonPresses(oi));
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-
-        //robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
-        //elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
     }
 
     @Override
