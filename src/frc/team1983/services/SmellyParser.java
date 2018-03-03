@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.util.path.Path;
@@ -42,13 +41,13 @@ public class SmellyParser
         logger = LoggerFactory.createNewLogger(this.getClass());
         components = new ArrayList<>();
         filter = (file, name) -> name.toLowerCase().endsWith(".json");
-        dashboard.putNumber(Constants.SmellyParser.AUTOPATHKEY, 0.0);
+        dashboard.putNumber(Constants.SmellyParser.AUTO_PATH_KEY, 0.0);
 
         files = dir.listFiles(filter);
         if(files == null)
         {
             files = new File[1];
-            files[0] = Constants.SmellyParser.DEFAULTPATH;
+            files[0] = Constants.SmellyParser.DEFAULT_PATH;
             logger.error("Found no json files on usb drive, using default path");
         }
 
@@ -65,13 +64,13 @@ public class SmellyParser
         {
             components.clear(); //clear so we are recording a new path
 
-            if(dashboard.getNumber(Constants.SmellyParser.AUTOPATHKEY, 0.0) < files.length) //validate input
+            if(dashboard.getNumber(Constants.SmellyParser.AUTO_PATH_KEY, 0.0) < files.length) //validate input
             {
-                file = files[dashboard.getNumber(Constants.SmellyParser.AUTOPATHKEY,0.0).intValue()]; //get from dashboard
+                file = files[dashboard.getNumber(Constants.SmellyParser.AUTO_PATH_KEY, 0.0).intValue()]; //get from dashboard
             }
             else
             {
-                file = Constants.SmellyParser.DEFAULTPATH; //If not valid, use default
+                file = Constants.SmellyParser.DEFAULT_PATH; //If not valid, use default
             }
             logger.info("Using " + file);
 

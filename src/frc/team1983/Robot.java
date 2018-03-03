@@ -49,7 +49,7 @@ public class Robot extends IterativeRobot
     private Subsystem subsystem;
     private GyroPidInput pidSource;
 
-    private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
+    private ArrayList<ProfileController> profileControllers = new ArrayList<>();
     private static Robot instance;
     private double startTime;
 
@@ -102,9 +102,7 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
-        startTimer();
         smellyParser.constructPath(); //Needs to happen before SmellyDrive
-        endTimer("Path construction");
 
         robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
@@ -232,15 +230,5 @@ public class Robot extends IterativeRobot
             instance = new Robot();
         }
         return instance;
-    }
-
-    private void startTimer()
-    {
-        startTime = System.currentTimeMillis();
-    }
-
-    private void endTimer(String name)
-    {
-        robotLogger.info(name + " took " + (System.currentTimeMillis() - startTime));
     }
 }
