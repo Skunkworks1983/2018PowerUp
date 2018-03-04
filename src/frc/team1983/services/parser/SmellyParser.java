@@ -1,24 +1,19 @@
 package frc.team1983.services.parser;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.util.path.Path;
 import frc.team1983.util.path.PathComponent;
-import frc.team1983.util.path.PathTanarc;
-import frc.team1983.util.path.PathTanline;
 import org.apache.logging.log4j.core.Logger;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 
 public class SmellyParser
@@ -72,11 +67,14 @@ public class SmellyParser
             }
             logger.info("Using " + file);
 
-            path = mapper.readValue(file, Path.class);
+            logger.info(mapper.readTree(file).get("points").toString());
+            PathComponent[] paths = mapper.readValue(mapper.readTree(file).get("points").toString(), new TypeReference<PathComponent[]>(){});
+
+            path = new Path(new ArrayList<>(Arrays.asList(paths)));
         }
         catch(IOException e)
         {
-            logger.error("IOException {} when constructing path.", e);
+            logger.error("IOException when constructing path", e);
         }
     }
 

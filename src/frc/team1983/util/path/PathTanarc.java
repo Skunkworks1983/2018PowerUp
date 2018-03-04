@@ -1,5 +1,6 @@
 package frc.team1983.util.path;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -39,7 +40,7 @@ public class PathTanarc extends PathComponent
         return isRight;
     }
 
-    public void setRight(boolean right)
+    public void setIsRight(boolean right)
     {
         isRight = right;
     }

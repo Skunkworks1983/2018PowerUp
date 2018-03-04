@@ -1,8 +1,8 @@
 package frc.team1983.util.path;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team1983.services.parser.PathComponentType;
 import frc.team1983.services.parser.SmellyDeserializer;
 import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
@@ -15,14 +15,16 @@ import frc.team1983.settings.Constants;
 abstract public class PathComponent
 {
     protected double time, delay;
-    protected String type;
+    protected PathComponentType type;
+    protected Action action;
 
     public enum Action {
-        @JsonProperty("action")
+        NONE,
         INTAKE,
         EXPEL,
         SWITCH,
-        SCALE
+        SCALE,
+        BOTTOM
     }
 
     public PathComponent()
@@ -39,12 +41,12 @@ abstract public class PathComponent
         this.time = time;
     }
 
-    public String getType()
+    public PathComponentType getType()
     {
         return type;
     }
 
-    public void setType(String type)
+    public void setType(PathComponentType type)
     {
         this.type = type;
     }
@@ -52,22 +54,26 @@ abstract public class PathComponent
     public CommandBase getAction()
     {
         Robot robot = Robot.getInstance();
-        if(action == "intake")
+        if(action == Action.INTAKE)
         {
             return new CollectorIntake(robot.getCollector());
         }
-        else if(action == "expel")
+        else if(action == Action.EXPEL)
         {
             //TODO: decide whether we want shoot or not
             return new CollectorExpel(robot.getCollector(), false);
         }
-        else if(action == "switch")
+        else if(action == Action.SWITCH)
         {
             return new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator(), robot.getOI());
         }
-        else if(action == "scale")
+        else if(action == Action.SCALE)
         {
             return new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, robot.getElevator(), robot.getOI());
+        }
+        else if(action == Action.BOTTOM)
+        {
+            return new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator(), robot.getOI());
         }
         else
         {
@@ -75,7 +81,7 @@ abstract public class PathComponent
         }
     }
 
-    public void setAction(String action)
+    public void setAction(Action action)
     {
         this.action = action;
     }
