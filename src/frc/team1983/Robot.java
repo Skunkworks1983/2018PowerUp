@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
+import frc.team1983.commands.drivebase.FollowPath;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -16,7 +17,6 @@ import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
-import frc.team1983.services.SmellyParser;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
@@ -27,9 +27,14 @@ import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.util.control.ProfileController;
+import frc.team1983.util.path.Path;
+import frc.team1983.util.path.PathComponent;
+import frc.team1983.util.path.PathTanarc;
+import frc.team1983.util.path.PathTanline;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
@@ -40,7 +45,6 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private StatefulDashboard dashboard;
-    private SmellyParser smellyParser;
     private DashboardWrapper dashboardWrapper;
     private Subsystem subsystem;
     private GyroPidInput pidSource;
@@ -67,8 +71,6 @@ public class Robot extends IterativeRobot
         ramps = new Ramps();
 
         robotLogger.info("robotInit");
-
-
     }
 
     @Override
@@ -97,21 +99,23 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
-        smellyParser.constructPath(); //Needs to happen before SmellyDrive
-
         robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
         drivebase.getGyro().initGyro();
 
         ramps.reset();
 
-        Scheduler.getInstance().add(new DriveFeet(drivebase, 5, 2));
+        Path path = new Path(new ArrayList<PathComponent>(Arrays.asList(
+            new PathTanline(5, 2),
+            new PathTanarc(3, 90, 2)
+                                                                       )));
+
+        Scheduler.getInstance().add(new FollowPath(drivebase, path));
     }
 
     @Override
     public void autonomousPeriodic()
     {
-        GameDataPoller.pollGameData();
         Scheduler.getInstance().run();
     }
 

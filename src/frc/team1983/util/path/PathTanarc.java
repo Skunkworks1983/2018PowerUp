@@ -5,6 +5,13 @@ public class PathTanarc extends PathComponent
     private double radius, angle;
     private boolean isRight;
 
+    public PathTanarc(double radius, double angle, double time)
+    {
+        this.radius = radius;
+        this.angle = angle;
+        this.time = time;
+    }
+
     public double getRadius()
     {
         return radius;

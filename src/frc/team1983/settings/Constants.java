@@ -145,7 +145,7 @@ public class Constants
             {
                 public static final double Kp = 0.5;
                 public static final double Ki = 0;
-                public static final double Kd = 0.15;
+                public static final double Kd = 0.2;
                 public static final double Kv = 1 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC;
                 public static final double Ka = 1 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75);
                 public static final double Ks = 0;
@@ -155,7 +155,7 @@ public class Constants
             {
                 public static final double Kp = 0.5;
                 public static final double Ki = 0;
-                public static final double Kd = 0.15;
+                public static final double Kd = 0.2;
                 public static final double Kv = 1 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC;
                 public static final double Ka = 1 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75);
                 public static final double Ks = 0;
@@ -334,6 +334,6 @@ public class Constants
         public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14300.0;
 
         public static final double DRIVEBASE_TICKS_END_RANGE = 100;
-        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.5;
+        public static final double DRIVEBASE_IN_RANGE_END_TIME = 1;
     }
 }

@@ -4,6 +4,12 @@ public class PathTanline extends PathComponent
 {
     private double distance;
 
+    public PathTanline(double distance, double time)
+    {
+        this.distance = distance;
+        this.time = time;
+    }
+
     public double getDistance()
     {
         return distance;

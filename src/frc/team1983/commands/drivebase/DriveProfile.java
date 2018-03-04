@@ -14,6 +14,8 @@ public class DriveProfile extends CommandBase
     private Drivebase drivebase;
     protected CruiseProfile leftProfile, rightProfile;
 
+    protected boolean finished = false;
+
     private double inRangeTime = 0;
     private double lastMilli = 0;
 
@@ -46,7 +48,7 @@ public class DriveProfile extends CommandBase
     {
         if(isOnTarget())
         {
-            inRangeTime += (System.currentTimeMillis() - lastMilli);
+            inRangeTime += (System.currentTimeMillis() - lastMilli) * 0.001;
         }
         else
         {
@@ -55,7 +57,7 @@ public class DriveProfile extends CommandBase
 
         lastMilli = System.currentTimeMillis();
 
-        return drivebase.profilesAreFinished() && isOnTarget() && inRangeTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME;
+        return finished || drivebase.profilesAreFinished() && isOnTarget() && inRangeTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME;
     }
 
     @Override
@@ -67,13 +69,18 @@ public class DriveProfile extends CommandBase
     @Override
     public void end()
     {
+        finished = true;
+
         drivebase.stopProfiles();
+
+        System.out.println("FINISHED left error: " + Drivebase.getFeet(drivebase.getLeftError()) +
+                                 " , right error: " + Drivebase.getFeet(drivebase.getRightError()));
     }
 
     public boolean isOnTarget()
     {
-        return Math.abs(drivebase.getLeftEncoderValue() - leftProfile.getDistance()) < Constants.Motion.DRIVEBASE_TICKS_END_RANGE &&
-               Math.abs(drivebase.getRightEncoderValue() - rightProfile.getDistance()) < Constants.Motion.DRIVEBASE_TICKS_END_RANGE;
+        return Math.abs(drivebase.getLeftEncoderValue() - leftProfile.getDistance()) <= Constants.Motion.DRIVEBASE_TICKS_END_RANGE &&
+               Math.abs(drivebase.getRightEncoderValue() - rightProfile.getDistance()) <= Constants.Motion.DRIVEBASE_TICKS_END_RANGE;
     }
 
     // ohhhhh my god please

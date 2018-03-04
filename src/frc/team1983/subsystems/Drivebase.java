@@ -47,9 +47,17 @@ public class Drivebase extends Subsystem
                             Constants.PidConstants.Drivebase.Left.Ki,
                             Constants.PidConstants.Drivebase.Left.Kd, 0);
 
+        left1.configSVA(0, Constants.PidConstants.Drivebase.Left.Ks,
+                           Constants.PidConstants.Drivebase.Left.Kv,
+                           Constants.PidConstants.Drivebase.Left.Ka);
+
         right1.configPIDF(0, Constants.PidConstants.Drivebase.Right.Kp,
                              Constants.PidConstants.Drivebase.Right.Ki,
                              Constants.PidConstants.Drivebase.Right.Kd, 0);
+
+        right1.configSVA(0, Constants.PidConstants.Drivebase.Right.Ks,
+                            Constants.PidConstants.Drivebase.Right.Kv,
+                            Constants.PidConstants.Drivebase.Right.Ka);
     }
 
     public void initDefaultCommand()
@@ -97,6 +105,18 @@ public class Drivebase extends Subsystem
     public double getRightEncoderValue()
     {
         return right1.getSelectedSensorPosition(0);
+    }
+
+    // u
+    public double getLeftError()
+    {
+        return left1.getClosedLoopError(0);
+    }
+
+    // u
+    public double getRightError()
+    {
+        return right1.getClosedLoopError(0);
     }
 
     // u/100ms

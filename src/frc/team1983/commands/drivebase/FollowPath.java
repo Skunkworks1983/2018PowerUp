@@ -44,7 +44,11 @@ public class FollowPath extends CommandGroup
             {
                 PathTanline line = (PathTanline) component;
                 commands.add(new DriveFeet(drivebase, line.getDistance(), line.getTime()));
-                commands.add(new Wait(line.getDelay()));
+            }
+
+            if(component.getDelay() > 0)
+            {
+                commands.add(new Wait(component.getDelay()));
             }
         }
 
@@ -69,7 +73,17 @@ public class FollowPath extends CommandGroup
     @Override
     protected boolean isFinished()
     {
-        return commands.get(commands.size() - 1).isFinished();
+        boolean allFinished = true;
+
+        for(CommandBase command : commands)
+        {
+            if(!command.isFinished())
+            {
+                allFinished = false;
+            }
+        }
+
+        return allFinished;
     }
 
     @Override

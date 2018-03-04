@@ -19,8 +19,6 @@ public class Motor extends TalonSRX
     private boolean hasEncoder = false;
     public ProfileController manager;
 
-    public List<PidControllerWrapper> pids = new ArrayList<PidControllerWrapper>();
-
     public Motor(int port, boolean reversed)
     {
         super(port);
@@ -53,10 +51,19 @@ public class Motor extends TalonSRX
         this.Ka = a;
     }
 
-    // don't need this method but it makes things look more readable
-    public void follow(Motor leader)
+    public double getKs()
     {
-        set(ControlMode.Follower, leader.getDeviceID());
+        return Ks;
+    }
+
+    public double getKv()
+    {
+        return Ks;
+    }
+
+    public double getKa()
+    {
+        return Ka;
     }
 
     public void setProfile(MotionProfile profile)
@@ -88,12 +95,6 @@ public class Motor extends TalonSRX
     public boolean isProfileFinished()
     {
         return manager != null && manager.isProfileFinished();
-    }
-
-    @Override
-    public void set(ControlMode mode, double value)
-    {
-        super.set(mode, value);
     }
 
     @Override
