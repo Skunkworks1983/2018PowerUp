@@ -62,12 +62,18 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
+
         robotLogger.info("robotInit");
+
         autonomousSelector = new SendableChooser();
         autonomousSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
         autonomousSelector.addObject("Scale", new PlaceCubeInScale(drivebase, dashboard));
         autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
         SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
+
+
+
+
     }
 
     @Override
@@ -103,6 +109,8 @@ public class Robot extends IterativeRobot
         autonomousCommand = (Command) autonomousSelector.getSelected();
         robotLogger.info(autonomousSelector.getSelected());
         Scheduler.getInstance().add(autonomousCommand);
+        SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
+        SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
     }
 
     @Override
@@ -134,6 +142,9 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+        SmartDashboard.updateValues();
+        SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
+        SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
     }
 
     @Override
