@@ -12,12 +12,12 @@ import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1983.commands.debugging.DisplayButtonPresses;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
-import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.OI;
+import frc.team1983.services.SmellyParser;
+import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
@@ -40,20 +40,23 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private StatefulDashboard dashboard;
+    private SmellyParser smellyParser;
+    private DashboardWrapper dashboardWrapper;
     private Subsystem subsystem;
     private GyroPidInput pidSource;
 
-    private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
+    private ArrayList<ProfileController> profileControllers = new ArrayList<>();
+    private static Robot instance;
+    private double startTime;
 
     private RunOneMotor runOneMotor;
-
-    private static Robot instance;
 
     @Override
     public void robotInit()
     {
         robotLogger = LoggerFactory.createNewLogger(Robot.class);
-        dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
+        dashboardWrapper = new DashboardWrapper();
+        dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
         dashboard.populate();
 
         oi = new OI(DriverStation.getInstance());
@@ -61,10 +64,8 @@ public class Robot extends IterativeRobot
         drivebase = new Drivebase();
         collector = new Collector();
         elevator = new Elevator();
-        //ramps = new Ramps();
-        pidSource = new GyroPidInput(drivebase.getGyro());
+        ramps = new Ramps();
 
-        oi.initializeBindings(this);
         robotLogger.info("robotInit");
 
 
@@ -96,6 +97,8 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
+        smellyParser.constructPath(); //Needs to happen before SmellyDrive
+
         robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
         drivebase.getGyro().initGyro();
@@ -121,24 +124,25 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopInit()
     {
+        Scheduler.getInstance().removeAll();
+        oi.initializeBindings(this);
+
         if(runOneMotor != null)
         {
             runOneMotor.end();
         }
-        Scheduler.getInstance().removeAll();
+
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 
         drivebase.setBrakeMode(false);
-        //Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+        Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
         //Scheduler.getInstance().add(new CollectorRotate(collector, true));
-
-        Scheduler.getInstance().add(new DisplayButtonPresses(oi));
     }
 
     @Override
     public void teleopPeriodic()
     {
-
+        Scheduler.getInstance().run();
     }
 
     @Override

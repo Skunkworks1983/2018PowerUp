@@ -23,8 +23,6 @@ public class CollectorIntake extends CommandBase
 
         leftCounter = Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME;
         rightCounter = Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME;
-
-        requires(collector);
     }
 
     @Override

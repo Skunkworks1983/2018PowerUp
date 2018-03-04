@@ -91,6 +91,12 @@ public class Motor extends TalonSRX
     }
 
     @Override
+    public void set(ControlMode mode, double value)
+    {
+        super.set(mode, value);
+    }
+
+    @Override
     public ErrorCode config_kP(int slotIdx, double value, int timeout)
     {
         this.Kp = value;
