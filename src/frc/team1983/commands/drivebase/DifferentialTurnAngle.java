@@ -71,6 +71,7 @@ public class DifferentialTurnAngle extends CommandBase
     public void initialize()
     {
         //initialAngle = encoderTurnAnglePidInput.pidGet();
+
         initialAngle = gyroPidInput.pidGet();
         pivotPidSource = new DifferentialTurnAnglePidInput(drivebase);
         if(targetAngle < 0)
@@ -93,7 +94,7 @@ public class DifferentialTurnAngle extends CommandBase
         adjustmentPidSource = new GyroPidInput(gyro);
         adjustmentPidOut = new DifferentialAdjustmentPidOutput(pivotPidOut);
         adjustmentPid = new PIDController(dashboard.getDouble(this, "adjustmentP"),
-                                          dashboard.getDouble(this, "adjustmentI"),
+                                          0,
                                           dashboard.getDouble(this, "adjustmentD"),
                                           dashboard.getDouble(this, "adjustmentF"),
                                           adjustmentPidSource, adjustmentPidOut);
@@ -101,11 +102,13 @@ public class DifferentialTurnAngle extends CommandBase
         adjustmentPid.setAbsoluteTolerance(Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE);
         adjustmentPid.setOutputRange(-.5, .5);
         adjustmentPid.enable();
+
     }
 
     @Override
     public void execute()
     {
+
         logger.debug("DifferentialTurnAngle executed");
         error = Math.abs(targetAngle - (gyroPidInput.pidGet() - initialAngle));
         logger.info("error{}", adjustmentPid.getError());

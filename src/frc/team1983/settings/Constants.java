@@ -131,7 +131,7 @@ public class Constants
     public static class PidConstants
     {
         //PIDF values for the DriveStraight command
-        public static class DriveStrightPid
+        public static class DriveStraightPid
         {
             public static final double P = 0.11;
             public static final double I = 0;
@@ -145,14 +145,31 @@ public class Constants
         //PIDF values for the SimpleTurnAngle command
         public static class TurnAnglePid
         {
-            public static final double P = 0.005; //TODO: tune pid
-            public static final double I = 0;
-            public static final double D = 0;
-            public static final double F = 0;
+            public static class DifferentialAdjustmentPid
+            {
+                public static final double P = 0.0195; //TODO: tune pid
+                public static final double I = 0;
+                public static final double D = 0.08;
+                public static final double F = 0;
+            }
+            public static class DifferentialPivotPid
+            {
+                public static final double P = 0.00001;
+                public static final double I = 0;
+                public static final double D = 0;
+                public static final double F = 0;
+            }
+            public static class SimpleTurnPid
+            {
+                public static final double P = 0;
+                public static final double I = 0;
+                public static final double D = 0;
+                public static final double F = 0;
+            }
 
-            public static final double ABSOLUTE_TOLERANCE = 5;
+            public static final double ABSOLUTE_TOLERANCE = 3;
 
-            public static final double DEFAULT_TIMEOUT = 30.;
+            public static final double DEFAULT_TIMEOUT = 2.;
         }
 
         public static class CollectorRotate
@@ -201,7 +218,7 @@ public class Constants
         public static final double MAX_OUTPUT = 0.5;
         public static final double DISTANCE_SCALAR = 1000;
 
-        public static final double DIFFERENTIAL_TURN_ANGLE_BASESPEED = .2;
+        public static final double DIFFERENTIAL_TURN_ANGLE_BASESPEED = .26;
     }
 
     //this contains all values relevant to the OIMap.

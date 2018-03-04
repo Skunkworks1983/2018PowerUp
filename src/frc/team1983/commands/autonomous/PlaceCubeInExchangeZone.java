@@ -2,6 +2,7 @@ package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.SimpleTurnAngle;
 import frc.team1983.services.StatefulDashboard;
@@ -31,11 +32,11 @@ public class PlaceCubeInExchangeZone extends CommandGroup
         //these are approximate values! they'll be subbed out later for stuff that works with motion profiling
         //goes forward and crosses the line, then turns toward middle
         super.addSequential(new DriveStraight(dashboard, 5+ Constants.AutoValues.DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT, drivebase, .25));
-        super.addSequential(new SimpleTurnAngle(dashboard, 90, drivebase));
+        super.addSequential(new DifferentialTurnAngle(dashboard, 85, drivebase));
 
         //drives perpendicular to exchange port, and then turns toward it
-        super.addSequential(new DriveStraight(dashboard, 7.475 - distanceFromLeftWall, drivebase, .25));
-        super.addSequential(new SimpleTurnAngle(dashboard, 90, drivebase));
+        super.addSequential(new DriveStraight(dashboard, 8.25 - distanceFromLeftWall, drivebase, .25));
+        super.addSequential(new DifferentialTurnAngle(dashboard, 85, drivebase));
 
         //drives into exchange port, then expels cube, and then backs up
         super.addSequential(new DriveStraight(dashboard, 3+Constants.AutoValues.DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT, drivebase, .25));

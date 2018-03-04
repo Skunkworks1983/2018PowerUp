@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
+import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
 import frc.team1983.commands.collector.CollectorRotate;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.debugging.RunOneMotor;
@@ -92,7 +93,7 @@ public class Robot extends IterativeRobot
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
         //Scheduler.getInstance().add(new DriveStraight(dashboard, -5, drivebase));
-        Scheduler.getInstance().add(new DifferentialTurnAngle(dashboard, -90, drivebase));
+        Scheduler.getInstance().add(new PlaceCubeInSwitch(drivebase, dashboard));
         //Scheduler.getInstance().add(new PlaceCubeInExchangeZone(dashboard, drivebase));
     }
 
@@ -120,9 +121,6 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-
-        robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
-        elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
     }
 
     @Override

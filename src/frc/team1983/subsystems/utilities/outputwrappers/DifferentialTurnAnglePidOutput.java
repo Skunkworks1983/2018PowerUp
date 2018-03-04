@@ -12,18 +12,16 @@ public class DifferentialTurnAnglePidOutput extends PidOutputWrapper
     private double baseSpeed;
     private Logger logger;
     private double adjustmentSpeed;
-    private DifferentialTurnAngle differentialTurnAngle;
     public DifferentialTurnAnglePidOutput(Drivebase drivebase, double baseSpeed)
     {
         this.drivebase = drivebase;
         this.baseSpeed = baseSpeed;
-        this.differentialTurnAngle = differentialTurnAngle;
         logger = LoggerFactory.createNewLogger(DifferentialTurnAnglePidOutput.class);
     }
     public void setAdjustmentSpeed(double speed)
     {
-        adjustmentSpeed = speed ;
-        //logger.info("baseSpeed{}", baseSpeed);
+        adjustmentSpeed = speed;
+        //logger.info("adjustmentSpeed{}", speed);
     }
 
 
@@ -32,6 +30,7 @@ public class DifferentialTurnAnglePidOutput extends PidOutputWrapper
     {
             drivebase.setLeft(ControlMode.PercentOutput, (baseSpeed + adjustmentSpeed) + out);
             drivebase.setRight(ControlMode.PercentOutput, (-baseSpeed - adjustmentSpeed) + out);
+            logger.info("adjustmentSpeed{} \t total speed left{} \t total speed right{}", adjustmentSpeed,(baseSpeed + adjustmentSpeed) + out, (-baseSpeed - adjustmentSpeed) + out);
 
     }
 }

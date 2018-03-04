@@ -39,12 +39,12 @@ public class DriveStraight extends CommandBase
 
     public DriveStraight(StatefulDashboard dashboard, double distance, Drivebase drivebase)
     {
-        this(dashboard, distance, drivebase, Constants.PidConstants.DriveStrightPid.DEFAULT_BASE_SPEED);
+        this(dashboard, distance, drivebase, Constants.PidConstants.DriveStraightPid.DEFAULT_BASE_SPEED);
     }
 
     public DriveStraight(StatefulDashboard dashboard, double distance, Drivebase drivebase, double baseSpeed)
     {
-        this(dashboard, distance, drivebase, baseSpeed, Constants.PidConstants.DriveStrightPid.DEFAULT_TIMEOUT);
+        this(dashboard, distance, drivebase, baseSpeed, Constants.PidConstants.DriveStraightPid.DEFAULT_TIMEOUT);
     }
 
     public DriveStraight(StatefulDashboard dashboard, double distance,
