@@ -103,16 +103,9 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         drivebase.getGyro().initGyro();
 
-        CommandGroup profiles = new CommandGroup();
-
-        profiles.addSequential(new DriveFeet(drivebase, 6, 2));
-        profiles.addSequential(new DriveArc(drivebase, 3, 90, 2));
-
-        Scheduler.getInstance().add(profiles);
-        drivebase.setBrakeMode(true);
         ramps.reset();
 
-        Scheduler.getInstance().add(new PlaceCubeInExchangeZone(dashboard, drivebase));
+        Scheduler.getInstance().add(new DriveFeet(drivebase, 5, 2));
     }
 
     @Override

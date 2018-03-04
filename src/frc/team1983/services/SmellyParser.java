@@ -32,6 +32,7 @@ public class SmellyParser
     private FilenameFilter filter;
     private JsonFactory jsonFactory;
     private JsonParser parser;
+
     //This puts directly to smartdashboard because we actually don't want this to stick around, as files may change
     private DashboardWrapper dashboard;
 
@@ -60,7 +61,7 @@ public class SmellyParser
 
     public void constructPath()
     {
-        try
+        /*try
         {
             components.clear(); //clear so we are recording a new path
 
@@ -168,6 +169,7 @@ public class SmellyParser
             logger.error("Exception when constructing path");
             logger.error(e);
         }
+        */
     }
 
     public Path getPath()
