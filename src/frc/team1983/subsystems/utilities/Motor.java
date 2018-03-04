@@ -1,21 +1,19 @@
 package frc.team1983.subsystems.utilities;
 
 import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team1983.Robot;
+import frc.team1983.util.control.ClosedLoopGains;
 import frc.team1983.util.control.ProfileController;
 import frc.team1983.util.motion.MotionProfile;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 //Wrapper class around the WpiLib TalonSRX. Allows us to modify the functionality, and for future extendability.
 public class Motor extends TalonSRX
 {
-    protected double Kp, Ki, Kd, Ks, Kv, Ka;
-
+    protected HashMap<Integer, ClosedLoopGains> gains;
     private boolean hasEncoder = false;
     public ProfileController manager;
 
@@ -23,6 +21,8 @@ public class Motor extends TalonSRX
     {
         super(port);
         setInverted(reversed);
+
+        gains = new HashMap<>();
     }
 
     public Motor(int port, boolean reversed, boolean hasEncoder)
@@ -36,34 +36,21 @@ public class Motor extends TalonSRX
         }
     }
 
-    public void configPIDF(int slot, double p, double i, double d, double f)
+    // bad
+    public ClosedLoopGains getGains(int slot)
     {
-        config_kP(slot, p, 0);
-        config_kI(slot, i, 0);
-        config_kD(slot, d, 0);
-        config_kF(slot, f, 0);
+        if(!gains.containsKey(slot))
+        {
+            ClosedLoopGains newGains = new ClosedLoopGains();
+            gains.put(slot, newGains);
+        }
+
+        return gains.get(slot);
     }
 
-    public void configSVA(int slot, double s, double v, double a)
+    public void setGains(int slot, ClosedLoopGains gains)
     {
-        this.Ks = s;
-        this.Kv = v;
-        this.Ka = a;
-    }
-
-    public double getKs()
-    {
-        return Ks;
-    }
-
-    public double getKv()
-    {
-        return Ks;
-    }
-
-    public double getKa()
-    {
-        return Ka;
+        this.gains.put(slot, gains);
     }
 
     public void setProfile(MotionProfile profile)
@@ -97,31 +84,32 @@ public class Motor extends TalonSRX
         return manager != null && manager.isProfileFinished();
     }
 
+
     @Override
-    public ErrorCode config_kP(int slotIdx, double value, int timeout)
+    public ErrorCode config_kP(int slot, double value, int timeout)
     {
-        this.Kp = value;
-        return super.config_kP(slotIdx, value, timeout);
+        getGains(slot).config_kP(value);
+        return ErrorCode.OK;
     }
 
     @Override
-    public ErrorCode config_kI(int slotIdx, double value, int timeout)
+    public ErrorCode config_kI(int slot, double value, int timeout)
     {
-        this.Ki = value;
-        return super.config_kP(slotIdx, value, timeout);
+        getGains(slot).config_kI(value);
+        return ErrorCode.OK;
     }
 
     @Override
-    public ErrorCode config_kD(int slotIdx, double value, int timeout)
+    public ErrorCode config_kD(int slot, double value, int timeout)
     {
-        this.Kd = value;
-        return super.config_kP(slotIdx, value, timeout);
+        getGains(slot).config_kD(value);
+        return ErrorCode.OK;
     }
 
     @Override
-    public ErrorCode config_kF(int slotIdx, double value, int timeout)
+    public ErrorCode config_kF(int slot, double value, int timeout)
     {
-        this.Ks = value;
-        return super.config_kP(slotIdx, value, timeout);
+        getGains(slot).config_kF(value);
+        return ErrorCode.OK;
     }
 }

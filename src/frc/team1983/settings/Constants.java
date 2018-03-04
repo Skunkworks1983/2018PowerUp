@@ -1,6 +1,8 @@
 package frc.team1983.settings;
 
 
+import frc.team1983.util.control.ClosedLoopGains;
+
 import java.io.File;
 
 //This file contains all constants used across the entire robot, stored within subclasses.
@@ -141,24 +143,38 @@ public class Constants
     {
         public static class Drivebase
         {
-            public class Left
+            public static class Left
             {
-                public static final double Kp = 0.5;
-                public static final double Ki = 0;
-                public static final double Kd = 0.2;
-                public static final double Kv = 1 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC;
-                public static final double Ka = 1 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75);
-                public static final double Ks = 0;
+                public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+                        0.5,
+                        0,
+                        0.2,
+                        0,
+                        1 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
+                        1 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75),
+                        0
+                );
+
+                public static final ClosedLoopGains REMOTE = new ClosedLoopGains(
+                        0, 0, 0, 0, 0, 0, 0
+                );
             }
 
-            public class Right
+            public static class Right
             {
-                public static final double Kp = 0.5;
-                public static final double Ki = 0;
-                public static final double Kd = 0.2;
-                public static final double Kv = 1 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC;
-                public static final double Ka = 1 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75);
-                public static final double Ks = 0;
+                public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+                        0.5,
+                        0,
+                        0.2,
+                        0,
+                        1 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
+                        1 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75),
+                        0
+                );
+
+                public static final ClosedLoopGains REMOTE = new ClosedLoopGains(
+                        0, 0, 0, 0, 0, 0, 0
+                );
             }
         }
 

@@ -43,21 +43,11 @@ public class Drivebase extends Subsystem
         left1.setSensorPhase(true);
         right1.setSensorPhase(true);
 
-        left1.configPIDF(0, Constants.PidConstants.Drivebase.Left.Kp,
-                            Constants.PidConstants.Drivebase.Left.Ki,
-                            Constants.PidConstants.Drivebase.Left.Kd, 0);
+        left1.setGains(0, Constants.PidConstants.Drivebase.Left.MAIN);
+        left1.setGains(1, Constants.PidConstants.Drivebase.Left.REMOTE);
 
-        left1.configSVA(0, Constants.PidConstants.Drivebase.Left.Ks,
-                           Constants.PidConstants.Drivebase.Left.Kv,
-                           Constants.PidConstants.Drivebase.Left.Ka);
-
-        right1.configPIDF(0, Constants.PidConstants.Drivebase.Right.Kp,
-                             Constants.PidConstants.Drivebase.Right.Ki,
-                             Constants.PidConstants.Drivebase.Right.Kd, 0);
-
-        right1.configSVA(0, Constants.PidConstants.Drivebase.Right.Ks,
-                            Constants.PidConstants.Drivebase.Right.Kv,
-                            Constants.PidConstants.Drivebase.Right.Ka);
+        right1.setGains(0, Constants.PidConstants.Drivebase.Right.MAIN);
+        right1.setGains(1, Constants.PidConstants.Drivebase.Right.REMOTE);
     }
 
     public void initDefaultCommand()

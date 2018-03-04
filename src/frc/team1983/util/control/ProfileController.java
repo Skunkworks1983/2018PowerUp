@@ -70,6 +70,8 @@ public class ProfileController
         double duration = durationMs * 0.001;
         int resolution = (int) (profile.getDuration() / duration);
 
+        ClosedLoopGains gains = parent.getGains(0);
+
         for(int i = 0; i <= resolution; i++)
         {
             double t = i * duration;
@@ -78,7 +80,7 @@ public class ProfileController
 
             point.position = profile.evaluatePosition(t);
             // velocity is actually percent output
-            point.velocity = parent.getKs() + (parent.getKv() * profile.evaluateVelocity(t)) + (parent.getKa() * profile.evaluateAcceleration(t));
+            point.velocity = gains.get_kS() + (gains.get_kV() * profile.evaluateVelocity(t)) + (gains.get_kA() * profile.evaluateAcceleration(t));
 
             point.auxiliaryPos = 0;
 
