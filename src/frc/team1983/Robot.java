@@ -25,8 +25,8 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.util.control.ProfileController;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
+import frc.team1983.util.control.ProfileController;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
@@ -110,6 +110,7 @@ public class Robot extends IterativeRobot
 
         Scheduler.getInstance().add(profiles);
         drivebase.setBrakeMode(true);
+        ramps.reset();
 
         Scheduler.getInstance().add(new PlaceCubeInExchangeZone(dashboard, drivebase));
     }
