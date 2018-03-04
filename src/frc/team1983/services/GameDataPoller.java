@@ -98,7 +98,10 @@ public class GameDataPoller
 
     public static void pollGameData()
     {
+        if(!gameDataAlreadyPolled)
+        {
             gsm = DriverStation.getInstance().getGameSpecificMessage();
             gameDataAlreadyPolled = true;
+        }
     }
 }
