@@ -70,10 +70,6 @@ public class Robot extends IterativeRobot
         autonomousSelector.addObject("Scale", new PlaceCubeInScale(drivebase, dashboard));
         autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
         SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
-
-
-
-
     }
 
     @Override
