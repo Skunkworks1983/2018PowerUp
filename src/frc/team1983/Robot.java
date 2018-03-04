@@ -12,6 +12,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
 import frc.team1983.commands.autonomous.PlaceCubeInScale;
 import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
+import frc.team1983.commands.collector.CollectorIntake;
+import frc.team1983.commands.collector.CollectorRotate;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
+import frc.team1983.commands.debugging.DisplayButtonPresses;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
@@ -25,6 +30,8 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
+import frc.team1983.util.control.ProfileController;
+import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.util.control.ProfileController;
 import org.apache.logging.log4j.core.Logger;
 
@@ -101,6 +108,7 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
+        ramps.reset();
 
         autonomousCommand = (Command) autonomousSelector.getSelected();
         robotLogger.info(autonomousSelector.getSelected());
