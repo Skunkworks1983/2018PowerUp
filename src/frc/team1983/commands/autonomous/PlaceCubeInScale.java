@@ -18,7 +18,7 @@ public class PlaceCubeInScale extends CommandGroup
 
     private Logger logger;
 
-    public PlaceCubeInScale(StatefulDashboard dashboard)
+    public PlaceCubeInScale(Drivebase drivebase, StatefulDashboard dashboard)
     {
         logger = LoggerFactory.createNewLogger(PlaceCubeInScale.class);
 

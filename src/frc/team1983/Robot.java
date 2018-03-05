@@ -5,8 +5,13 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
+import frc.team1983.commands.autonomous.PlaceCubeInScale;
+import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.RunTankDrive;
@@ -47,6 +52,8 @@ public class Robot extends IterativeRobot
     private double startTime;
 
     private RunOneMotor runOneMotor;
+    private SendableChooser autonomousSelector;
+    private Command autonomousCommand;
 
     @Override
     public void robotInit()
@@ -66,6 +73,12 @@ public class Robot extends IterativeRobot
         smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLY_FOLDER);
 
         robotLogger.info("robotInit");
+
+        autonomousSelector = new SendableChooser();
+        autonomousSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
+        autonomousSelector.addObject("Scale", new PlaceCubeInScale(drivebase, dashboard));
+        autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
+        SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
     }
 
     @Override
@@ -99,8 +112,13 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
+        ramps.reset();
 
-        Scheduler.getInstance().add(new PlaceCubeInExchangeZone(dashboard, drivebase));
+        autonomousCommand = (Command) autonomousSelector.getSelected();
+        robotLogger.info(autonomousSelector.getSelected());
+        Scheduler.getInstance().add(autonomousCommand);
+        SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
+        SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
     }
 
     @Override
@@ -132,6 +150,9 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+        SmartDashboard.updateValues();
+        SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
+        SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
     }
 
     @Override
