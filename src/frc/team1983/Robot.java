@@ -1,5 +1,6 @@
 package frc.team1983;
 
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -176,7 +177,6 @@ public class Robot extends IterativeRobot
         }
 
         runOneMotor.initialize(motors, motorUp, motorDown, manualSpeed);
-
     }
 
     @Override

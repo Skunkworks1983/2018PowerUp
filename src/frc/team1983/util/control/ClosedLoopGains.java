@@ -2,8 +2,13 @@ package frc.team1983.util.control;
 
 public class ClosedLoopGains
 {
-    private double kP, kI, kD, kF;
-    private double kS, kV, kA;
+    private double kP = 0, kI = 0, kD = 0, kF = 0;
+    private double kS = 0, kV = 0, kA = 0;
+
+    public ClosedLoopGains()
+    {
+
+    }
 
     public ClosedLoopGains(double kP, double kI, double kD, double kF, double kS, double kV, double kA)
     {

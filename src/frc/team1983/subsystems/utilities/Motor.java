@@ -51,6 +51,18 @@ public class Motor extends TalonSRX
     public void setGains(int slot, ClosedLoopGains gains)
     {
         this.gains.put(slot, gains);
+        updateTalonGains();
+    }
+
+    private void updateTalonGains()
+    {
+        for(Integer i : gains.keySet())
+        {
+            config_kP(i, gains.get(i).get_kP(), 0);
+            config_kI(i, gains.get(i).get_kI(), 0);
+            config_kD(i, gains.get(i).get_kD(), 0);
+            config_kF(i, gains.get(i).get_kF(), 0);
+        }
     }
 
     public void setProfile(MotionProfile profile)
@@ -89,6 +101,7 @@ public class Motor extends TalonSRX
     public ErrorCode config_kP(int slot, double value, int timeout)
     {
         getGains(slot).config_kP(value);
+        updateTalonGains();
         return ErrorCode.OK;
     }
 
@@ -96,6 +109,7 @@ public class Motor extends TalonSRX
     public ErrorCode config_kI(int slot, double value, int timeout)
     {
         getGains(slot).config_kI(value);
+        updateTalonGains();
         return ErrorCode.OK;
     }
 
@@ -103,6 +117,7 @@ public class Motor extends TalonSRX
     public ErrorCode config_kD(int slot, double value, int timeout)
     {
         getGains(slot).config_kD(value);
+        updateTalonGains();
         return ErrorCode.OK;
     }
 
@@ -110,6 +125,7 @@ public class Motor extends TalonSRX
     public ErrorCode config_kF(int slot, double value, int timeout)
     {
         getGains(slot).config_kF(value);
+        updateTalonGains();
         return ErrorCode.OK;
     }
 }
