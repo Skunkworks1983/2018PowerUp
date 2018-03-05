@@ -155,9 +155,6 @@ public class Constants
                         0
                 );
 
-                public static final ClosedLoopGains REMOTE = new ClosedLoopGains(
-                        0, 0, 0, 0, 0, 0, 0
-                );
             }
 
             public static class Right
@@ -171,11 +168,11 @@ public class Constants
                         1 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75),
                         0
                 );
-
-                public static final ClosedLoopGains REMOTE = new ClosedLoopGains(
-                        0, 0, 0, 0, 0, 0, 0
-                );
             }
+
+            public static ClosedLoopGains HEADINGCORRECTION = new ClosedLoopGains(
+                    0.04, 0, 0, 0
+            );
         }
 
         //PIDF values for the DriveStraight command
@@ -349,7 +346,7 @@ public class Constants
         public static final double DRIVEBASE_LEFT_MAX_TICKS_PER_SEC = 13600.0;
         public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14300.0;
 
-        public static final double DRIVEBASE_TICKS_END_RANGE = 100;
-        public static final double DRIVEBASE_IN_RANGE_END_TIME = 1;
+        public static final double DRIVEBASE_TICKS_END_RANGE = 500;
+        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.25;
     }
 }

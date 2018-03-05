@@ -2,6 +2,7 @@ package frc.team1983.util.control;
 
 import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
@@ -45,14 +46,10 @@ public class ProfileControllerRunnable implements Runnable
                 hasProcessed = true;
 
             // true if the talon runs out of trajectory points (times out or finishes profile)
-            if(controller.isProfileFinished())
-            {
-                controller.parent.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Hold.value);
-            }
-            else
-            {
-                controller.parent.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
-            }
+            SetValueMotionProfile setValue = controller.isProfileFinished() ? SetValueMotionProfile.Hold : SetValueMotionProfile.Enable;
+            double auxiliaryOutput = controller.parent.getAuxiliaryOutput();
+
+            controller.parent.set(ControlMode.MotionProfile, setValue.value, DemandType.ArbitraryFeedForward, auxiliaryOutput);
 
             Thread.yield();
         }

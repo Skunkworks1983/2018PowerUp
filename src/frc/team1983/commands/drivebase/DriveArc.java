@@ -9,7 +9,8 @@ public class DriveArc extends DriveProfile
 {
     public DriveArc(Drivebase drivebase, double radius, double angle, double time)
     {
-        super(drivebase, generateLeftProfile(drivebase, radius, angle, time), generateRightProfile(drivebase, radius, angle, time));
+        super(drivebase, generateLeftProfile(drivebase, radius, angle, time), generateRightProfile(drivebase, radius, angle, time), angle);
+        this.duration = time;
     }
 
     private static CruiseProfile generateLeftProfile(Drivebase drivebase, double radius, double angle, double time)

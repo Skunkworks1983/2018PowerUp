@@ -14,8 +14,10 @@ import java.util.HashMap;
 public class Motor extends TalonSRX
 {
     protected HashMap<Integer, ClosedLoopGains> gains;
-    private boolean hasEncoder = false;
     public ProfileController manager;
+
+    private boolean hasEncoder = false;
+    private double auxiliaryOutput;
 
     public Motor(int port, boolean reversed)
     {
@@ -58,10 +60,10 @@ public class Motor extends TalonSRX
     {
         for(Integer i : gains.keySet())
         {
-            config_kP(i, gains.get(i).get_kP(), 0);
-            config_kI(i, gains.get(i).get_kI(), 0);
-            config_kD(i, gains.get(i).get_kD(), 0);
-            config_kF(i, gains.get(i).get_kF(), 0);
+            super.config_kP(i, gains.get(i).get_kP(), 0);
+            super.config_kI(i, gains.get(i).get_kI(), 0);
+            super.config_kD(i, gains.get(i).get_kD(), 0);
+            super.config_kF(i, gains.get(i).get_kF(), 0);
         }
     }
 
@@ -96,6 +98,22 @@ public class Motor extends TalonSRX
         return manager != null && manager.isProfileFinished();
     }
 
+    public synchronized void setAuxiliaryOutput(double auxiliaryOutput)
+    {
+        this.auxiliaryOutput = auxiliaryOutput;
+    }
+
+    public synchronized double getAuxiliaryOutput()
+    {
+        return auxiliaryOutput;
+    }
+
+    @Override
+    public void setInverted(boolean inverted)
+    {
+        super.configAuxPIDPolarity(inverted, 0);
+        super.setInverted(inverted);
+    }
 
     @Override
     public ErrorCode config_kP(int slot, double value, int timeout)

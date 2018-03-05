@@ -52,6 +52,18 @@ public class FollowPath extends CommandGroup
             }
         }
 
+        List<DriveProfile> driveProfiles = new ArrayList<>();
+
+        for(Command command : commands)
+        {
+            if(command instanceof DriveArc || command instanceof DriveFeet)
+            {
+                driveProfiles.add((DriveProfile) command);
+            }
+        }
+
+        DriveProfile.stitch(driveProfiles);
+
         for(Command command : commands)
         {
             addSequential(command);

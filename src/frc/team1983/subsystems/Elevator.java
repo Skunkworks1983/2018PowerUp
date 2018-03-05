@@ -65,8 +65,6 @@ public class Elevator extends Subsystem
     public void set(ControlMode mode, double value)
     {
         right1.set(mode, value);
-        logger.debug("Set elevator to: {}", value);
-        logger.debug("Mode: {}", mode.toString());
     }
 
     public double getEncoderValue()

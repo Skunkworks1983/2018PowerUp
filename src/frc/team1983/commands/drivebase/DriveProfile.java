@@ -1,9 +1,12 @@
 package frc.team1983.commands.drivebase;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
-import frc.team1983.util.motion.MotionProfile;
+import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
+import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseAuxiliaryPidOutput;
 import frc.team1983.util.motion.profiles.CruiseProfile;
 
 import java.util.ArrayList;
@@ -14,33 +17,62 @@ public class DriveProfile extends CommandBase
     private Drivebase drivebase;
     protected CruiseProfile leftProfile, rightProfile;
 
-    protected boolean finished = false;
+    private PIDController headingController;
+
+    protected double duration;
+
+    protected boolean hasFinished = false;
+    protected boolean runHeadingCorrection = true;
+
+    protected double startHeading;
+    protected double deltaHeading;
 
     private double inRangeTime = 0;
     private double lastMilli = 0;
 
-    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile)
+    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double deltaHeading)
     {
         requires(drivebase);
 
         this.drivebase = drivebase;
         this.leftProfile = leftProfile;
         this.rightProfile = rightProfile;
+
+        headingController = new PIDController(Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kP(),
+                                              Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kI(),
+                                              Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kD(),
+                                              Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kF(),
+                                              new GyroPidInput(drivebase.getGyro()), new DrivebaseAuxiliaryPidOutput(drivebase));
+
+        this.deltaHeading = deltaHeading;
+    }
+
+    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile)
+    {
+        this(drivebase, leftProfile, rightProfile, 0);
     }
 
     @Override
     public void initialize()
     {
+        if(runHeadingCorrection)
+        {
+            headingController.enable();
+        }
+
         drivebase.setLeftProfile(leftProfile);
         drivebase.setRightProfile(rightProfile);
 
         drivebase.runProfiles();
+
+        startHeading = drivebase.getGyro().getAngle();
     }
 
     @Override
     public void execute()
     {
-
+        double desiredHeading = startHeading + (deltaHeading * (Math.min(timeSinceInitialized(), duration) / duration));
+        headingController.setSetpoint(desiredHeading);
     }
 
     @Override
@@ -57,7 +89,7 @@ public class DriveProfile extends CommandBase
 
         lastMilli = System.currentTimeMillis();
 
-        return finished || drivebase.profilesAreFinished() && isOnTarget() && inRangeTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME;
+        return hasFinished || drivebase.profilesAreFinished() && isOnTarget() && inRangeTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME;
     }
 
     @Override
@@ -69,9 +101,10 @@ public class DriveProfile extends CommandBase
     @Override
     public void end()
     {
-        finished = true;
+        hasFinished = true;
 
         drivebase.stopProfiles();
+        headingController.disable();
 
         System.out.println("FINISHED left error: " + Drivebase.getFeet(drivebase.getLeftError()) +
                                  " , right error: " + Drivebase.getFeet(drivebase.getRightError()));
@@ -93,8 +126,8 @@ public class DriveProfile extends CommandBase
     // this is terrible please put me out of my misery
     public static void stitch(List<DriveProfile> drives)
     {
-        List<CruiseProfile> leftProfiles = new ArrayList<CruiseProfile>();
-        List<CruiseProfile> rightProfiles = new ArrayList<CruiseProfile>();
+        List<CruiseProfile> leftProfiles = new ArrayList<>();
+        List<CruiseProfile> rightProfiles = new ArrayList<>();
 
         for(DriveProfile drive : drives)
         {

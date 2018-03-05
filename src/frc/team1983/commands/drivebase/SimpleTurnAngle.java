@@ -91,7 +91,7 @@ public class SimpleTurnAngle extends CommandBase
             turnPid.setOutputRange(-0.5, 0.5);
             turnPid.enable();
         }
-    logger.info("initialized finished");
+    logger.info("initialized hasFinished");
     }
 
     @Override

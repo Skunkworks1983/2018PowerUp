@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
+import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.commands.drivebase.FollowPath;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
@@ -107,8 +108,14 @@ public class Robot extends IterativeRobot
         ramps.reset();
 
         Path path = new Path(new ArrayList<PathComponent>(Arrays.asList(
-            new PathTanline(5, 2),
-            new PathTanarc(3, 90, 2)
+            //new PathTanline(5, 2),
+            new PathTanline(15, 3),
+            new PathTanarc(3, 90, 2),
+            new PathTanline(15, 3),
+            new PathTanarc(3, 90, 2),
+            new PathTanline(7, 1.5),
+            new PathTanarc(3, 90, 2),
+            new PathTanline(7, 2)
                                                                        )));
 
         Scheduler.getInstance().add(new FollowPath(drivebase, path));

@@ -44,10 +44,7 @@ public class Drivebase extends Subsystem
         right1.setSensorPhase(true);
 
         left1.setGains(0, Constants.PidConstants.Drivebase.Left.MAIN);
-        left1.setGains(1, Constants.PidConstants.Drivebase.Left.REMOTE);
-
         right1.setGains(0, Constants.PidConstants.Drivebase.Right.MAIN);
-        right1.setGains(1, Constants.PidConstants.Drivebase.Right.REMOTE);
     }
 
     public void initDefaultCommand()
@@ -180,6 +177,16 @@ public class Drivebase extends Subsystem
     public boolean profilesAreFinished()
     {
         return leftProfileIsFinished() && rightProfileIsFinished();
+    }
+
+    public synchronized void setLeftAuxiliaryOutput(double auxiliaryOutput)
+    {
+        left1.setAuxiliaryOutput(auxiliaryOutput);
+    }
+
+    public synchronized void setRightAuxiliaryOutput(double auxiliaryOutput)
+    {
+        right1.setAuxiliaryOutput(auxiliaryOutput);
     }
 
     public Gyro getGyro()
