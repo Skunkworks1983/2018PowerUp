@@ -26,53 +26,6 @@ public class PlaceCubeInScale extends CommandGroup
 
         super.addSequential(new DriveStraight(dashboard, 7.0+ Constants.AutoValues.DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT, drivebase, .5)); //are these numbers too magical? they're field constants
 
-        //detects which side of the switch to place in
-        if (isOurColorLeft)
-        {
-            //turns to wall
-            super.addSequential(new SimpleTurnAngle(dashboard, -90, drivebase));
-
-            //Drive to be closer to the wall than the switch
-            super.addSequential(new DriveStraight(dashboard, (distanceFromLeftWall - 4), drivebase, .5));
-            super.addSequential(new SimpleTurnAngle(dashboard, 90, drivebase));
-
-        }
-        else
-        {
-            super.addSequential(new SimpleTurnAngle(dashboard, 90, drivebase));
-            super.addSequential(new DriveStraight(dashboard, 7.0+Constants.AutoValues.DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT, drivebase, .5));
-
-            //Drive to be closer to the wall than the switch
-            super.addSequential(new DriveStraight(dashboard, (13.5 - distanceFromLeftWall), drivebase, .5));
-            super.addSequential(new SimpleTurnAngle(dashboard, -90, drivebase));
-        }
-        //drives toward other driverstations
-        super.addSequential(new DriveStraight(dashboard, 13+Constants.AutoValues.DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT, drivebase, .5));
-
-        if (isOurColorLeft)
-        {
-            //turns to face the scale
-            super.addSequential(new SimpleTurnAngle(dashboard, 90, drivebase));
-        }
-        else
-        {
-            super.addSequential(new SimpleTurnAngle(dashboard, -90, drivebase));
-        }
-
-        //drives to be parallel to scale
-        super.addSequential(new DriveStraight(dashboard , 3+Constants.AutoValues.DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT, drivebase, .5));
-
-        if (isOurColorLeft)
-        {
-            //turns to face scale
-            super.addSequential(new SimpleTurnAngle(dashboard, -90, drivebase, .5));
-        } else
-        {
-            super.addSequential(new SimpleTurnAngle(dashboard , 90, drivebase));
-        }
-
-        //drives towards scale and puts a cube in it
-        super.addSequential(new DriveStraight(dashboard , 3+Constants.AutoValues.DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT, drivebase, .5));
 
         //super.addSequential(raise elevator);
         //super.addSequential(eject cube);

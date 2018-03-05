@@ -80,7 +80,7 @@ public class Robot extends IterativeRobot
         autonomousSelector = new SendableChooser();
         autonomousSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
         autonomousSelector.addObject("Scale", new PlaceCubeInScale(drivebase, dashboard));
-        autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
+        autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard, oi, elevator, collector));
         SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
     }
 
@@ -114,7 +114,7 @@ public class Robot extends IterativeRobot
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
 
-        Scheduler.getInstance().add(new PlaceCubeInExchangeZone(dashboard, drivebase));
+        Scheduler.getInstance().add(new PlaceCubeInSwitch(drivebase, dashboard, oi, elevator, collector));
     }
 
     @Override

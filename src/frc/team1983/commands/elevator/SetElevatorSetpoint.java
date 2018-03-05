@@ -34,7 +34,10 @@ public class SetElevatorSetpoint extends CommandBase
     @Override
     public void initialize()
     {
-
+        //if collectorUp == true && !dropped
+        //{
+        //  end();
+        //}
     }
 
     @Override

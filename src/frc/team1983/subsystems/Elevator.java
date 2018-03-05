@@ -35,6 +35,8 @@ public class Elevator extends Subsystem
         right2.follow(right1);
         left1.follow(right1);
         left2.follow(right1);
+
+        right1.setSensorPhase(true);
     }
 
     public void initDefaultCommand()
@@ -108,7 +110,7 @@ public class Elevator extends Subsystem
     @Override
     public void periodic()
     {
-        //logger.debug("Error: {}", right1.getClosedLoopError(0));
+        logger.debug("Error1: {}\tSetpoint: {}", right1.getClosedLoopError(0), right1.getClosedLoopTarget(0));
     }
 
     public double getCurrentDraw()

@@ -44,9 +44,8 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int RIGHT1 = 6;
-            public static final int RIGHT2 = 5;
-
+            public static final int RIGHT1 = 5;
+            public static final int RIGHT2 = 6;
             public static final int LEFT1 = 9;
             public static final int LEFT2 = 4;
 
@@ -180,7 +179,7 @@ public class Constants
             public static final double F = 0;//.002;
 
             public static final double UP_TICKS = 0;
-            public static final double DOWN_TICKS = -1300;
+            public static final double DOWN_TICKS = 1300;
         }
 
         //setpoints for motors
