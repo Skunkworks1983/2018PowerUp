@@ -1,25 +1,43 @@
 package frc.team1983.util.path;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Path
 {
-    private List<PathComponent> components;
+    private ArrayList<PathComponent> points;
 
-    public Path(List<PathComponent> components)
+    public Path(ArrayList<PathComponent> points)
     {
-        this.components = components;
+        this.points = points;
     }
 
-    public PathComponent getComponent(int index)
+    public void setPoints(ArrayList<PathComponent> points)
     {
-        if(index + 1 <= components.size())
+        this.points = points;
+    }
+
+    public ArrayList<PathComponent> getPoints()
+    {
+        return points;
+    }
+
+    public PathComponent getPoint(int index)
+    {
+        if(index < points.size())
         {
-            return components.get(index);
+            return points.get(index);
         }
         else
         {
             throw new IllegalArgumentException("index " + index + " is out of bounds");
         }
+    }
+
+    public List<PathComponent> getPath()
+    {
+        return points;
     }
 }

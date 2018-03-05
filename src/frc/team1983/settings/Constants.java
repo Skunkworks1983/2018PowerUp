@@ -103,6 +103,15 @@ public class Constants
         }
     }
 
+    public static class SmellyParser
+    {
+        public static final File SMELLY_FOLDER = new File("/u/");
+        public static final File SMELLY_UT_FOLDER = new File(
+                "..\\test\\frc\\team1983\\util\\paths");
+        public static final String AUTO_PATH_KEY = "SmellyPath";
+        public static final File DEFAULT_PATH = new File("/home/lvuser/DefaultSmellyPath.json");
+    }
+
     public static class MotorSetpoints
     {
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.

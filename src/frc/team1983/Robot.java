@@ -12,16 +12,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
 import frc.team1983.commands.autonomous.PlaceCubeInScale;
 import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
-import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.commands.collector.CollectorRotate;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
-import frc.team1983.commands.debugging.DisplayButtonPresses;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
+import frc.team1983.services.parser.SmellyParser;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
@@ -32,7 +29,6 @@ import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.control.ProfileController;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
-import frc.team1983.util.control.ProfileController;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
@@ -46,13 +42,16 @@ public class Robot extends IterativeRobot
     private Collector collector;
     private Ramps ramps;
     private StatefulDashboard dashboard;
+    private SmellyParser smellyParser;
+    private DashboardWrapper dashboardWrapper;
+    private Subsystem subsystem;
+    private GyroPidInput pidSource;
 
-    private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
+    private ArrayList<ProfileController> profileControllers = new ArrayList<>();
+    private static Robot instance;
+    private double startTime;
 
     private RunOneMotor runOneMotor;
-
-    private static Robot instance;
-
     private SendableChooser autonomousSelector;
     private Command autonomousCommand;
 
@@ -60,7 +59,8 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         robotLogger = LoggerFactory.createNewLogger(Robot.class);
-        dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
+        dashboardWrapper = new DashboardWrapper();
+        dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
         dashboard.populate();
 
         oi = new OI(DriverStation.getInstance());
@@ -69,6 +69,8 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
+
+        smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLY_FOLDER);
 
         robotLogger.info("robotInit");
 
@@ -104,6 +106,8 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
+        smellyParser.constructPath(); //Needs to happen before SmellyDrive
+
         robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
         drivebase.getGyro().initGyro();
