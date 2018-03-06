@@ -52,7 +52,7 @@ public class DifferentialTurnAngle extends CommandBase
         gyroPidInput = new GyroPidInput(gyro);
         targetAngle = degrees;
         counter = 0;
-        logger.info("targetAngle{}", targetAngle);
+        //logger.info("targetAngle{}", targetAngle);
 
         dashboard.add(this, "kP", 0.0);
         dashboard.add(this, "kI", 0.0);
@@ -109,9 +109,9 @@ public class DifferentialTurnAngle extends CommandBase
     public void execute()
     {
 
-        logger.debug("DifferentialTurnAngle executed");
+        //logger.debug("DifferentialTurnAngle executed");
         error = Math.abs(targetAngle - (gyroPidInput.pidGet() - initialAngle));
-        logger.info("error{}", adjustmentPid.getError());
+        //logger.info("error{}", adjustmentPid.getError());
         //pidOut.setAdjustmentSpeed(error/(targetAngle) * .4);
         //logger.info("adjustmentSpeed {}", (error/targetAngle) * .4);
 
@@ -138,7 +138,7 @@ public class DifferentialTurnAngle extends CommandBase
         adjustmentPid.disable();
         drivebase.setLeft(ControlMode.PercentOutput, 0);
         drivebase.setRight(ControlMode.PercentOutput, 0);
-        logger.info("pid has ended");
+        //logger.info("pid has ended");
     }
 
     @Override

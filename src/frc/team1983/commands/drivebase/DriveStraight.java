@@ -1,10 +1,8 @@
 package frc.team1983.commands.drivebase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
-import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
@@ -12,12 +10,12 @@ import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.subsystems.utilities.PidControllerWrapper;
-import frc.team1983.subsystems.utilities.inputwrappers.DriveStraightPidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DriveStraightPidOutput;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.Logger;
+
+import static java.lang.Math.abs;
 
 
 //Moves the robot forward a specified number of feet.
@@ -37,18 +35,18 @@ public class DriveStraight extends CommandBase
 
     private Logger logger;
 
-    public DriveStraight(StatefulDashboard dashboard, double distance, Drivebase drivebase)
+    public DriveStraight(Drivebase drivebase, StatefulDashboard dashboard, double distance)
     {
-        this(dashboard, distance, drivebase, Constants.PidConstants.DriveStraightPid.DEFAULT_BASE_SPEED);
+        this(drivebase, dashboard, distance, Constants.PidConstants.DriveStraightPid.DEFAULT_BASE_SPEED);
     }
 
-    public DriveStraight(StatefulDashboard dashboard, double distance, Drivebase drivebase, double baseSpeed)
+    public DriveStraight(Drivebase drivebase, StatefulDashboard dashboard, double distance, double baseSpeed)
     {
-        this(dashboard, distance, drivebase, baseSpeed, Constants.PidConstants.DriveStraightPid.DEFAULT_TIMEOUT);
+        this(drivebase, dashboard, distance, baseSpeed, Constants.PidConstants.DriveStraightPid.DEFAULT_TIMEOUT);
     }
 
-    public DriveStraight(StatefulDashboard dashboard, double distance,
-                         Drivebase drivebase, double baseSpeed, double timeout)
+    public DriveStraight(Drivebase drivebase, StatefulDashboard dashboard, double distance,
+                         double baseSpeed, double timeout)
     {
         this.baseSpeed = baseSpeed;
         setTimeout(timeout);
@@ -92,7 +90,7 @@ public class DriveStraight extends CommandBase
 
         if(distance < 0)
         {
-            pidOut = new DriveStraightPidOutput(drivebase, baseSpeed);
+            pidOut = new DriveStraightPidOutput(drivebase, -baseSpeed);
             pidSource = gyro.isDead() ? new EncoderTurnAnglePidInput(drivebase) : new GyroPidInput(drivebase.getGyro());
 
             driveStraightPid = new PidControllerWrapper(dashboard.getDouble(this, "kP"),
@@ -121,8 +119,8 @@ public class DriveStraight extends CommandBase
     {
         //condition checks if command is timed out or if we have gone the desired distance
         //using the average of the two offset distances travelled
-        return isTimedOut() || (((drivebase.getLeftDist() - leftEncoderStart) +
-                (drivebase.getRightDist() - rightEncoderStart))) / 2 >= distance;
+        return isTimedOut() || (((abs(drivebase.getLeftDist() - leftEncoderStart)) +
+                abs(drivebase.getRightDist() - rightEncoderStart))) / 2 >= distance;
     }
 
     @Override

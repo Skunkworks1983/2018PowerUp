@@ -5,21 +5,11 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
-import frc.team1983.commands.autonomous.PlaceCubeInScale;
-import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
-import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
-import frc.team1983.commands.collector.CollectorRotate;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
-import frc.team1983.commands.debugging.DisplayButtonPresses;
 import frc.team1983.commands.debugging.RunOneMotor;
-import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
@@ -33,7 +23,6 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.util.control.ProfileController;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.util.control.ProfileController;
 import org.apache.logging.log4j.core.Logger;
@@ -59,7 +48,7 @@ public class Robot extends IterativeRobot
     private static Robot instance;
 
     private SendableChooser autonomousSelector;
-    private Command autonomousCommand;
+    private GameDataPoller.OwnedSide robotPosition;
 
     @Override
     public void robotInit()
@@ -78,10 +67,9 @@ public class Robot extends IterativeRobot
         robotLogger.info("robotInit");
 
         autonomousSelector = new SendableChooser();
-        autonomousSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
-        autonomousSelector.addObject("Scale", new PlaceCubeInScale(drivebase, dashboard));
-        autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard, oi, elevator, collector));
-        SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
+        autonomousSelector.addDefault("Robot is on the left", GameDataPoller.OwnedSide.LEFT);
+        autonomousSelector.addObject("Robot is on the right", GameDataPoller.OwnedSide.RIGHT);
+        SmartDashboard.putData("Robot position", autonomousSelector);
     }
 
     @Override
@@ -114,7 +102,10 @@ public class Robot extends IterativeRobot
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
 
-        Scheduler.getInstance().add(new PlaceCubeInSwitch(drivebase, dashboard, oi, elevator, collector));
+        robotPosition = (GameDataPoller.OwnedSide) autonomousSelector.getSelected();
+        Scheduler.getInstance().add(new DriveStraight(drivebase, dashboard, -1));
+        //Scheduler.getInstance().add(new DoubleCubeAutoSelector(drivebase, dashboard, oi, elevator, collector, robotPosition));
+
     }
 
     @Override

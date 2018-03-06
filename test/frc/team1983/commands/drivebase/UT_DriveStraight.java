@@ -2,15 +2,10 @@ package frc.team1983.commands.drivebase;
 
 import edu.wpi.first.wpilibj.HLUsageReporting;
 import edu.wpi.first.wpilibj.Timer;
-import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
-import frc.team1983.subsystems.utilities.PidControllerWrapper;
-import frc.team1983.subsystems.utilities.inputwrappers.DriveStraightPidInput;
-import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
-import frc.team1983.subsystems.utilities.outputwrappers.DriveStraightPidOutput;
 import frc.team1983.testutility.FakeScheduler;
 import org.junit.After;
 import org.junit.Before;
@@ -75,7 +70,7 @@ public class UT_DriveStraight
         HLUsageReporting.SetImplementation(hlUsageReporting);
         fakeScheduler = new FakeScheduler();
         when(drivebase.getGyro()).thenReturn(gyro);
-        driveStraight = new DriveStraight(dashboard, 5, drivebase, 5);
+        driveStraight = new DriveStraight(drivebase, dashboard, 5, 5);
     }
 
     @After
