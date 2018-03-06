@@ -6,8 +6,13 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.commands.autonomous.PlaceCubeInScale;
+import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.DriveProfile;
@@ -27,6 +32,7 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
+import frc.team1983.util.control.ProfileController;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.util.control.ProfileController;
 import frc.team1983.util.path.Path;
@@ -52,10 +58,14 @@ public class Robot extends IterativeRobot
     private GyroPidInput pidSource;
 
     private ArrayList<ProfileController> profileControllers = new ArrayList<>();
-    private static Robot instance;
     private double startTime;
 
     private RunOneMotor runOneMotor;
+
+    private static Robot instance;
+
+    private SendableChooser autonomousSelector;
+    private Command autonomousCommand;
 
     @Override
     public void robotInit()
@@ -73,6 +83,12 @@ public class Robot extends IterativeRobot
         ramps = new Ramps();
 
         robotLogger.info("robotInit");
+
+        autonomousSelector = new SendableChooser();
+        autonomousSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
+        autonomousSelector.addObject("Scale", new PlaceCubeInScale(drivebase, dashboard));
+        autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
+        SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
     }
 
     @Override
@@ -149,6 +165,9 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+        SmartDashboard.updateValues();
+        SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
+        SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
     }
 
     @Override
