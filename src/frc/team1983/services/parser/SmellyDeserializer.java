@@ -60,16 +60,16 @@ public class SmellyDeserializer extends JsonDeserializer <DriveProfile>
             switch(action)
             {
                 case INTAKE:
-                    return new CollectorIntake(collector);
+                    return new CollectorIntake(collector, 0);
                 case EXPEL:
                     //TODO: Decide whether shoot should be an option
-                    return new CollectorExpel(collector, false);
+                    return new CollectorExpel(collector, false, 0);
                 case BOTTOM:
-                    return new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi);
+                    return new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator);
                 case SWITCH:
-                    return new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi);
+                    return new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator);
                 case SCALE:
-                    return new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi);
+                    return new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator);
                 default:
                     return null;
             }

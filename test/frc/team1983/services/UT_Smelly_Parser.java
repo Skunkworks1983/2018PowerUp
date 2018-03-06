@@ -64,7 +64,7 @@ public class UT_Smelly_Parser
     @Test
     public void testAll()
     {
-        PowerMockito.(Robot.class, "getInstance");
+        //PowerMockito.(Robot.class, "getInstance");
 
         PowerMockito.when(Robot.getInstance()).thenReturn(robot);
 

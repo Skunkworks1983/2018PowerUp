@@ -46,8 +46,8 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int RIGHT1 = 6;
-            public static final int RIGHT2 = 5;
+            public static final int RIGHT1 = 5;
+            public static final int RIGHT2 = 6;
 
             public static final int LEFT1 = 9;
             public static final int LEFT2 = 4;
@@ -346,7 +346,7 @@ public class Constants
         public static final double DRIVEBASE_LEFT_MAX_TICKS_PER_SEC = 13600.0;
         public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14300.0;
 
-        public static final double DRIVEBASE_TICKS_END_RANGE = 500;
-        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.25;
+        public static final double DRIVEBASE_TICKS_END_RANGE = 750;
+        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.1;
     }
 }

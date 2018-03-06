@@ -2,6 +2,7 @@ package frc.team1983.services.parser;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.logger.LoggerFactory;
@@ -73,7 +74,8 @@ public class SmellyParser
             {
             });
 
-            path = new Path(new ArrayList<>(Arrays.asList(paths)));
+            //TODO TODO TODO: UNCOMMENT
+            //path = new Path(new ArrayList<ArrayList<Command>>(Arrays.asList(paths)));
         }
         catch(IOException e)
         {
