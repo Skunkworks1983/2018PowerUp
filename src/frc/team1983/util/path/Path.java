@@ -1,21 +1,35 @@
 package frc.team1983.util.path;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import frc.team1983.commands.drivebase.DriveProfile;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Path
 {
-    private List<PathComponent> components;
+    private ArrayList<DriveProfile> points;
 
-    public Path(List<PathComponent> components)
+    public Path(ArrayList<DriveProfile> points)
     {
-        this.components = components;
+        this.points = points;
     }
 
-    public PathComponent getComponent(int index)
+    public void setPoints(ArrayList<DriveProfile> points)
     {
-        if(index < components.size())
+        this.points = points;
+    }
+
+    public ArrayList<DriveProfile> getPoints()
+    {
+        return points;
+    }
+
+    public DriveProfile getPoint(int index)
+    {
+        if(index < points.size())
         {
-            return components.get(index);
+            return points.get(index);
         }
         else
         {
@@ -25,11 +39,16 @@ public class Path
 
     public int getComponentCount()
     {
-        return components.size();
+        return points.size();
     }
 
-    public List<PathComponent> getPath()
+    public DriveProfile getComponent(int i)
     {
-        return components;
+        return points.get(i);
+    }
+
+    public List<DriveProfile> getPath()
+    {
+        return points;
     }
 }

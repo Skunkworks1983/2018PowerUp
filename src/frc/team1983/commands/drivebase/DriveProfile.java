@@ -1,8 +1,10 @@
 package frc.team1983.commands.drivebase;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
 import frc.team1983.commands.CommandBase;
+import frc.team1983.services.parser.SmellyDeserializer;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
@@ -12,6 +14,7 @@ import frc.team1983.util.motion.profiles.CruiseProfile;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonDeserialize(using = SmellyDeserializer.class)
 public class DriveProfile extends CommandBase
 {
     private Drivebase drivebase;
@@ -19,7 +22,7 @@ public class DriveProfile extends CommandBase
 
     private PIDController headingController;
 
-    protected double duration;
+    protected double time, delay;
 
     protected boolean hasFinished = false;
     protected boolean runHeadingCorrection = true;
@@ -71,7 +74,7 @@ public class DriveProfile extends CommandBase
     @Override
     public void execute()
     {
-        double desiredHeading = startHeading + (deltaHeading * (Math.min(timeSinceInitialized(), duration) / duration));
+        double desiredHeading = startHeading + (deltaHeading * (Math.min(timeSinceInitialized(), time) / time));
         headingController.setSetpoint(desiredHeading);
     }
 

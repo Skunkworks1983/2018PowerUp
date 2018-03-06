@@ -16,7 +16,6 @@ import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.DriveProfile;
-import frc.team1983.commands.drivebase.FollowPath;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -26,6 +25,7 @@ import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.services.parser.SmellyParser;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
@@ -65,6 +65,7 @@ public class Robot extends IterativeRobot
     private static Robot instance;
 
     private SendableChooser autonomousSelector;
+    private SmellyParser smellyParser;
     private Command autonomousCommand;
 
     @Override
@@ -81,6 +82,8 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
+
+        smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLY_FOLDER);
 
         robotLogger.info("robotInit");
 
@@ -123,7 +126,7 @@ public class Robot extends IterativeRobot
 
         ramps.reset();
 
-        Path path = new Path(new ArrayList<PathComponent>(Arrays.asList(
+        /*Path path = new Path(new ArrayList<PathComponent>(Arrays.asList(
             //new PathTanline(5, 2),
             new PathTanline(15, 3),
             new PathTanarc(3, 90, 2),
@@ -134,7 +137,7 @@ public class Robot extends IterativeRobot
             new PathTanline(7, 2)
                                                                        )));
 
-        Scheduler.getInstance().add(new FollowPath(drivebase, path));
+        Scheduler.getInstance().add(new FollowPath(drivebase, path));*/
     }
 
     @Override

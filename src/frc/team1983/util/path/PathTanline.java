@@ -1,5 +1,13 @@
 package frc.team1983.util.path;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
+import frc.team1983.Robot;
+import frc.team1983.commands.drivebase.DriveFeet;
+
+@JsonDeserialize(as = PathTanline.class)
 public class PathTanline extends PathComponent
 {
     private double distance;

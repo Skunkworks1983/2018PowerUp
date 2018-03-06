@@ -108,7 +108,6 @@ public class SimpleTurnAngle extends CommandBase
         if(turnPid.onTarget())
         {
             //todo figure out what "recorrection" is
-            //todo figure out why erik is a salty boi
             //counter allows for overshoot and recorrection
             counter++;
         }

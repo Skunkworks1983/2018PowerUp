@@ -1,12 +1,25 @@
 package frc.team1983.util.path;
 
-abstract public class PathComponent
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import frc.team1983.services.parser.SmellyDeserializer;
+
+@JsonDeserialize(using = SmellyDeserializer.class)
+public class PathComponent
 {
     protected double time, delay = 0;
     protected String type, action;
 
     public PathComponent()
     {
+    }
+
+    public enum Action {
+        NONE,
+        INTAKE,
+        EXPEL,
+        SWITCH,
+        SCALE,
+        BOTTOM
     }
 
     public double getTime()
