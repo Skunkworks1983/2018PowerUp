@@ -38,10 +38,26 @@ public class DoubleCubeAutoSelector extends CommandGroup
 
         logger.info("Robot is on the {}", robotPosition);
 
-        if (Switch == Scale && Switch == Position)
+        if(Switch == Scale && Switch == Position)
         {
             logger.info("Running SwitchCloseScaleClose");
             Scheduler.getInstance().add(new SwitchCloseScaleClose(drivebase, dashboard, oi, elevator, collector, robotPosition));
+        }
+        else if(Switch != Scale && Switch == Position)
+        {
+            //switch close scale far
+        }
+        else if(Switch != Scale && Switch != Position)
+        {
+            //switch far scale close
+        }
+        else if(Switch == Scale && Switch != Position)
+        {
+            //switch far scale far
+        }
+        else
+        {
+            //the robot doesn't have field position information yet. dunno what to do here tho
         }
         //this isn't fleshed out yet - Mike took a picture of the logic on a whiteboard. yell at him if he leaves it unfinished.
 
