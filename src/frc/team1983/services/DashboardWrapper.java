@@ -1,5 +1,6 @@
 package frc.team1983.services;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 //A barebones wrapper for smartdashboard to facilitate unit testing
@@ -22,6 +23,11 @@ public class DashboardWrapper
     public void putBoolean(String key, Boolean value)
     {
         SmartDashboard.putBoolean(key, value);
+    }
+
+    public void putChooser(String key, SendableChooser value)
+    {
+        SmartDashboard.putData(key, value);
     }
 
     public String getString(String key, String defaultValue)

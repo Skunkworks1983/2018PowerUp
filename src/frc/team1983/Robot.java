@@ -12,15 +12,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
 import frc.team1983.commands.autonomous.PlaceCubeInScale;
 import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
-import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.commands.collector.CollectorRotate;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
-import frc.team1983.commands.debugging.DisplayButtonPresses;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.RunTankDrive;
+import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.services.DashboardWrapper;
-import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
@@ -30,8 +25,6 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.util.control.ProfileController;
-import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.util.control.ProfileController;
 import org.apache.logging.log4j.core.Logger;
 
@@ -74,6 +67,7 @@ public class Robot extends IterativeRobot
 
         autonomousSelector = new SendableChooser();
         autonomousSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
+        autonomousSelector.addDefault("Exchange Zone", PlaceCubeInExchangeZone.class);
         autonomousSelector.addObject("Scale", new PlaceCubeInScale(drivebase, dashboard));
         autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
         SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
@@ -93,7 +87,7 @@ public class Robot extends IterativeRobot
 
         dashboard.store();
 
-        GameDataPoller.resetGameData();
+        AutoManager.resetGameData();
     }
 
     @Override
@@ -120,7 +114,7 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousPeriodic()
     {
-        GameDataPoller.pollGameData();
+        AutoManager.execute();
         Scheduler.getInstance().run();
     }
 
@@ -229,6 +223,11 @@ public class Robot extends IterativeRobot
     public Collector getCollector()
     {
         return collector;
+    }
+
+    public StatefulDashboard getDashboard()
+    {
+        return dashboard
     }
 
     public static Robot getInstance()
