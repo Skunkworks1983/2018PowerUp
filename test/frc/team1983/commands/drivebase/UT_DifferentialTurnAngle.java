@@ -1,6 +1,5 @@
 package frc.team1983.commands.drivebase;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import edu.wpi.first.wpilibj.HLUsageReporting;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
@@ -8,7 +7,6 @@ import frc.team1983.services.StatefulDashboard;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
-import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.testutility.FakeScheduler;
 import org.junit.After;
 import org.junit.Before;
@@ -22,7 +20,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -72,7 +69,7 @@ public class UT_DifferentialTurnAngle
         HLUsageReporting.SetImplementation(hlUsageReporting);
         fakeScheduler = new FakeScheduler();
         when(drivebase.getGyro()).thenReturn(gyro);
-        differentialTurnAngle = new DifferentialTurnAngle(dashboard, 0, drivebase);
+        differentialTurnAngle = new DifferentialTurnAngle(drivebase, dashboard, 0);
     }
     @After
     public void teardown()

@@ -35,12 +35,12 @@ public class DifferentialTurnAngle extends CommandBase
     private double error;
     private int counter;
 
-    public DifferentialTurnAngle(StatefulDashboard dashboard, double degrees, Drivebase drivebase)
+    public DifferentialTurnAngle(Drivebase drivebase, StatefulDashboard dashboard, double degrees)
     {
-        this(dashboard, degrees, drivebase, Constants.PidConstants.TurnAnglePid.DEFAULT_TIMEOUT);
+        this(drivebase, dashboard, degrees, Constants.PidConstants.TurnAnglePid.DEFAULT_TIMEOUT);
     }
 
-    public DifferentialTurnAngle(StatefulDashboard dashboard, double degrees, Drivebase drivebase, double timeout)
+    public DifferentialTurnAngle(Drivebase drivebase, StatefulDashboard dashboard, double degrees, double timeout)
     {
         super(timeout);
         logger = LoggerFactory.createNewLogger(DifferentialTurnAngle.class);

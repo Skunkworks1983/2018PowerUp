@@ -32,11 +32,11 @@ public class PlaceCubeInSwitch extends CommandGroup
         //detects which side of the switch to place in
         if(isOurColorLeft)
         {
-            super.addSequential(new DifferentialTurnAngle(dashboard, 90, drivebase));
+            super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90));
         }
         else
         {
-            super.addSequential(new DifferentialTurnAngle(dashboard, -90, drivebase));
+            super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90));
         }
 
         //super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi), 2);

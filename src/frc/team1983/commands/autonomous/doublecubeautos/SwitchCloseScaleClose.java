@@ -36,15 +36,16 @@ public class SwitchCloseScaleClose extends CommandGroup
         super.addSequential(new CollectorRotate(collector, false));
         super.addSequential(new DriveStraight(drivebase, dashboard, 21.0));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
-        super.addSequential(new DifferentialTurnAngle(dashboard, 135 * reflectionVariable, drivebase));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 135 * reflectionVariable));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3, Constants.PidConstants.DriveStraightPid.DEFAULT_BASE_SPEED, 1));
         super.addSequential(new CollectorExpel(collector, true, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, -1.0));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 1000000 * reflectionVariable)); //need to reorient to point at the cube we pushed out of the way
         super.addSequential(new DriveStraight(drivebase, dashboard, 2.0));
         super.addParallel(new CollectorIntake(collector));
         super.addSequential(new DriveStraight(drivebase, dashboard, -3.75));
-        super.addSequential(new DifferentialTurnAngle(dashboard, 90 * reflectionVariable, drivebase));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90 * reflectionVariable));
         super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
         super.addSequential(new DriveStraight(drivebase, dashboard, 2.1));
         super.addSequential(new CollectorExpel(collector, true));
