@@ -38,7 +38,9 @@ public class Robot extends IterativeRobot
     private Elevator elevator;
     private Collector collector;
     private Ramps ramps;
+    private DashboardWrapper dashboardWrapper;
     private StatefulDashboard dashboard;
+    private AutoManager autoManager;
 
     private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
 
@@ -46,14 +48,14 @@ public class Robot extends IterativeRobot
 
     private static Robot instance;
 
-    private SendableChooser autonomousSelector;
     private Command autonomousCommand;
 
     @Override
     public void robotInit()
     {
         robotLogger = LoggerFactory.createNewLogger(Robot.class);
-        dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
+        dashboardWrapper = new DashboardWrapper();
+        dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
         dashboard.populate();
 
         oi = new OI(DriverStation.getInstance());
@@ -62,15 +64,10 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
+        autoManager = new AutoManager(dashboardWrapper);
+
 
         robotLogger.info("robotInit");
-
-        autonomousSelector = new SendableChooser();
-        autonomousSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
-        autonomousSelector.addDefault("Exchange Zone", PlaceCubeInExchangeZone.class);
-        autonomousSelector.addObject("Scale", new PlaceCubeInScale(drivebase, dashboard));
-        autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
-        SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
     }
 
     @Override
@@ -87,7 +84,7 @@ public class Robot extends IterativeRobot
 
         dashboard.store();
 
-        AutoManager.resetGameData();
+        autoManager.resetGameData();
     }
 
     @Override
@@ -104,8 +101,6 @@ public class Robot extends IterativeRobot
         drivebase.setBrakeMode(true);
         ramps.reset();
 
-        autonomousCommand = (Command) autonomousSelector.getSelected();
-        robotLogger.info(autonomousSelector.getSelected());
         Scheduler.getInstance().add(autonomousCommand);
         SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
         SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
@@ -114,7 +109,7 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousPeriodic()
     {
-        AutoManager.execute();
+        autoManager.execute();
         Scheduler.getInstance().run();
     }
 
@@ -227,7 +222,12 @@ public class Robot extends IterativeRobot
 
     public StatefulDashboard getDashboard()
     {
-        return dashboard
+        return dashboard;
+    }
+
+    public DashboardWrapper getDashboardWrapper()
+    {
+        return dashboardWrapper;
     }
 
     public static Robot getInstance()

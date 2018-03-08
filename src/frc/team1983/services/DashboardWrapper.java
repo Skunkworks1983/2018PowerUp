@@ -1,13 +1,20 @@
 package frc.team1983.services;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.services.automanager.AutoSelection;
 
-//A barebones wrapper for smartdashboard to facilitate unit testing
+//A bare bones wrapper for smartdashboard to facilitate unit testing
 public class DashboardWrapper
 {
+    private SendableChooser<AutoSelection> autoChooser;
+    private String autoChooserName;
+
     public DashboardWrapper()
     {
+        autoChooser = new SendableChooser<>();
+        autoChooserName = "Auto Selector";
     }
 
     public void putString(String key, String value)
@@ -25,9 +32,21 @@ public class DashboardWrapper
         SmartDashboard.putBoolean(key, value);
     }
 
-    public void putChooser(String key, SendableChooser value)
+    public void addAutoChooserAutoChoice(AutoSelection autoSelection)
     {
-        SmartDashboard.putData(key, value);
+        autoChooser.addObject(autoSelection.getReadableName(), autoSelection);
+        SmartDashboard.putData(autoChooserName, autoChooser);
+    }
+
+    public void addAutoChooserAutoDefault(AutoSelection autoSelection)
+    {
+        autoChooser.addDefault(autoSelection.getReadableName(), autoSelection);
+        SmartDashboard.putData(autoChooserName, autoChooser);
+    }
+
+    public AutoSelection getSelectedAutoChoice()
+    {
+        return autoChooser.getSelected();
     }
 
     public String getString(String key, String defaultValue)

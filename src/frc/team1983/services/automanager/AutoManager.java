@@ -5,17 +5,16 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.Robot;
-import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
-import frc.team1983.commands.autonomous.PlaceCubeInScale;
-import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.Drivebase;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.Logger;
 
-import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * The automanager class provides an easy interface to the 2018 Match Data
@@ -28,33 +27,36 @@ import java.io.File;
  */
 public class AutoManager
 {
+
     private String gsm;
     private boolean gameDataAlreadyPolled;
-    private SendableChooser autonomousSelector, ownedSideOveride, robotPositionSelector;
+    private SendableChooser ownedSideOverride, robotPositionSelector;
     private Logger logger;
+    private DashboardWrapper dashboard;
 
     public AutoManager(DashboardWrapper dashboard)
     {
+        this.dashboard = dashboard;
+        gameDataAlreadyPolled = false;
         logger = LoggerFactory.createNewLogger(this.getClass());
 
-        autonomousSelector = new SendableChooser();
-        autonomousSelector.addDefault("Exchange Zone", PlaceCubeInExchangeZone.class);
-        autonomousSelector.addObject("Scale", PlaceCubeInScale.class);
-        autonomousSelector.addObject("Switch", PlaceCubeInSwitch.class);
-        autonomousSelector.addObject("AutoEnum SmellyDrive", null);
-        dashboard.putChooser("Autonomous Mode Selector", autonomousSelector);
+        dashboard.addAutoChooserAutoDefault(AutoSelection.EXCHANGE_ZONE);
+        for(AutoSelection selection : AutoSelection.values())
+        {
+            dashboard.addAutoChooserAutoChoice(selection);
+        }
 
         robotPositionSelector = new SendableChooser();
         robotPositionSelector.addDefault("Left", StartSide.LEFT);
         robotPositionSelector.addObject("Middle", StartSide.MIDDLE);
         robotPositionSelector.addObject("Right", StartSide.RIGHT);
-        dashboard.putChooser("Robot Position Selector", robotPositionSelector);
+        SmartDashboard.putData("Robot Position Selector", robotPositionSelector); //TODO implement in dashboard wrapper
 
-        ownedSideOveride = new SendableChooser();
-        ownedSideOveride.addDefault("Use game data", OwnedSide.UNKNOWN);
-        ownedSideOveride.addObject("Left", OwnedSide.LEFT);
-        ownedSideOveride.addObject("Right", OwnedSide.RIGHT);
-        dashboard.putChooser("Owned Side Overide", ownedSideOveride);
+        ownedSideOverride = new SendableChooser();
+        ownedSideOverride.addDefault("Use game data", OwnedSide.UNKNOWN);
+        ownedSideOverride.addObject("Left", OwnedSide.LEFT);
+        ownedSideOverride.addObject("Right", OwnedSide.RIGHT);
+        SmartDashboard.putData("Owned Side Override", ownedSideOverride); //TODO implement in dashboard wrapper
     }
 
     public enum GameFeature
@@ -133,31 +135,15 @@ public class AutoManager
         if(!gameDataAlreadyPolled)
         {
             gsm = DriverStation.getInstance().getGameSpecificMessage();
-            gameDataAlreadyPolled = true;
-
-            Object selected = autonomousSelector.getSelected();
-            if (selected instanceof Class)
+            if(gsm.length() == 3)
             {
-                try
-                {
-                    Scheduler.getInstance().add((CommandGroup)
-                        ((Class) selected).getConstructor(Drivebase.class, StatefulDashboard.class)
-                            .newInstance(Robot.getInstance().getDrivebase(), Robot.getInstance().getDashboard()));
-                }
-                catch(Exception e)
-                {
-                    logger.error("Exception when creating auto command", e);
-                }
-            }
-            else
-            {
+                gameDataAlreadyPolled = true;
 
+                Scheduler.getInstance().add(dashboard.getSelectedAutoChoice().getSelectableAuto().createCommand(
+                        Robot.getInstance().getDrivebase(), Robot.getInstance().getCollector(),
+                        Robot.getInstance().getElevator(), Robot.getInstance().getDashboardWrapper(),
+                        Robot.getInstance().getDashboard()));
             }
         }
-    }
-
-    public Class getSelectedIfClass(SendableChooser chooser)
-    {
-
     }
 }
