@@ -41,7 +41,7 @@ public class AutoManager
         autonomousSelector.addDefault("Exchange Zone", PlaceCubeInExchangeZone.class);
         autonomousSelector.addObject("Scale", PlaceCubeInScale.class);
         autonomousSelector.addObject("Switch", PlaceCubeInSwitch.class);
-        autonomousSelector.addObject("Auto SmellyDrive", null);
+        autonomousSelector.addObject("AutoEnum SmellyDrive", null);
         dashboard.putChooser("Autonomous Mode Selector", autonomousSelector);
 
         robotPositionSelector = new SendableChooser();
