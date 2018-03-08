@@ -71,6 +71,21 @@ public class Constants
             public static final int RIGHT_LEG = 3;
         }
 
+        public static class Climber // magic numbers
+        {
+            public static final int STABILIZER = 1;
+
+            public static final int MAGIC_JACKS = 2;
+            public static final int CLIMBER_MOTOR = 0;
+            public static final boolean CLIMBER_MOTOR_REVERSED = false;
+
+            public static final int CAM_LEFT = 3;
+            public static final int CAM_RIGHT = 4;
+
+            public static final int HOOKS = 5;
+        }
+
+
         //Random and hard to classify drivebase constants
         public static class DrivebaseConstants
         {

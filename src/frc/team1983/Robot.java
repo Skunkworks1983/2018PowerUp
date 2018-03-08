@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.Odometry.PoseEstimator;
+import frc.team1983.Odometry.Pose;
+import frc.team1983.commands.autonomous.Test;
 import frc.team1983.commands.collector.CollectorRotate;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.TankDrive;
@@ -15,10 +18,7 @@ import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.OI;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
-import frc.team1983.subsystems.Collector;
-import frc.team1983.subsystems.Drivebase;
-import frc.team1983.subsystems.Elevator;
-import frc.team1983.subsystems.Ramps;
+import frc.team1983.subsystems.*;
 import frc.team1983.subsystems.utilities.Motor;
 import org.apache.logging.log4j.core.Logger;
 
@@ -32,7 +32,10 @@ public class Robot extends IterativeRobot
     private Elevator elevator;
     private Collector collector;
     private Ramps ramps;
+    private Climber climber;
     private StatefulDashboard dashboard;
+
+    public PoseEstimator poseEstimator;
 
     private static Robot instance;
 
@@ -51,6 +54,9 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
+        climber = new Climber();
+
+        poseEstimator = new PoseEstimator();
 
         oi.initializeBindings(this);
         robotLogger.info("robotInit");
@@ -79,6 +85,8 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
+        Scheduler.getInstance().add(new Test());
+
 
         robotLogger.info("AutoInit");
     }
@@ -87,6 +95,8 @@ public class Robot extends IterativeRobot
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
+
+        poseEstimator.getPose();
     }
 
     @Override
@@ -98,7 +108,7 @@ public class Robot extends IterativeRobot
         }
         Scheduler.getInstance().removeAll();
 
-        //Scheduler.getInstance().add(new TankDrive(drivebase, oi));
+        Scheduler.getInstance().add(new TankDrive(drivebase, oi));
         Scheduler.getInstance().add(new CollectorRotate(collector, true));
     }
 
@@ -106,6 +116,8 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+
+        poseEstimator.getPose();
 
         robotLogger.info(oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1));
         elevator.set(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.MANUAL, 1)/2);
@@ -172,6 +184,10 @@ public class Robot extends IterativeRobot
     public Collector getCollector()
     {
         return collector;
+    }
+
+    public Climber getClimber() {
+        return climber;
     }
 
     public static Robot getInstance()
