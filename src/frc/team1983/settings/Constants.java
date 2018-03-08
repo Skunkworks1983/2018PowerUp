@@ -276,6 +276,7 @@ public class Constants
         public enum Setpoint
         {
             BOTTOM,
+            TRAVAL,
             SWITCH,
             LOW,
             MID,

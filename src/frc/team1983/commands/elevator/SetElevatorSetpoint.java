@@ -31,6 +31,14 @@ public class SetElevatorSetpoint extends CommandBase
         this.elevator = elevator;
     }
 
+    public SetElevatorSetpoint(Constants.OIMap.Setpoint setpoint, Elevator elevator)
+    {
+        requires(elevator);
+        logger = LoggerFactory.createNewLogger(this.getClass());
+        this.setpoint = setpoint;
+        this.elevator = elevator;
+    }
+
     @Override
     public void initialize()
     {
@@ -59,6 +67,10 @@ public class SetElevatorSetpoint extends CommandBase
 
             case TOP:
                 newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 100;
+                break;
+
+            case TRAVAL:
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_BOTTOM + 150;
                 break;
 
             default:
