@@ -45,22 +45,20 @@ public class DoubleCubeAutoSelector extends CommandGroup
         }
         else if(Switch != Scale && Switch == Position)
         {
-            //switch close scale far
+            Scheduler.getInstance().add(new SwitchCloseScaleFar(drivebase, dashboard, oi, elevator, collector, robotPosition));
         }
         else if(Switch != Scale && Switch != Position)
         {
-            //switch far scale close
+            Scheduler.getInstance().add(new SwitchFarScaleClose(drivebase, dashboard, oi, elevator, collector, robotPosition));
         }
         else if(Switch == Scale && Switch != Position)
         {
-            //switch far scale far
+            Scheduler.getInstance().add(new SwitchFarScaleFar(drivebase, dashboard, oi, elevator, collector, robotPosition));
         }
         else
         {
             //the robot doesn't have field position information yet. dunno what to do here tho
+            //Thread.sleep(10); //?
         }
-        //this isn't fleshed out yet - Mike took a picture of the logic on a whiteboard. yell at him if he leaves it unfinished.
-
-
     }
 }

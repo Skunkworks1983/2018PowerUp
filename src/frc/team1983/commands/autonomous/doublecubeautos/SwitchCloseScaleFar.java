@@ -28,7 +28,7 @@ public class SwitchCloseScaleFar extends CommandGroup
         logger = LoggerFactory.createNewLogger(SwitchCloseScaleClose.class);
 
         super.addSequential(new CollectorRotate(collector, false));
-        super.addSequential(new DriveStraight(drivebase, dashboard, 21.0));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 1000000000));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 135 * reflectionVariable));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3, Constants.PidConstants.DriveStraightPid.DEFAULT_BASE_SPEED, 1));
