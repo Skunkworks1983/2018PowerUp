@@ -101,7 +101,6 @@ public class Robot extends IterativeRobot
         drivebase.setBrakeMode(true);
         ramps.reset();
 
-        Scheduler.getInstance().add(autonomousCommand);
         SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
         SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
     }

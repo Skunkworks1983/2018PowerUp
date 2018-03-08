@@ -1,20 +1,13 @@
 package frc.team1983.services.automanager;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.Robot;
 import frc.team1983.services.DashboardWrapper;
-import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.subsystems.Drivebase;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.Logger;
-
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * The automanager class provides an easy interface to the 2018 Match Data
@@ -30,7 +23,7 @@ public class AutoManager
 
     private String gsm;
     private boolean gameDataAlreadyPolled;
-    private SendableChooser ownedSideOverride, robotPositionSelector;
+    private SendableChooser<OwnedSide> ownedSideOverride, robotPositionSelector;
     private Logger logger;
     private DashboardWrapper dashboard;
 
@@ -46,13 +39,13 @@ public class AutoManager
             dashboard.addAutoChooserAutoChoice(selection);
         }
 
-        robotPositionSelector = new SendableChooser();
-        robotPositionSelector.addDefault("Left", StartSide.LEFT);
-        robotPositionSelector.addObject("Middle", StartSide.MIDDLE);
-        robotPositionSelector.addObject("Right", StartSide.RIGHT);
+        robotPositionSelector = new SendableChooser<>();
+        robotPositionSelector.addDefault("Left", OwnedSide.LEFT);
+        robotPositionSelector.addObject("Middle", OwnedSide.UNKNOWN); //A little confusing, but easier on our logic
+        robotPositionSelector.addObject("Right", OwnedSide.RIGHT);
         SmartDashboard.putData("Robot Position Selector", robotPositionSelector); //TODO implement in dashboard wrapper
 
-        ownedSideOverride = new SendableChooser();
+        ownedSideOverride = new SendableChooser<>();
         ownedSideOverride.addDefault("Use game data", OwnedSide.UNKNOWN);
         ownedSideOverride.addObject("Left", OwnedSide.LEFT);
         ownedSideOverride.addObject("Right", OwnedSide.RIGHT);
@@ -69,11 +62,6 @@ public class AutoManager
         UNKNOWN, LEFT, RIGHT //Which side is our alliance's color. Unknown indicates the fms has not given us game data
     }
 
-    public enum StartSide
-    {
-        LEFT, MIDDLE, RIGHT
-    }
-
     /**
      * Determine the OwnedSide of any given GameFeature. Use this method to
      * determine which PLATE of each feature (SCALE or SWITCH) is OWNED by your
@@ -85,6 +73,16 @@ public class AutoManager
      */
     public OwnedSide getOwnedSide(GameFeature feature)
     {
+        switch(ownedSideOverride.getSelected())
+        {
+            case UNKNOWN:
+                break;
+            case LEFT:
+                return OwnedSide.LEFT;
+            case RIGHT:
+                return OwnedSide.RIGHT;
+        }
+
         if(gsm == null || gsm.equals(""))
         {
             return OwnedSide.UNKNOWN;
@@ -124,6 +122,11 @@ public class AutoManager
         }
     }
 
+    public OwnedSide getRobotPosition()
+    {
+        return robotPositionSelector.getSelected();
+    }
+
     public void resetGameData()
     {
         gsm = "";
@@ -132,9 +135,11 @@ public class AutoManager
 
     public void execute()
     {
-        if(!gameDataAlreadyPolled)
+        if(!gameDataAlreadyPolled || ownedSideOverride.getSelected() != OwnedSide.UNKNOWN)
         {
-            gsm = DriverStation.getInstance().getGameSpecificMessage();
+            //If we are overriding, we want to think that we have the game data, but overrule it whenever asked for
+            gsm = ownedSideOverride.getSelected() != OwnedSide.UNKNOWN ? "xyz" :
+                    DriverStation.getInstance().getGameSpecificMessage();
             if(gsm.length() == 3)
             {
                 gameDataAlreadyPolled = true;
@@ -142,7 +147,7 @@ public class AutoManager
                 Scheduler.getInstance().add(dashboard.getSelectedAutoChoice().getSelectableAuto().createCommand(
                         Robot.getInstance().getDrivebase(), Robot.getInstance().getCollector(),
                         Robot.getInstance().getElevator(), Robot.getInstance().getDashboardWrapper(),
-                        Robot.getInstance().getDashboard()));
+                        Robot.getInstance().getDashboard(), this));
             }
         }
     }

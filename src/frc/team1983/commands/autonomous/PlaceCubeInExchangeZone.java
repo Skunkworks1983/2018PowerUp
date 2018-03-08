@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.SimpleTurnAngle;
 import frc.team1983.services.StatefulDashboard;
+import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
@@ -42,8 +43,5 @@ public class PlaceCubeInExchangeZone extends CommandGroup
         //super.addSequential(new Elevator(exchange zone height, elevator);
         //super.addSequential(new Collector(expel, collector);
         //super.addSequential(new DriveStraight(dashboard, -6.75+Constants.AutoValues.DISTANCE_FROM_ENCODER_TO_END_OF_ROBO T, drivebase, .5));
-
-
-
     }
 }

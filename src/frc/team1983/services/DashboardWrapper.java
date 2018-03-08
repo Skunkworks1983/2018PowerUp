@@ -1,18 +1,21 @@
 package frc.team1983.services;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.services.automanager.AutoSelection;
+
+import java.util.HashMap;
 
 //A bare bones wrapper for smartdashboard to facilitate unit testing
 public class DashboardWrapper
 {
     private SendableChooser<AutoSelection> autoChooser;
     private String autoChooserName;
+    private HashMap<String, SendableChooser> chooserMap;
 
     public DashboardWrapper()
     {
+        chooserMap = new HashMap<>();
         autoChooser = new SendableChooser<>();
         autoChooserName = "Auto Selector";
     }
