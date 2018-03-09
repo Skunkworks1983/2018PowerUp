@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.Odometry.PoseEstimator;
-import frc.team1983.Odometry.Pose;
 import frc.team1983.commands.autonomous.Test;
 import frc.team1983.commands.collector.CollectorRotate;
 import frc.team1983.commands.debugging.RunOneMotor;

@@ -73,16 +73,16 @@ public class Constants
 
         public static class Climber // magic numbers
         {
-            public static final int STABILIZER = 1;
+            public static final int STABILIZER = 16;
 
-            public static final int MAGIC_JACKS = 2;
-            public static final int CLIMBER_MOTOR = 0;
+            public static final int MAGIC_JACKS = 17;
+            public static final int CLIMBER_MOTOR = 21;
             public static final boolean CLIMBER_MOTOR_REVERSED = false;
 
-            public static final int CAM_LEFT = 3;
-            public static final int CAM_RIGHT = 4;
+            public static final int CAM_LEFT = 18;
+            public static final int CAM_RIGHT = 19;
 
-            public static final int HOOKS = 5;
+            public static final int HOOKS = 20;
         }
 
 

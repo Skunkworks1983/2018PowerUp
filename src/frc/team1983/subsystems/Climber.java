@@ -1,7 +1,5 @@
 package frc.team1983.subsystems;
 
-
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.utilities.Motor;
@@ -42,7 +40,7 @@ public class Climber extends Subsystem {
         magicJacks.set(0);
     }
 
-    public void engage(){
+    public void engage(){ // cinnamon
         camLeft.set(1);
         camRight.set(1);
     }

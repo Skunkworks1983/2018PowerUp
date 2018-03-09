@@ -2,26 +2,21 @@ package frc.team1983.commands.climber;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team1983.subsystems.Climber;
 import frc.team1983.subsystems.Drivebase;
 
 
-public class Climb extends Command {
-    private Climber climber;
+public class ClimbActivate extends Command {
     private Drivebase drivebase;
 
 
-    public Climb(Climber climber, Drivebase drivebase) {
-        requires(climber);
+    public ClimbActivate(Drivebase drivebase) {
         requires(drivebase);
-        this.climber = climber;
         this.drivebase = drivebase;
     }
 
     @Override
     protected void initialize() {
-        climber.engage();
-        climber.jackUp();
+
     }
 
     @Override
