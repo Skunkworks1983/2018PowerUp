@@ -41,7 +41,7 @@ public class SwitchCloseScaleClose extends CommandGroup
         super.addSequential(new CollectorExpel(collector, true, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, -1.0));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
-        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 1000000 * reflectionVariable)); //need to reorient to point at the cube we pushed out of the way
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90 * reflectionVariable)); //need to reorient to point at the cube we pushed out of the way
         super.addSequential(new DriveStraight(drivebase, dashboard, 2.0));
         super.addParallel(new CollectorIntake(collector));
         super.addSequential(new DriveStraight(drivebase, dashboard, -3.75));
