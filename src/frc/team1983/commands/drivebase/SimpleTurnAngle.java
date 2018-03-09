@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import frc.team1983.commands.CommandBase;
+import frc.team1983.services.StatefulDashboard;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
@@ -12,14 +13,12 @@ import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseRotationPidOutput;
 import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.subsystems.Drivebase;
-import frc.team1983.subsystems.utilities.PidControllerWrapper;
-import frc.team1983.subsystems.utilities.outputwrappers.TurnAnglePidOutput;
+import frc.team1983.subsystems.utilities.outputwrappers.SimpleTurnAnglePidOutput;
 import org.apache.logging.log4j.core.Logger;
 
-//Turns the robot a number of degrees, as an offset from the Robot's current position.
+//Turns the robot a number of degrees, as an offset from the MotorMap's current position.
 //has case for when gyro eventually explodes
-public class TurnAngle extends CommandBase
+public class SimpleTurnAngle extends CommandBase
 {
     private double targetAngle;
     private Drivebase drivebase;
@@ -30,71 +29,86 @@ public class TurnAngle extends CommandBase
     private int counter;
 
     private Logger logger;
+    private StatefulDashboard dashboard;
 
-    public TurnAngle(double degrees, Drivebase drivebase)
+    public SimpleTurnAngle(StatefulDashboard dashboard, double degrees, Drivebase drivebase)
     {
-        this(degrees, drivebase, 3 / 2.);
+        this(dashboard, degrees, drivebase, Constants.PidConstants.TurnAnglePid.DEFAULT_TIMEOUT);
     }
 
-    public TurnAngle(double degrees, Drivebase drivebase, double timeout)
+    public SimpleTurnAngle(StatefulDashboard dashboard, double degrees, Drivebase drivebase, double timeout)
     {
         super(timeout);
         requires(drivebase);
         this.drivebase = drivebase;
-        logger = LoggerFactory.createNewLogger(TurnAngle.class);
+        this.dashboard = dashboard;
+        logger = LoggerFactory.createNewLogger(SimpleTurnAngle.class);
 
-        //Uses the TurnAngle specific PidWrapper implementations.
-        //pidSource = new TurnAnglePidInput(); Implementation of PidInputWrapper is available on another branch.
+        //Uses the SimpleTurnAngle specific PidWrapper implementations.
+        //pidSource = new DifferentialTurnAnglePidInput(); Implementation of PidInputWrapper is available on another branch.
         //Next to touch this file gets to implement the PidInputWrapper.
-        pidOut = new TurnAnglePidOutput(drivebase);
+        pidOut = new SimpleTurnAnglePidOutput(drivebase);
         targetAngle = degrees;
         gyro = drivebase.getGyro();
 
+        dashboard.add(this, "kP", 0.0);
+        dashboard.add(this, "kI", 0.0);
+        dashboard.add(this, "kD", 0.0);
+        dashboard.add(this, "kF", 0.0);
     }
 
     @Override
     public void initialize()
     {
+        logger.info("initialize start");
         if(!gyro.isDead())
         {
             pidSource = new GyroPidInput(drivebase.getGyro());
             pidOut = new DrivebaseRotationPidOutput(drivebase);
-            turnPid = new PIDController(Constants.PidConstants.TurnAnglePid.P,
-                                        Constants.PidConstants.TurnAnglePid.I,
-                                        Constants.PidConstants.TurnAnglePid.D,
-                                        Constants.PidConstants.TurnAnglePid.F,
+            turnPid = new PIDController(dashboard.getDouble(this, "kP"),
+                                        dashboard.getDouble(this, "kI"),
+                                        dashboard.getDouble(this, "kD"),
+                                        dashboard.getDouble(this, "kF"),
                                         pidSource, pidOut);
-            turnPid.setAbsoluteTolerance(5);
+            turnPid.setAbsoluteTolerance(Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE);
             turnPid.setSetpoint(targetAngle + drivebase.getGyro().getAngle());
+            turnPid.setOutputRange(-0.5, 0.5);
             turnPid.enable();
         }
+
         else if(gyro.isDead()) //switches to encoder if gyro doesn't work
         {
+            logger.info("using encoders");
             pidSource = new EncoderTurnAnglePidInput(drivebase);
             pidOut = new DrivebaseRotationPidOutput(drivebase);
-            turnPid = new PIDController(Constants.PidConstants.TurnAnglePid.P,
-                                        Constants.PidConstants.TurnAnglePid.I,
-                                        Constants.PidConstants.TurnAnglePid.D,
-                                        Constants.PidConstants.TurnAnglePid.F,
+            turnPid = new PIDController(dashboard.getDouble(this, "kP"),
+                                        dashboard.getDouble(this, "kI"),
+                                        dashboard.getDouble(this, "kD"),
+                                        dashboard.getDouble(this, "kF"),
                                         pidSource, pidOut);
             turnPid.setAbsoluteTolerance(Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE);
             turnPid.setSetpoint(targetAngle + pidSource.pidGet());
+            turnPid.setOutputRange(-0.5, 0.5);
             turnPid.enable();
-
         }
+    logger.info("initialized finished");
     }
 
     @Override
     public void execute()
     {
-        System.out.println("TurnAngle executed");
+        logger.info("SimpleTurnAngle executed");
+        //logger.info("SimpleTurnAngle error{}", turnPid.getError());
     }
 
     @Override
     public boolean isFinished()
     {
+        logger.info("heading{}", pidSource.pidGet());
         if(turnPid.onTarget())
         {
+            //todo figure out what "recorrection" is
+            //todo figure out why erik is a salty boi
             //counter allows for overshoot and recorrection
             counter++;
         }
@@ -102,19 +116,13 @@ public class TurnAngle extends CommandBase
         {
             counter--;
         }
-        if(isTimedOut() || counter >= 15)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return isTimedOut() || counter >= 15;
     }
 
     @Override
     public void end()
     {
+        logger.info("SimpleTurnAngle ends, which means it began in the first place");
         turnPid.disable();
         drivebase.setLeft(ControlMode.PercentOutput, 0);
         drivebase.setRight(ControlMode.PercentOutput, 0);

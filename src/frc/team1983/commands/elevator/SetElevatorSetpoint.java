@@ -43,20 +43,26 @@ public class SetElevatorSetpoint extends CommandBase
         //Check to see if the oi is in slider position mode. If so, use the slider pos instead of the preset
         switch(setpoint)
         {
-            default:
-                newSetpoint = 0;
-                break;
-
-            case SCALE:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP-100;
-                break;
-
             case BOTTOM:
-                newSetpoint = 0;
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_BOTTOM;
                 break;
 
             case SWITCH:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP/2;
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP / 2;
+                break;
+
+            case LOW:
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 1100;
+
+            case MID:
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 600;
+
+            case TOP:
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 100;
+                break;
+
+            default:
+                newSetpoint = 0;
                 break;
         }
         elevator.setSetpoint(newSetpoint);

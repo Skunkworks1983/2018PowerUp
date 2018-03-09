@@ -3,8 +3,6 @@ package frc.team1983.services;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.hal.HAL;
 import frc.team1983.settings.Constants;
 import org.junit.After;
@@ -18,7 +16,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 public class UT_OI
@@ -52,9 +49,9 @@ public class UT_OI
 
         when(left.getButtonCount()).thenReturn(2);
 
-        HashMap joystickButtons = new HashMap<Joystick, JoystickButton[]>();
+        HashMap<Joystick, JoystickButton[]> joystickButtons = new HashMap<>();
 
-        joystickButtons.put(left, joy1button1);
+        joystickButtons.put(left, new JoystickButton[]{joy1button1});
 
         oi = new OI(left, right, panel, joystickButtons);
     }
@@ -70,7 +67,7 @@ public class UT_OI
     {
         when(left.getAxisCount()).thenReturn(1);
         when(left.getRawAxis(0)).thenReturn(1.0);
-        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(-1.0));
     }
 
     @Test
@@ -99,7 +96,7 @@ public class UT_OI
     public void returnsDeadzonedValue()
     {
         when(left.getAxisCount()).thenReturn(1);
-        when(left.getRawAxis(0)).thenReturn(Constants.OIMap.OIConstants.JOYSTICK_DEADZONE * 0.5);
+        when(left.getRawAxis(0)).thenReturn(Constants.OIMap.JOYSTICK_DEADZONE * 0.5);
         assertThat(oi.getAxis(Constants.OIMap.Joystick.PANEL, 0), is(0.0));
     }
 
@@ -114,9 +111,9 @@ public class UT_OI
     {
         when(left.getAxisCount()).thenReturn(1);
         when(left.getRawAxis(0)).thenReturn(1.0);
-        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(-1.0));
 
         when(left.getRawAxis(0)).thenReturn(-1.0);
-        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(-1.0));
+        assertThat(oi.getAxis(Constants.OIMap.Joystick.LEFT, 0), is(1.0));
     }
 }

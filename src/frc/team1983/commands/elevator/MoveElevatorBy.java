@@ -1,12 +1,23 @@
 package frc.team1983.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team1983.subsystems.Elevator;
+import frc.team1983.util.motion.MotionProfile;
 
 public class MoveElevatorBy extends Command
 {
-    public MoveElevatorBy(double feet)
-    {
+    private Elevator elevator;
 
+    private double feet;
+    private double time;
+
+    public MoveElevatorBy(Elevator elevator, double feet, double time)
+    {
+        requires(elevator);
+
+        this.elevator = elevator;
+        this.feet = feet;
+        this.time = time;
     }
 
     @Override
@@ -24,7 +35,7 @@ public class MoveElevatorBy extends Command
     @Override
     public boolean isFinished()
     {
-        return true;
+        return elevator.isProfileFinished();
     }
 
     @Override
