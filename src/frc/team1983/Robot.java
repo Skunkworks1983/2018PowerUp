@@ -25,10 +25,7 @@ import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
-import frc.team1983.subsystems.Collector;
-import frc.team1983.subsystems.Drivebase;
-import frc.team1983.subsystems.Elevator;
-import frc.team1983.subsystems.Ramps;
+import frc.team1983.subsystems.*;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.control.ProfileController;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
@@ -45,6 +42,7 @@ public class Robot extends IterativeRobot
     private Elevator elevator;
     private Collector collector;
     private Ramps ramps;
+    private Climber climber;
     private StatefulDashboard dashboard;
 
     private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
@@ -69,6 +67,9 @@ public class Robot extends IterativeRobot
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
+        climber = new Climber();
+
+        poseEstimator = new PoseEstimator();
 
         robotLogger.info("robotInit");
 
@@ -106,6 +107,7 @@ public class Robot extends IterativeRobot
     {
         robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
+
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
         ramps.reset();
@@ -122,6 +124,8 @@ public class Robot extends IterativeRobot
     {
         GameDataPoller.pollGameData();
         Scheduler.getInstance().run();
+
+        poseEstimator.getPose();
     }
 
     @Override
@@ -140,15 +144,18 @@ public class Robot extends IterativeRobot
         drivebase.setBrakeMode(false);
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
         //Scheduler.getInstance().add(new CollectorRotate(collector, true));
+
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+
         SmartDashboard.updateValues();
         SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
         SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
+
     }
 
     @Override
@@ -229,6 +236,10 @@ public class Robot extends IterativeRobot
     public Collector getCollector()
     {
         return collector;
+    }
+
+    public Climber getClimber() {
+        return climber;
     }
 
     public static Robot getInstance()
