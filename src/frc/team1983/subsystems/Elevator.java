@@ -34,6 +34,11 @@ public class Elevator extends Subsystem
 
         right1.setSensorPhase(true);
 
+        right1.config_kP(0, Constants.PidConstants.ElevatorControlPid.P, 0);
+        right1.config_kI(0, Constants.PidConstants.ElevatorControlPid.I, 0);
+        right1.config_kD(0, Constants.PidConstants.ElevatorControlPid.D, 0);
+        right1.config_kF(0, Constants.PidConstants.ElevatorControlPid.F, 0);
+
         right2.follow(right1);
         left1.follow(right1);
         left2.follow(right1);

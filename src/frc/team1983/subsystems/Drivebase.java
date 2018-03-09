@@ -45,6 +45,9 @@ public class Drivebase extends Subsystem
 
         left1.setGains(0, Constants.PidConstants.Drivebase.Left.MAIN);
         right1.setGains(0, Constants.PidConstants.Drivebase.Right.MAIN);
+
+        left1.config_IntegralZone(0, (int) Constants.Motion.DRIVEBASE_TICKS_END_RANGE * 3, 0);
+        right1.config_IntegralZone(0, (int) Constants.Motion.DRIVEBASE_TICKS_END_RANGE * 3, 0);
     }
 
     public void initDefaultCommand()

@@ -146,13 +146,13 @@ public class Constants
             public static class Left
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.5,
                         0,
-                        0.2,
+                        0,
+                        0,
+                        0,
                         0,
                         1 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
-                        1 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75),
-                        0
+                        1 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75)
                 );
 
             }
@@ -160,18 +160,18 @@ public class Constants
             public static class Right
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.5,
                         0,
-                        0.2,
+                        0,
+                        0,
+                        0,
                         0,
                         1 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
-                        1 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75),
-                        0
+                        1 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75)
                 );
             }
 
             public static ClosedLoopGains HEADINGCORRECTION = new ClosedLoopGains(
-                    0.04, 0, 0, 0
+                    0, 0, 0, 0
             );
         }
 
@@ -346,7 +346,8 @@ public class Constants
         public static final double DRIVEBASE_LEFT_MAX_TICKS_PER_SEC = 13600.0;
         public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14300.0;
 
-        public static final double DRIVEBASE_TICKS_END_RANGE = 750;
-        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.1;
+        public static final double DRIVEBASE_TICKS_END_RANGE = 300;
+        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.5;
+        public static final double DRIVEBASE_HEADING_END_RANGE = 3;
     }
 }

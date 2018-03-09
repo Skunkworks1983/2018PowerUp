@@ -51,9 +51,11 @@ public class SetElevatorSetpoint extends CommandBase
 
             case LOW:
                 newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 1100;
+                break;
 
             case MID:
                 newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 600;
+                break;
 
             case TOP:
                 newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 100;

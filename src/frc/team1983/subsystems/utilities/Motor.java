@@ -83,6 +83,7 @@ public class Motor extends TalonSRX
     public void stopProfile()
     {
         setProfileRunState(false);
+        auxiliaryOutput = 0;
     }
 
     public void setProfileRunState(boolean run)
@@ -111,7 +112,6 @@ public class Motor extends TalonSRX
     @Override
     public void setInverted(boolean inverted)
     {
-        super.configAuxPIDPolarity(inverted, 0);
         super.setInverted(inverted);
     }
 

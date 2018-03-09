@@ -20,10 +20,16 @@ public class DriveArc extends DriveProfile
                     @JsonProperty("angle") double angle, @JsonProperty("time") double time,
                     @JsonProperty("isRight") boolean isRight)
     {
-        super(drivebase, generateLeftProfile(drivebase, radius, angle, time),
-                         generateRightProfile(drivebase, radius, angle, time), angle);
+        super(drivebase, isRight ? generateLeftProfile(drivebase, radius, angle, time) : generateRightProfile(drivebase, radius, angle, time),
+                         isRight ? generateRightProfile(drivebase, radius, angle, time) : generateLeftProfile(drivebase, radius, angle, time),
+                         isRight ? angle : -angle);
         this.time = time;
         this.isRight = isRight;
+    }
+
+    public DriveArc(Drivebase drivebase, double radius, double angle, double time)
+    {
+        this(drivebase, radius, angle, time, true);
     }
 
     private static CruiseProfile generateLeftProfile(Drivebase drivebase, double radius, double angle, double time)

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.commands.drivebase.DriveProfile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Path
@@ -15,6 +16,11 @@ public class Path
     public Path(ArrayList<ArrayList<Command>> points)
     {
         this.points = points;
+    }
+
+    public Path()
+    {
+        this.points = new ArrayList<ArrayList<Command>>();
     }
 
     public void setPoints(ArrayList<ArrayList<Command>> points)
@@ -57,6 +63,18 @@ public class Path
             }
         }
         return count;
+    }
+
+    public void addSequential(Command command)
+    {
+        points.add(new ArrayList<Command>(Arrays.asList(
+                command
+                                                       )));
+    }
+
+    public void addParallel(Command command)
+    {
+        points.get(points.size()-1).add(command);
     }
 
     /*public Command getComponent(int i)

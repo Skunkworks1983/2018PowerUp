@@ -22,12 +22,13 @@ public class DriveProfile extends CommandBase
 
     private PIDController headingController;
 
-    protected double time, delay;
+    protected double time = -1;
 
     protected boolean hasFinished = false;
     protected boolean runHeadingCorrection = true;
 
     protected double startHeading;
+    protected double endHeading;
     protected double deltaHeading;
 
     private double inRangeTime = 0;
@@ -47,34 +48,38 @@ public class DriveProfile extends CommandBase
                                               Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kF(),
                                               new GyroPidInput(drivebase.getGyro()), new DrivebaseAuxiliaryPidOutput(drivebase));
 
+        headingController.setOutputRange(-0.2, 0.2);
+
         this.deltaHeading = deltaHeading;
     }
 
     public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile)
     {
         this(drivebase, leftProfile, rightProfile, 0);
+        this.runHeadingCorrection = false;
     }
 
     @Override
     public void initialize()
     {
-        if(runHeadingCorrection)
-        {
-            headingController.enable();
-        }
-
         drivebase.setLeftProfile(leftProfile);
         drivebase.setRightProfile(rightProfile);
 
         drivebase.runProfiles();
 
         startHeading = drivebase.getGyro().getAngle();
+        endHeading = startHeading + deltaHeading;
+
+        if(runHeadingCorrection)
+        {
+            headingController.enable();
+        }
     }
 
     @Override
     public void execute()
     {
-        double desiredHeading = startHeading + (deltaHeading * (Math.min(timeSinceInitialized(), time) / time));
+        double desiredHeading = startHeading + ((endHeading - startHeading) * (Math.min(timeSinceInitialized(), time)) / time);
         headingController.setSetpoint(desiredHeading);
     }
 
@@ -92,7 +97,7 @@ public class DriveProfile extends CommandBase
 
         lastMilli = System.currentTimeMillis();
 
-        return hasFinished || drivebase.profilesAreFinished() && isOnTarget() && inRangeTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME;
+        return hasFinished || isTimedOut() || drivebase.profilesAreFinished() && isOnTarget() && inRangeTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME;
     }
 
     @Override
@@ -116,7 +121,8 @@ public class DriveProfile extends CommandBase
     public boolean isOnTarget()
     {
         return Math.abs(drivebase.getLeftEncoderValue() - leftProfile.getDistance()) <= Constants.Motion.DRIVEBASE_TICKS_END_RANGE &&
-               Math.abs(drivebase.getRightEncoderValue() - rightProfile.getDistance()) <= Constants.Motion.DRIVEBASE_TICKS_END_RANGE;
+               Math.abs(drivebase.getRightEncoderValue() - rightProfile.getDistance()) <= Constants.Motion.DRIVEBASE_TICKS_END_RANGE &&
+                Math.abs(endHeading - drivebase.getGyro().getAngle()) <= Constants.Motion.DRIVEBASE_HEADING_END_RANGE;
     }
 
     // ohhhhh my god please

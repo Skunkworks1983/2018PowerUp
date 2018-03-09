@@ -16,6 +16,7 @@ public class DriveFeet extends DriveProfile
                      @JsonProperty("time") double time)
     {
         super(drivebase, generateProfile(distance, time), generateProfile(distance, time));
+        this.time = time;
     }
 
     private static CruiseProfile generateProfile(double distance, double time)
