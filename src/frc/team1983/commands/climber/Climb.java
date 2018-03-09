@@ -37,7 +37,8 @@ public class Climb extends Command {
 
     @Override
     protected void end() {
-
+        drivebase.setLeft(ControlMode.PercentOutput, 0);
+        drivebase.setRight(ControlMode.PercentOutput, 0);
     }
 
     @Override
