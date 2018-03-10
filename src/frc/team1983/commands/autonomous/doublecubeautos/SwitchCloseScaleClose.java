@@ -34,26 +34,37 @@ public class SwitchCloseScaleClose extends CommandGroup
         else { reflectionVariable = -1; }
         logger.info("Reflection variable is {}", reflectionVariable);
 
+        //SWITCH APPROACH
         super.addSequential(new CollectorRotate(collector, false));
-        super.addSequential(new DriveStraight(drivebase, dashboard, 15.5));
-        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 9.0));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0 * reflectionVariable, 1));
+
+        //SHOOT N' SCOOT
+        super.addSequential(new DriveStraight(drivebase, dashboard, 1.5));
+        super.addParallel(new CollectorExpel(collector, true, 1));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
+        super.addSequential(new DriveStraight(drivebase, dashboard, -.50));
+
+        //CUBE LINEUP
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0 * reflectionVariable));
-        super.addSequential(new DriveStraight(drivebase, dashboard, 4.0));
-        super.addSequential(new CollectorExpel(collector, true, 1));
-        super.addSequential(new DriveStraight(drivebase, dashboard, -4.0));
-        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0));
-        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
-        super.addSequential(new DriveStraight(drivebase, dashboard, -7.0));
-        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -45.0));
-        super.addSequential(new DriveStraight(drivebase, dashboard, 6.0));
+        super.addSequential(new DriveStraight(drivebase, dashboard, -5.0));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -45.0 * reflectionVariable, 1));
+
+        //CUBE APPROACH/COLLECT
         super.addParallel(new CollectorIntake(collector));
-        super.addSequential(new DriveStraight(drivebase, dashboard, -6.0));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 5.0, .2));
+        super.addSequential(new DriveStraight(drivebase, dashboard, -5.0));
+
+        //SCALE LINEUP
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90.0 * reflectionVariable));
-        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
-        super.addSequential(new DriveStraight(drivebase, dashboard, 4.0));
+
+        //SHOOT N' SCOOT
+        super.addSequential(new DriveStraight(drivebase, dashboard, 1));
         super.addSequential(new CollectorExpel(collector, true, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, -4.0));
-        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
+         super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
         /*
         super.addSequential(new CollectorRotate(collector, false));
         super.addSequential(new DriveStraight(drivebase, dashboard, 21.0));

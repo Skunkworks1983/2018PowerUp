@@ -32,6 +32,8 @@ public class Elevator extends Subsystem
         left1.follow(right1);
         left2.follow(right1);
 
+        right1.configClosedloopRamp(.5, 0);
+
         right1.setSensorPhase(true);
 
         right1.setSelectedSensorPosition(0, 0, 100);

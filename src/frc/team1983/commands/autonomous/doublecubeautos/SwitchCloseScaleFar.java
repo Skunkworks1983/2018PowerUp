@@ -27,27 +27,32 @@ public class SwitchCloseScaleFar extends CommandGroup
     {
         logger = LoggerFactory.createNewLogger(SwitchCloseScaleClose.class);
 
+        //SWITCH APPROACH
         super.addSequential(new CollectorRotate(collector, false));
-        super.addSequential(new DriveStraight(drivebase, dashboard, 1000000000));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
-        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 135 * reflectionVariable));
-        super.addSequential(new DriveStraight(drivebase, dashboard, 3, Constants.PidConstants.DriveStraightPid.DEFAULT_BASE_SPEED, 1));
-        super.addSequential(new CollectorExpel(collector, true, 1));
-        super.addSequential(new DriveStraight(drivebase, dashboard, -1.0));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 9.0));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0 * reflectionVariable, 1));
+
+        //SHOOT N' SCOOT
+        super.addSequential(new DriveStraight(drivebase, dashboard, 1.5));
+        super.addParallel(new CollectorExpel(collector, true, 1));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
-        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 1000000 * reflectionVariable)); //need to reorient to point at the cube we pushed out of the way
-        super.addSequential(new DriveStraight(drivebase, dashboard, 2.0));
+        super.addSequential(new DriveStraight(drivebase, dashboard, -.50));
+
+        //JOURNEY TO THE MIDDLE
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0 * reflectionVariable));
+        super.addSequential(new DriveStraight(drivebase, dashboard, -5.0));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90.0));
+        super.addSequential(new DriveStraight(drivebase, dashboard, -16.75));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90.0));
+
+        //CUBE COLLECT
         super.addParallel(new CollectorIntake(collector));
-        super.addSequential(new DriveStraight(drivebase, dashboard, -3.75));
-        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 1000000 * reflectionVariable)); //need to reorient to drive parallel to the switch
-        super.addSequential(new DriveStraight(drivebase, dashboard, 100000)); //drive to be close to the scale
-        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90 * reflectionVariable)); //need to reorient to point at the scale
-        super.addSequential(new DriveStraight(drivebase, dashboard, 10000000)); //drive to get close enough to place in scale
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
-        super.addSequential(new CollectorExpel(collector, true, 1));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 3.0, .35));
+        super.addSequential(new DriveStraight(drivebase, dashboard, -3.0));
 
-
-
+        //SCALE APPROACH
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -3.0));
 
 
     }

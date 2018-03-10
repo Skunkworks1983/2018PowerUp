@@ -73,6 +73,9 @@ public class DriveStraight extends CommandBase
     public void initialize()
     {
         logger.info("gyro status{}", gyro.isDead());
+        leftEncoderStart = drivebase.getLeftDist();
+        rightEncoderStart = drivebase.getRightDist();
+        logger.info("left start{}", leftEncoderStart);
         if(distance > 0)
         {
             logger.info("distance greater than zero");
@@ -95,8 +98,6 @@ public class DriveStraight extends CommandBase
         driveStraightPid.setSetpoint(pidSource.pidGet());
         driveStraightPid.setOutputRange(-Constants.AutoValues.MAX_OUTPUT, Constants.AutoValues.MAX_OUTPUT);
         driveStraightPid.enable();
-        leftEncoderStart = drivebase.getLeftDist();
-        rightEncoderStart = drivebase.getRightDist();
         logger.info("Left encoder start {}", leftEncoderStart);
         logger.info("Distance setpoint {}", distance);
 
@@ -114,7 +115,6 @@ public class DriveStraight extends CommandBase
     {
         //condition checks if command is timed out or if we have gone the desired distance
         //using the average of the two offset distances travelled
-        logger.info("getLeftDistance {}", drivebase.getLeftDist());
         return isTimedOut() || ((abs(abs(drivebase.getLeftDist()) - abs(leftEncoderStart)) +
                 abs(abs(drivebase.getRightDist()) - abs(rightEncoderStart)))) / 2 >= abs(distance);
 

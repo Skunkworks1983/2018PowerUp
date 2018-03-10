@@ -109,7 +109,7 @@ public class Robot extends IterativeRobot
         group.addSequential(new DriveStraight(drivebase, dashboard, -3));
 
         // Scheduler.getInstance().add(group);
-        Scheduler.getInstance().add(new SwitchCloseScaleClose(drivebase, dashboard, oi, elevator, collector, GameDataPoller.OwnedSide.LEFT ));
+        Scheduler.getInstance().add(new SwitchCloseScaleClose(drivebase, dashboard, oi, elevator, collector, GameDataPoller.OwnedSide.RIGHT));
         //Scheduler.getInstance().add(new DoubleCubeAutoSelector(drivebase, dashboard, oi, elevator, collector, robotPosition));
 
     }
