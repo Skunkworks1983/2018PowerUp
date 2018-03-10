@@ -14,14 +14,14 @@ public class DriveFeet extends DriveProfile
 {
     @JsonCreator
     public DriveFeet(@JacksonInject @JsonProperty("drivebase") Drivebase drivebase, @JsonProperty("distance") double distance,
-                     @JsonProperty("time") double time, @JsonProperty("action") ActionsEnum action)
+                     @JsonProperty("time") double time, @JsonProperty("action") ActionsEnum[] actions)
     {
-        super(drivebase, generateProfile(distance, time), generateProfile(distance, time), time, 0, action);
+        super(drivebase, generateProfile(distance, time), generateProfile(distance, time), time, 0, actions);
     }
 
     public DriveFeet(Drivebase drivebase, double distance, double time)
     {
-        this(drivebase, distance, time, ActionsEnum.NONE);
+        this(drivebase, distance, time, new ActionsEnum[]{ActionsEnum.NONE});
     }
 
     private static CruiseProfile generateProfile(double distance, double time)
