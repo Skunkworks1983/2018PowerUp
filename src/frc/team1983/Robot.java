@@ -1,29 +1,13 @@
 package frc.team1983;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team1983.commands.autonomous.PlaceCubeInScale;
-import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
-import frc.team1983.commands.autonomous.actions.ActionsEnum;
-import frc.team1983.commands.collector.CollectorExpel;
-import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.commands.drivebase.DriveArc;
-import frc.team1983.commands.drivebase.DriveFeet;
-import frc.team1983.commands.drivebase.DriveProfile;
-import frc.team1983.commands.drivebase.RunTankDrive;
-import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.team1983.commands.debugging.RunOneMotor;
-import frc.team1983.commands.drivebase.TurnDegree;
-import frc.team1983.commands.elevator.SetElevatorSetpoint;
+import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
@@ -35,15 +19,13 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
-import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.util.control.ProfileController;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
+import frc.team1983.util.control.ProfileController;
 import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
@@ -136,13 +118,14 @@ public class Robot extends IterativeRobot
         drivebase.getGyro().initGyro();
 
 
-        Path testpath = new Path(new ArrayList<>(Arrays.asList(
+        /*Path testpath = new Path(new ArrayList<>(Arrays.asList(
                 new DriveFeet(drivebase, 0, 0, ActionsEnum.SET_COLLECTOR_POSITION_DOWN),
                 new DriveFeet(drivebase, 6, 2, ActionsEnum.SET_ELEVATOR_SETPOINT_MID),
                 new DriveArc(drivebase, 3, 90, 2, ActionsEnum.SET_ELEVATOR_SETPOINT_TOP)
-                                                              )));
+                                                              )));*/
+        Path path = smellyParser.constructPath(new File("/u/BasicTest.json"));
 
-        Scheduler.getInstance().add(testpath.getCommands());
+        Scheduler.getInstance().add(path.getCommands());
     }
 
     @Override
