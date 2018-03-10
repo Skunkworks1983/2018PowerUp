@@ -25,29 +25,26 @@ public class Drivebase extends Subsystem
         logger = LoggerFactory.createNewLogger(Drivebase.class);
 
         left1 = new Motor(Constants.MotorMap.Drivebase.LEFT_1, Constants.MotorMap.Drivebase.LEFT1_REVERSED, true);
-        //left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED);
+        left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED);
         left3 = new Motor(Constants.MotorMap.Drivebase.LEFT_3, Constants.MotorMap.Drivebase.LEFT3_REVERSED);
 
         right1 = new Motor(Constants.MotorMap.Drivebase.RIGHT_1, Constants.MotorMap.Drivebase.RIGHT1_REVERSED, true);
         right2 = new Motor(Constants.MotorMap.Drivebase.RIGHT_2, Constants.MotorMap.Drivebase.RIGHT2_REVERSED);
-        //right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED);
+        right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED);
 
         gyro = new Gyro(I2C.Port.kOnboard);
 
-        //left2.follow(left1);
+        left2.follow(left1);
         left3.follow(left1);
 
         right2.follow(right1);
-        //right3.follow(right1);
+        right3.follow(right1);
 
         left1.setSensorPhase(true);
         right1.setSensorPhase(true);
 
         left1.setGains(0, Constants.PidConstants.Drivebase.Left.MAIN);
         right1.setGains(0, Constants.PidConstants.Drivebase.Right.MAIN);
-
-        left1.config_IntegralZone(0, (int) Constants.Motion.DRIVEBASE_TICKS_END_RANGE * 3, 0);
-        right1.config_IntegralZone(0, (int) Constants.Motion.DRIVEBASE_TICKS_END_RANGE * 3, 0);
     }
 
     public void initDefaultCommand()
@@ -200,12 +197,12 @@ public class Drivebase extends Subsystem
     public void setBrakeMode(boolean brake)
     {
         left1.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
-        //left2.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        left2.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
         left3.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
 
         right1.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
         right2.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
-        //right3.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        right3.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
     }
 }
 

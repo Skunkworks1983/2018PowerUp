@@ -1,6 +1,7 @@
 package frc.team1983.settings;
 
 
+import frc.team1983.subsystems.Drivebase;
 import frc.team1983.util.control.ClosedLoopGains;
 
 import java.io.File;
@@ -89,20 +90,6 @@ public class Constants
             public static final int LEFT_LEG = 1;
             public static final int RIGHT_LEG = 3;
         }
-
-        //Random and hard to classify drivebase constants
-        public static class DrivebaseConstants
-        {
-            public static final double DRIVEBASE_TICKS_PER_FOOT = 1000 / AutoValues.EFFECTIVE_REDUCTION_DRIVEBASE
-                    / AutoValues.WHEEL_CIRCUMFERENCE;
-            public static final int RIGHT1 = 0;
-            public static final int RIGHT2 = 0;
-
-            public static final boolean LEFT1_REVERSED = true;
-            public static final boolean LEFT2_REVERSED = false;
-            public static final boolean RIGHT1_REVERSED = true;
-            public static final boolean RIGHT2_REVERSED = false;
-        }
     }
 
     public static class SmellyParser
@@ -146,13 +133,13 @@ public class Constants
             public static class Left
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+                        0.5,
+                        0,
+                        0.35,
                         0,
                         0,
-                        0,
-                        0,
-                        0,
-                        1 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
-                        1 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75)
+                        1000 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
+                        0 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75)
                 );
 
             }
@@ -160,18 +147,18 @@ public class Constants
             public static class Right
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+                        0.5,
+                        0,
+                        0.3,
                         0,
                         0,
-                        0,
-                        0,
-                        0,
-                        1 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
-                        1 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75)
+                        1000 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
+                        0 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75)
                 );
             }
 
             public static ClosedLoopGains HEADINGCORRECTION = new ClosedLoopGains(
-                    0, 0, 0, 0
+                    0.07, 0.0001, 0, 0
             );
         }
 
@@ -346,8 +333,8 @@ public class Constants
         public static final double DRIVEBASE_LEFT_MAX_TICKS_PER_SEC = 13600.0;
         public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14300.0;
 
-        public static final double DRIVEBASE_TICKS_END_RANGE = 300;
-        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.5;
-        public static final double DRIVEBASE_HEADING_END_RANGE = 3;
+        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(14/12);
+        public static final double DRIVEBASE_IN_RANGE_END_TIME = 1;
+        public static final double DRIVEBASE_HEADING_END_RANGE = 7;
     }
 }

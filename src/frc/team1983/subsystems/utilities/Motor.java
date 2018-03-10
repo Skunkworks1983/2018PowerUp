@@ -16,7 +16,6 @@ public class Motor extends TalonSRX
     protected HashMap<Integer, ClosedLoopGains> gains;
     public ProfileController manager;
 
-    private boolean hasEncoder = false;
     private double auxiliaryOutput;
 
     public Motor(int port, boolean reversed)

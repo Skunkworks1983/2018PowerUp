@@ -1,10 +1,7 @@
 package frc.team1983.commands.drivebase;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import edu.wpi.first.wpilibj.PIDController;
 import frc.team1983.commands.CommandBase;
-import frc.team1983.services.parser.SmellyDeserializer;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
@@ -14,27 +11,26 @@ import frc.team1983.util.motion.profiles.CruiseProfile;
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonDeserialize(using = SmellyDeserializer.class)
 public class DriveProfile extends CommandBase
 {
     private Drivebase drivebase;
     protected CruiseProfile leftProfile, rightProfile;
 
-    private PIDController headingController;
+    private PIDController headingLoop;
+    private boolean runHeadingCorrection = true;
+    private double startHeading;
+    private double endHeading;
+    private double deltaHeading;
 
-    protected double time = -1;
+    private double onTargetTime = 0;
+    private double lastOnTargetTimestamp = 0;
 
-    protected boolean hasFinished = false;
-    protected boolean runHeadingCorrection = true;
+    private double leftDistance, rightDistance;
+    private double leftInitDist, rightInitDist;
 
-    protected double startHeading;
-    protected double endHeading;
-    protected double deltaHeading;
+    private double duration;
 
-    private double inRangeTime = 0;
-    private double lastMilli = 0;
-
-    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double deltaHeading)
+    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration, double deltaHeading)
     {
         requires(drivebase);
 
@@ -42,62 +38,102 @@ public class DriveProfile extends CommandBase
         this.leftProfile = leftProfile;
         this.rightProfile = rightProfile;
 
-        headingController = new PIDController(Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kP(),
-                                              Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kI(),
-                                              Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kD(),
-                                              Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kF(),
-                                              new GyroPidInput(drivebase.getGyro()), new DrivebaseAuxiliaryPidOutput(drivebase));
+        this.leftDistance = leftProfile.getDistance();
+        this.rightDistance = rightProfile.getDistance();
 
-        headingController.setOutputRange(-0.2, 0.2);
-
+        this.duration = duration;
         this.deltaHeading = deltaHeading;
+
+        if(runHeadingCorrection)
+        {
+            headingLoop = new PIDController(
+                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kP(),
+                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kI(),
+                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kD(),
+                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kF(),
+                    new GyroPidInput(drivebase.getGyro()),
+                    new DrivebaseAuxiliaryPidOutput(drivebase)
+            );
+
+            headingLoop.setOutputRange(-1, 1);
+        }
     }
 
-    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile)
+    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration)
     {
-        this(drivebase, leftProfile, rightProfile, 0);
+        this(drivebase, leftProfile, rightProfile, duration, 0);
         this.runHeadingCorrection = false;
     }
 
     @Override
     public void initialize()
     {
+        if(runHeadingCorrection)
+        {
+            startHeading = drivebase.getGyro().getAngle();
+            endHeading = drivebase.getGyro().getAngle() + deltaHeading;
+
+            leftInitDist = drivebase.getLeftDistance();
+            rightInitDist = drivebase.getRightDistance();
+
+            headingLoop.enable();
+        }
+
         drivebase.setLeftProfile(leftProfile);
         drivebase.setRightProfile(rightProfile);
 
         drivebase.runProfiles();
-
-        startHeading = drivebase.getGyro().getAngle();
-        endHeading = startHeading + deltaHeading;
-
-        if(runHeadingCorrection)
-        {
-            headingController.enable();
-        }
     }
 
     @Override
     public void execute()
     {
-        double desiredHeading = startHeading + ((endHeading - startHeading) * (Math.min(timeSinceInitialized(), time)) / time);
-        headingController.setSetpoint(desiredHeading);
+        System.out.println("left error: " + Drivebase.getFeet(drivebase.getLeftError()) +
+                                   " , right error: " + Drivebase.getFeet(drivebase.getRightError()) +
+                                   " , gyro error: " + (endHeading - drivebase.getGyro().getAngle()));
+
+        if(runHeadingCorrection)
+        {
+            double avgDist = ((drivebase.getLeftDistance() - leftInitDist) + (drivebase.getRightDistance() - rightInitDist)) / 2;
+            double currentDistPercent = avgDist / ((leftDistance + rightDistance) / 2);
+            currentDistPercent = Math.min(currentDistPercent, 1.0);
+            double desiredHeading = startHeading + ((endHeading - startHeading) * currentDistPercent);
+
+            headingLoop.setSetpoint(desiredHeading);
+        }
     }
 
     @Override
     public boolean isFinished()
     {
-        if(isOnTarget())
+        boolean finished = drivebase.profilesAreFinished();
+
+        if(onTarget())
         {
-            inRangeTime += (System.currentTimeMillis() - lastMilli) * 0.001;
+            onTargetTime += (System.currentTimeMillis() - lastOnTargetTimestamp) * 0.001;
+            lastOnTargetTimestamp = System.currentTimeMillis();
         }
         else
         {
-            inRangeTime = 0;
+            onTargetTime = 0;
         }
 
-        lastMilli = System.currentTimeMillis();
+        finished &= (onTargetTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME);
+        finished |= isTimedOut();
+        return finished;
+    }
 
-        return hasFinished || isTimedOut() || drivebase.profilesAreFinished() && isOnTarget() && inRangeTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME;
+    private boolean onTarget()
+    {
+        boolean isOnTarget = (drivebase.getLeftError() <= Constants.Motion.DRIVEBASE_TICKS_END_RANGE) &&
+                             (drivebase.getRightError() <= Constants.Motion.DRIVEBASE_TICKS_END_RANGE);
+
+        if(runHeadingCorrection)
+        {
+            isOnTarget &= (endHeading - drivebase.getGyro().getAngle()) <= Constants.Motion.DRIVEBASE_HEADING_END_RANGE;
+        }
+
+        return isOnTarget;
     }
 
     @Override
@@ -109,20 +145,12 @@ public class DriveProfile extends CommandBase
     @Override
     public void end()
     {
-        hasFinished = true;
-
         drivebase.stopProfiles();
-        headingController.disable();
 
-        System.out.println("FINISHED left error: " + Drivebase.getFeet(drivebase.getLeftError()) +
-                                 " , right error: " + Drivebase.getFeet(drivebase.getRightError()));
-    }
-
-    public boolean isOnTarget()
-    {
-        return Math.abs(drivebase.getLeftEncoderValue() - leftProfile.getDistance()) <= Constants.Motion.DRIVEBASE_TICKS_END_RANGE &&
-               Math.abs(drivebase.getRightEncoderValue() - rightProfile.getDistance()) <= Constants.Motion.DRIVEBASE_TICKS_END_RANGE &&
-                Math.abs(endHeading - drivebase.getGyro().getAngle()) <= Constants.Motion.DRIVEBASE_HEADING_END_RANGE;
+        if(runHeadingCorrection)
+        {
+            headingLoop.disable();
+        }
     }
 
     // ohhhhh my god please
