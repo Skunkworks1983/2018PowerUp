@@ -158,7 +158,7 @@ public class Constants
             }
 
             public static ClosedLoopGains HEADINGCORRECTION = new ClosedLoopGains(
-                    0.05, 0, 0, 0
+                    0.1, 0, 0, 0
             );
         }
 

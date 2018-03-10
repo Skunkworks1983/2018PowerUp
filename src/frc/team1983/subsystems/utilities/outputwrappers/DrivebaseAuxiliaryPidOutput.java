@@ -12,8 +12,10 @@ public class DrivebaseAuxiliaryPidOutput extends PidOutputWrapper
     }
 
     @Override
-    void writeHelper(double out)
+    public void writeHelper(double out)
     {
+        System.out.println(out);
+
         drivebase.setLeftAuxiliaryOutput(out);
         drivebase.setRightAuxiliaryOutput(-out);
     }

@@ -29,11 +29,16 @@ public class DriveProfile extends CommandBase
     protected CruiseProfile leftProfile, rightProfile;
 
     private PIDController headingLoop;
-    private boolean runHeadingCorrection = true;
+    private boolean runHeadingCorrection = false;
     private double startHeading;
     private double endHeading;
     private double deltaHeading;
     private ArrayList<Command> actions;
+
+    private GyroPidInput pidInput;
+    private DrivebaseAuxiliaryPidOutput pidOutput;
+
+    private boolean stitched = false;
 
     private double onTargetTime = 0;
     private double lastOnTargetTimestamp = 0;
@@ -68,6 +73,9 @@ public class DriveProfile extends CommandBase
         this.duration = duration;
         this.deltaHeading = deltaHeading;
 
+        pidInput = new GyroPidInput(drivebase.getGyro());
+        pidOutput = new DrivebaseAuxiliaryPidOutput(drivebase);
+
         if(runHeadingCorrection)
         {
             headingLoop = new PIDController(
@@ -75,11 +83,8 @@ public class DriveProfile extends CommandBase
                     Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kI(),
                     Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kD(),
                     Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kF(),
-                    new GyroPidInput(drivebase.getGyro()),
-                    new DrivebaseAuxiliaryPidOutput(drivebase)
+                    pidInput, pidOutput
             );
-
-            headingLoop.setOutputRange(-1, 1);
         }
     }
 
@@ -95,7 +100,7 @@ public class DriveProfile extends CommandBase
         if(runHeadingCorrection)
         {
             startHeading = drivebase.getGyro().getAngle();
-            endHeading = drivebase.getGyro().getAngle() + deltaHeading;
+            endHeading = startHeading + deltaHeading;
 
             leftInitDist = drivebase.getLeftDistance();
             rightInitDist = drivebase.getRightDistance();
@@ -108,14 +113,12 @@ public class DriveProfile extends CommandBase
         drivebase.setLeftProfile(leftProfile);
         drivebase.setRightProfile(rightProfile);
 
-        drivebase.runProfiles();
+        //drivebase.runProfiles();
     }
 
     @Override
     public void execute()
     {
-        logger.info(drivebase.getGyro().getAngle());
-
         if(runHeadingCorrection)
         {
             double avgDist = ((drivebase.getLeftDistance() - leftInitDist) + (drivebase.getRightDistance() - rightInitDist)) / 2;
@@ -123,9 +126,7 @@ public class DriveProfile extends CommandBase
             currentDistPercent = Math.min(currentDistPercent, 1.0);
             double desiredHeading = startHeading + (deltaHeading * currentDistPercent);
 
-            //double desiredHeading = startHeading + ((endHeading - startHeading) * Math.min(timeSinceInitialized(), duration));
-
-            headingLoop.setSetpoint(desiredHeading);
+            pidOutput.writeHelper(headingLoop.getP() * (desiredHeading - drivebase.getGyro().getAngle()));
         }
     }
 
@@ -134,17 +135,21 @@ public class DriveProfile extends CommandBase
     {
         boolean finished = drivebase.profilesAreFinished();
 
-        if(onTarget())
+        if(!stitched)
         {
-            onTargetTime += (System.currentTimeMillis() - lastOnTargetTimestamp) * 0.001;
-            lastOnTargetTimestamp = System.currentTimeMillis();
-        }
-        else
-        {
-            onTargetTime = 0;
+            if(onTarget())
+            {
+                onTargetTime += (System.currentTimeMillis() - lastOnTargetTimestamp) * 0.001;
+                lastOnTargetTimestamp = System.currentTimeMillis();
+            }
+            else
+            {
+                onTargetTime = 0;
+            }
+
+            finished &= (onTargetTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME);
         }
 
-        finished &= (onTargetTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME);
         finished |= isTimedOut();
         return finished;
     }
@@ -186,6 +191,8 @@ public class DriveProfile extends CommandBase
     // ohhhhh my god please
     public static void stitch(DriveProfile drive1, DriveProfile drive2)
     {
+        drive1.stitched = true;
+
         CruiseProfile.stitch(drive1.leftProfile, drive2.leftProfile);
         CruiseProfile.stitch(drive1.rightProfile, drive2.rightProfile);
     }
@@ -196,10 +203,15 @@ public class DriveProfile extends CommandBase
         List<CruiseProfile> leftProfiles = new ArrayList<>();
         List<CruiseProfile> rightProfiles = new ArrayList<>();
 
-        for(DriveProfile drive : drives)
+        for(int i = 0; i < drives.size(); i++)
         {
-            leftProfiles.add(drive.leftProfile);
-            rightProfiles.add(drive.rightProfile);
+            if(i < drives.size() - 1)
+            {
+                drives.get(i).stitched = true;
+            }
+
+            leftProfiles.add(drives.get(i).leftProfile);
+            rightProfiles.add(drives.get(i).rightProfile);
         }
 
         CruiseProfile.stitch(leftProfiles);

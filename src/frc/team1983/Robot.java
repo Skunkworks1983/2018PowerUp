@@ -112,6 +112,12 @@ public class Robot extends IterativeRobot
 
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
+
+        CommandGroup cmds = new CommandGroup();
+
+        cmds.addSequential(new DriveArc(drivebase, 3, 90, 2));
+
+        Scheduler.getInstance().add(cmds);
     }
 
     @Override
