@@ -40,7 +40,7 @@ public class UT_CollectorIntake
     {
         initMocks(this);
 
-        collectorIntake = new CollectorIntake(collector);
+        collectorIntake = new CollectorIntake(collector, 0.0); //TODO figure out why this was wrong
         fakeScheduler = new FakeScheduler();
     }
 

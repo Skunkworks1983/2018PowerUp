@@ -1,25 +1,25 @@
 package frc.team1983;
 
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.autonomous.PlaceCubeInScale;
 import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
+import frc.team1983.commands.collector.CollectorExpel;
+import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
-import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.debugging.RunOneMotor;
+import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
@@ -34,13 +34,10 @@ import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.control.ProfileController;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
-import frc.team1983.util.control.ProfileController;
 import frc.team1983.util.path.Path;
-import frc.team1983.util.path.PathComponent;
-import frc.team1983.util.path.PathTanarc;
-import frc.team1983.util.path.PathTanline;
 import org.apache.logging.log4j.core.Logger;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -126,18 +123,58 @@ public class Robot extends IterativeRobot
 
         ramps.reset();
 
-        /*Path path = new Path(new ArrayList<PathComponent>(Arrays.asList(
+        /*Path path = new Path(new ArrayList<Command>(Arrays.asList(
             //new PathTanline(5, 2),
-            new PathTanline(15, 3),
-            new PathTanarc(3, 90, 2),
-            new PathTanline(15, 3),
-            new PathTanarc(3, 90, 2),
-            new PathTanline(7, 1.5),
-            new PathTanarc(3, 90, 2),
-            new PathTanline(7, 2)
-                                                                       )));
+            new DriveFeet(drivebase,15, 3),
+            new DriveArc(drivebase,3, 90, 2, true),
+            new DriveFeet(drivebase,15, 3),
+            new DriveArc(drivebase,3, 90, 2, true),
+            new DriveFeet(drivebase,7, 1.5),
+            new DriveArc(drivebase,3, 90, 2, true),
+            new DriveFeet(drivebase,7, 2)
+                                                                       )));*/
+        /*
+        ArrayList<ArrayList<Command>> commands = new ArrayList<ArrayList<Command>>();
 
-        Scheduler.getInstance().add(new FollowPath(drivebase, path));*/
+        commands.add(new ArrayList<Command>(Arrays.asList(
+                new DriveFeet(drivebase, 17, 3)
+                                                         )));
+
+        commands.add(new ArrayList<Command>(Arrays.asList(
+                new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator),
+                new DriveArc(drivebase, 2, 179, 4, true)
+                                                         )));
+
+        commands.add(new ArrayList<Command>(Arrays.asList(
+                new CollectorExpel(collector, true, 1)
+                                                         )));
+
+        commands.add(new ArrayList<Command>(Arrays.asList(
+                new DriveFeet(drivebase, -2, 1)
+                                                         )));
+
+        commands.add(new ArrayList<Command>(Arrays.asList(
+                new DriveFeet(drivebase, 2, 2),
+                new CollectorIntake(collector, 3)
+                                                         )));
+
+        commands.add(new ArrayList<Command>(Arrays.asList(
+                new DriveArc(drivebase, -2, 90, 2, true)
+                                                         )));
+
+        commands.add(new ArrayList<Command>(Arrays.asList(
+                new DriveArc(drivebase, 2, 90, 6, true),
+                new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator)
+                                                         )));
+
+        commands.add(new ArrayList<Command>(Arrays.asList(
+                new CollectorExpel(collector, true, 1)
+                                                         )));
+
+        Path path = new Path(commands);
+
+        Scheduler.getInstance().add(path.getCommands());*/
+        smellyParser.constructPath(new File("/u/path2.json"));
     }
 
     @Override
@@ -229,6 +266,8 @@ public class Robot extends IterativeRobot
 
     public Drivebase getDrivebase()
     {
+        robotLogger.info("Drivebase is null {}", drivebase == null);
+        robotLogger.info("Robot is null {}", instance == null);
         return drivebase;
     }
 
@@ -256,8 +295,10 @@ public class Robot extends IterativeRobot
     {
         if(instance == null)
         {
+            robotLogger.info("Constructing new robot");
             instance = new Robot();
         }
+
         return instance;
     }
 }

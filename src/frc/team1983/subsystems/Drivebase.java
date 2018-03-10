@@ -23,6 +23,7 @@ public class Drivebase extends Subsystem
     public Drivebase()
     {
         logger = LoggerFactory.createNewLogger(Drivebase.class);
+        logger.info("In drivebase construction");
 
         left1 = new Motor(Constants.MotorMap.Drivebase.LEFT_1, Constants.MotorMap.Drivebase.LEFT1_REVERSED, true);
         //left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED);

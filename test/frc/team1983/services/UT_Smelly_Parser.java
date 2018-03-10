@@ -9,6 +9,7 @@ import frc.team1983.Robot;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.services.parser.SmellyParser;
 import frc.team1983.settings.Constants;
+import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import org.apache.logging.log4j.core.Logger;
 import org.junit.After;
@@ -33,7 +34,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.configuration.ConfigurationType.PowerMock;
 
 @PowerMockIgnore("javax.management.*")
-@PrepareForTest(Robot.class)
+@PrepareForTest({Robot.class,Timer.class})
 @RunWith(PowerMockRunner.class)
 public class UT_Smelly_Parser
 {
@@ -55,6 +56,9 @@ public class UT_Smelly_Parser
     private Drivebase drivebase;
 
     @Mock
+    private Collector collector;
+
+    @Mock
     private Timer timer;
 
     @Mock
@@ -66,17 +70,6 @@ public class UT_Smelly_Parser
         logger = LoggerFactory.createNewLogger(this.getClass());
 
         initMocks(this);
-/*
-        PowerMockito.spy(Scheduler.class);
-        try
-        {
-            PowerMockito.doReturn(scheduler).when(Scheduler.class, "getInstance");
-        }
-        catch (Exception e)
-        {
-        }
-
-        drivebase = new Drivebase();*/
 
         parser = new SmellyParser(dashboard, Constants.SmellyParser.SMELLY_UT_FOLDER);
     }
@@ -95,31 +88,31 @@ public class UT_Smelly_Parser
         PowerMockito.spy(Command.class);
         try
         {
-            //PowerMockito.doReturn(timer).when(Timer.class);
-            //when(timer.get()).thenReturn(0.0);
+            PowerMockito.mockStatic(Timer.class);
+            when(timer.get()).thenReturn(0.0);
 
             PowerMockito.doReturn(robot).when(Robot.class, "getInstance");
             when(robot.getDrivebase()).thenReturn(drivebase);
+            when(robot.getCollector()).thenReturn(collector);
 
-            doNothing().when(Command.class, "requires", drivebase);
+            //doNothing().when(Command.class, "requires", drivebase);
+
+
+
+            FilenameFilter filter = (file, name) -> name.toLowerCase().endsWith(".json");
+
+            File[] files = Constants.SmellyParser.SMELLY_UT_FOLDER.listFiles(filter);
+
+            for(int i = 0; i < files.length; i++)
+            {
+                logger.info("Found json {}", files[i].toString());
+
+                parser.constructPath(files[i]);
+            }
         }
         catch(Exception e)
         {
             logger.error("this is jank as fuck", e);
-        }
-
-
-        FilenameFilter filter = (file, name) -> name.toLowerCase().endsWith(".json");
-
-        File[] files = Constants.SmellyParser.SMELLY_UT_FOLDER.listFiles(filter);
-
-        for(double i = 0; i < files.length; i++)
-        {
-            logger.info("Found json {}", files[(int) i].toString());
-
-            when(dashboard.getNumber(Constants.SmellyParser.AUTO_PATH_KEY, 0.0)).thenReturn(i);
-
-            parser.constructPath();
         }
     }
 }

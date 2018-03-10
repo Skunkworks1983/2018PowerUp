@@ -1,10 +1,10 @@
 package frc.team1983.util.path;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.commands.drivebase.DriveProfile;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Path
 {
@@ -15,40 +15,55 @@ public class Path
         this.points = points;
     }
 
-    public void setPoints(ArrayList<DriveProfile> points)
-    {
-        this.points = points;
-    }
-
     public ArrayList<DriveProfile> getPoints()
     {
         return points;
     }
 
-    public DriveProfile getPoint(int index)
+    public Command getPoint(int i)
     {
-        if(index < points.size())
+        if(i < points.size())
         {
-            return points.get(index);
+            return points.get(i);
         }
         else
         {
-            throw new IllegalArgumentException("index " + index + " is out of bounds");
+            throw new IllegalArgumentException("index " + i + " is out of bounds");
         }
     }
 
     public int getComponentCount()
     {
-        return points.size();
+        int counter = 0;
+        for(DriveProfile point : points)
+        {
+            counter++;
+            if(point.getAction() != null)
+            {
+                counter++;
+            }
+        }
+        return counter;
     }
 
-    public DriveProfile getComponent(int i)
+    /*public Command getComponent(int i)
     {
         return points.get(i);
-    }
+    }*/
 
-    public List<DriveProfile> getPath()
+    public CommandGroup getCommands()
     {
-        return points;
+        CommandGroup group = new CommandGroup();
+
+        for(DriveProfile point : points)
+        {
+            group.addSequential(point);
+            if(point.getAction() != null)
+            {
+                group.addParallel(point.getAction());
+            }
+        }
+
+        return group;
     }
 }

@@ -2,12 +2,13 @@ package frc.team1983.services.parser;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.team1983.Robot;
 import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.util.path.Path;
-import frc.team1983.util.path.PathComponent;
 import org.apache.logging.log4j.core.Logger;
 
 import java.io.File;
@@ -20,7 +21,6 @@ import java.util.List;
 public class SmellyParser
 {
     private Path path;
-    private List<PathComponent> components;
     private File[] files;
     private File file;
     private Logger logger;
@@ -33,7 +33,6 @@ public class SmellyParser
     {
         this.dashboard = dashboard;
         logger = LoggerFactory.createNewLogger(this.getClass());
-        components = new ArrayList<>();
         filter = (file, name) -> name.toLowerCase().endsWith(".json");
         dashboard.putNumber(Constants.SmellyParser.AUTO_PATH_KEY, 0.0);
 
@@ -52,37 +51,25 @@ public class SmellyParser
         }
     }
 
-    public void constructPath()
+    public Path constructPath(File file)
     {
-        components.clear(); //clear so we are recording a new path
-
-        if(dashboard.getNumber(Constants.SmellyParser.AUTO_PATH_KEY, 0.0) < files.length) //validate input
-        {
-            file = files[dashboard.getNumber(Constants.SmellyParser.AUTO_PATH_KEY, 0.0).intValue()]; //get from dashboard
-        }
-        else
-        {
-            file = Constants.SmellyParser.DEFAULT_PATH; //If not valid, use default
-        }
         logger.info("Using " + file);
 
         try
         {
             logger.info(mapper.readTree(file).get("points").toString());
-            DriveProfile[] paths = mapper.readValue(mapper.readTree(file).get("points").toString(), new TypeReference<DriveProfile[]>()
-            {
-            });
+            DriveProfile[] points = mapper.readValue(mapper.readTree(file).get("points").toString(),
+                                                           new TypeReference<DriveProfile[]>()
+                                                           {
+                                                           });
 
-            path = new Path(new ArrayList<>(Arrays.asList(paths)));
+            logger.info("Json deserialized");
+            return new Path(new ArrayList<>(Arrays.asList(points)));
         }
         catch(IOException e)
         {
-            logger.error("uhoh {}", e);
+            logger.error("uhoh", e);
         }
-    }
-
-    public Path getPath()
-    {
-        return path;
+        return new Path(new ArrayList<>());
     }
 }
