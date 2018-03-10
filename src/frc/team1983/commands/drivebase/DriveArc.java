@@ -13,8 +13,6 @@ import frc.team1983.util.motion.profiles.TrapezoidalProfile;
 @JsonDeserialize(as = DriveArc.class)
 public class DriveArc extends DriveProfile
 {
-    private boolean isRight = true;
-
     @JsonCreator
     public DriveArc(@JacksonInject @JsonProperty("drivebase") Drivebase drivebase,
                     @JsonProperty("radius") double radius, @JsonProperty("angle") double angle,

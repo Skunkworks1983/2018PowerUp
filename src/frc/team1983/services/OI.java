@@ -27,30 +27,19 @@ import java.util.HashMap;
 */
 public class OI
 {
-    private DriverStation ds;
-
-    private Joystick left, right, panel, manual;
-    private HashMap<Joystick, JoystickButton[]> joystickButtons;
-
     private Logger logger;
 
-    public OI(DriverStation ds)
+    private Joystick left, right, panel;
+    private HashMap<Joystick, JoystickButton[]> joystickButtons;
+
+    public OI()
     {
         this(new Joystick(Constants.OIMap.Joystick.LEFT.ordinal()), new Joystick(Constants.OIMap.Joystick.RIGHT.ordinal()),
              new Joystick(Constants.OIMap.Joystick.PANEL.ordinal()), new HashMap<>());
-        logger = LoggerFactory.createNewLogger(this.getClass());
-
-        this.ds = ds;
-
-        manual = new Joystick(Constants.OIMap.Joystick.MANUAL.ordinal());
-
-        initializeButtons(Constants.OIMap.Joystick.MANUAL);
     }
 
     protected OI(Joystick left, Joystick right, Joystick panel, HashMap<Joystick, JoystickButton[]> joystickButtons)
     {
-        logger = LoggerFactory.createNewLogger(this.getClass());
-
         this.left = left;
         this.right = right;
         this.panel = panel;
@@ -63,11 +52,6 @@ public class OI
         initializeButtons(Constants.OIMap.Joystick.LEFT);
         initializeButtons(Constants.OIMap.Joystick.RIGHT);
         initializeButtons(Constants.OIMap.Joystick.PANEL);
-
-        if(manual != null)
-        {
-            initializeButtons(Constants.OIMap.Joystick.MANUAL);
-        }
 
         //Collector intake/expel
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
@@ -155,8 +139,6 @@ public class OI
                 return right != null;
             case PANEL:
                 return panel != null;
-            case MANUAL:
-                return manual != null;
         }
 
         return false;
@@ -174,8 +156,6 @@ public class OI
                     return right;
                 case PANEL:
                     return panel;
-                case MANUAL:
-                    return manual;
             }
         }
 
@@ -195,8 +175,6 @@ public class OI
                     return joystickButtons.get(right);
                 case PANEL:
                     return joystickButtons.get(panel);
-                case MANUAL:
-                    return joystickButtons.get(manual);
             }
         }
 

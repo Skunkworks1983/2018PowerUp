@@ -244,7 +244,7 @@ public class Constants
 
         public enum Joystick
         {
-            LEFT, RIGHT, PANEL, MANUAL
+            LEFT, RIGHT, PANEL
         }
 
         public class Axis

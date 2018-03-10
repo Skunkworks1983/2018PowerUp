@@ -42,21 +42,14 @@ public class Robot extends IterativeRobot
     private Ramps ramps;
     private StatefulDashboard dashboard;
     private DashboardWrapper dashboardWrapper;
-    private Subsystem subsystem;
-    private GyroPidInput pidSource;
 
     private ArrayList<ProfileController> profileControllers = new ArrayList<>();
-    private double startTime;
-
-    private RunOneMotor runOneMotor;
 
     private static Robot instance;
 
     private SendableChooser autonomousSelector;
     private SmellyParser smellyParser;
     private Command autonomousCommand;
-
-    private Path path;
 
     public Robot()
     {
@@ -71,17 +64,14 @@ public class Robot extends IterativeRobot
         dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
         dashboard.populate();
 
-        oi = new OI(DriverStation.getInstance());
+        oi = new OI();
 
         drivebase = new Drivebase();
         collector = new Collector();
         elevator = new Elevator();
         ramps = new Ramps();
 
-        robotLogger.info("Smelly parser is null before construction: {}", smellyParser == null);
         smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLY_FOLDER);
-
-        robotLogger.info("robotInit");
 
         /*autonomousSelector = new SendableChooser();
         autonomousSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
@@ -89,10 +79,7 @@ public class Robot extends IterativeRobot
         autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
         SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
         */
-
-        path = smellyParser.constructPath(new File("/u/BackForwardTest.json"));
     }
-//ur gay
 
     @Override
     public void robotPeriodic()
@@ -120,18 +107,11 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
-        drivebase.setBrakeMode(true);
-        robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.AUTO);
 
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
-
-        CommandGroup cmds = new CommandGroup();
-        cmds.addSequential(new DriveArc(drivebase, 3, 90, 2));
-
-        Scheduler.getInstance().add(cmds);
     }
 
     @Override
@@ -168,7 +148,7 @@ public class Robot extends IterativeRobot
 
     }
 
-    public void updateState(Constants.MotorMap.Mode mode)
+    private void updateState(Constants.MotorMap.Mode mode)
     {
         for(ProfileController controller : profileControllers)
         {
@@ -210,7 +190,6 @@ public class Robot extends IterativeRobot
     {
         if(instance == null)
         {
-            robotLogger.info("Constructing new robot");
             instance = new Robot();
         }
 
