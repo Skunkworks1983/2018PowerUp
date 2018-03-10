@@ -1,16 +1,28 @@
 package frc.team1983.commands.drivebase;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
+import frc.team1983.commands.autonomous.actions.Action;
+import frc.team1983.commands.autonomous.actions.ActionsEnum;
+import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.services.parser.SmellyDeserializer;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseAuxiliaryPidOutput;
 import frc.team1983.util.motion.profiles.CruiseProfile;
+import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonDeserialize(using = SmellyDeserializer.class)
 public class DriveProfile extends CommandBase
 {
     private Drivebase drivebase;
@@ -21,6 +33,7 @@ public class DriveProfile extends CommandBase
     private double startHeading;
     private double endHeading;
     private double deltaHeading;
+    private Command action;
 
     private double onTargetTime = 0;
     private double lastOnTargetTimestamp = 0;
@@ -32,8 +45,13 @@ public class DriveProfile extends CommandBase
 
     public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration, double deltaHeading)
     {
+        Logger logger = LoggerFactory.createNewLogger(this.getClass());
+        logger.info("Drivebase from robot is null: {}", Robot.getInstance().getDrivebase() == null);
+        logger.info("Drivebase from constructor is null {}", drivebase == null);
+
         requires(drivebase);
 
+        this.action = action.getAction().createAction(Robot.getInstance().getCollector(), Robot.getInstance().getElevator());
         this.drivebase = drivebase;
         this.leftProfile = leftProfile;
         this.rightProfile = rightProfile;
@@ -174,5 +192,10 @@ public class DriveProfile extends CommandBase
 
         CruiseProfile.stitch(leftProfiles);
         CruiseProfile.stitch(rightProfiles);
+    }
+
+    public Command getAction()
+    {
+        return action;
     }
 }

@@ -1,50 +1,30 @@
 package frc.team1983.util.path;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.commands.drivebase.DriveProfile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Path
 {
-    private ArrayList<ArrayList<Command>> points;
+    private ArrayList<DriveProfile> points;
 
-    public Path(ArrayList<ArrayList<Command>> points)
+    public Path(ArrayList<DriveProfile> points)
     {
         this.points = points;
     }
 
-    public Path()
-    {
-        this.points = new ArrayList<ArrayList<Command>>();
-    }
-
-    public void setPoints(ArrayList<ArrayList<Command>> points)
-    {
-        this.points = points;
-    }
-
-    public ArrayList<ArrayList<Command>> getPoints()
+    public ArrayList<DriveProfile> getPoints()
     {
         return points;
     }
 
-    public Command getPoint(int i, int j)
+    public Command getPoint(int i)
     {
         if(i < points.size())
         {
-            if(j < points.get(i).size())
-            {
-                return points.get(i).get(j);
-            }
-            else
-            {
-                throw new IllegalArgumentException("index " + j + " is out of bounds");
-            }
+            return points.get(i);
         }
         else
         {
@@ -54,27 +34,16 @@ public class Path
 
     public int getComponentCount()
     {
-        int count = 0;
-        for(int i = 0; i < points.size(); i++)
+        int counter = 0;
+        for(DriveProfile point : points)
         {
-            for(int j = 0; j < points.get(i).size(); j++)
+            counter++;
+            if(point.getAction() != null)
             {
-                count++;
+                counter++;
             }
         }
-        return count;
-    }
-
-    public void addSequential(Command command)
-    {
-        points.add(new ArrayList<Command>(Arrays.asList(
-                command
-                                                       )));
-    }
-
-    public void addParallel(Command command)
-    {
-        points.get(points.size()-1).add(command);
+        return counter;
     }
 
     /*public Command getComponent(int i)
@@ -86,20 +55,15 @@ public class Path
     {
         CommandGroup group = new CommandGroup();
 
-        for(ArrayList<Command> command : points)
+        for(DriveProfile point : points)
         {
-            group.addSequential(command.get(0));
-            for(int i = 1; i < command.size(); i++)
+            group.addSequential(point);
+            if(point.getAction() != null)
             {
-                group.addParallel(command.get(i));
+                group.addParallel(point.getAction());
             }
         }
 
         return group;
     }
-
-    /*public List<Command> getPath()
-    {
-        return points;
-    }*/
 }

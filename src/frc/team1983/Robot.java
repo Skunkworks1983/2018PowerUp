@@ -1,18 +1,28 @@
 package frc.team1983;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.commands.autonomous.PlaceCubeInScale;
+import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
+import frc.team1983.commands.collector.CollectorExpel;
+import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.commands.drivebase.RunTankDrive;
+import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.TurnDegree;
+import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
@@ -24,11 +34,15 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
+import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.control.ProfileController;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
+import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
@@ -54,13 +68,18 @@ public class Robot extends IterativeRobot
     private SmellyParser smellyParser;
     private Command autonomousCommand;
 
+    public Robot()
+    {
+        Robot.instance = this;
+    }
+
     @Override
     public void robotInit()
     {
         robotLogger = LoggerFactory.createNewLogger(Robot.class);
-        //dashboardWrapper = new DashboardWrapper();
-        //dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
-        //dashboard.populate();
+        dashboardWrapper = new DashboardWrapper();
+        dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
+        dashboard.populate();
 
         oi = new OI(DriverStation.getInstance());
 
@@ -69,7 +88,8 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
         ramps = new Ramps();
 
-        //smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLY_FOLDER);
+        robotLogger.info("Smelly parser is null before construction: {}", smellyParser == null);
+        smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLY_FOLDER);
 
         robotLogger.info("robotInit");
 
@@ -108,6 +128,7 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
+        robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.AUTO);
 
@@ -227,8 +248,10 @@ public class Robot extends IterativeRobot
     {
         if(instance == null)
         {
+            robotLogger.info("Constructing new robot");
             instance = new Robot();
         }
+
         return instance;
     }
 }
