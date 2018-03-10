@@ -38,7 +38,7 @@ public class Path
         for(DriveProfile point : points)
         {
             counter++;
-            if(point.getAction() != null)
+            if(point.getActions() != null)
             {
                 counter++;
             }
@@ -58,9 +58,9 @@ public class Path
         for(DriveProfile point : points)
         {
             group.addSequential(point);
-            if(point.getAction() != null)
+            if(point.getActions() != null)
             {
-                group.addParallel(point.getAction());
+                group.addParallel(point.getActions());
             }
         }
 

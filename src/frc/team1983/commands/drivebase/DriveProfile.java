@@ -31,7 +31,7 @@ public class DriveProfile extends CommandBase
     private double startHeading;
     private double endHeading;
     private double deltaHeading;
-    private Command action;
+    private ArrayList<Command> actions;
 
     private double onTargetTime = 0;
     private double lastOnTargetTimestamp = 0;
@@ -41,18 +41,20 @@ public class DriveProfile extends CommandBase
 
     private double duration;
 
-    public void test(ActionsEnum... test)
-    {
-
-    }
-
-    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration, double deltaHeading, ActionsEnum action)
+    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration,
+                        double deltaHeading, ActionsEnum[] actions)
     {
         Logger logger = LoggerFactory.createNewLogger(this.getClass());
 
         requires(drivebase);
 
-        this.action = action.getAction().createAction(Robot.getInstance().getCollector(), Robot.getInstance().getElevator());
+        this.actions = new ArrayList<>();
+
+        for(ActionsEnum action : actions)
+        {
+            this.actions.add(action.getAction().createAction(Robot.getInstance().getCollector(), Robot.getInstance().getElevator()));
+        }
+
         this.drivebase = drivebase;
         this.leftProfile = leftProfile;
         this.rightProfile = rightProfile;
@@ -78,9 +80,9 @@ public class DriveProfile extends CommandBase
         }
     }
 
-    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration, ActionsEnum action)
+    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration, ActionsEnum[] actions)
     {
-        this(drivebase, leftProfile, rightProfile, duration, 0, action);
+        this(drivebase, leftProfile, rightProfile, duration, 0, actions);
         this.runHeadingCorrection = false;
     }
 
@@ -197,8 +199,8 @@ public class DriveProfile extends CommandBase
         CruiseProfile.stitch(rightProfiles);
     }
 
-    public Command getAction()
+    public ArrayList<Command> getActions()
     {
-        return action;
+        return actions;
     }
 }
