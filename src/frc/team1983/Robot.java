@@ -51,6 +51,8 @@ public class Robot extends IterativeRobot
     private SmellyParser smellyParser;
     private Command autonomousCommand;
 
+    private Path path;
+
     public Robot()
     {
         Robot.instance = this;
@@ -82,6 +84,8 @@ public class Robot extends IterativeRobot
         autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
         SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
         */
+
+        path = smellyParser.constructPath(new File("BackForwardTest.json"));
     }
 
 
@@ -111,6 +115,7 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
+        drivebase.setBrakeMode(true);
         robotLogger.info("AutoInit");
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.AUTO);
@@ -122,8 +127,7 @@ public class Robot extends IterativeRobot
                 new DriveFeet(drivebase, 0, 0, ActionsEnum.SET_COLLECTOR_POSITION_DOWN),
                 new DriveFeet(drivebase, 6, 2, ActionsEnum.SET_ELEVATOR_SETPOINT_MID),
                 new DriveArc(drivebase, 3, 90, 2, ActionsEnum.SET_ELEVATOR_SETPOINT_TOP)
-                                                              )));*/
-        Path path = smellyParser.constructPath(new File("/u/BasicTest.json"));
+                                                              )));*/;
 
         Scheduler.getInstance().add(path.getCommands());
     }

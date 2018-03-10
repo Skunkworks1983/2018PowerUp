@@ -42,7 +42,7 @@ public class DriveProfile extends CommandBase
     private double duration;
 
     public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration,
-                        double deltaHeading, ActionsEnum... actions)
+                        double deltaHeading, ActionsEnum[] actions)
     {
         Logger logger = LoggerFactory.createNewLogger(this.getClass());
 
@@ -79,9 +79,9 @@ public class DriveProfile extends CommandBase
         }
     }
 
-    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration, ActionsEnum action)
+    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration, ActionsEnum[] actions)
     {
-        this(drivebase, leftProfile, rightProfile, duration, 0, action);
+        this(drivebase, leftProfile, rightProfile, duration, 0, actions);
         this.runHeadingCorrection = false;
     }
 

@@ -18,14 +18,14 @@ public class DriveArc extends DriveProfile
     @JsonCreator
     public DriveArc(@JacksonInject @JsonProperty("drivebase") Drivebase drivebase,
                     @JsonProperty("radius") double radius, @JsonProperty("angle") double angle,
-                    @JsonProperty("time") double time, @JsonProperty("action") ActionsEnum... actions)
+                    @JsonProperty("time") double time, @JsonProperty("action") ActionsEnum[] actions)
     {
         super(drivebase, generateLeftProfile(radius, angle, time), generateRightProfile(radius, angle, time), time, angle, actions);
     }
 
     public DriveArc(Drivebase drivebase, double radius, double angle, double time)
     {
-        this(drivebase, radius, angle, time, ActionsEnum.NONE);
+        this(drivebase, radius, angle, time, new ActionsEnum[]{ActionsEnum.NONE});
     }
 
     private static CruiseProfile generateLeftProfile(double radius, double angle, double time)
