@@ -97,6 +97,9 @@ public class DriveStraight extends CommandBase
         driveStraightPid.enable();
         leftEncoderStart = drivebase.getLeftDist();
         rightEncoderStart = drivebase.getRightDist();
+        logger.info("Left encoder start {}", leftEncoderStart);
+        logger.info("Distance setpoint {}", distance);
+
 
     }
 
@@ -111,8 +114,10 @@ public class DriveStraight extends CommandBase
     {
         //condition checks if command is timed out or if we have gone the desired distance
         //using the average of the two offset distances travelled
-        return isTimedOut() || (((abs(drivebase.getLeftDist()) - abs(leftEncoderStart)) +
-                abs(drivebase.getRightDist()) - abs(rightEncoderStart))) / 2 >= abs(distance);
+        logger.info("getLeftDistance {}", drivebase.getLeftDist());
+        return isTimedOut() || ((abs(abs(drivebase.getLeftDist()) - abs(leftEncoderStart)) +
+                abs(abs(drivebase.getRightDist()) - abs(rightEncoderStart)))) / 2 >= abs(distance);
+
 
     }
 

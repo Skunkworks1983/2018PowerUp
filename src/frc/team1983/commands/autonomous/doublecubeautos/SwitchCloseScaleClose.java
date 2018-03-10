@@ -1,4 +1,5 @@
 package frc.team1983.commands.autonomous.doublecubeautos;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
@@ -35,14 +36,14 @@ public class SwitchCloseScaleClose extends CommandGroup
 
         super.addSequential(new CollectorRotate(collector, false));
         super.addSequential(new DriveStraight(drivebase, dashboard, 21.0));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
+        super.addParallel  (new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 135 * reflectionVariable));
-        super.addSequential(new DriveStraight(drivebase, dashboard, 3, Constants.PidConstants.DriveStraightPid.DEFAULT_BASE_SPEED, 1));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 2, Constants.PidConstants.DriveStraightPid.DEFAULT_BASE_SPEED, 1));
         super.addSequential(new CollectorExpel(collector, true, 1));
-        super.addSequential(new DriveStraight(drivebase, dashboard, -1.0));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
-        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90 * reflectionVariable)); //need to reorient to point at the cube we pushed out of the way
-        super.addSequential(new DriveStraight(drivebase, dashboard, 2.0));
+        super.addSequential(new DriveStraight(drivebase, dashboard, -2.0));
+        super.addParallel  (new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -15 * reflectionVariable)); //need to reorient to point at the cube we pushed out of the way
+        super.addSequential(new DriveStraight(drivebase, dashboard, 3.0));
         super.addParallel(new CollectorIntake(collector));
         super.addSequential(new DriveStraight(drivebase, dashboard, -3.75));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90 * reflectionVariable));
