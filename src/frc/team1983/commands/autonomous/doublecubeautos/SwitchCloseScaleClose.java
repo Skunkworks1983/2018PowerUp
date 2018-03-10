@@ -34,6 +34,27 @@ public class SwitchCloseScaleClose extends CommandGroup
         logger.info("Reflection variable is {}", reflectionVariable);
 
         super.addSequential(new CollectorRotate(collector, false));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 15.5));
+        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0 * reflectionVariable));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 4.0));
+        super.addSequential(new CollectorExpel(collector, true, 1));
+        super.addSequential(new DriveStraight(drivebase, dashboard, -4.0));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0));
+        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
+        super.addSequential(new DriveStraight(drivebase, dashboard, -7.0));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -45.0));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 6.0));
+        super.addParallel(new CollectorIntake(collector));
+        super.addSequential(new DriveStraight(drivebase, dashboard, -6.0));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90.0 * reflectionVariable));
+        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 4.0));
+        super.addSequential(new CollectorExpel(collector, true, 1));
+        super.addSequential(new DriveStraight(drivebase, dashboard, -4.0));
+        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
+        /*
+        super.addSequential(new CollectorRotate(collector, false));
         super.addSequential(new DriveStraight(drivebase, dashboard, 21.0));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 135 * reflectionVariable));
@@ -51,6 +72,6 @@ public class SwitchCloseScaleClose extends CommandGroup
         super.addSequential(new CollectorExpel(collector, true));
         super.addSequential(new DriveStraight(drivebase, dashboard, -2.1));
         super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.LOW, elevator, oi));
-
+*/
     }
 }
