@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.autonomous.PlaceCubeInScale;
 import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
+import frc.team1983.commands.autonomous.actions.ActionsEnum;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.commands.drivebase.DriveArc;
@@ -134,42 +135,14 @@ public class Robot extends IterativeRobot
 
         drivebase.getGyro().initGyro();
 
-        CommandGroup cmds = new CommandGroup();
 
-        DriveArc a1 = new DriveArc(drivebase, 4, 90, 2);
-        //DriveFeet d1 = new DriveFeet(drivebase, 4, 2);
+        Path testpath = new Path(new ArrayList<>(Arrays.asList(
+                new DriveFeet(drivebase, 0, 0, ActionsEnum.SET_COLLECTOR_POSITION_DOWN),
+                new DriveFeet(drivebase, 6, 2, ActionsEnum.SET_ELEVATOR_SETPOINT_MID),
+                new DriveArc(drivebase, 3, 90, 2, ActionsEnum.SET_ELEVATOR_SETPOINT_TOP)
+                                                              )));
 
-        //DriveProfile.stitch(a1, d1);
-
-        cmds.addSequential(a1);
-        //cmds.addSequential(d1);
-
-        Scheduler.getInstance().add(cmds);
-
-        /*
-        CommandGroup auto = new CommandGroup();
-
-        auto.addSequential(new DriveFeet(drivebase, 16, 2.5));
-        auto.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator));
-        auto.addSequential(new DriveArc(drivebase, 1, 180, 1, true));
-
-        auto.addSequential(new CollectorExpel(collector, true, 0.3));
-        auto.addSequential(new DriveFeet(drivebase, -1.5, 0.5));
-        auto.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator));
-
-        auto.addSequential(new CollectorIntake(collector, 2));
-        auto.addParallel(new DriveFeet(drivebase, 2, 0.5));
-        auto.addSequential(new DriveArc(drivebase, 1.5, -160, 1, true));
-        auto.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator));
-
-        auto.addSequential(new DriveFeet(drivebase, 3, 1.5));
-        auto.addSequential(new CollectorExpel(collector, true, 1));
-
-        //cmds.addSequential(new DriveArc(drivebase, 6, 90, 2, false));
-        //cmds.addSequential(new DriveArc(drivebase, 6, -90, 2, true));
-
-        Scheduler.getInstance().add(auto);
-        */
+        Scheduler.getInstance().add(testpath.getCommands());
     }
 
     @Override

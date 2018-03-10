@@ -1,13 +1,11 @@
 package frc.team1983.commands.drivebase;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
-import frc.team1983.commands.autonomous.actions.Action;
 import frc.team1983.commands.autonomous.actions.ActionsEnum;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.services.parser.SmellyDeserializer;
@@ -43,11 +41,9 @@ public class DriveProfile extends CommandBase
 
     private double duration;
 
-    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration, double deltaHeading)
+    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration, double deltaHeading, ActionsEnum action)
     {
         Logger logger = LoggerFactory.createNewLogger(this.getClass());
-        logger.info("Drivebase from robot is null: {}", Robot.getInstance().getDrivebase() == null);
-        logger.info("Drivebase from constructor is null {}", drivebase == null);
 
         requires(drivebase);
 
@@ -77,9 +73,9 @@ public class DriveProfile extends CommandBase
         }
     }
 
-    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration)
+    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration, ActionsEnum action)
     {
-        this(drivebase, leftProfile, rightProfile, duration, 0);
+        this(drivebase, leftProfile, rightProfile, duration, 0, action);
         this.runHeadingCorrection = false;
     }
 

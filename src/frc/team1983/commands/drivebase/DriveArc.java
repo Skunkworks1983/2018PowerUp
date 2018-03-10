@@ -4,20 +4,28 @@ import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import frc.team1983.Robot;
 import frc.team1983.commands.autonomous.actions.ActionsEnum;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.util.motion.profiles.CruiseProfile;
 import frc.team1983.util.motion.profiles.TrapezoidalProfile;
-import frc.team1983.util.path.PathTanarc;
 
 @JsonDeserialize(as = DriveArc.class)
 public class DriveArc extends DriveProfile
 {
+    private boolean isRight = true;
+
+    @JsonCreator
+    public DriveArc(@JacksonInject @JsonProperty("drivebase") Drivebase drivebase,
+                    @JsonProperty("radius") double radius, @JsonProperty("angle") double angle,
+                    @JsonProperty("time") double time, @JsonProperty("action") ActionsEnum action)
+    {
+        super(drivebase, generateLeftProfile(radius, angle, time), generateRightProfile(radius, angle, time), time, angle, action);
+    }
+
     public DriveArc(Drivebase drivebase, double radius, double angle, double time)
     {
-        super(drivebase, generateLeftProfile(radius, angle, time), generateRightProfile(radius, angle, time), time, angle);
+        this(drivebase, radius, angle, time, ActionsEnum.NONE);
     }
 
     private static CruiseProfile generateLeftProfile(double radius, double angle, double time)
