@@ -134,12 +134,13 @@ public class Robot extends IterativeRobot
         updateState(Constants.MotorMap.Mode.AUTO);
 
         drivebase.getGyro().initGyro();
-
+        drivebase.setBrakeMode(true);
 
         Path testpath = new Path(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, 0, 0, ActionsEnum.SET_COLLECTOR_POSITION_DOWN),
-                new DriveFeet(drivebase, 6, 2, ActionsEnum.SET_ELEVATOR_SETPOINT_MID),
-                new DriveArc(drivebase, 3, 90, 2, ActionsEnum.SET_ELEVATOR_SETPOINT_TOP)
+                new DriveArc(drivebase, -3, -90, 2)
+                //new DriveFeet(drivebase, 0, 0, ActionsEnum.SET_COLLECTOR_POSITION_DOWN),
+                //new DriveFeet(drivebase, 6, 2, ActionsEnum.SET_ELEVATOR_SETPOINT_MID),
+                //new DriveArc(drivebase, 3, 90, 2, ActionsEnum.SET_ELEVATOR_SETPOINT_TOP)
                                                               )));
 
         Scheduler.getInstance().add(testpath.getCommands());

@@ -41,6 +41,11 @@ public class DriveProfile extends CommandBase
 
     private double duration;
 
+    public void test(ActionsEnum... test)
+    {
+
+    }
+
     public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration, double deltaHeading, ActionsEnum action)
     {
         Logger logger = LoggerFactory.createNewLogger(this.getClass());
@@ -112,6 +117,8 @@ public class DriveProfile extends CommandBase
             double currentDistPercent = avgDist / ((leftDistance + rightDistance) / 2);
             currentDistPercent = Math.min(currentDistPercent, 1.0);
             double desiredHeading = startHeading + ((endHeading - startHeading) * currentDistPercent);
+
+            //double desiredHeading = startHeading + ((endHeading - startHeading) * Math.min(timeSinceInitialized(), duration));
 
             headingLoop.setSetpoint(desiredHeading);
         }
