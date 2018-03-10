@@ -48,8 +48,10 @@ public class Robot extends IterativeRobot
 
     private static Robot instance;
 
-    private SendableChooser autonomousSelector;
-    private Command autonomousCommand;
+    public Robot()
+    {
+        instance = this;
+    }
 
     @Override
     public void robotInit()
@@ -101,9 +103,6 @@ public class Robot extends IterativeRobot
         drivebase.setBrakeMode(true);
         ramps.reset();
 
-        autonomousCommand = (Command) autonomousSelector.getSelected();
-        robotLogger.info(autonomousSelector.getSelected());
-        Scheduler.getInstance().add(autonomousCommand);
         SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
         SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
     }
@@ -220,6 +219,16 @@ public class Robot extends IterativeRobot
     public Collector getCollector()
     {
         return collector;
+    }
+
+    public StatefulDashboard getStatefulDashboard()
+    {
+        return dashboard;
+    }
+
+    public DashboardWrapper getDashboardWrapper()
+    {
+        return dashboardWrapper;
     }
 
     public static Robot getInstance()

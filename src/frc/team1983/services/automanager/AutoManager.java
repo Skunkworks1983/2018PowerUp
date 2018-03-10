@@ -137,12 +137,14 @@ public class AutoManager
 
     public void execute()
     {
-        if(!gameDataAlreadyPolled || ownedSideOverride.getSelected() != OwnedSide.UNKNOWN)
+        if(!gameDataAlreadyPolled)
         {
             gsm = DriverStation.getInstance().getGameSpecificMessage();
             if(gsm.length() == 3 || ownedSideOverride.getSelected() != OwnedSide.UNKNOWN)
             {
                 gameDataAlreadyPolled = true;
+
+                logger.info("Got game data");
 
                 Scheduler.getInstance().add(dashboard.getSelectedAutoChoice().getSelectableAuto().createCommand(
                         Robot.getInstance().getDrivebase(), Robot.getInstance().getCollector(),
