@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team1983.Robot;
 import frc.team1983.util.control.ClosedLoopGains;
 import frc.team1983.util.control.ProfileController;
+import frc.team1983.util.control.ProfileSignal;
 import frc.team1983.util.motion.MotionProfile;
 
 import java.util.HashMap;
@@ -72,6 +73,22 @@ public class Motor extends TalonSRX
             manager = new ProfileController(this, Robot.getInstance());
 
         manager.setProfile(profile);
+    }
+
+    public void linkSignal(ProfileSignal signal)
+    {
+        if(manager == null)
+            manager = new ProfileController(this, Robot.getInstance());
+
+        manager.linkSignal(signal);
+    }
+
+    public void unlinkSignal()
+    {
+        if(manager == null)
+            manager = new ProfileController(this, Robot.getInstance());
+
+        manager.unlinkSignal();
     }
 
     public void runProfile()

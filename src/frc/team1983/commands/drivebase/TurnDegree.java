@@ -12,13 +12,14 @@ public class TurnDegree extends DriveArc
 {
     @JsonCreator
     public TurnDegree(@JacksonInject @JsonProperty("drivebase") Drivebase drivebase,
-                      @JsonProperty("angle") double angle, @JsonProperty("time") double time, @JsonProperty("action") ActionsEnum action)
+                      @JsonProperty("angle") double angle, @JsonProperty("time") double time,
+                      @JsonProperty("action") ActionsEnum[] actions)
     {
-        super(drivebase, 0, angle, time, action);
+        super(drivebase, 0, angle, time, actions);
     }
 
     public TurnDegree(Drivebase drivebase, double angle, double time)
     {
-        this(drivebase, angle, time, ActionsEnum.NONE);
+        this(drivebase, angle, time, new ActionsEnum[]{ActionsEnum.NONE});
     }
 }

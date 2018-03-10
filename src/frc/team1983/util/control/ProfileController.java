@@ -17,6 +17,7 @@ public class ProfileController
 
     protected MotionProfile profile;
     protected ProfileSignal signal;
+    protected ProfileSignal linkedSignal;
 
     private ProfileControllerRunnable runnable;
     private Thread thread;
@@ -116,7 +117,10 @@ public class ProfileController
 
     public void setEnabled(boolean enabled)
     {
-        signal.setEnabled(enabled);
+        if(linkedSignal == null)
+        {
+            signal.setEnabled(enabled);
+        }
 
         if(enabled)
         {
@@ -132,6 +136,18 @@ public class ProfileController
         }
 
         parent.config_kF(0, enabled ? 1 : 0, 0);
+    }
+
+    public void linkSignal(ProfileSignal signal)
+    {
+        this.linkedSignal = signal;
+        runnable.setSignal(linkedSignal);
+    }
+
+    public void unlinkSignal()
+    {
+        this.linkedSignal = null;
+        runnable.setSignal(signal);
     }
 
     public void updateRobotState(Constants.MotorMap.Mode mode)

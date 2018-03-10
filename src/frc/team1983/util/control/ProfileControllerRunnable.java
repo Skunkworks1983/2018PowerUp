@@ -55,6 +55,11 @@ public class ProfileControllerRunnable implements Runnable
         }
     }
 
+    public synchronized void setSignal(ProfileSignal signal)
+    {
+        this.signal = signal;
+    }
+
     public synchronized void reset()
     {
         this.hasProcessed = false;

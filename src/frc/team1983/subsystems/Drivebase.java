@@ -8,6 +8,7 @@ import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.subsystems.utilities.Motor;
+import frc.team1983.util.control.ProfileSignal;
 import frc.team1983.util.motion.MotionProfile;
 import org.apache.logging.log4j.core.Logger;
 
@@ -16,6 +17,7 @@ public class Drivebase extends Subsystem
 {
     public Motor left1, left2, left3;
     public Motor right1, right2, right3;
+    private ProfileSignal signal;
     private Gyro gyro;
 
     private Logger logger;
@@ -23,7 +25,6 @@ public class Drivebase extends Subsystem
     public Drivebase()
     {
         logger = LoggerFactory.createNewLogger(Drivebase.class);
-        logger.info("In drivebase construction");
 
         left1 = new Motor(Constants.MotorMap.Drivebase.LEFT_1, Constants.MotorMap.Drivebase.LEFT1_REVERSED, true);
         left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED);
@@ -34,6 +35,7 @@ public class Drivebase extends Subsystem
         right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED);
 
         gyro = new Gyro(I2C.Port.kOnboard);
+        signal = new ProfileSignal();
 
         left2.follow(left1);
         left3.follow(left1);
@@ -46,6 +48,9 @@ public class Drivebase extends Subsystem
 
         left1.setGains(0, Constants.PidConstants.Drivebase.Left.MAIN);
         right1.setGains(0, Constants.PidConstants.Drivebase.Right.MAIN);
+
+        left1.linkSignal(signal);
+        right1.linkSignal(signal);
     }
 
     public void initDefaultCommand()
@@ -157,12 +162,16 @@ public class Drivebase extends Subsystem
     {
         left1.runProfile();
         right1.runProfile();
+
+        signal.setEnabled(true);
     }
 
     public void stopProfiles()
     {
         left1.stopProfile();
         right1.stopProfile();
+
+        signal.setEnabled(false);
     }
 
     public boolean leftProfileIsFinished()

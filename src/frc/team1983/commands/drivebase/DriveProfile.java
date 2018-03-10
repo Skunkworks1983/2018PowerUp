@@ -23,6 +23,8 @@ import java.util.List;
 @JsonDeserialize(using = SmellyDeserializer.class)
 public class DriveProfile extends CommandBase
 {
+    private Logger logger;
+
     private Drivebase drivebase;
     protected CruiseProfile leftProfile, rightProfile;
 
@@ -38,13 +40,14 @@ public class DriveProfile extends CommandBase
 
     private double leftDistance, rightDistance;
     private double leftInitDist, rightInitDist;
+    private double totalDistance;
 
     private double duration;
 
     public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration,
                         double deltaHeading, ActionsEnum[] actions)
     {
-        Logger logger = LoggerFactory.createNewLogger(this.getClass());
+        logger = LoggerFactory.createNewLogger(this.getClass());
 
         requires(drivebase);
 
@@ -59,8 +62,8 @@ public class DriveProfile extends CommandBase
         this.leftProfile = leftProfile;
         this.rightProfile = rightProfile;
 
-        this.leftDistance = leftProfile.getDistance();
-        this.rightDistance = rightProfile.getDistance();
+        this.leftDistance = Drivebase.getFeet(leftProfile.getDistance());
+        this.rightDistance = Drivebase.getFeet(rightProfile.getDistance());
 
         this.duration = duration;
         this.deltaHeading = deltaHeading;
@@ -97,6 +100,8 @@ public class DriveProfile extends CommandBase
             leftInitDist = drivebase.getLeftDistance();
             rightInitDist = drivebase.getRightDistance();
 
+            totalDistance = ((leftInitDist + leftDistance) + (rightInitDist + rightDistance)) / 2;
+
             headingLoop.enable();
         }
 
@@ -109,16 +114,14 @@ public class DriveProfile extends CommandBase
     @Override
     public void execute()
     {
-        System.out.println("left error: " + Drivebase.getFeet(drivebase.getLeftError()) +
-                                   " , right error: " + Drivebase.getFeet(drivebase.getRightError()) +
-                                   " , gyro error: " + (endHeading - drivebase.getGyro().getAngle()));
+        logger.info(drivebase.getGyro().getAngle());
 
         if(runHeadingCorrection)
         {
             double avgDist = ((drivebase.getLeftDistance() - leftInitDist) + (drivebase.getRightDistance() - rightInitDist)) / 2;
-            double currentDistPercent = avgDist / ((leftDistance + rightDistance) / 2);
+            double currentDistPercent = avgDist / totalDistance;
             currentDistPercent = Math.min(currentDistPercent, 1.0);
-            double desiredHeading = startHeading + ((endHeading - startHeading) * currentDistPercent);
+            double desiredHeading = startHeading + (deltaHeading * currentDistPercent);
 
             //double desiredHeading = startHeading + ((endHeading - startHeading) * Math.min(timeSinceInitialized(), duration));
 
@@ -168,6 +171,10 @@ public class DriveProfile extends CommandBase
     @Override
     public void end()
     {
+        System.out.println("left error: " + Drivebase.getFeet(drivebase.getLeftError()) +
+                                   " , right error: " + Drivebase.getFeet(drivebase.getRightError()) +
+                                   " , gyro error: " + (endHeading - drivebase.getGyro().getAngle()));
+
         drivebase.stopProfiles();
 
         if(runHeadingCorrection)

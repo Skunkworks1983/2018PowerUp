@@ -7,9 +7,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.team1983.commands.autonomous.actions.ActionsEnum;
 import frc.team1983.commands.debugging.RunOneMotor;
+import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
+import frc.team1983.commands.drivebase.TurnDegree;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
@@ -87,9 +90,9 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
         */
 
-        path = smellyParser.constructPath(new File("BackForwardTest.json"));
+        path = smellyParser.constructPath(new File("/u/BackForwardTest.json"));
     }
-
+//ur gay
 
     @Override
     public void robotPeriodic()
@@ -126,9 +129,7 @@ public class Robot extends IterativeRobot
         drivebase.setBrakeMode(true);
 
         CommandGroup cmds = new CommandGroup();
-
-        cmds.addSequential(new DriveFeet(drivebase, 15, 5));
-        cmds.addSequential(new DriveFeet(drivebase, -15, 5));
+        cmds.addSequential(new DriveArc(drivebase, 3, 90, 2));
 
         Scheduler.getInstance().add(cmds);
     }
