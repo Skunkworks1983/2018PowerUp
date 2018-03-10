@@ -8,5 +8,5 @@ import frc.team1983.subsystems.Elevator;
 
 public interface Action
 {
-    public CommandBase createAction(Collector collector, Elevator elevator);
+    public Command createAction(Collector collector, Elevator elevator);
 }

@@ -2,13 +2,14 @@ package frc.team1983.commands.autonomous.actions;
 
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.Robot;
 import frc.team1983.commands.collector.CollectorIntake;
 
 
 public enum ActionsEnum
 {
-    NONE(null),
+    NONE((((collector, elevator) -> new CommandGroup()))),
     COLLECTOR_INTAKE(((collector, elevator) -> new CollectorIntake(collector, 0.0))); //TODO find timeout
 
     private Action action;
@@ -18,9 +19,9 @@ public enum ActionsEnum
         this.action = action;
     }
 
-    public Command getAction()
+    public Action getAction()
     {
         System.out.println("got action " + action.toString());
-        return action.createAction(Robot.getInstance().getCollector(), Robot.getInstance().getElevator());
+        return action;
     }
 }

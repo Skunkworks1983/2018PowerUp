@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -65,6 +66,11 @@ public class Robot extends IterativeRobot
     private SmellyParser smellyParser;
     private Command autonomousCommand;
 
+    public Robot()
+    {
+        Robot.instance = this;
+    }
+
     @Override
     public void robotInit()
     {
@@ -80,6 +86,7 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
         ramps = new Ramps();
 
+        robotLogger.info("Smelly parser is null before construction: {}", smellyParser == null);
         smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLY_FOLDER);
 
         robotLogger.info("robotInit");
@@ -174,7 +181,7 @@ public class Robot extends IterativeRobot
         Path path = new Path(commands);
 
         Scheduler.getInstance().add(path.getCommands());*/
-        smellyParser.constructPath(new File("/u/path2.json"));
+        Scheduler.getInstance().add(smellyParser.constructPath(new File("/u/path2.json")).getCommands());
     }
 
     @Override

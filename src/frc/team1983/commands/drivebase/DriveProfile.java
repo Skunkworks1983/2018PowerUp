@@ -1,5 +1,7 @@
 package frc.team1983.commands.drivebase;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,6 +21,7 @@ import org.apache.logging.log4j.core.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(using = SmellyDeserializer.class)
 public class DriveProfile extends CommandBase
 {
@@ -48,7 +51,7 @@ public class DriveProfile extends CommandBase
 
         requires(drivebase);
 
-        this.action = action.getAction();
+        this.action = action.getAction().createAction(Robot.getInstance().getCollector(), Robot.getInstance().getElevator());
         this.drivebase = drivebase;
         this.leftProfile = leftProfile;
         this.rightProfile = rightProfile;
