@@ -224,12 +224,18 @@ public class Constants
         {
             public static final int ELEVATOR_BOTTOM = 0;
             //Actually negative, but ya know,
-            public static final int ELEVATOR_TOP = 29000 - 485; //Addition is to keep it from hitting the max position
+            public static final int ELEVATOR_TOP = 29000 - 300; //Addition is to keep it from hitting the max position
+            public static final double ELEVATOR_MID_PERCENT = 0.979; //constant chosen to reproduce trial and error values
+            public static final double ELEVATOR_LOW_PERCENT = 0.96;
+            public static final double ELEVATOR_TRAVEL_PERCENT = 0.03; //taking thomas' 800 number, actual percent is 2.8
+            public static final double ELEVATOR_TOP_PERCENT = 0.99;
 
-            public static final double P = 0.13;
-            public static final double I = 0;
+            public static final double P = 0.08;
+            public static final double I = 0.0005;
             public static final double D = 3;
             public static final double F = 0.001;
+            public static final int I_ZONE = 2500;
+
         }
     }
 
@@ -320,11 +326,24 @@ public class Constants
         //Enums for presets
         public enum Setpoint
         {
-            BOTTOM,
-            SWITCH,
-            LOW,
-            MID,
-            TOP
+            BOTTOM (0),
+            TRAVEL (1560),
+            SWITCH (7925), // elevator halfway point
+            LOW (22700),
+            MID (25700),
+            TOP (28700);
+
+            private final double encoderTicks;
+            Setpoint(double encoderTicks)
+            {
+                this.encoderTicks = encoderTicks;
+            }
+
+            public double getEncoderTicks()
+            {
+                return encoderTicks;
+            }
+
         }
     }
 
