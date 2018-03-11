@@ -32,6 +32,9 @@ public class Elevator extends Subsystem
         right1 = new Motor(Constants.MotorMap.Elevator.RIGHT1, Constants.MotorMap.Elevator.RIGHT1_REVERSED, true);
         right2 = new Motor(Constants.MotorMap.Elevator.RIGHT2, Constants.MotorMap.Elevator.RIGHT2_REVERSED);
 
+        right1.configPIDF(0, Constants.PidConstants.ElevatorControlPid.P, Constants.PidConstants.ElevatorControlPid.I, Constants.PidConstants.ElevatorControlPid.D, Constants.PidConstants.ElevatorControlPid.F);
+        right1.config_IntegralZone(0, Constants.PidConstants.ElevatorControlPid.I_ZONE, 0);
+
         right2.follow(right1);
         left1.follow(right1);
         left2.follow(right1);

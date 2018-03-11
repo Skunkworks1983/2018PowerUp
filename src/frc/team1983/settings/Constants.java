@@ -179,16 +179,17 @@ public class Constants
         {
             public static final int ELEVATOR_BOTTOM = 0;
             //Actually negative, but ya know,
-            public static final int ELEVATOR_TOP = 29000 - 485; //Addition is to keep it from hitting the max position
+            public static final int ELEVATOR_TOP = 29000 - 300; //Addition is to keep it from hitting the max position
             public static final double ELEVATOR_MID_PERCENT = 0.979; //constant chosen to reproduce trial and error values
             public static final double ELEVATOR_LOW_PERCENT = 0.96;
             public static final double ELEVATOR_TRAVEL_PERCENT = 0.03; //taking thomas' 800 number, actual percent is 2.8
             public static final double ELEVATOR_TOP_PERCENT = 0.99;
 
-            public static final double P = 0.13;
-            public static final double I = 0;
+            public static final double P = 0.08;
+            public static final double I = 0.0005;
             public static final double D = 3;
             public static final double F = 0.001;
+            public static final int I_ZONE = 2500;
 
         }
     }
@@ -280,12 +281,12 @@ public class Constants
         //Enums for presets
         public enum Setpoint
         {
-            BOTTOM (PidConstants.ElevatorControlPid.ELEVATOR_BOTTOM),
-            TRAVEL (PidConstants.ElevatorControlPid.ELEVATOR_TOP * PidConstants.ElevatorControlPid.ELEVATOR_TRAVEL_PERCENT),
-            SWITCH (PidConstants.ElevatorControlPid.ELEVATOR_TOP / 2.0), // elevator halfway point
-            LOW (PidConstants.ElevatorControlPid.ELEVATOR_TOP * PidConstants.ElevatorControlPid.ELEVATOR_LOW_PERCENT),
-            MID (PidConstants.ElevatorControlPid.ELEVATOR_TOP * PidConstants.ElevatorControlPid.ELEVATOR_MID_PERCENT),
-            TOP (PidConstants.ElevatorControlPid.ELEVATOR_TOP * PidConstants.ElevatorControlPid.ELEVATOR_TOP_PERCENT);
+            BOTTOM (0),
+            TRAVEL (1560),
+            SWITCH (7925), // elevator halfway point
+            LOW (22700),
+            MID (25700),
+            TOP (28700);
 
             private final double encoderTicks;
             Setpoint(double encoderTicks)
@@ -298,35 +299,6 @@ public class Constants
                 return encoderTicks;
             }
 
-            double bottomElevator()
-            {
-                return PidConstants.ElevatorControlPid.ELEVATOR_BOTTOM;
-            }
-
-            double travelElevator()
-            {
-                return PidConstants.ElevatorControlPid.ELEVATOR_TOP * PidConstants.ElevatorControlPid.ELEVATOR_TRAVEL_PERCENT;
-            }
-
-            double switchElevator()
-            {
-                return PidConstants.ElevatorControlPid.ELEVATOR_TOP / 2.0;
-            }
-
-            double lowElevator()
-            {
-                return PidConstants.ElevatorControlPid.ELEVATOR_TOP * PidConstants.ElevatorControlPid.ELEVATOR_LOW_PERCENT;
-            }
-
-            double midElevator()
-            {
-                return PidConstants.ElevatorControlPid.ELEVATOR_TOP * PidConstants.ElevatorControlPid.ELEVATOR_MID_PERCENT;
-            }
-
-            double topElevator()
-            {
-                return PidConstants.ElevatorControlPid.ELEVATOR_TOP;
-            }
         }
     }
 

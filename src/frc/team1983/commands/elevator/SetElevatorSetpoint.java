@@ -36,11 +36,7 @@ public class SetElevatorSetpoint extends CommandBase
         switch(setpoint)
         {
             case BOTTOM:
-                newSetpoint = Constants.OIMap.Setpoint.BOTTOM.getEncoderTicks(); //0
-                break;
-
-            case TRAVEL:
-                newSetpoint = Constants.OIMap.Setpoint.TRAVEL.getEncoderTicks();
+                newSetpoint = Constants.OIMap.Setpoint.BOTTOM.getEncoderTicks();
                 break;
 
             case SWITCH:
@@ -49,9 +45,11 @@ public class SetElevatorSetpoint extends CommandBase
 
             case LOW:
                 newSetpoint = Constants.OIMap.Setpoint.LOW.getEncoderTicks();
+                break;
 
             case MID:
                 newSetpoint = Constants.OIMap.Setpoint.MID.getEncoderTicks();
+                break;
 
             case TOP:
                 newSetpoint = Constants.OIMap.Setpoint.TOP.getEncoderTicks();
@@ -74,13 +72,16 @@ public class SetElevatorSetpoint extends CommandBase
     @Override
     public boolean isFinished()
     {
-        return true;
+        return false;
     }
 
     @Override
     public void end()
     {
-
+        if (setpoint == Constants.OIMap.Setpoint.BOTTOM)
+        {
+            elevator.setSetpoint(Constants.OIMap.Setpoint.TRAVEL.getEncoderTicks());
+        }
     }
 
     @Override
