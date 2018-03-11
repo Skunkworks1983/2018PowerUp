@@ -133,7 +133,7 @@ public class Constants
             public static class Left
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.5,
+                        0.8,
                         0,
                         0.35,
                         0,
@@ -147,9 +147,9 @@ public class Constants
             public static class Right
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.5,
+                        0.8,
                         0,
-                        0.3,
+                        0.35,
                         0,
                         0,
                         1000 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
@@ -158,7 +158,7 @@ public class Constants
             }
 
             public static ClosedLoopGains HEADINGCORRECTION = new ClosedLoopGains(
-                    0.1, 0, 0, 0
+                    0.07, 0, 0.04, 0
             );
         }
 

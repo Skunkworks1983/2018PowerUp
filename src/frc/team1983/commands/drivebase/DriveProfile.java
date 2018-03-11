@@ -29,7 +29,7 @@ public class DriveProfile extends CommandBase
     protected CruiseProfile leftProfile, rightProfile;
 
     private PIDController headingLoop;
-    private boolean runHeadingCorrection = false;
+    private boolean runHeadingCorrection = true;
     private double startHeading;
     private double endHeading;
     private double deltaHeading;
@@ -105,15 +105,15 @@ public class DriveProfile extends CommandBase
             leftInitDist = drivebase.getLeftDistance();
             rightInitDist = drivebase.getRightDistance();
 
-            totalDistance = ((leftInitDist + leftDistance) + (rightInitDist + rightDistance)) / 2;
+            totalDistance = (leftDistance + rightDistance) / 2;
 
-            headingLoop.enable();
+            //headingLoop.enable();
         }
 
         drivebase.setLeftProfile(leftProfile);
         drivebase.setRightProfile(rightProfile);
 
-        //drivebase.runProfiles();
+        drivebase.runProfiles();
     }
 
     @Override
@@ -121,12 +121,18 @@ public class DriveProfile extends CommandBase
     {
         if(runHeadingCorrection)
         {
-            double avgDist = ((drivebase.getLeftDistance() - leftInitDist) + (drivebase.getRightDistance() - rightInitDist)) / 2;
-            double currentDistPercent = avgDist / totalDistance;
-            currentDistPercent = Math.min(currentDistPercent, 1.0);
-            double desiredHeading = startHeading + (deltaHeading * currentDistPercent);
+            double desiredHeading = startHeading + (deltaHeading * ((Math.min(timeSinceInitialized(), duration) / duration)));
 
-            pidOutput.writeHelper(headingLoop.getP() * (desiredHeading - drivebase.getGyro().getAngle()));
+            double dL = drivebase.getLeftDistance() - leftInitDist;
+            double dR = drivebase.getRightDistance() - rightInitDist;
+
+            double percent = ((dL + dR) / 2) / totalDistance;
+            /*
+            double desiredHeading = startHeading + (percent * deltaHeading);
+            */
+            //headingLoop.setSetpoint(desiredHeading);
+
+            logger.info(dR);
         }
     }
 

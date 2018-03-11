@@ -11,6 +11,7 @@ import frc.team1983.commands.autonomous.actions.ActionsEnum;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
+import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.drivebase.TurnDegree;
 import frc.team1983.services.DashboardWrapper;
@@ -31,6 +32,7 @@ import org.apache.logging.log4j.core.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
@@ -113,11 +115,29 @@ public class Robot extends IterativeRobot
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
 
-        CommandGroup cmds = new CommandGroup();
+        /*
+        Path path = smellyParser.constructPath(new File("/U/2CubeSameSide.json"));
 
-        cmds.addSequential(new DriveArc(drivebase, 3, 90, 2));
+        Path path = new Path(new ArrayList<>(Arrays.asList(
+                new DriveFeet(drivebase, 6, 3, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE})
+                                                          )));
+        */
 
-        Scheduler.getInstance().add(cmds);
+        Path path1 = new Path(new ArrayList<>(Arrays.asList(
+                new DriveFeet(drivebase, -17, 3),
+                new DriveArc(drivebase, -2, -45, 1),
+                new DriveArc(drivebase, -2, 45, 1),
+                new DriveArc(drivebase, -2, 45, 1),
+                new DriveArc(drivebase, 2, -45 - 180, 1),
+                new DriveFeet(drivebase, 4, 2),
+                new DriveArc(drivebase, 1, 25, 1)
+                                                          )));
+
+        Path path2 = new Path(new ArrayList<>(Arrays.asList(
+            new DriveArc(drivebase, 3, 90, 2)
+                                                           )));
+
+        Scheduler.getInstance().add(path2.getCommands());
     }
 
     @Override
@@ -131,6 +151,7 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.TELEOP);
+        drivebase.setBrakeMode(false);
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
     }
@@ -146,6 +167,8 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.TEST);
+
+        oi.initializeBindings(this);
     }
 
     @Override

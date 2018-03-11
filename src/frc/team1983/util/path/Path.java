@@ -60,6 +60,8 @@ public class Path
             }
         }
 
+        DriveProfile.stitch(points);
+
         return group;
     }
 }
