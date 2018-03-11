@@ -1,23 +1,14 @@
 package frc.team1983;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.team1983.commands.autonomous.actions.ActionsEnum;
-import frc.team1983.commands.debugging.RunOneMotor;
-import frc.team1983.commands.drivebase.DriveArc;
-import frc.team1983.commands.drivebase.DriveFeet;
-import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.commands.drivebase.RunTankDrive;
-import frc.team1983.commands.drivebase.TurnDegree;
 import frc.team1983.services.DashboardWrapper;
-import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
+import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.services.parser.SmellyParser;
 import frc.team1983.settings.Constants;
@@ -25,14 +16,10 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
-import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.util.control.ProfileController;
-import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
@@ -42,8 +29,9 @@ public class Robot extends IterativeRobot
     private Elevator elevator;
     private Collector collector;
     private Ramps ramps;
-    private StatefulDashboard dashboard;
     private DashboardWrapper dashboardWrapper;
+    private StatefulDashboard dashboard;
+    private AutoManager autoManager;
 
     private ArrayList<ProfileController> profileControllers = new ArrayList<>();
 
@@ -55,7 +43,7 @@ public class Robot extends IterativeRobot
 
     public Robot()
     {
-        Robot.instance = this;
+        instance = this;
     }
 
     @Override
@@ -65,6 +53,7 @@ public class Robot extends IterativeRobot
         dashboardWrapper = new DashboardWrapper();
         dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
         dashboard.populate();
+        autoManager = new AutoManager(dashboardWrapper);
 
         oi = new OI();
 
@@ -73,9 +62,12 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
         ramps = new Ramps();
 
+        oi.initializeBindings(this);
+
         smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLY_FOLDER);
 
-        /*autonomousSelector = new SendableChooser();
+        /*
+        autonomousSelector = new SendableChooser();
         autonomousSelector.addDefault("Exchange Zone", new PlaceCubeInExchangeZone(drivebase, dashboard));
         autonomousSelector.addObject("Scale", new PlaceCubeInScale(drivebase, dashboard));
         autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
@@ -95,9 +87,8 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.DISABLED);
 
-        //dashboard.store();
-
-        GameDataPoller.resetGameData();
+        dashboard.store();
+        autoManager.resetGameData();
     }
 
     @Override
@@ -114,11 +105,13 @@ public class Robot extends IterativeRobot
 
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
+        ramps.reset();
     }
 
     @Override
     public void autonomousPeriodic()
     {
+        autoManager.execute();
         Scheduler.getInstance().run();
     }
 
@@ -143,8 +136,6 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.TEST);
-
-        oi.initializeBindings(this);
     }
 
     @Override
@@ -189,6 +180,16 @@ public class Robot extends IterativeRobot
     public Collector getCollector()
     {
         return collector;
+    }
+
+    public StatefulDashboard getStatefulDashboard()
+    {
+        return dashboard;
+    }
+
+    public DashboardWrapper getDashboardWrapper()
+    {
+        return dashboardWrapper;
     }
 
     public static Robot getInstance()
