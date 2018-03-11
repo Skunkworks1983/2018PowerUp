@@ -101,6 +101,7 @@ public class Elevator extends Subsystem
 
     public void setSetpoint(double setpoint)
     {
+        right1.setSensorPhase(true);
         this.setpoint = setpoint;
         right1.set(ControlMode.Position, setpoint);
     }

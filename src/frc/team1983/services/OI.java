@@ -86,8 +86,10 @@ public class OI
 
         //TODO tune this pid
         //Elevator setpoints
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
+        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
                   new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator(), this));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
+                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, robot.getElevator(), this));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.SWITCH,
                   new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator(), this));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.LOW,
