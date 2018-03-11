@@ -185,16 +185,10 @@ public class Constants
             public static final double ELEVATOR_TRAVEL_PERCENT = 0.03; //taking thomas' 800 number, actual percent is 2.8
             public static final double ELEVATOR_TOP_PERCENT = 0.99;
 
-           /*  public static final double P = 0.13;
+            public static final double P = 0.13;
             public static final double I = 0;
             public static final double D = 3;
-            public static final double F = 0.001; */
-
-           // TODO: TAKE THESE OUT BEFORE COMMITTING TO DEV
-            public static final double P = 0.09;
-            public static final double I = 0.00005;
-            public static final double D = 0.15;
-            public static final double F = 0.01;
+            public static final double F = 0.001;
 
         }
     }
