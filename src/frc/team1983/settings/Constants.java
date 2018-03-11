@@ -162,6 +162,19 @@ public class Constants
             );
         }
 
+        public static class Elevator
+        {
+            public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                                                          );
+        }
+
         //PIDF values for the DriveStraight command
         public static class DriveStrightPid
         {
@@ -332,6 +345,8 @@ public class Constants
 
         public static final double DRIVEBASE_LEFT_MAX_TICKS_PER_SEC = 13600.0;
         public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14300.0;
+
+        public static final double ELEVATOR_MAX_TICKS_PER_SEC = 0;
 
         public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(14/12);
         public static final double DRIVEBASE_IN_RANGE_END_TIME = 1;

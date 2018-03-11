@@ -182,7 +182,7 @@ public class DriveProfile extends CommandBase
     @Override
     public void end()
     {
-        System.out.println("left error: " + Drivebase.getFeet(drivebase.getLeftError()) +
+        logger.info("left error: " + Drivebase.getFeet(drivebase.getLeftError()) +
                                    " , right error: " + Drivebase.getFeet(drivebase.getRightError()) +
                                    " , gyro error: " + (endHeading - drivebase.getGyro().getAngle()));
 

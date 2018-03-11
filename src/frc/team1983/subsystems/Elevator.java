@@ -42,6 +42,8 @@ public class Elevator extends Subsystem
         right2.follow(right1);
         left1.follow(right1);
         left2.follow(right1);
+
+        right1.setGains(0, Constants.PidConstants.Elevator.MAIN);
     }
 
     public void initDefaultCommand()
@@ -49,29 +51,24 @@ public class Elevator extends Subsystem
 
     }
 
-    // calculates ticks given vertical change in position of the carriage
-    public double feetToEncoderTicks(double feet)
+    public static double getFeet(double ticks)
     {
-        double resolution = Constants.MotorMap.Elevator.ENCODER_RESOLUTION;
-        double circumference = Constants.MotorMap.Elevator.SPROCKET_CIRCUMFERENCE;
-        double ticks = (feet / circumference) * resolution;
-
-        return ticks;
+        return 0;
     }
 
-    // calculates vertical change in position of the carriage given ticks
-    public double encoderTicksToFeet(double ticks)
+    public static double getTicks(double feet)
     {
-        double resolution = Constants.MotorMap.Elevator.ENCODER_RESOLUTION;
-        double circumference = Constants.MotorMap.Elevator.SPROCKET_CIRCUMFERENCE;
-        double feet = (ticks / resolution) * circumference;
-
-        return feet;
+        return 0;
     }
 
     public void set(ControlMode mode, double value)
     {
         right1.set(mode, value);
+    }
+
+    public double getError()
+    {
+        return right1.getClosedLoopError(0);
     }
 
     public double getEncoderValue()

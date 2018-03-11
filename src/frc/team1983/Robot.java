@@ -114,30 +114,6 @@ public class Robot extends IterativeRobot
 
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
-
-        /*
-        Path path = smellyParser.constructPath(new File("/U/2CubeSameSide.json"));
-
-        Path path = new Path(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, 6, 3, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE})
-                                                          )));
-        */
-
-        Path path1 = new Path(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, -17, 3),
-                new DriveArc(drivebase, -2, -45, 1),
-                new DriveArc(drivebase, -2, 45, 1),
-                new DriveArc(drivebase, -2, 45, 1),
-                new DriveArc(drivebase, 2, -45 - 180, 1),
-                new DriveFeet(drivebase, 4, 2),
-                new DriveArc(drivebase, 1, 25, 1)
-                                                          )));
-
-        Path path2 = new Path(new ArrayList<>(Arrays.asList(
-            new DriveArc(drivebase, 3, 90, 2)
-                                                           )));
-
-        Scheduler.getInstance().add(path2.getCommands());
     }
 
     @Override
