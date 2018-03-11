@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.autonomous.doublecubeautos.SwitchCloseScaleClose;
 import frc.team1983.commands.debugging.RunOneMotor;
+import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
@@ -108,8 +109,9 @@ public class Robot extends IterativeRobot
         CommandGroup group = new CommandGroup();
         group.addSequential(new DriveStraight(drivebase, dashboard, -3));
 
+        //Scheduler.getInstance().add(new DifferentialTurnAngle(drivebase, dashboard, 90));
         // Scheduler.getInstance().add(group);
-        Scheduler.getInstance().add(new SwitchCloseScaleClose(drivebase, dashboard, oi, elevator, collector, GameDataPoller.OwnedSide.RIGHT));
+        Scheduler.getInstance().add(new SwitchCloseScaleClose(drivebase, dashboard, oi, elevator, collector, GameDataPoller.OwnedSide.LEFT));
         //Scheduler.getInstance().add(new DoubleCubeAutoSelector(drivebase, dashboard, oi, elevator, collector, robotPosition));
 
     }

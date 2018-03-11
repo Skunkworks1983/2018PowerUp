@@ -94,7 +94,6 @@ public class DriveStraight extends CommandBase
                                                     dashboard.getDouble(this, "kD"),
                                                     dashboard.getDouble(this, "kF"),
                                                     pidSource, pidOut);
-//urgay
         driveStraightPid.setSetpoint(pidSource.pidGet());
         driveStraightPid.setOutputRange(-Constants.AutoValues.MAX_OUTPUT, Constants.AutoValues.MAX_OUTPUT);
         driveStraightPid.enable();
@@ -115,8 +114,8 @@ public class DriveStraight extends CommandBase
     {
         //condition checks if command is timed out or if we have gone the desired distance
         //using the average of the two offset distances travelled
-        return isTimedOut() || ((abs(abs(drivebase.getLeftDist()) - abs(leftEncoderStart)) +
-                abs(abs(drivebase.getRightDist()) - abs(rightEncoderStart)))) / 2 >= abs(distance);
+        return isTimedOut() || ((abs((drivebase.getLeftDist()) - (leftEncoderStart)) +
+                abs((drivebase.getRightDist()) - (rightEncoderStart)))) / 2 >= abs(distance);
 
 
     }

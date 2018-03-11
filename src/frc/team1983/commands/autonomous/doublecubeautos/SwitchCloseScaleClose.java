@@ -1,6 +1,7 @@
 package frc.team1983.commands.autonomous.doublecubeautos;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.commands.collector.CollectorRotate;
@@ -44,27 +45,29 @@ public class SwitchCloseScaleClose extends CommandGroup
         super.addSequential(new DriveStraight(drivebase, dashboard, 1.5));
         super.addParallel(new CollectorExpel(collector, true, 1));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
-        super.addSequential(new DriveStraight(drivebase, dashboard, -.50));
+        super.addSequential(new DriveStraight(drivebase, dashboard, -1.0));
 
         //CUBE LINEUP
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0 * reflectionVariable));
         super.addSequential(new DriveStraight(drivebase, dashboard, -5.0));
-        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -45.0 * reflectionVariable, 1));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -50.0 * reflectionVariable));
 
         //CUBE APPROACH/COLLECT
         super.addParallel(new CollectorIntake(collector));
         super.addSequential(new DriveStraight(drivebase, dashboard, 5.0, .2));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
         super.addSequential(new DriveStraight(drivebase, dashboard, -5.0));
 
         //SCALE LINEUP
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
+        super.addSequential(new WaitCommand(1));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90.0 * reflectionVariable));
+
 
         //SHOOT N' SCOOT
         super.addSequential(new DriveStraight(drivebase, dashboard, 1));
         super.addSequential(new CollectorExpel(collector, true, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, -4.0));
-         super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
+        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
         /*
         super.addSequential(new CollectorRotate(collector, false));
         super.addSequential(new DriveStraight(drivebase, dashboard, 21.0));

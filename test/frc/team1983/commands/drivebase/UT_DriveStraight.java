@@ -70,7 +70,7 @@ public class UT_DriveStraight
         HLUsageReporting.SetImplementation(hlUsageReporting);
         fakeScheduler = new FakeScheduler();
         when(drivebase.getGyro()).thenReturn(gyro);
-        driveStraight = new DriveStraight(drivebase, dashboard, 5, 5);
+        driveStraight = new DriveStraight(drivebase, dashboard, 5, .5);
     }
 
     @After
@@ -97,6 +97,55 @@ public class UT_DriveStraight
         fakeScheduler.run(1);
         Thread.sleep(100);
         verify(drivebase, atLeastOnce()).getLeftDist();
+    }
+
+    @Test
+    public void driveStraightGoesCorrectDistanceWhenStartingPositionIsNegative()
+    {
+        AtomicReference<Integer> counter = new AtomicReference<>(-2);
+        when(drivebase.getLeftDist()).then(new Answer<Double>()
+        {
+            @Override
+            public Double answer(InvocationOnMock invocationOnMock) throws Throwable
+            {
+                if(counter.get() == -2)
+                {
+                    counter.set(counter.get() + 1);
+                    return -2.;
+                }
+                else if(counter.get() > -2 && counter.get() < 3)
+                {
+                    counter.set(counter.get() + 1);
+                    return counter.get().doubleValue();
+                }
+                else
+                {
+                    return 3.0;
+                }
+            }
+        });
+        AtomicReference<Integer> counter2 = new AtomicReference<>(-2);
+        when(drivebase.getRightDist()).then(new Answer<Double>()
+        {
+            @Override
+            public Double answer(InvocationOnMock invocationOnMock) throws Throwable
+            {
+                //
+                if(counter2.get() == -2.)
+                {
+                    counter2.set(counter2.get() + 1);
+                    return -2.;
+                }
+                else
+                {
+                    counter2.set(counter2.get() + 1);
+                    return counter2.get().doubleValue();
+                }
+            }
+        });
+        fakeScheduler.add(driveStraight);
+        fakeScheduler.run();
+        assertThat(driveStraight.isFinished(), is(true));
     }
 
     @Test

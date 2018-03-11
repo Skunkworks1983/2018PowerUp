@@ -111,7 +111,7 @@ public class DifferentialTurnAngle extends CommandBase
 
         //logger.debug("DifferentialTurnAngle executed");
         error = Math.abs(targetAngle - (gyroPidInput.pidGet() - initialAngle));
-        //logger.info("error{}", adjustmentPid.getError());
+        logger.info("error{}", adjustmentPid.getError());
         //pidOut.setAdjustmentSpeed(error/(targetAngle) * .4);
         //logger.info("adjustmentSpeed {}", (error/targetAngle) * .4);
 
