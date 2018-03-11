@@ -40,25 +40,29 @@ public class SetElevatorSetpoint extends CommandBase
     @Override
     public void execute()
     {
+        logger.info("setpoint is being regiestered {}", elevator.getSetpoint());
         //Check to see if the oi is in slider position mode. If so, use the slider pos instead of the preset
         switch(setpoint)
         {
             case BOTTOM:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_BOTTOM;
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_BOTTOM + 250;
+                break;
+
+            case SCALE_TOP:
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.SCALE_TOP-100;
+                logger.info("Elevator set to scale");
+                break;
+
+            case SCALE_MID:
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.SCALE_NEUTRAL;
+                break;
+
+            case SCALE_LOW:
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.SCALE_LOW;
                 break;
 
             case SWITCH:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP / 2;
-                break;
-
-            case LOW:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 1100;
-
-            case MID:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 600;
-
-            case TOP:
-                newSetpoint = Constants.PidConstants.ElevatorControlPid.ELEVATOR_TOP - 100;
+                newSetpoint = Constants.PidConstants.ElevatorControlPid.SWITCH;
                 break;
 
             default:
@@ -66,6 +70,7 @@ public class SetElevatorSetpoint extends CommandBase
                 break;
         }
         elevator.setSetpoint(newSetpoint);
+        logger.info("setpoint is {}", elevator.getSetpoint());
 
     }
 
@@ -80,6 +85,7 @@ public class SetElevatorSetpoint extends CommandBase
     {
 
     }
+
 
     @Override
     public void interrupted()

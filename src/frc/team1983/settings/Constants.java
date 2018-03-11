@@ -44,11 +44,11 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int RIGHT1 = 6;
-            public static final int RIGHT2 = 5;
+            public static final int RIGHT1 = 5;
+            public static final int RIGHT2 = 6;
 
-            public static final int LEFT1 = 9;
-            public static final int LEFT2 = 4;
+            public static final int LEFT1 = 4;
+            public static final int LEFT2 = 9;
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = true;
@@ -163,7 +163,7 @@ public class Constants
             public static final double F = 0;//.002;
 
             public static final double UP_TICKS = 0;
-            public static final double DOWN_TICKS = -1300;
+            public static final double DOWN_TICKS = 1300;
         }
 
         //setpoints for motors
@@ -179,12 +179,28 @@ public class Constants
         {
             public static final int ELEVATOR_BOTTOM = 0;
             //Actually negative, but ya know,
-            public static final int ELEVATOR_TOP = 29000 - 485; //Addition is to keep it from hitting the max position
-
-            public static final double P = 0.13;
-            public static final double I = 0;
-            public static final double D = 3;
-            public static final double F = 0.001;
+            public static final int SCALE_TOP = 29000 - 85; //Addition is to keep it from hitting the max position
+            public static final int SCALE_NEUTRAL = 25950;
+            public static final int SCALE_LOW = 21435;
+            public static final int SWITCH = 9150;
+            // public static class Up
+           // {
+                //public static final int slot = 0;
+            //TODO: Big ol fill these in when we have a robot
+                public static final double P = 0.09;
+                public static final double I = 0.00005;
+                public static final double D = 0.15;
+                public static final double F = 0.01;
+                public static final int I_ZONE = 500;
+            // }
+            /* public static class Down
+            {
+                public static final int slot = 1;
+                public static final double P = 0.05;
+                public static final double I = 0;
+                public static final double D = 0.000003;
+                public static final double F = 0;
+            } */
         }
     }
 
@@ -255,13 +271,14 @@ public class Constants
 
         public static class ElevatorButtons
         {
-            public static final int TOP = 8;
+            public static final int SCALE = 8;
             public static final int MID = 9;
             public static final int LOW = 10;
             public static final int SWITCH = 11;
             public static final int BOTTOM = 12;
             public static final int M_UP = 6;
             public static final int M_DOWN = 5;
+            public static final int JOYDOWN = 1;
         }
 
         public static class RampButtons
@@ -277,9 +294,9 @@ public class Constants
         {
             BOTTOM,
             SWITCH,
-            LOW,
-            MID,
-            TOP
+            SCALE_LOW,
+            SCALE_MID,
+            SCALE_TOP
         }
     }
 
