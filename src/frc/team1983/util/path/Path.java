@@ -47,17 +47,26 @@ public class Path
         return points.get(i);
     }*/
 
+    public void flipSide()
+    {
+
+    }
+
     public CommandGroup getCommands()
     {
         CommandGroup group = new CommandGroup();
 
         for(DriveProfile point : points)
         {
-            group.addSequential(point);
+            CommandGroup movement = new CommandGroup();
+
+            movement.addParallel(point);
             for(Command action : point.getActions())
             {
-                //group.addParallel(action);
+                movement.addParallel(action);
             }
+
+            group.addSequential(movement);
         }
 
         DriveProfile.stitch(points);

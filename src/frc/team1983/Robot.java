@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.team1983.commands.autonomous.actions.ActionsEnum;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
@@ -110,14 +111,36 @@ public class Robot extends IterativeRobot
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
 
-        Scheduler.getInstance().add(new Path(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, 10, 1),
-                new DriveArc(drivebase, 1, 90, 1),
-                new DriveArc(drivebase, -2, 90, 1),
-                new DriveFeet(drivebase, -3, 1),
-                new DriveArc(drivebase, -2, 90, 1),
-                new DriveFeet(drivebase, -3, 1)
-                                                                          ))).getCommands());
+        Path switchCloseScaleClose = new Path(new ArrayList<>(Arrays.asList(
+            new DriveFeet(drivebase, -17, 3, new ActionsEnum[]{ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
+            new DriveArc(drivebase, -3, 90, 1.5),
+            new DriveFeet(drivebase, -4, 1),
+            new DriveArc(drivebase, -1, -60, 1),
+            new DriveArc(drivebase, 0, 0, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
+                                                                           )));
+
+        Path switchFarScaleClose = new Path(new ArrayList<>(Arrays.asList(
+            new DriveFeet(drivebase, -15, 2, new ActionsEnum[]{ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
+            new DriveArc(drivebase, 1, 90, 1),
+            new DriveArc(drivebase, -1, 90, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE}),
+            new DriveArc(drivebase, 3, 10, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
+                                                                         )));
+
+        Path switchCloseScaleFar = new Path(new ArrayList<>(Arrays.asList(
+            new DriveFeet(drivebase, -15, 3, new ActionsEnum[]{ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
+            new DriveArc(drivebase, -2, -45, 1)
+                                                                         )));
+
+        Path switchFarScaleFar = new Path(new ArrayList<>(Arrays.asList(
+            new DriveFeet(drivebase, -15, 3, new ActionsEnum[]{ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
+            new DriveArc(drivebase, -2, 90, 1),
+            new DriveFeet(drivebase, -15, 3)
+                                                                       )));
+
+        Scheduler.getInstance().add(switchCloseScaleClose.getCommands());
+
+        //Scheduler.getInstance().add(new DriveFeet(drivebase, 6, 2));
+        //Scheduler.getInstance().add(smellyParser.constructPath(new File("/U/2CubeLeftLeft.json")).getCommands());
     }
 
     @Override

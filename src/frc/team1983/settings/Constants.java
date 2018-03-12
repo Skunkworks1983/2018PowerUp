@@ -343,7 +343,7 @@ public class Constants
         {
             BOTTOM(0),
             TRAVEL(1560),
-            SWITCH(7925), // elevator halfway point
+            SWITCH(11000), // elevator halfway point
             LOW(22700),
             MID(25700),
             TOP(28300); //TODO: add 400 once magnet moves
@@ -383,7 +383,7 @@ public class Constants
 
         public static final double ELEVATOR_MAX_TICKS_PER_SEC = 0;
 
-        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(3/12);
+        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(14/12);
         public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.5;
         public static final double DRIVEBASE_HEADING_END_RANGE = 7;
     }
