@@ -1,10 +1,8 @@
 package frc.team1983.commands.drivebase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
-import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
@@ -12,11 +10,9 @@ import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.subsystems.utilities.PidControllerWrapper;
-import frc.team1983.subsystems.utilities.inputwrappers.DriveStraightPidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DriveStraightPidOutput;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.Logger;
 
 
@@ -39,12 +35,12 @@ public class DriveStraight extends CommandBase
 
     public DriveStraight(StatefulDashboard dashboard, double distance, Drivebase drivebase)
     {
-        this(dashboard, distance, drivebase, Constants.PidConstants.DriveStrightPid.DEFAULT_BASE_SPEED);
+        this(dashboard, distance, drivebase, Constants.PidConstants.DriveStraightPid.DEFAULT_BASE_SPEED);
     }
 
     public DriveStraight(StatefulDashboard dashboard, double distance, Drivebase drivebase, double baseSpeed)
     {
-        this(dashboard, distance, drivebase, baseSpeed, Constants.PidConstants.DriveStrightPid.DEFAULT_TIMEOUT);
+        this(dashboard, distance, drivebase, baseSpeed, Constants.PidConstants.DriveStraightPid.DEFAULT_TIMEOUT);
     }
 
     public DriveStraight(StatefulDashboard dashboard, double distance,
