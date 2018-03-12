@@ -2,8 +2,11 @@ package frc.team1983;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.team1983.commands.drivebase.DriveArc;
+import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
@@ -17,9 +20,12 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.util.control.ProfileController;
+import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
@@ -62,8 +68,6 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
         ramps = new Ramps();
 
-        oi.initializeBindings(this);
-
         smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLY_FOLDER);
 
         /*
@@ -105,7 +109,15 @@ public class Robot extends IterativeRobot
 
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
-        ramps.reset();
+
+        Scheduler.getInstance().add(new Path(new ArrayList<>(Arrays.asList(
+                new DriveFeet(drivebase, 10, 1),
+                new DriveArc(drivebase, 1, 90, 1),
+                new DriveArc(drivebase, -2, 90, 1),
+                new DriveFeet(drivebase, -3, 1),
+                new DriveArc(drivebase, -2, 90, 1),
+                new DriveFeet(drivebase, -3, 1)
+                                                                          ))).getCommands());
     }
 
     @Override
@@ -120,6 +132,7 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.TELEOP);
+        oi.initializeBindings(this);
         drivebase.setBrakeMode(false);
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));

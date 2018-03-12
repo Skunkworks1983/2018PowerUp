@@ -133,12 +133,12 @@ public class Constants
             public static class Left
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.8,
+                        0.3,
                         0,
-                        0.35,
+                        0.55,
                         0,
                         0,
-                        1000 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
+                        1023 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
                         0 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75)
                 );
 
@@ -147,18 +147,18 @@ public class Constants
             public static class Right
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.8,
+                        0.3,
                         0,
-                        0.35,
+                        0.55,
                         0,
                         0,
-                        1000 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
+                        1023 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
                         0 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75)
                 );
             }
 
             public static ClosedLoopGains HEADINGCORRECTION = new ClosedLoopGains(
-                    0.07, 0, 0.04, 0
+                    0.06, 0.01, 0.07, 0
             );
         }
 
@@ -172,7 +172,7 @@ public class Constants
                     0,
                     0,
                     0
-                                                          );
+            );
         }
 
         //PIDF values for the DriveStraight command
@@ -367,8 +367,8 @@ public class Constants
 
         public static final double ELEVATOR_MAX_TICKS_PER_SEC = 0;
 
-        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(14/12);
-        public static final double DRIVEBASE_IN_RANGE_END_TIME = 1;
+        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(3/12);
+        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.5;
         public static final double DRIVEBASE_HEADING_END_RANGE = 7;
     }
 }

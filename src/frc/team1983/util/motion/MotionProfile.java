@@ -63,7 +63,7 @@ public class MotionProfile
 
     public double evaluateAcceleration(double time)
     {
-        return getSegment(time).evaluateAcceleration();
+        return time >= duration ? 0 : getSegment(time).evaluateAcceleration();
     }
 
     protected MotionSegment getSegment(double time)

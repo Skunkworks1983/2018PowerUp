@@ -44,10 +44,7 @@ public class ProfileController
         parent.clearMotionProfileTrajectories();
         parent.clearMotionProfileHasUnderrun(0);
 
-        parent.configMotionProfileTrajectoryPeriod(0, 0);
-
         parent.changeMotionControlFramePeriod(5);
-        parent.clearMotionProfileTrajectories();
 
         runnable.reset();
     }
@@ -71,6 +68,8 @@ public class ProfileController
         double duration = durationMs * 0.001;
         int resolution = (int) (profile.getDuration() / duration);
 
+        parent.configMotionProfileTrajectoryPeriod(durationMs, 0);
+
         ClosedLoopGains gains = parent.getGains(0);
 
         for(int i = 0; i <= resolution; i++)
@@ -88,7 +87,7 @@ public class ProfileController
             point.profileSlotSelect0 = 0;
             point.profileSlotSelect1 = 1;
 
-            point.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_0ms.valueOf(durationMs);
+            point.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_0ms;
 
             point.zeroPos = i == 0;
             point.isLastPoint = i == (resolution - 1);

@@ -55,6 +55,7 @@ public class DriveProfile extends CommandBase
         logger = LoggerFactory.createNewLogger(this.getClass());
 
         requires(drivebase);
+        setTimeout(duration + 2);
 
         this.actions = new ArrayList<>();
 
@@ -67,8 +68,8 @@ public class DriveProfile extends CommandBase
         this.leftProfile = leftProfile;
         this.rightProfile = rightProfile;
 
-        this.leftDistance = Drivebase.getFeet(leftProfile.getDistance());
-        this.rightDistance = Drivebase.getFeet(rightProfile.getDistance());
+        leftDistance = Drivebase.getFeet(leftProfile.getDistance());
+        rightDistance = Drivebase.getFeet(rightProfile.getDistance());
 
         this.duration = duration;
         this.deltaHeading = deltaHeading;
@@ -107,7 +108,8 @@ public class DriveProfile extends CommandBase
 
             totalDistance = (leftDistance + rightDistance) / 2;
 
-            //headingLoop.enable();
+            headingLoop.enable();
+            headingLoop.setOutputRange(-0.4, 0.4);
         }
 
         drivebase.setLeftProfile(leftProfile);
@@ -121,18 +123,16 @@ public class DriveProfile extends CommandBase
     {
         if(runHeadingCorrection)
         {
-            double desiredHeading = startHeading + (deltaHeading * ((Math.min(timeSinceInitialized(), duration) / duration)));
+            //double desiredHeading = startHeading + (deltaHeading * ((Math.min(timeSinceInitialized(), duration) / duration)));
 
-            double dL = drivebase.getLeftDistance() - leftInitDist;
-            double dR = drivebase.getRightDistance() - rightInitDist;
+            double dL = drivebase.getLeftDistance();
+            double dR = drivebase.getRightDistance();
 
             double percent = ((dL + dR) / 2) / totalDistance;
-            /*
+            percent = Math.min(1, Math.max(percent, 0));
             double desiredHeading = startHeading + (percent * deltaHeading);
-            */
-            //headingLoop.setSetpoint(desiredHeading);
 
-            logger.info(dR);
+            headingLoop.setSetpoint(desiredHeading);
         }
     }
 
@@ -154,6 +154,10 @@ public class DriveProfile extends CommandBase
             }
 
             finished &= (onTargetTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME);
+        }
+        else
+        {
+            finished &= onTarget();
         }
 
         finished |= isTimedOut();

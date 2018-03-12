@@ -56,7 +56,7 @@ public class Path
             group.addSequential(point);
             for(Command action : point.getActions())
             {
-                group.addParallel(action);
+                //group.addParallel(action);
             }
         }
 
