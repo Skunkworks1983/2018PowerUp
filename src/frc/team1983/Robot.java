@@ -10,15 +10,18 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
+import frc.team1983.commands.autonomous.PlaceCubeInScale;
+import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
 import frc.team1983.commands.autonomous.doublecubeautos.SwitchCloseScaleClose;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
-import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
+import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
@@ -27,6 +30,7 @@ import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
+import frc.team1983.util.control.ProfileController;
 import frc.team1983.util.control.ProfileController;
 import org.apache.logging.log4j.core.Logger;
 
@@ -40,9 +44,13 @@ public class Robot extends IterativeRobot
     private Elevator elevator;
     private Collector collector;
     private Ramps ramps;
+    private DashboardWrapper dashboardWrapper;
     private StatefulDashboard dashboard;
     private Subsystem subsystem;
     private GyroPidInput pidSource;
+    private AutoManager autoManager;
+    private SendableChooser autonomousSelector;
+    private GameDataPoller.OwnedSide robotPosition;
 
     private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
 
@@ -50,15 +58,19 @@ public class Robot extends IterativeRobot
 
     private static Robot instance;
 
-    private SendableChooser autonomousSelector;
-    private GameDataPoller.OwnedSide robotPosition;
+    public Robot()
+    {
+        instance = this;
+    }
 
     @Override
     public void robotInit()
     {
         robotLogger = LoggerFactory.createNewLogger(Robot.class);
-        dashboard = new StatefulDashboard(new DashboardWrapper(), Constants.DashboardConstants.FILE);
+        dashboardWrapper = new DashboardWrapper();
+        dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
         dashboard.populate();
+        autoManager = new AutoManager(dashboardWrapper);
 
         oi = new OI(DriverStation.getInstance());
 
@@ -89,7 +101,7 @@ public class Robot extends IterativeRobot
 
         dashboard.store();
 
-        GameDataPoller.resetGameData();
+        autoManager.resetGameData();
     }
 
     @Override
@@ -119,7 +131,7 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousPeriodic()
     {
-        GameDataPoller.pollGameData();
+        autoManager.execute();
         Scheduler.getInstance().run();
     }
 
@@ -228,6 +240,16 @@ public class Robot extends IterativeRobot
     public Collector getCollector()
     {
         return collector;
+    }
+
+    public StatefulDashboard getStatefulDashboard()
+    {
+        return dashboard;
+    }
+
+    public DashboardWrapper getDashboardWrapper()
+    {
+        return dashboardWrapper;
     }
 
     public static Robot getInstance()
