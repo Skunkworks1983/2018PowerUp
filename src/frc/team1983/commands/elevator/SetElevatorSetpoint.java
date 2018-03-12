@@ -15,7 +15,7 @@ public class SetElevatorSetpoint extends CommandBase
     private Elevator elevator;
     private OI oi;
     private double newSetpoint;
-
+    private double initialLocation;
     private Constants.OIMap.Setpoint setpoint;
 
     private Logger logger;
@@ -39,6 +39,10 @@ public class SetElevatorSetpoint extends CommandBase
                 newSetpoint = Constants.OIMap.Setpoint.BOTTOM.getEncoderTicks();
                 break;
 
+            case TRAVEL:
+                newSetpoint = Constants.OIMap.Setpoint.TRAVEL.getEncoderTicks();
+                break;
+
             case SWITCH:
                 newSetpoint = Constants.OIMap.Setpoint.SWITCH.getEncoderTicks();
                 break;
@@ -59,6 +63,7 @@ public class SetElevatorSetpoint extends CommandBase
                 newSetpoint = 0;
                 break;
         }
+        setElevatorSlot(newSetpoint, elevator.getEncoderValue());
         elevator.setSetpoint(newSetpoint);
         logger.info("Setting elevator to {}", elevator.getSetpoint());
     }
@@ -72,21 +77,29 @@ public class SetElevatorSetpoint extends CommandBase
     @Override
     public boolean isFinished()
     {
-        return false;
+        return true;
     }
 
     @Override
     public void end()
     {
-        if (setpoint == Constants.OIMap.Setpoint.BOTTOM)
-        {
-            elevator.setSetpoint(Constants.OIMap.Setpoint.TRAVEL.getEncoderTicks());
-        }
     }
 
     @Override
     public void interrupted()
     {
         this.end();
+    }
+
+    public void setElevatorSlot(double newSetpoint, double initialLocation)
+    {
+        if(newSetpoint < initialLocation)
+        {
+            elevator.switchSlots(false);
+        }
+        else
+        {
+            elevator.switchSlots(true);
+        }
     }
 }

@@ -131,7 +131,7 @@ public class Constants
     public static class PidConstants
     {
         //PIDF values for the DriveStraight command
-        public static class DriveStrightPid
+        public static class DriveStraightPid
         {
             public static final double P = 0.11;
             public static final double I = 0;
@@ -185,24 +185,39 @@ public class Constants
             public static final double ELEVATOR_TRAVEL_PERCENT = 0.03; //taking thomas' 800 number, actual percent is 2.8
             public static final double ELEVATOR_TOP_PERCENT = 0.99;
 
-            public static final double P = 0.08;
-            public static final double I = 0.0005;
-            public static final double D = 3;
-            public static final double F = 0.001;
-            public static final int I_ZONE = 2500;
+            public static class Slot0
+            {
+                public static final double P = 0.175;
+                public static final double I = 0.00015;
+                public static final double D = 0.1;
+                public static final double F = 0;
+                public static final int I_ZONE = 1000;
+
+                public static final int ALLOWABLE_CLOSED_LOOP_ERROR = 50;
+            }
+            public static class Slot1
+            {
+                public static final double P = 0.08;
+                public static final double I = 0.00005;
+                public static final double D = 0.5;
+                public static final double F = 0;
+                public static final int I_ZONE = 800;
+
+                public static final int ALLOWABLE_CLOSED_LOOP_ERROR = 50;
+            }
 
         }
     }
 
     public static class AutoValues
     {
-        public static final double WHEELBASE_RADIUS = 25.625/2/12; //T fix magic number
+        public static final double WHEELBASE_RADIUS = 25.625 / 2 / 12; //T fix magic number
         public static final double WHEELBASE_CIRCUMFERENCE = 2 * Math.PI * WHEELBASE_RADIUS;
         public static final double WHEELBASE_DEGREES = WHEELBASE_CIRCUMFERENCE / 360.;
         public static final double EFFECTIVE_REDUCTION_DRIVEBASE = 18 / 24.;
         public static final double WHEEL_CIRCUMFERENCE = 6 * Math.PI / 12.;
         public static final double DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT = 1.4;
-        public static final double DRIVEBASE_ENCODER_FUDGE_FACTOR = 6/6.3;
+        public static final double DRIVEBASE_ENCODER_FUDGE_FACTOR = 6 / 6.3;
 
         public static final double MAX_OUTPUT = 0.5;
         public static final double DISTANCE_SCALAR = 1000;
@@ -281,14 +296,15 @@ public class Constants
         //Enums for presets
         public enum Setpoint
         {
-            BOTTOM (0),
-            TRAVEL (1560),
-            SWITCH (7925), // elevator halfway point
-            LOW (22700),
-            MID (25700),
-            TOP (28700);
+            BOTTOM(0),
+            TRAVEL(1560),
+            SWITCH(7925), // elevator halfway point
+            LOW(22700),
+            MID(25700),
+            TOP(28300); //TODO: add 400 once magnet moves
 
             private final double encoderTicks;
+
             Setpoint(double encoderTicks)
             {
                 this.encoderTicks = encoderTicks;
