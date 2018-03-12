@@ -5,7 +5,6 @@ import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorRotate;
 import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
-import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.Collector;
@@ -22,7 +21,7 @@ public class PlaceCubeInSwitch extends CommandGroup
     private Logger logger;
 
 
-    public PlaceCubeInSwitch(Drivebase drivebase, StatefulDashboard dashboard, Collector collector)
+    public PlaceCubeInSwitch(Drivebase drivebase, StatefulDashboard dashboard, Elevator elevator, Collector collector)
     {
         logger = LoggerFactory.createNewLogger(PlaceCubeInSwitch.class);
         //double distanceFromLeftWall = SmartDashboard.getNumber("Distance from left wall", 0);

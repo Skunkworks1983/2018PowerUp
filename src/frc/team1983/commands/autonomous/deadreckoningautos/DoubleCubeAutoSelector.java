@@ -26,10 +26,11 @@ public class DoubleCubeAutoSelector extends CommandGroup
         logger = LoggerFactory.createNewLogger(DoubleCubeAutoSelector.class);
         //Scale = getOwnedSide(GameDataPoller.GameFeature.SCALE);
         Scale = AutoManager.OwnedSide.LEFT; //TODO: TEMPORARY AF THIS BOY IS JUST FOR TESTING
+        //Scale = getOwnedSide(AutoManager.GameFeature.SCALE);
 
         logger.info("Scale is on the {}", Scale);
 
-        //Switch = getOwnedSide(GameDataPoller.GameFeature.SWITCH_NEAR);
+        //Switch = getOwnedSide(AutoManager.GameFeature.SWITCH_NEAR);
         Switch = AutoManager.OwnedSide.LEFT; //TODO: TEMPORARY AF THIS BOY IS JUST FOR TESTING
 
         logger.info("Switch is on the {}", Switch);
