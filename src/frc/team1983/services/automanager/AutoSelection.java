@@ -18,7 +18,7 @@ public enum AutoSelection
         return new PlaceCubeInScale(drivebase, statefulDashboard);
     }),
     SWITCH("Switch", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
-        return new PlaceCubeInSwitch(drivebase, statefulDashboard);
+        return new PlaceCubeInSwitch(drivebase, statefulDashboard, collector);
     }),
     AUTO_SMELLY("AutoSelection SmellyDrive", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
         return new AutoMotionProfilePicker(autoManager);

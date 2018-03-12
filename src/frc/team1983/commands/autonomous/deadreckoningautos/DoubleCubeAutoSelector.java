@@ -2,9 +2,9 @@ package frc.team1983.commands.autonomous.deadreckoningautos;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
+import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
@@ -18,23 +18,23 @@ public class DoubleCubeAutoSelector extends CommandGroup
 {
 
     Logger logger;
-    GameDataPoller.OwnedSide Scale;
-    GameDataPoller.OwnedSide Switch;
+    AutoManager.OwnedSide Scale;
+    AutoManager.OwnedSide Switch;
 
-    public DoubleCubeAutoSelector(Drivebase drivebase, StatefulDashboard dashboard, OI oi, Elevator elevator, Collector collector, GameDataPoller.OwnedSide robotPosition)
+    public DoubleCubeAutoSelector(Drivebase drivebase, StatefulDashboard dashboard, OI oi, Elevator elevator, Collector collector, AutoManager.OwnedSide robotPosition)
     {
         logger = LoggerFactory.createNewLogger(DoubleCubeAutoSelector.class);
         //Scale = getOwnedSide(GameDataPoller.GameFeature.SCALE);
-        Scale = GameDataPoller.OwnedSide.LEFT; //TODO: TEMPORARY AF THIS BOY IS JUST FOR TESTING
+        Scale = AutoManager.OwnedSide.LEFT; //TODO: TEMPORARY AF THIS BOY IS JUST FOR TESTING
 
         logger.info("Scale is on the {}", Scale);
 
         //Switch = getOwnedSide(GameDataPoller.GameFeature.SWITCH_NEAR);
-        Switch = GameDataPoller.OwnedSide.LEFT; //TODO: TEMPORARY AF THIS BOY IS JUST FOR TESTING
+        Switch = AutoManager.OwnedSide.LEFT; //TODO: TEMPORARY AF THIS BOY IS JUST FOR TESTING
 
         logger.info("Switch is on the {}", Switch);
 
-        GameDataPoller.OwnedSide Position = robotPosition;
+        AutoManager.OwnedSide Position = robotPosition;
 
         logger.info("Robot is on the {}", robotPosition);
 

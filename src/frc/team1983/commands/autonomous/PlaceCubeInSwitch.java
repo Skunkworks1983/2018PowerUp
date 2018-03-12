@@ -22,7 +22,7 @@ public class PlaceCubeInSwitch extends CommandGroup
     private Logger logger;
 
 
-    public PlaceCubeInSwitch(Drivebase drivebase, StatefulDashboard dashboard, OI oi, Elevator elevator, Collector collector)
+    public PlaceCubeInSwitch(Drivebase drivebase, StatefulDashboard dashboard, Collector collector)
     {
         logger = LoggerFactory.createNewLogger(PlaceCubeInSwitch.class);
         //double distanceFromLeftWall = SmartDashboard.getNumber("Distance from left wall", 0);
