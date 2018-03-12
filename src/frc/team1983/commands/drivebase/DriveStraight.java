@@ -110,7 +110,7 @@ public class DriveStraight extends CommandBase
         //logger.info("angle{}", driveStraightPid.getError());
         if (abs(drivebase.getLeftDist() - leftEncoderStart) > abs(distance) * 0.75)
         {
-            baseSpeed = (-4 * (abs(distance) - abs(drivebase.getLeftDist() - leftEncoderStart) / abs(distance)) + 4);
+            baseSpeed = initialBaseSpeed * (-4 * (abs(distance) - abs(drivebase.getLeftDist() - leftEncoderStart) / abs(distance)) + 4);
         }
 
     }
