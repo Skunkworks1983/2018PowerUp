@@ -55,7 +55,7 @@ public class OI
 
         //Collector intake/expel
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
-                   new CollectorIntake(robot.getCollector(), 0));
+                      new CollectorIntake(robot.getCollector(), 0));
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.EXPEL,
                    new CollectorExpel(robot.getCollector(), true, 0));
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.BOOP,
@@ -64,22 +64,24 @@ public class OI
         //TODO tune this pid
         //Collector rotate
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.UP,
-                  new CollectorRotate(robot.getCollector(), true));
+                      new CollectorRotate(robot.getCollector(), true));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.DOWN,
                       new CollectorRotate(robot.getCollector(), false));
 
         //TODO tune this pid
         //Elevator setpoints
-        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
-                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator()));
-        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.SWITCH,
-                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator()));
-        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.LOW,
-                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.LOW, robot.getElevator()));
-        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.MID,
-                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.MID, robot.getElevator()));
-        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.TOP,
-                  new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, robot.getElevator()));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator()));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.SWITCH,
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator()));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.LOW,
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.LOW, robot.getElevator()));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.MID,
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.MID, robot.getElevator()));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.TOP,
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, robot.getElevator()));
+        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
+                       new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, robot.getElevator()));
 
         //Drop/Prop
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_LEFT,
@@ -222,6 +224,16 @@ public class OI
     public void bindToHeld(Constants.OIMap.Joystick joystick, int button, Command command)
     {
         if(buttonExists(joystick, button))
+        {
             getJoystickButtons(joystick)[button].whileHeld(command);
+        }
+    }
+
+    public void bindToReleased(Constants.OIMap.Joystick joystick, int button, Command command)
+    {
+        if(buttonExists(joystick, button))
+        {
+            getJoystickButtons(joystick)[button].whenReleased(command);
+        }
     }
 }

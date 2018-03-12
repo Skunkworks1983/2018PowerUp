@@ -32,12 +32,18 @@ public class Elevator extends Subsystem
         right1 = new Motor(Constants.MotorMap.Elevator.RIGHT1, Constants.MotorMap.Elevator.RIGHT1_REVERSED, true);
         right2 = new Motor(Constants.MotorMap.Elevator.RIGHT2, Constants.MotorMap.Elevator.RIGHT2_REVERSED);
 
-        right1.config_kP(0, Constants.PidConstants.ElevatorControlPid.P, 0);
-        right1.config_kI(0, Constants.PidConstants.ElevatorControlPid.I, 0);
-        right1.config_kI(0, Constants.PidConstants.ElevatorControlPid.D, 0);
-        right1.config_kI(0, Constants.PidConstants.ElevatorControlPid.F, 0);
+        right1.configPIDF(0, Constants.PidConstants.ElevatorControlPid.Slot0.P, Constants.PidConstants.ElevatorControlPid.Slot0.I, Constants.PidConstants.ElevatorControlPid.Slot0.D, Constants.PidConstants.ElevatorControlPid.Slot0.F);
+        right1.config_IntegralZone(0, Constants.PidConstants.ElevatorControlPid.Slot0.I_ZONE, 0);
+        right1.configAllowableClosedloopError(0, Constants.PidConstants.ElevatorControlPid.Slot0.ALLOWABLE_CLOSED_LOOP_ERROR, 1);
 
-        right1.config_IntegralZone(0, Constants.PidConstants.ElevatorControlPid.I_ZONE, 0);
+        right1.configPIDF(1, Constants.PidConstants.ElevatorControlPid.Slot1.P, Constants.PidConstants.ElevatorControlPid.Slot1.I, Constants.PidConstants.ElevatorControlPid.Slot1.D, Constants.PidConstants.ElevatorControlPid.Slot1.F);
+        right1.config_IntegralZone(1, Constants.PidConstants.ElevatorControlPid.Slot1.I_ZONE, 0);
+        right1.configAllowableClosedloopError(1, Constants.PidConstants.ElevatorControlPid.Slot1.ALLOWABLE_CLOSED_LOOP_ERROR, 1);
+
+        right1.configPeakOutputForward(1, 0);
+        right1.configPeakOutputReverse(-1, 0);
+
+        right1.configClosedloopRamp(.5, 0);
 
         right2.follow(right1);
         left1.follow(right1);
@@ -97,6 +103,20 @@ public class Elevator extends Subsystem
     public double getSetpoint()
     {
         return setpoint;
+    }
+
+    public void switchSlots(boolean goingUp)
+    {
+        if(goingUp == true)
+        {
+            right1.selectProfileSlot(0, 0);
+            logger.info("slot 0");
+        }
+        else
+        {
+            right1.selectProfileSlot(1, 0);
+            logger.info("slot 1");
+        }
     }
 
     public void setSetpoint(double setpoint)

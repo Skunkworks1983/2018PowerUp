@@ -50,6 +50,14 @@ public class Motor extends TalonSRX
         return gains.get(slot);
     }
 
+    public void configPIDF(int slot, double p, double i, double d, double f)
+    {
+        config_kP(slot, p, 0);
+        config_kI(slot, i, 0);
+        config_kD(slot, d, 0);
+        config_kF(slot, f, 0);
+    }
+
     public void setGains(int slot, ClosedLoopGains gains)
     {
         this.gains.put(slot, gains);
