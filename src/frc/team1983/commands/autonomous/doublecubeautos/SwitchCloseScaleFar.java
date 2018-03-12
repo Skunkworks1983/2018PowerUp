@@ -7,9 +7,9 @@ import frc.team1983.commands.collector.CollectorRotate;
 import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
-import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
+import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
@@ -23,7 +23,7 @@ public class SwitchCloseScaleFar extends CommandGroup
     private Logger logger;
     public int reflectionVariable;
 
-    public SwitchCloseScaleFar(Drivebase drivebase, StatefulDashboard dashboard, OI oi, Elevator elevator, Collector collector, GameDataPoller.OwnedSide robotPosition)
+    public SwitchCloseScaleFar(Drivebase drivebase, StatefulDashboard dashboard, OI oi, Elevator elevator, Collector collector, AutoManager.OwnedSide robotPosition)
     {
         logger = LoggerFactory.createNewLogger(SwitchCloseScaleClose.class);
 

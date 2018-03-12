@@ -32,6 +32,7 @@ public class DriveStraight extends CommandBase
     private Gyro gyro;
     private double baseSpeed;
     private StatefulDashboard dashboard;
+    double initialBaseSpeed;
 
     private Logger logger;
 
@@ -99,7 +100,7 @@ public class DriveStraight extends CommandBase
         driveStraightPid.enable();
         logger.info("Left encoder start {}", leftEncoderStart);
         logger.info("Distance setpoint {}", distance);
-
+        initialBaseSpeed = baseSpeed;
 
     }
 
@@ -107,6 +108,11 @@ public class DriveStraight extends CommandBase
     public void execute()
     {
         //logger.info("angle{}", driveStraightPid.getError());
+        if (abs(drivebase.getLeftDist() - leftEncoderStart) > abs(distance) * 0.75)
+        {
+            baseSpeed = (-4 * (abs(distance) - abs(drivebase.getLeftDist() - leftEncoderStart) / abs(distance)) + 4);
+        }
+
     }
 
     @Override

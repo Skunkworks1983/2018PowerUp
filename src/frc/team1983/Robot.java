@@ -10,12 +10,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
-import frc.team1983.commands.autonomous.PlaceCubeInScale;
-import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
 import frc.team1983.commands.autonomous.doublecubeautos.SwitchCloseScaleClose;
 import frc.team1983.commands.debugging.RunOneMotor;
-import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
@@ -30,7 +26,6 @@ import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
-import frc.team1983.util.control.ProfileController;
 import frc.team1983.util.control.ProfileController;
 import org.apache.logging.log4j.core.Logger;
 
@@ -50,7 +45,7 @@ public class Robot extends IterativeRobot
     private GyroPidInput pidSource;
     private AutoManager autoManager;
     private SendableChooser autonomousSelector;
-    private GameDataPoller.OwnedSide robotPosition;
+    private AutoManager.OwnedSide robotPosition;
 
     private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
 
@@ -82,8 +77,8 @@ public class Robot extends IterativeRobot
         robotLogger.info("robotInit");
 
         autonomousSelector = new SendableChooser();
-        autonomousSelector.addDefault("Robot is on the left", GameDataPoller.OwnedSide.LEFT);
-        autonomousSelector.addObject("Robot is on the right", GameDataPoller.OwnedSide.RIGHT);
+        autonomousSelector.addDefault("Robot is on the left", AutoManager.OwnedSide.LEFT);
+        autonomousSelector.addObject("Robot is on the right", AutoManager.OwnedSide.RIGHT);
         SmartDashboard.putData("Robot position", autonomousSelector);
     }
 
@@ -117,13 +112,13 @@ public class Robot extends IterativeRobot
         drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
 
-        robotPosition = (GameDataPoller.OwnedSide) autonomousSelector.getSelected();
+        robotPosition = (AutoManager.OwnedSide) autonomousSelector.getSelected();
         CommandGroup group = new CommandGroup();
         group.addSequential(new DriveStraight(drivebase, dashboard, -3));
 
         //Scheduler.getInstance().add(new DifferentialTurnAngle(drivebase, dashboard, 90));
         // Scheduler.getInstance().add(group);
-        Scheduler.getInstance().add(new SwitchCloseScaleClose(drivebase, dashboard, oi, elevator, collector, GameDataPoller.OwnedSide.LEFT));
+        Scheduler.getInstance().add(new SwitchCloseScaleClose(drivebase, dashboard, oi, elevator, collector, AutoManager.OwnedSide.LEFT));
         //Scheduler.getInstance().add(new DoubleCubeAutoSelector(drivebase, dashboard, oi, elevator, collector, robotPosition));
 
     }

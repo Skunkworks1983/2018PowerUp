@@ -5,24 +5,22 @@ import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
-import  frc.team1983.commands.elevator.SetElevatorSetpoint;
-import frc.team1983.services.GameDataPoller;
+import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
+import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 
-import static frc.team1983.settings.Constants.OIMap.ElevatorButtons.SWITCH;
-
 public class SwitchFarScaleFar extends CommandGroup
 {
     public int reflectionVariable;
 
-    public SwitchFarScaleFar(Drivebase drivebase, StatefulDashboard dashboard, OI oi, Elevator elevator, Collector collector, GameDataPoller.OwnedSide robotPosition)
+    public SwitchFarScaleFar(Drivebase drivebase, StatefulDashboard dashboard, OI oi, Elevator elevator, Collector collector, AutoManager.OwnedSide robotPosition)
     {
-        if (robotPosition == GameDataPoller.OwnedSide.LEFT) { reflectionVariable = 1; }
+        if (robotPosition == AutoManager.OwnedSide.LEFT) { reflectionVariable = 1; }
         else { reflectionVariable = -1; }
 
         //JOURNEY TO THE CENTER OF THE FIELD

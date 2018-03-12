@@ -8,9 +8,9 @@ import frc.team1983.commands.collector.CollectorRotate;
 import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
-import frc.team1983.services.GameDataPoller;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
+import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
@@ -27,11 +27,11 @@ public class SwitchCloseScaleClose extends CommandGroup
     public int reflectionVariable;
 
 
-    public SwitchCloseScaleClose(Drivebase drivebase, StatefulDashboard dashboard, OI oi, Elevator elevator, Collector collector, GameDataPoller.OwnedSide robotPosition)
+    public SwitchCloseScaleClose(Drivebase drivebase, StatefulDashboard dashboard, OI oi, Elevator elevator, Collector collector, AutoManager.OwnedSide robotPosition)
     {
         logger = LoggerFactory.createNewLogger(SwitchCloseScaleClose.class);
 
-        if (robotPosition == GameDataPoller.OwnedSide.LEFT) { reflectionVariable = 1; }
+        if (robotPosition == AutoManager.OwnedSide.LEFT) { reflectionVariable = 1; }
         else { reflectionVariable = -1; }
         logger.info("Reflection variable is {}", reflectionVariable);
 
