@@ -6,6 +6,6 @@ public class MoveElevatorTo extends MoveElevatorBy
 {
     public MoveElevatorTo(Elevator elevator, double feet, double time)
     {
-        super(elevator, feet - Elevator.getFeet(elevator.getEncoderValue()), time);
+        super(elevator, feet - Elevator.getTicks(elevator.getEncoderValue()), time);
     }
 }

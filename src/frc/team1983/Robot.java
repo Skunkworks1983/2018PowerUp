@@ -132,6 +132,7 @@ public class Robot extends IterativeRobot
             new DriveArc(drivebase, -2, -45, 1)
                                                                          )));
         */
+        /*
         Path switchFarScaleFar = new Path(new ArrayList<>(Arrays.asList(
             new DriveFeet(drivebase, -16, 2),
             new DriveArc(drivebase, -2, 90, 1),
@@ -143,6 +144,19 @@ public class Robot extends IterativeRobot
             new DriveArc(drivebase, -1, 90, 0.5),
             new DriveFeet(drivebase, 3, 1),
             new DriveArc(drivebase, -1, -90, 0.5)
+                                                                       )));
+        */
+
+        Path switchFarScaleFar = new Path(new ArrayList<>(Arrays.asList(
+                new DriveFeet(drivebase, -16, 2),
+                new DriveArc(drivebase, -2, 90, 1),
+                new DriveFeet(drivebase, -14, 2),
+                new DriveArc(drivebase, 1, 60, 1),
+                new DriveArc(drivebase, 1, -60, 1),
+                new DriveArc(drivebase, -3, -70, 1),
+                new DriveArc(drivebase, -3, 70, 1),
+                new DriveFeet(drivebase, -2, 0.5),
+                new DriveArc(drivebase, 2, 70, 1)
                                                                        )));
 
         Scheduler.getInstance().add(switchFarScaleFar.getCommands());
