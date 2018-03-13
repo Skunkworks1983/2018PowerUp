@@ -133,7 +133,7 @@ public class Constants
             public static class Left
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.3,
+                        0.6,
                         0,
                         0.55,
                         0,
@@ -147,7 +147,7 @@ public class Constants
             public static class Right
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.3,
+                        0.6,
                         0,
                         0.55,
                         0,

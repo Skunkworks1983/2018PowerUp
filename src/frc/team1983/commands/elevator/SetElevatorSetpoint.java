@@ -13,6 +13,7 @@ import org.apache.logging.log4j.core.Logger;
 public class SetElevatorSetpoint extends CommandBase
 {
     private Elevator elevator;
+    private OI oi;
     private double newSetpoint;
     private double initialLocation;
     private Constants.OIMap.Setpoint setpoint;
@@ -20,11 +21,12 @@ public class SetElevatorSetpoint extends CommandBase
     private Logger logger;
 
     //A command for setting the setpoint of the elevator pid.
-    public SetElevatorSetpoint(Constants.OIMap.Setpoint setpoint, Elevator elevator)
+    public SetElevatorSetpoint(Constants.OIMap.Setpoint setpoint, Elevator elevator, OI oi)
     {
         requires(elevator);
         logger = LoggerFactory.createNewLogger(this.getClass());
         this.setpoint = setpoint;
+        this.oi = oi;
         this.elevator = elevator;
     }
 

@@ -2,6 +2,7 @@ package frc.team1983.util.path;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveProfile;
 
 import java.util.ArrayList;
@@ -49,7 +50,13 @@ public class Path
 
     public void flipSide()
     {
-
+        for(DriveProfile drive : points)
+        {
+            if(drive instanceof DriveArc)
+            {
+                
+            }
+        }
     }
 
     public CommandGroup getCommands()

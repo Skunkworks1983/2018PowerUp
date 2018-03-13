@@ -15,16 +15,12 @@ public class CollectorExpel extends CommandBase
     private Logger logger;
     private boolean shoot;
 
-    public CollectorExpel(Collector collector, boolean shoot, double timeout)
+    public CollectorExpel(Collector collector, boolean shoot)
     {
         logger = LoggerFactory.createNewLogger(CollectorExpel.class);
         requires(collector);
         this.collector = collector;
         this.shoot = shoot;
-        if(timeout > 0)
-        {
-            setTimeout(timeout);
-        }
     }
 
     @Override
@@ -51,7 +47,7 @@ public class CollectorExpel extends CommandBase
     @Override
     public boolean isFinished()
     {
-        return isTimedOut();
+        return false;
     }
 
 
