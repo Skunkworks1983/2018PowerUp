@@ -23,6 +23,12 @@ public class CollectorExpel extends CommandBase
         this.shoot = shoot;
     }
 
+    public CollectorExpel(Collector collector, boolean shoot, double timeout)
+    {
+        this(collector, shoot);
+        setTimeout(timeout);
+    }
+
     @Override
     public void initialize()
     {
@@ -47,7 +53,7 @@ public class CollectorExpel extends CommandBase
     @Override
     public boolean isFinished()
     {
-        return false;
+        return isTimedOut();
     }
 
 

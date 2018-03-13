@@ -48,6 +48,8 @@ public class Robot extends IterativeRobot
     private SmellyParser smellyParser;
     private Command autonomousCommand;
 
+    private Path switchFarScaleFar;
+
     public Robot()
     {
         instance = this;
@@ -78,6 +80,19 @@ public class Robot extends IterativeRobot
         autonomousSelector.addObject("Switch", new PlaceCubeInSwitch(drivebase, dashboard));
         SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
         */
+
+        switchFarScaleFar = new Path(new ArrayList<>(Arrays.asList(
+                new DriveFeet(drivebase, -16, 2),
+                new DriveArc(drivebase, -2, 90, 1),
+                new DriveFeet(drivebase, -19, 2),
+                new DriveArc(drivebase, -3, -90, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
+                new DriveFeet(drivebase, 0, 0.5, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}),
+                new DriveFeet(drivebase, -1.5, 0.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
+                new DriveFeet(drivebase, 8/12.0, 0.5, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new DriveArc(drivebase, -3, 90, 0.5),
+                new DriveFeet(drivebase, 3, 1),
+                new DriveArc(drivebase, -1, -90, 0.5)
+                                                                       )));
     }
 
     @Override
@@ -132,32 +147,21 @@ public class Robot extends IterativeRobot
             new DriveArc(drivebase, -2, -45, 1)
                                                                          )));
         */
-        /*
-        Path switchFarScaleFar = new Path(new ArrayList<>(Arrays.asList(
-            new DriveFeet(drivebase, -16, 2),
-            new DriveArc(drivebase, -2, 90, 1),
-            new DriveFeet(drivebase, -14, 2),
-            new DriveArc(drivebase, -1, -90, 1),
-            new DriveFeet(drivebase, 6.0/12.0, 0.2),
-            new DriveFeet(drivebase, -6.0/12.0, 0.2),
-            new DriveFeet(drivebase, 6.0/12.0, 0.2),
-            new DriveArc(drivebase, -1, 90, 0.5),
-            new DriveFeet(drivebase, 3, 1),
-            new DriveArc(drivebase, -1, -90, 0.5)
-                                                                       )));
-        */
 
+        /*
         Path switchFarScaleFar = new Path(new ArrayList<>(Arrays.asList(
                 new DriveFeet(drivebase, -16, 2),
                 new DriveArc(drivebase, -2, 90, 1),
-                new DriveFeet(drivebase, -14, 2),
-                new DriveArc(drivebase, 1, 60, 1),
+                new DriveFeet(drivebase, -17, 2),
+                new DriveArc(drivebase, 1, 60, 1.5),
                 new DriveArc(drivebase, 1, -60, 1),
+                new DriveFeet(drivebase, 1, 0.5),
                 new DriveArc(drivebase, -3, -70, 1),
                 new DriveArc(drivebase, -3, 70, 1),
                 new DriveFeet(drivebase, -2, 0.5),
                 new DriveArc(drivebase, 2, 70, 1)
                                                                        )));
+       */
 
         Scheduler.getInstance().add(switchFarScaleFar.getCommands());
 

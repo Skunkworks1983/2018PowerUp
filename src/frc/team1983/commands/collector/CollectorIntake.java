@@ -25,6 +25,12 @@ public class CollectorIntake extends CommandBase
         rightCounter = Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME;
     }
 
+    public CollectorIntake(Collector collector, double timeout)
+    {
+        this(collector);
+        setTimeout(timeout);
+    }
+
     @Override
     public void initialize()
     {
@@ -65,7 +71,7 @@ public class CollectorIntake extends CommandBase
     @Override
     public boolean isFinished() //isFinished when expel starts
     {
-        return false;
+        return isTimedOut();
     }
 
     @Override

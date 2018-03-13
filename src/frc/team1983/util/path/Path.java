@@ -4,15 +4,19 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveProfile;
+import frc.team1983.services.logger.LoggerFactory;
+import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
 
 public class Path
 {
+    private Logger logger;
     private ArrayList<DriveProfile> points;
 
     public Path(ArrayList<DriveProfile> points)
     {
+        this.logger = LoggerFactory.createNewLogger(this.getClass());
         this.points = points;
     }
 
@@ -63,20 +67,28 @@ public class Path
     {
         CommandGroup group = new CommandGroup();
 
+        logger.info("created path @" + System.currentTimeMillis());
+
         for(DriveProfile point : points)
         {
             CommandGroup movement = new CommandGroup();
+            logger.info("created movement @" + System.currentTimeMillis());
 
             movement.addParallel(point);
             for(Command action : point.getActions())
             {
+                logger.info("created action @" + System.currentTimeMillis());
                 movement.addParallel(action);
             }
 
             group.addSequential(movement);
         }
 
+        logger.info("finished path @" + System.currentTimeMillis());
+
         DriveProfile.stitch(points);
+
+        logger.info("stitched path @" + System.currentTimeMillis());
 
         return group;
     }

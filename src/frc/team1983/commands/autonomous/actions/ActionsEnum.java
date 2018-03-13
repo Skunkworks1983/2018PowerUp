@@ -22,8 +22,8 @@ public enum ActionsEnum
     SET_ELEVATOR_SETPOINT_SWITCH(((collector, elevator) -> new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, null))),
     SET_ELEVATOR_SETPOINT_SCALE(((collector, elevator) -> new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, null))),
     COLLECTOR_INTAKE(((collector, elevator) -> new CollectorIntake(collector))), //TODO find timeout
-    COLLECTOR_EXPEL_FAST(((collector, elevator) -> new CollectorExpel(collector, true))), //TODO find timeout
-    COLLECTOR_EXPEL_SLOW(((collector, elevator) -> new CollectorExpel(collector, false))), //TODO find timeout
+    COLLECTOR_EXPEL_FAST(((collector, elevator) -> new CollectorExpel(collector, true, 0.25))), //TODO find timeout
+    COLLECTOR_EXPEL_SLOW(((collector, elevator) -> new CollectorExpel(collector, false, 0.25))), //TODO find timeout
     TEST_PRINT(((collector, elevator) -> new TestPrint("hello! action here")));
 
     private Action action;
