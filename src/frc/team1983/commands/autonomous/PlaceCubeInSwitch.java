@@ -7,6 +7,7 @@ import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
@@ -40,7 +41,7 @@ public class PlaceCubeInSwitch extends CommandGroup
 
         //super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi), 2);
         super.addSequential(new DriveStraight(drivebase, dashboard, 2.0));
-        super.addSequential(new CollectorExpel(collector, true));
+        super.addSequential(new CollectorExpel(collector, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED));
         //drive to be equally distant from the left wall as the left side of the switch is. (7.5 ft away)
 
 

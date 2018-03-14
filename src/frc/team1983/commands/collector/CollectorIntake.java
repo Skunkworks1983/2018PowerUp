@@ -12,10 +12,11 @@ public class CollectorIntake extends CommandBase
 {
     private int leftCounter, rightCounter;
     private Collector collector;
+    private boolean stop;
 
     private Logger logger;
 
-    public CollectorIntake(Collector collector)
+    public CollectorIntake(Collector collector, boolean stop)
     {
         logger = LoggerFactory.createNewLogger(CollectorIntake.class);
         requires(collector);
@@ -33,6 +34,11 @@ public class CollectorIntake extends CommandBase
     @Override
     public void execute()
     {
+        if(stop == true)
+        {
+            collector.setLeft(ControlMode.PercentOutput, 0.0);
+            collector.setRight(ControlMode.PercentOutput, 0.0);
+        }
         if(isLeftSwitchDown())
         {
             if(isRightSwitchDown())

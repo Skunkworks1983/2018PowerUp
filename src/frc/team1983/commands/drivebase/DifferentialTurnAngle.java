@@ -11,6 +11,7 @@ import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.subsystems.utilities.inputwrappers.DifferentialTurnAnglePidInput;
+import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DifferentialAdjustmentPidOutput;
 import frc.team1983.subsystems.utilities.outputwrappers.DifferentialTurnAnglePidOutput;
@@ -71,7 +72,7 @@ public class DifferentialTurnAngle extends CommandBase
     public void initialize()
     {
         //initialAngle = encoderTurnAnglePidInput.pidGet();
-
+        gyro.checkGyroStatus();
         initialAngle = gyroPidInput.pidGet();
         pivotPidSource = new DifferentialTurnAnglePidInput(drivebase);
         if(targetAngle < 0)
@@ -91,7 +92,14 @@ public class DifferentialTurnAngle extends CommandBase
         pivotPid.setOutputRange(-0.5, 0.5);
         pivotPid.enable();
 
-        adjustmentPidSource = new GyroPidInput(gyro);
+        if(gyro.isDead())
+        {
+            adjustmentPidSource = new EncoderTurnAnglePidInput(drivebase);
+        }
+        else
+        {
+            adjustmentPidSource = new GyroPidInput(gyro);
+        }
         adjustmentPidOut = new DifferentialAdjustmentPidOutput(pivotPidOut);
         adjustmentPid = new PIDController(dashboard.getDouble(this, "adjustmentP"),
                                           0,

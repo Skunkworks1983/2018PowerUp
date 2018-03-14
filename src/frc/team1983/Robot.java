@@ -108,8 +108,9 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         robotLogger.info("AutoInit");
+        drivebase.resetEncoders();
         Scheduler.getInstance().removeAll();
-        drivebase.getGyro().initGyro();
+        //drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
 
         robotPosition = (AutoManager.OwnedSide) autonomousSelector.getSelected();
@@ -126,7 +127,7 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousPeriodic()
     {
-        autoManager.execute();
+        //autoManager.execute();
         Scheduler.getInstance().run();
     }
 
@@ -155,6 +156,7 @@ public class Robot extends IterativeRobot
         SmartDashboard.updateValues();
         SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
         SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
+        robotLogger.info("gyro{}", drivebase.getGyro().getAngle());
     }
 
     @Override
