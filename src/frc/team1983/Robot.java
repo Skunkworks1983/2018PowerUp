@@ -1,5 +1,6 @@
 package frc.team1983;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -82,17 +83,19 @@ public class Robot extends IterativeRobot
         */
 
         switchFarScaleFar = new Path(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, -16, 2),
-                new DriveArc(drivebase, -2, 90, 1),
-                new DriveFeet(drivebase, -19, 2),
-                new DriveArc(drivebase, -3, -90, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
+                new DriveFeet(drivebase, -15, 2),
+                new DriveArc(drivebase, -3, 90, 1),
+                new DriveFeet(drivebase, -17, 2, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new DriveArc(drivebase, -3, -90, 1.25, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.COLLECTOR_INTAKE}),
                 new DriveFeet(drivebase, 0, 0.5, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}),
                 new DriveFeet(drivebase, -1.5, 0.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
-                new DriveFeet(drivebase, 8/12.0, 0.5, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
-                new DriveArc(drivebase, -3, 90, 0.5),
-                new DriveFeet(drivebase, 3, 1),
-                new DriveArc(drivebase, -1, -90, 0.5)
+                new DriveFeet(drivebase, 1, 0.5, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new DriveArc(drivebase, -2, 120, 1),
+                new DriveFeet(drivebase, 4, 1.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE, ActionsEnum.COLLECTOR_INTAKE}),
+                new DriveFeet(drivebase, 0, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
                                                                        )));
+
+        updateState(Constants.MotorMap.Mode.DISABLED);
     }
 
     @Override
@@ -108,7 +111,8 @@ public class Robot extends IterativeRobot
         updateState(Constants.MotorMap.Mode.DISABLED);
 
         dashboard.store();
-        autoManager.resetGameData();
+        //autoManager.resetGameData();
+        drivebase.getGyro().initGyro();
     }
 
     @Override
@@ -123,8 +127,10 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.AUTO);
 
-        drivebase.getGyro().initGyro();
         drivebase.setBrakeMode(true);
+
+        drivebase.left1.set(ControlMode.Position, drivebase.getLeftEncoderValue());
+        drivebase.right1.set(ControlMode.Position, drivebase.getRightEncoderValue());
 
         /*
         Path switchCloseScaleClose = new Path(new ArrayList<>(Arrays.asList(
@@ -163,7 +169,11 @@ public class Robot extends IterativeRobot
                                                                        )));
        */
 
-        Scheduler.getInstance().add(switchFarScaleFar.getCommands());
+        /*Scheduler.getInstance().add(new Path(new ArrayList<>(Arrays.asList(
+            new DriveFeet(drivebase, 10, 2)
+                                                                          ))));*/
+
+        Scheduler.getInstance().add(switchFarScaleFar);
 
         //Scheduler.getInstance().add(new DriveFeet(drivebase, 6, 2));
         //Scheduler.getInstance().add(smellyParser.constructPath(new File("/U/2CubeLeftLeft.json")).getCommands());
@@ -172,8 +182,10 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousPeriodic()
     {
-        autoManager.execute();
+        //autoManager.execute();
         Scheduler.getInstance().run();
+
+        robotLogger.info(drivebase.left1.getClosedLoopError(0) + ", " + drivebase.right1.getClosedLoopError(0));
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
 
-public class Path
+public class Path extends CommandGroup
 {
     private Logger logger;
     private ArrayList<DriveProfile> points;
@@ -18,6 +18,21 @@ public class Path
     {
         this.logger = LoggerFactory.createNewLogger(this.getClass());
         this.points = points;
+
+        DriveProfile.stitch(points);
+
+        for(DriveProfile point : points)
+        {
+            CommandGroup movement = new CommandGroup();
+            movement.addParallel(point);
+
+            for(Command action : point.getActions())
+            {
+                movement.addParallel(action);
+            }
+
+            addSequential(movement);
+        }
     }
 
     public ArrayList<DriveProfile> getPoints()
@@ -67,28 +82,20 @@ public class Path
     {
         CommandGroup group = new CommandGroup();
 
-        logger.info("created path @" + System.currentTimeMillis());
-
         for(DriveProfile point : points)
         {
             CommandGroup movement = new CommandGroup();
-            logger.info("created movement @" + System.currentTimeMillis());
 
             movement.addParallel(point);
             for(Command action : point.getActions())
             {
-                logger.info("created action @" + System.currentTimeMillis());
                 movement.addParallel(action);
             }
 
             group.addSequential(movement);
         }
 
-        logger.info("finished path @" + System.currentTimeMillis());
-
         DriveProfile.stitch(points);
-
-        logger.info("stitched path @" + System.currentTimeMillis());
 
         return group;
     }

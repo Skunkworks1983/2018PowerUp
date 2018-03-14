@@ -18,7 +18,6 @@ public class DriveFeet extends DriveProfile
     {
         super(drivebase, generateProfile(distance, time), generateProfile(distance, time), time, 0, actions);
     }
-
     public DriveFeet(Drivebase drivebase, double distance, double time)
     {
         this(drivebase, distance, time, new ActionsEnum[]{ActionsEnum.NONE});

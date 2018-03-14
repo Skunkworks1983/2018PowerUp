@@ -152,6 +152,7 @@ public class ProfileController
     public void updateRobotState(Constants.MotorMap.Mode mode)
     {
         setEnabled(false);
+        parent.set(ControlMode.PercentOutput, 0);
 
         reset();
     }

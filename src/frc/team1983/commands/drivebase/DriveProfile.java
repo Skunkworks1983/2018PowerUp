@@ -1,5 +1,6 @@
 package frc.team1983.commands.drivebase;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import edu.wpi.first.wpilibj.PIDController;
@@ -55,7 +56,7 @@ public class DriveProfile extends CommandBase
         logger = LoggerFactory.createNewLogger(this.getClass());
 
         requires(drivebase);
-        setTimeout(duration + 2);
+        setTimeout(duration + 0.75);
 
         this.actions = new ArrayList<>();
 
@@ -191,6 +192,9 @@ public class DriveProfile extends CommandBase
                                    " , gyro error: " + (endHeading - drivebase.getGyro().getAngle()));
 
         drivebase.stopProfiles();
+
+        drivebase.left1.set(ControlMode.PercentOutput, 0);
+        drivebase.left1.set(ControlMode.PercentOutput, 0);
 
         if(runHeadingCorrection)
         {
