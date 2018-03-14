@@ -49,7 +49,7 @@ public class Robot extends IterativeRobot
     private SmellyParser smellyParser;
     private Command autonomousCommand;
 
-    private Path switchFarScaleFar;
+    private Path switchFarScaleFar, switchCloseScaleClose, switchCloseScaleFar;
 
     public Robot()
     {
@@ -94,6 +94,29 @@ public class Robot extends IterativeRobot
                 new DriveFeet(drivebase, 4, 1.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE, ActionsEnum.COLLECTOR_INTAKE}),
                 new DriveFeet(drivebase, 0, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
                                                                        )));
+
+        switchCloseScaleClose = new Path(new ArrayList<>(Arrays.asList(
+                new DriveFeet(drivebase, -16.5, 2),
+                new DriveArc(drivebase, 4.5, -45, 1),
+                new DriveFeet(drivebase, 5.5, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE, ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
+                new DriveFeet(drivebase, -3, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST, ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
+                new DriveFeet(drivebase, 2.5, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new DriveArc(drivebase, -2, 180, 0.5),
+                new DriveFeet(drivebase, 7.5, 3, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE}),
+                new DriveFeet(drivebase, 0, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
+                                                                      )));
+
+        switchCloseScaleFar = new Path(new ArrayList<>(Arrays.asList(
+                new DriveFeet(drivebase, -16.5, 2),
+                new DriveArc(drivebase, 4.5, -45, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
+                new DriveFeet(drivebase, 4.5, 1.5),
+                new DriveArc(drivebase, 4.5, -30, 0.5, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}),
+                new DriveFeet(drivebase, 2.5, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE, ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
+                new DriveArc(drivebase, 4.5, -15, 0.5),
+                new DriveFeet(drivebase, 17, 4, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new DriveArc(drivebase, -3.5, -180, 3, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE}),
+                new DriveFeet(drivebase, 2, 2, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
+                                                                    )));
 
         updateState(Constants.MotorMap.Mode.DISABLED);
     }
@@ -173,7 +196,7 @@ public class Robot extends IterativeRobot
             new DriveFeet(drivebase, 10, 2)
                                                                           ))));*/
 
-        Scheduler.getInstance().add(switchFarScaleFar);
+        Scheduler.getInstance().add(switchCloseScaleFar);
 
         //Scheduler.getInstance().add(new DriveFeet(drivebase, 6, 2));
         //Scheduler.getInstance().add(smellyParser.constructPath(new File("/U/2CubeLeftLeft.json")).getCommands());
