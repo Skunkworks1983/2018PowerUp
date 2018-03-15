@@ -7,6 +7,7 @@ import frc.team1983.services.OI;
 import frc.team1983.Robot;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
+import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Elevator;
 import org.apache.logging.log4j.core.Logger;
 
@@ -14,6 +15,7 @@ public class SetElevatorSetpoint extends CommandBase
 {
     private Elevator elevator;
     private OI oi;
+    private Collector collector;
     private double newSetpoint;
     private double initialLocation;
     private Constants.OIMap.Setpoint setpoint;
@@ -27,6 +29,7 @@ public class SetElevatorSetpoint extends CommandBase
         logger = LoggerFactory.createNewLogger(this.getClass());
         this.setpoint = setpoint;
         this.oi = oi;
+        this.collector = collector;
         this.elevator = elevator;
     }
 

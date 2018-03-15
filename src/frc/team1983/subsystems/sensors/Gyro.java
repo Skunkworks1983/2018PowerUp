@@ -18,6 +18,7 @@ public class Gyro extends AHRS
         isDead = false;
         isBigGyro = true;
     }
+
     public Gyro(I2C.Port port)
     {
         super(port);
@@ -26,7 +27,7 @@ public class Gyro extends AHRS
     }
 
     //Iterates to ensure that the gyro is initializing correctly, otherwise let other commands know that the gyro doesn't work.
-    public void initGyro()
+    public void checkGyroStatus()
     {
         if(isBigGyro)
         {
@@ -51,13 +52,22 @@ public class Gyro extends AHRS
                     break;
                 }
             }
+
         }
         else
         {
             float initialYaw = getYaw();
             isDead = true;
-            for(int counter = 0; counter <100; counter ++)
+            for(int counter = 0; counter < 10; counter++)
             {
+                try
+                {
+                    Thread.sleep(1);
+                }
+                catch(InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
                 if(getYaw() != initialYaw)
                 {
                     isDead = false;
@@ -65,12 +75,15 @@ public class Gyro extends AHRS
                 }
             }
         }
-
+        if(getRawGyroY() > 5000 || getRawGyroY() < -5000)
+        {
+            isDead = true;
+        }
         System.out.println("Is the gyro alive? : " + !isDead);
     }
 
     public boolean isDead()
     {
-        return isDead;
+        return false;
     }
 }

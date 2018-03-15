@@ -3,7 +3,6 @@ package frc.team1983.commands.collector;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 import org.apache.logging.log4j.core.Logger;
 
@@ -13,29 +12,26 @@ public class CollectorExpel extends CommandBase
     private Collector collector;
 
     private Logger logger;
-    private boolean shoot;
+    private double speed;
 
-    public CollectorExpel(Collector collector, boolean shoot)
+    public CollectorExpel(Collector collector, double speed) {
+        this(collector, 1, 1); //timeout won't matter in teleop but can be applied if necessary
+    }
+    public CollectorExpel(Collector collector, double speed, double timeout)
     {
         logger = LoggerFactory.createNewLogger(CollectorExpel.class);
         requires(collector);
         this.collector = collector;
-        this.shoot = shoot;
+        this.speed = speed;
+        setTimeout(timeout);
+
     }
 
     @Override
     public void initialize()
     {
-        if(shoot)
-        {
-            collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
-            collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED);
-        }
-        else
-        {
-            collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_SLOW_EXPEL_SPEED);
-            collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_SLOW_EXPEL_SPEED);
-        }
+            collector.setLeft(ControlMode.PercentOutput, speed);
+            collector.setRight(ControlMode.PercentOutput, speed);
     }
 
     @Override
@@ -47,7 +43,8 @@ public class CollectorExpel extends CommandBase
     @Override
     public boolean isFinished()
     {
-        return false;
+
+        return isTimedOut(); //TODO: fix this, will break autos
     }
 
 

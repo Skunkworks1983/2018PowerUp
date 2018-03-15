@@ -12,6 +12,8 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.subsystems.utilities.inputwrappers.DifferentialTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
+import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
+import frc.team1983.subsystems.utilities.outputwrappers.DifferentialAdjustmentPidOutput;
 import frc.team1983.subsystems.utilities.outputwrappers.DifferentialTurnAnglePidOutput;
 import org.apache.logging.log4j.core.Logger;
 //turns robot based off of distance each side has travelled, not the heading of the robot
@@ -19,72 +21,132 @@ public class DifferentialTurnAngle extends CommandBase
 {
     private double targetAngle;
     private Drivebase drivebase;
-    private PIDSource pidSource;
-    private PIDOutput pidOut;
-    private PIDController turnPid;
+    private PIDSource pivotPidSource;
+    private PIDSource adjustmentPidSource;
+    private DifferentialTurnAnglePidOutput pivotPidOut;
+    private PIDOutput adjustmentPidOut;
+    private PIDController pivotPid;
+    private PIDController adjustmentPid;
     private Gyro gyro;
-    private EncoderTurnAnglePidInput encoderTurnAnglePidInput;
+    //private EncoderTurnAnglePidInput encoderTurnAnglePidInput;
+    private GyroPidInput gyroPidInput;
     private double initialAngle;
     private Logger logger;
     private StatefulDashboard dashboard;
+    private double error;
+    private int counter;
 
-    public DifferentialTurnAngle(StatefulDashboard dashboard, double degrees, Drivebase drivebase)
+    public DifferentialTurnAngle(Drivebase drivebase, StatefulDashboard dashboard, double degrees)
     {
-        this(dashboard, degrees, drivebase, Constants.PidConstants.TurnAnglePid.DEFAULT_TIMEOUT);
+        this(drivebase, dashboard, degrees, Constants.PidConstants.TurnAnglePid.DEFAULT_TIMEOUT);
     }
 
-    public DifferentialTurnAngle(StatefulDashboard dashboard, double degrees, Drivebase drivebase, double timeout)
+    public DifferentialTurnAngle(Drivebase drivebase, StatefulDashboard dashboard, double degrees, double timeout)
     {
         super(timeout);
+        logger = LoggerFactory.createNewLogger(DifferentialTurnAngle.class);
         requires(drivebase);
         this.drivebase = drivebase;
         this.dashboard = dashboard;
-        encoderTurnAnglePidInput = new EncoderTurnAnglePidInput(drivebase);
+        //encoderTurnAnglePidInput = new EncoderTurnAnglePidInput(drivebase);
+        gyro = drivebase.getGyro();
+        gyroPidInput = new GyroPidInput(gyro);
         targetAngle = degrees;
+        counter = 0;
+        //logger.info("targetAngle{}", targetAngle);
 
         dashboard.add(this, "kP", 0.0);
         dashboard.add(this, "kI", 0.0);
         dashboard.add(this, "kD", 0.0);
         dashboard.add(this, "kF", 0.0);
 
-        logger = LoggerFactory.createNewLogger(SimpleTurnAngle.class);
+        dashboard.add(this, "adjustmentP", 0.0);
+        dashboard.add(this, "adjustmentI", 0.0);
+        dashboard.add(this, "adjustmentD", 0.0);
+        dashboard.add(this, "adjustmentF", 0.0);
+
+
     }
 
     @Override
     public void initialize()
     {
-        initialAngle = encoderTurnAnglePidInput.pidGet();
-        pidSource = new DifferentialTurnAnglePidInput(drivebase);
-        pidOut = new DifferentialTurnAnglePidOutput(drivebase, .5); //magic number
-        turnPid = new PIDController(dashboard.getDouble(this, "kP"),
-                                    dashboard.getDouble(this, "kI"),
-                                    dashboard.getDouble(this, "kD"),
-                                    dashboard.getDouble(this, "kF"),
-                                    pidSource, pidOut);
-        turnPid.setSetpoint(0);
-        turnPid.setOutputRange(-0.5, 0.5);
-        turnPid.enable();
+        //initialAngle = encoderTurnAnglePidInput.pidGet();
+        gyro.checkGyroStatus();
+        initialAngle = gyroPidInput.pidGet();
+        pivotPidSource = new DifferentialTurnAnglePidInput(drivebase);
+        if(targetAngle < 0)
+        {
+            pivotPidOut = new DifferentialTurnAnglePidOutput(drivebase, -Constants.AutoValues.DIFFERENTIAL_TURN_ANGLE_BASESPEED);
+        }
+        else
+        {
+            pivotPidOut = new DifferentialTurnAnglePidOutput(drivebase, Constants.AutoValues.DIFFERENTIAL_TURN_ANGLE_BASESPEED); //magic number
+        }
+        pivotPid = new PIDController(dashboard.getDouble(this, "kP"),
+                                     dashboard.getDouble(this, "kI"),
+                                     dashboard.getDouble(this, "kD"),
+                                     dashboard.getDouble(this, "kF"),
+                                     pivotPidSource, pivotPidOut);
+        pivotPid.setSetpoint(0);
+        pivotPid.setOutputRange(-0.5, 0.5);
+        pivotPid.enable();
+
+        if(gyro.isDead())
+        {
+            adjustmentPidSource = new EncoderTurnAnglePidInput(drivebase);
+        }
+        else
+        {
+            adjustmentPidSource = new GyroPidInput(gyro);
+        }
+        adjustmentPidOut = new DifferentialAdjustmentPidOutput(pivotPidOut);
+        adjustmentPid = new PIDController(dashboard.getDouble(this, "adjustmentP"),
+                                          0,
+                                          dashboard.getDouble(this, "adjustmentD"),
+                                          dashboard.getDouble(this, "adjustmentF"),
+                                          adjustmentPidSource, adjustmentPidOut);
+        adjustmentPid.setSetpoint(targetAngle + drivebase.getGyro().getAngle());
+        adjustmentPid.setAbsoluteTolerance(Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE);
+        adjustmentPid.setOutputRange(-.5, .5);
+        adjustmentPid.enable();
+
     }
 
     @Override
     public void execute()
     {
-        logger.debug("DifferentialTurnAngle executed");
+
+        //logger.debug("DifferentialTurnAngle executed");
+        error = Math.abs(targetAngle - (gyroPidInput.pidGet() - initialAngle));
+        logger.info("error{}", adjustmentPid.getError());
+        //pidOut.setAdjustmentSpeed(error/(targetAngle) * .4);
+        //logger.info("adjustmentSpeed {}", (error/targetAngle) * .4);
+
     }
 
     @Override
     public boolean isFinished()
     {
-        return isTimedOut() || Math.abs(targetAngle - (encoderTurnAnglePidInput.pidGet() - initialAngle)) < 5;
-
+        if(adjustmentPid.onTarget())
+        {
+            counter++;
+        }
+        if(!adjustmentPid.onTarget() && counter >= 1)
+        {
+            counter--;
+        }
+        return isTimedOut() || counter >= 15;
     }
 
     @Override
     public void end()
     {
-        turnPid.disable();
+        pivotPid.disable();
+        adjustmentPid.disable();
         drivebase.setLeft(ControlMode.PercentOutput, 0);
         drivebase.setRight(ControlMode.PercentOutput, 0);
+        //logger.info("pid has ended");
     }
 
     @Override
@@ -92,4 +154,6 @@ public class DifferentialTurnAngle extends CommandBase
     {
         this.end();
     }
+
+
 }
