@@ -34,7 +34,7 @@ public class DriveProfile extends CommandBase
     private double startHeading;
     private double endHeading;
     private double deltaHeading;
-    private ArrayList<Command> actions;
+    private ArrayList<CommandBase> actions;
 
     private GyroPidInput pidInput;
     private DrivebaseAuxiliaryPidOutput pidOutput;
@@ -232,7 +232,7 @@ public class DriveProfile extends CommandBase
         CruiseProfile.stitch(rightProfiles);
     }
 
-    public ArrayList<Command> getActions()
+    public ArrayList<CommandBase> getActions()
     {
         return actions;
     }

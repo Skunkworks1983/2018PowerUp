@@ -23,6 +23,7 @@ import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
 import frc.team1983.util.control.ProfileController;
 import frc.team1983.util.path.Path;
+import javafx.geometry.Pos;
 import org.apache.logging.log4j.core.Logger;
 
 import java.io.File;
@@ -72,7 +73,7 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
         ramps = new Ramps();
 
-        smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLY_FOLDER);
+        //smellyParser = new SmellyParser(dashboardWrapper, Constants.SmellyParser.SMELLY_FOLDER);
 
         /*
         autonomousSelector = new SendableChooser();
@@ -82,18 +83,12 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
         */
 
-        switchFarScaleFar = new Path(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, -15, 2),
-                new DriveArc(drivebase, -3, 90, 1),
-                new DriveFeet(drivebase, -17, 2, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
-                new DriveArc(drivebase, -3, -90, 1.25, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.COLLECTOR_INTAKE}),
-                new DriveFeet(drivebase, 0, 0.5, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}),
-                new DriveFeet(drivebase, -1.5, 0.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
-                new DriveFeet(drivebase, 1, 0.5, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
-                new DriveArc(drivebase, -2, 120, 1),
-                new DriveFeet(drivebase, 4, 1.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE, ActionsEnum.COLLECTOR_INTAKE}),
-                new DriveFeet(drivebase, 0, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
-                                                                       )));
+        switchCloseScaleFar = new Path(new ArrayList<>(Arrays.asList(
+                new DriveFeet(drivebase, -17, 2),
+                new DriveArc(drivebase, -3, -45, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
+                new DriveArc(drivebase, -3, 45, 1),
+                new DriveArc(drivebase, -3, 45, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE})
+                                                                    )));
 
         switchCloseScaleClose = new Path(new ArrayList<>(Arrays.asList(
                 new DriveFeet(drivebase, -16.5, 2),
@@ -133,8 +128,8 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.DISABLED);
 
-        dashboard.store();
-        //autoManager.resetGameData();
+        //dashboard.store();
+        autoManager.resetGameData();
         drivebase.getGyro().initGyro();
     }
 
@@ -151,9 +146,6 @@ public class Robot extends IterativeRobot
         updateState(Constants.MotorMap.Mode.AUTO);
 
         drivebase.setBrakeMode(true);
-
-        drivebase.left1.set(ControlMode.Position, drivebase.getLeftEncoderValue());
-        drivebase.right1.set(ControlMode.Position, drivebase.getRightEncoderValue());
 
         /*
         Path switchCloseScaleClose = new Path(new ArrayList<>(Arrays.asList(
@@ -196,8 +188,6 @@ public class Robot extends IterativeRobot
             new DriveFeet(drivebase, 10, 2)
                                                                           ))));*/
 
-        Scheduler.getInstance().add(switchCloseScaleFar);
-
         //Scheduler.getInstance().add(new DriveFeet(drivebase, 6, 2));
         //Scheduler.getInstance().add(smellyParser.constructPath(new File("/U/2CubeLeftLeft.json")).getCommands());
     }
@@ -205,10 +195,13 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousPeriodic()
     {
-        //autoManager.execute();
         Scheduler.getInstance().run();
+        autoManager.execute();
 
-        robotLogger.info(drivebase.left1.getClosedLoopError(0) + ", " + drivebase.right1.getClosedLoopError(0));
+        /*robotLogger.info(drivebase.left1.getClosedLoopError(0) + " & " + drivebase.left1.getClosedLoopTarget(0) +
+                         ", " + drivebase.right1.getClosedLoopError(0) + " & " + drivebase.right1.getClosedLoopTarget(0));
+                         */
+        robotLogger.info(drivebase.left1.getMotorOutputPercent() + ", " + drivebase.right1.getMotorOutputPercent());
     }
 
     @Override
