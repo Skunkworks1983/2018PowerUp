@@ -36,15 +36,15 @@ public class SwitchCloseScaleFar extends CommandGroup
         //SHOOT N' SCOOT
         super.addSequential(new DriveStraight(drivebase, dashboard, 1.5));
         super.addParallel(new CollectorExpel(collector, true, 1));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
-        super.addSequential(new DriveStraight(drivebase, dashboard, -.50));
+        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
+        super.addParallel(new DriveStraight(drivebase, dashboard, -.50));
 
         //JOURNEY TO THE MIDDLE
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0 * reflectionVariable));
         super.addSequential(new DriveStraight(drivebase, dashboard, -5.0));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90.0));
-        super.addSequential(new DriveStraight(drivebase, dashboard, -16.75));
-        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90.0));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 16.75));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0));
 
         //CUBE COLLECT
         super.addParallel(new CollectorIntake(collector));
@@ -52,7 +52,10 @@ public class SwitchCloseScaleFar extends CommandGroup
         super.addSequential(new DriveStraight(drivebase, dashboard, -3.0));
 
         //SCALE APPROACH
-        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -3.0));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 180));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 3));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
+        super.addSequential(new CollectorExpel(collector, true, 1));
 
 
 

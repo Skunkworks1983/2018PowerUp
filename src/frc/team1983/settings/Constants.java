@@ -317,10 +317,10 @@ public class Constants
         {
             BOTTOM(0),
             TRAVEL(1560),
-            SWITCH(7925), // elevator halfway point
-            LOW(22700),
-            MID(25700),
-            TOP(28300); //TODO: add 400 once magnet moves
+            SWITCH(8325), // elevator halfway point
+            LOW(23000),
+            MID(26000),
+            TOP(28600); //TODO: add 400 once magnet moves
 
             private final double encoderTicks;
 
