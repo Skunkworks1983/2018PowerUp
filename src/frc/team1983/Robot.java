@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.commands.autonomous.deadreckoningautos.SwitchCloseScaleClose;
 import frc.team1983.commands.debugging.RunOneMotor;
-import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
@@ -115,15 +115,12 @@ public class Robot extends IterativeRobot
 
         robotPosition = (AutoManager.OwnedSide) autonomousSelector.getSelected();
         CommandGroup group = new CommandGroup();
-        group.addSequential(new DriveStraight(drivebase, dashboard, 3));
-        group.addSequential(new DriveStraight(drivebase, dashboard, -3));
-        group.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90));
-        group.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90));
+        group.addSequential(new DriveStraight(drivebase, dashboard, 10));
+        group.addSequential(new DriveStraight(drivebase, dashboard, -10));
 
 
-        //Scheduler.getInstance().add(new DifferentialTurnAngle(drivebase, dashboard, 90));
-        Scheduler.getInstance().add(group);
-        //Scheduler.getInstance().add(new SwitchFarScaleClose(drivebase, dashboard, oi, elevator, collector, AutoManager.OwnedSide.LEFT));
+        //Scheduler.getInstance().add(group);
+        Scheduler.getInstance().add(new SwitchCloseScaleClose(drivebase, dashboard, oi, elevator, collector, AutoManager.OwnedSide.LEFT));
         //Scheduler.getInstance().add(new DoubleCubeAutoSelector(drivebase, dashboard, oi, elevator, collector, robotPosition));
 
     }

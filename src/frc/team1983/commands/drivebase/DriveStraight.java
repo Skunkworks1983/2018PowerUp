@@ -1,7 +1,6 @@
 package frc.team1983.commands.drivebase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.StatefulDashboard;
@@ -108,10 +107,11 @@ public class DriveStraight extends CommandBase
     public void execute()
     {
         //logger.info("angle{}", driveStraightPid.getError());
-        if (abs(drivebase.getLeftDist() - leftEncoderStart) > abs(distance) * 0.75)
+        if (abs(drivebase.getLeftDist() - leftEncoderStart) > abs(distance) * 0.25)
         {
-            baseSpeed = initialBaseSpeed * (4 * (abs(distance) - abs(drivebase.getLeftDist() - leftEncoderStart) / abs(distance)));
+            baseSpeed = Math.max(Math.min(initialBaseSpeed * ((4./3) * ((abs(distance) - abs(drivebase.getLeftDist() - leftEncoderStart)) / abs(distance))), abs(initialBaseSpeed)), -abs(initialBaseSpeed));
             pidOut.setBaseSpeed(baseSpeed);
+            logger.info("Base speed scaling is {}", Math.max(Math.min(initialBaseSpeed * ((4./3) * ((abs(distance) - abs(drivebase.getLeftDist() - leftEncoderStart)) / abs(distance))), abs(initialBaseSpeed)), -abs(initialBaseSpeed)));
         }
 
     }

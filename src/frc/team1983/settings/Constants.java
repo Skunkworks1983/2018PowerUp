@@ -317,7 +317,7 @@ public class Constants
         {
             BOTTOM(0),
             TRAVEL(1560),
-            SWITCH(8925), // elevator halfway point
+            SWITCH(8925+400), // elevator halfway point
             LOW(22700 +400),
             MID(25700 +400),
             TOP(28300 +400); //TODO: add 400 once magnet moves

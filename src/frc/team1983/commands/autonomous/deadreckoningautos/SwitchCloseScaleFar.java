@@ -55,9 +55,7 @@ public class SwitchCloseScaleFar extends CommandGroup
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 180));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
-        super.addSequential(new CollectorExpel(collector, true, 1));
-
-
+        super.addSequential(new CollectorExpel(collector, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED, 0.5));
 
     }
 }

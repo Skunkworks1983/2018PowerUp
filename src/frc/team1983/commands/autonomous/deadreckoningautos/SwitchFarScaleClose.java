@@ -41,12 +41,12 @@ public class SwitchFarScaleClose extends CommandGroup
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90));
         super.addSequential(new DriveStraight(drivebase, dashboard, 1, 0.25, 0.5));
-        super.addSequential(new CollectorExpel(collector, true, 0.5));
+        super.addSequential(new CollectorExpel(collector, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED, 0.5));
 
         //CUBE PICKUP
         super.addSequential(new DriveStraight(drivebase, dashboard, -3));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
-        super.addParallel(new CollectorIntake(collector));
+        super.addParallel(new CollectorIntake(collector, true));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3));
 
         //WE GO FOR THE SCALE BUT WE RUN OUT OF TIME
@@ -56,7 +56,7 @@ public class SwitchFarScaleClose extends CommandGroup
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90));
         super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3));
-        super.addSequential(new CollectorExpel(collector, true));
+        super.addSequential(new CollectorExpel(collector, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED, 0.5));
 
 
 
