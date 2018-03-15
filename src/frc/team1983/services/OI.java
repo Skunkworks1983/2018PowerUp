@@ -1,5 +1,6 @@
 package frc.team1983.services;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -83,10 +84,14 @@ public class OI
 
         //TODO tune this pid
         //Collector rotate
+        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.UP,
+                       new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.UP_TICKS));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.UP,
-                      new CollectorRotate(robot.getCollector(), true));
+                      new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.MID_TICKS));
+        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.DOWN,
+                       new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.DOWN_TICKS));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.DOWN,
-                      new CollectorRotate(robot.getCollector(), false));
+                      new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.MID_TICKS));
 
         //TODO tune this pid
         //Elevator setpoints

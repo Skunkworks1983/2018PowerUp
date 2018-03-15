@@ -181,6 +181,7 @@ public class Constants
 
             public static final double UP_TICKS = 0;
             public static final double DOWN_TICKS = 1300;
+            public static final double MID_TICKS = 650;
         }
 
         //setpoints for motors
