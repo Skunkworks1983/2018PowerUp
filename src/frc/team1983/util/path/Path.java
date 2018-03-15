@@ -2,10 +2,13 @@ package frc.team1983.util.path;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveProfile;
+import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.subsystems.Drivebase;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
@@ -33,6 +36,11 @@ public class Path extends CommandGroup
             }
 
             addSequential(movement);
+        }
+
+        if(Robot.getInstance().getAutoManager().getRobotPosition() == AutoManager.OwnedSide.RIGHT)
+        {
+            flipSide();
         }
     }
 
@@ -70,13 +78,21 @@ public class Path extends CommandGroup
 
     public void flipSide()
     {
+        ArrayList<DriveProfile> newPoints = new ArrayList<>();
+        Drivebase drivebase = Robot.getInstance().getDrivebase();
         for(DriveProfile drive : points)
         {
             if(drive instanceof DriveArc)
             {
-                
+                newPoints.add(new DriveArc(drivebase, -((DriveArc) drive).radius, -((DriveArc) drive).angle, ((DriveArc) drive).time, ((DriveArc) drive).actions));
+            }
+            else
+            {
+                newPoints.add(drive);
             }
         }
+
+
     }
 
     public CommandGroup getCommands()

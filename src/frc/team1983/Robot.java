@@ -7,8 +7,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.team1983.commands.autonomous.actions.ActionsEnum;
+import frc.team1983.commands.autonomous.profiled.SwitchCloseScaleClose;
+import frc.team1983.commands.autonomous.profiled.SwitchCloseScaleFar;
+import frc.team1983.commands.autonomous.profiled.SwitchFarScaleFar;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
+import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
@@ -83,35 +87,11 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("Autonomous Mode Selector", autonomousSelector);
         */
 
-        switchCloseScaleFar = new Path(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, -17, 2),
-                new DriveArc(drivebase, -3, -45, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
-                new DriveArc(drivebase, -3, 45, 1),
-                new DriveArc(drivebase, -3, 45, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE})
-                                                                    )));
+        /*switchCloseScaleFar = new SwitchCloseScaleFar(drivebase);
 
-        switchCloseScaleClose = new Path(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, -16.5, 2),
-                new DriveArc(drivebase, 4.5, -45, 1),
-                new DriveFeet(drivebase, 5.5, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE, ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
-                new DriveFeet(drivebase, -3, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST, ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
-                new DriveFeet(drivebase, 2.5, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
-                new DriveArc(drivebase, -2, 180, 0.5),
-                new DriveFeet(drivebase, 7.5, 3, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE}),
-                new DriveFeet(drivebase, 0, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
-                                                                      )));
+        switchCloseScaleClose = new SwitchCloseScaleClose(drivebase);
 
-        switchCloseScaleFar = new Path(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, -16.5, 2),
-                new DriveArc(drivebase, 4.5, -45, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
-                new DriveFeet(drivebase, 4.5, 1.5),
-                new DriveArc(drivebase, 4.5, -30, 0.5, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}),
-                new DriveFeet(drivebase, 2.5, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE, ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
-                new DriveArc(drivebase, 4.5, -15, 0.5),
-                new DriveFeet(drivebase, 17, 4, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
-                new DriveArc(drivebase, -3.5, -180, 3, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE}),
-                new DriveFeet(drivebase, 2, 2, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
-                                                                    )));
+        switchFarScaleFar = new SwitchFarScaleFar(drivebase);*/
 
         updateState(Constants.MotorMap.Mode.DISABLED);
     }
@@ -146,6 +126,14 @@ public class Robot extends IterativeRobot
         updateState(Constants.MotorMap.Mode.AUTO);
 
         drivebase.setBrakeMode(true);
+
+        Path test = new Path(new ArrayList<DriveProfile>(Arrays.asList(
+            new DriveArc(drivebase, 3, -90, 2.5),
+            new DriveFeet(drivebase, -3, 2, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_TRAVEL}),
+            new DriveArc(drivebase, -3, -90, 2.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
+            new DriveFeet(drivebase, 1.5, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
+                                                                  )));
+
 
         /*
         Path switchCloseScaleClose = new Path(new ArrayList<>(Arrays.asList(
@@ -190,18 +178,19 @@ public class Robot extends IterativeRobot
 
         //Scheduler.getInstance().add(new DriveFeet(drivebase, 6, 2));
         //Scheduler.getInstance().add(smellyParser.constructPath(new File("/U/2CubeLeftLeft.json")).getCommands());
+        Scheduler.getInstance().add(test.getCommands());
     }
 
     @Override
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
-        autoManager.execute();
+        //autoManager.execute();
 
         /*robotLogger.info(drivebase.left1.getClosedLoopError(0) + " & " + drivebase.left1.getClosedLoopTarget(0) +
                          ", " + drivebase.right1.getClosedLoopError(0) + " & " + drivebase.right1.getClosedLoopTarget(0));
                          */
-        robotLogger.info(drivebase.left1.getMotorOutputPercent() + ", " + drivebase.right1.getMotorOutputPercent());
+        //robotLogger.info(drivebase.left1.getMotorOutputPercent() + ", " + drivebase.right1.getMotorOutputPercent());
     }
 
     @Override
@@ -219,6 +208,7 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+        robotLogger.info(drivebase.getGyro().getAngle());
     }
 
     @Override
@@ -280,6 +270,11 @@ public class Robot extends IterativeRobot
     public DashboardWrapper getDashboardWrapper()
     {
         return dashboardWrapper;
+    }
+
+    public AutoManager getAutoManager()
+    {
+        return autoManager;
     }
 
     public static Robot getInstance()

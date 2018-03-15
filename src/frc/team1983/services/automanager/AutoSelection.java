@@ -6,14 +6,19 @@ import frc.team1983.commands.autonomous.AutoMotionProfilePicker;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
 import frc.team1983.commands.autonomous.PlaceCubeInScale;
 import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
+import frc.team1983.commands.autonomous.profiled.SwitchCloseScaleClose;
 import frc.team1983.commands.autonomous.profiled.SwitchFarScaleFar;
 import frc.team1983.services.logger.LoggerFactory;
 import org.apache.logging.log4j.core.Logger;
 
 public enum AutoSelection
 {
-    MP_SCALE_FAR_SWITCH_FAR("Scale Far Switch Far", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
+    MP_SWITCH_FAR_SCALE_FAR("Scale Far Switch Far", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
         return new SwitchFarScaleFar(drivebase);
+    }),
+
+    MP_SWITCH_CLOSE_SCALE_CLOSE("Scale Close Switch Close", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
+        return new SwitchCloseScaleClose(drivebase);
     }),
 
     EXCHANGE_ZONE("Exchange Zone", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {

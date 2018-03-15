@@ -13,12 +13,19 @@ import frc.team1983.util.motion.profiles.TrapezoidalProfile;
 @JsonDeserialize(as = DriveArc.class)
 public class DriveArc extends DriveProfile
 {
+    public double radius, angle, time;
+    public ActionsEnum[] actions;
+
     @JsonCreator
     public DriveArc(@JacksonInject @JsonProperty("drivebase") Drivebase drivebase,
                     @JsonProperty("radius") double radius, @JsonProperty("angle") double angle,
                     @JsonProperty("time") double time, @JsonProperty("action") ActionsEnum[] actions)
     {
         super(drivebase, generateLeftProfile(radius, angle, time), generateRightProfile(radius, angle, time), time, angle, actions);
+        this.radius = radius;
+        this.angle = angle;
+        this.time = time;
+        this.actions = actions;
     }
 
     public DriveArc(Drivebase drivebase, double radius, double angle, double time)
