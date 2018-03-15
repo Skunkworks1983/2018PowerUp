@@ -3,6 +3,7 @@ package frc.team1983.commands.autonomous.deadreckoningautos;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
+import frc.team1983.commands.collector.CollectorRotate;
 import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
@@ -24,6 +25,7 @@ public class SwitchFarScaleFar extends CommandGroup
         else { reflectionVariable = -1; }
 
         //JOURNEY TO THE CENTER OF THE FIELD
+        super.addParallel(new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS));
         super.addSequential(new DriveStraight(drivebase, dashboard, 21.0));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0 * reflectionVariable));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));

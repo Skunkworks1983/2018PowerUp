@@ -109,9 +109,13 @@ public class DriveStraight extends CommandBase
         //logger.info("angle{}", driveStraightPid.getError());
         if (abs(drivebase.getLeftDist() - leftEncoderStart) > abs(distance) * 0.25)
         {
-            baseSpeed = Math.max(Math.min(initialBaseSpeed * ((4./3) * ((abs(distance) - abs(drivebase.getLeftDist() - leftEncoderStart)) / abs(distance))), abs(initialBaseSpeed)), -abs(initialBaseSpeed));
+            baseSpeed = Math.max(Math.min(initialBaseSpeed *
+                ((4./3) * ((abs(distance) - abs(drivebase.getLeftDist() - leftEncoderStart)) / abs(distance))),
+                abs(initialBaseSpeed)), -abs(initialBaseSpeed));
             pidOut.setBaseSpeed(baseSpeed);
-            logger.info("Base speed scaling is {}", Math.max(Math.min(initialBaseSpeed * ((4./3) * ((abs(distance) - abs(drivebase.getLeftDist() - leftEncoderStart)) / abs(distance))), abs(initialBaseSpeed)), -abs(initialBaseSpeed)));
+            logger.info("Base speed scaling is {}", Math.max(Math.min
+                (initialBaseSpeed * ((4./3) * ((abs(distance) - abs(drivebase.getLeftDist() - leftEncoderStart)) /
+                abs(distance))), abs(initialBaseSpeed)), -abs(initialBaseSpeed)));
         }
 
     }
