@@ -13,6 +13,16 @@ public abstract class CommandBase extends Command
         super(timeout);
     }
 
+    public void configTimeout(double timeout)
+    {
+        setTimeout(timeout);
+    }
+
+    public double getTimeout()
+    {
+        return getTimeout();
+    }
+
     @Override
     public abstract void initialize();
 

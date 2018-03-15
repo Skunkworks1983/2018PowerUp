@@ -144,6 +144,8 @@ public class AutoManager
             {
                 gameDataAlreadyPolled = true;
 
+                logger.info("running autonomous " + dashboard.getSelectedAutoChoice().getSelectableAuto());
+
                 logger.info("Got game data");
 
                 Scheduler.getInstance().add(dashboard.getSelectedAutoChoice().getSelectableAuto().createCommand(

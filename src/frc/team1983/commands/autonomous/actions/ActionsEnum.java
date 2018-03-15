@@ -19,6 +19,7 @@ public enum ActionsEnum
     SET_COLLECTOR_POSITION_UP(((collector, elevator) -> new CollectorRotate(collector, true))),
     SET_COLLECTOR_POSITION_DOWN(((collector, elevator) -> new CollectorRotate(collector, false))),
     SET_ELEVATOR_SETPOINT_BOTTOM(((collector, elevator) -> new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, null))),
+    SET_ELEVATOR_SETPOINT_TRAVEL(((collector, elevator) -> new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, elevator, null))),
     SET_ELEVATOR_SETPOINT_SWITCH(((collector, elevator) -> new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, null))),
     SET_ELEVATOR_SETPOINT_SCALE(((collector, elevator) -> new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, null))),
     COLLECTOR_INTAKE(((collector, elevator) -> new CollectorIntake(collector, 1.75))), //TODO find timeout

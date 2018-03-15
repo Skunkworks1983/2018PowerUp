@@ -39,6 +39,7 @@ public class Collector extends Subsystem
         rotate.config_kF(0, Constants.PidConstants.CollectorRotate.F, 0);
 
         rotate.configClosedloopRamp(0.25, 0);
+        rotate.setSensorPhase(true);
         rotate.configPeakOutputForward(0.75, 0);
 
         rotate.selectProfileSlot(0, 0);

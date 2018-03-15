@@ -105,9 +105,9 @@ public class Constants
     {
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
         public static final double COLLECTOR_INTAKE_SPEED = 0.75;
-        public static final double COLLECTOR_EXPEL_SPEED = -0.5;
+        public static final double COLLECTOR_EXPEL_SPEED = -0.7;
         public static final double COLLECTOR_SLOW_EXPEL_SPEED = -0.2;
-        public static final double COLLECTOR_ROTATE_SPEED = -0.5;
+        public static final double COLLECTOR_ROTATE_SPEED = -0.7;
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
         //is activated that it will always return true (for debouncing)
