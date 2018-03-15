@@ -41,6 +41,8 @@ public class Collector extends Subsystem
         rotate.configClosedloopRamp(0.25, 0);
         rotate.configPeakOutputForward(0.3, 0);
 
+        //TODO reset rotate encoder on startup
+
         rotate.selectProfileSlot(0, 0);
         rotate.setSensorPhase(true);
         logger = LoggerFactory.createNewLogger(Collector.class);

@@ -35,18 +35,18 @@ public class SwitchFarScaleFar extends CommandGroup
         super.addSequential(new DriveStraight(drivebase, dashboard, 4.0, .35));
 
         //SHOOT N' SCOOT
-        super.addSequential(new CollectorExpel(collector, true, 1));
+        super.addSequential(new CollectorExpel(collector, 1, 1));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
         super.addSequential(new DriveStraight(drivebase, dashboard, -4.0, .35));
 
         //SWITCH APPROACH & CUBE COLLECT
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 180));
-        super.addParallel(new CollectorIntake(collector));
+        super.addParallel(new CollectorIntake(collector, false));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3.0, .35));
 
         //TWO KEWB AUTO BB
         super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
-        super.addParallel(new CollectorExpel(collector, true, 1));
+        super.addParallel(new CollectorExpel(collector, 1, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, 1, .35));
 
     }

@@ -8,11 +8,8 @@ import frc.team1983.Robot;
 import frc.team1983.commands.Manual;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.commands.collector.CollectorIntakeSpeed;
 import frc.team1983.commands.collector.CollectorRotate;
-import frc.team1983.commands.collector.SetRotateSpeed;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
-import frc.team1983.commands.elevator.SetElevatorSpeed;
 import frc.team1983.commands.ramps.LowerRamps;
 import frc.team1983.commands.ramps.PropRamps;
 import frc.team1983.services.logger.LoggerFactory;
@@ -71,11 +68,18 @@ public class OI
 
         //Collector intake/expel
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
-                      new CollectorIntake(robot.getCollector()));
-        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.EXPEL,
-                   new CollectorExpel(robot.getCollector(), true));
-        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.BOOP,
-                   new CollectorExpel(robot.getCollector(), false));
+                      new CollectorIntake(robot.getCollector(), false));
+        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
+                       new CollectorIntake(robot.getCollector(), true));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.EXPEL,
+                   new CollectorExpel(robot.getCollector(), Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED));
+        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.EXPEL,
+                       new CollectorExpel(robot.getCollector(), 0));
+        //TODO this is going full speed
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.BOOP,
+                   new CollectorExpel(robot.getCollector(), Constants.MotorSetpoints.COLLECTOR_SLOW_EXPEL_SPEED));
+        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.BOOP,
+                       new CollectorExpel(robot.getCollector(), 0));
 
         //TODO tune this pid
         //Collector rotate

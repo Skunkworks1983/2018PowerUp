@@ -72,7 +72,7 @@ public class SwitchFarScaleClose extends CommandGroup
         super.addSequential(new WaitCommand(1));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
         super.addSequential(new DriveStraight(drivebase, dashboard, 1));
-        super.addSequential(new CollectorExpel(collector, true, 1));
+        super.addSequential(new CollectorExpel(collector, 1, 1));
 
         //MAKING MY WAY DOWNTOWN
         super.addSequential(new DriveStraight(drivebase, dashboard, -.75));
@@ -82,16 +82,14 @@ public class SwitchFarScaleClose extends CommandGroup
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90 * reflectionVariable));
 
         //CUBE PICKUP
-        super.addParallel(new CollectorIntake(collector));
+        super.addParallel(new CollectorIntake(collector, false));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3, 0.2));
         super.addSequential(new DriveStraight(drivebase, dashboard, -3));
 
         //CUBE DROPOFF
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
         super.addSequential(new DriveStraight(drivebase, dashboard, 5));
-        super.addSequential(new CollectorExpel(collector, true));
-        */
-
+        super.addSequential(new CollectorExpel(collector, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED));
 
         //ok so this just goes to the far switch rn
         /* old version

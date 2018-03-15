@@ -24,8 +24,9 @@ public class DoubleCubeAutoSelector extends CommandGroup
     public DoubleCubeAutoSelector(Drivebase drivebase, StatefulDashboard dashboard, OI oi, Elevator elevator, Collector collector, AutoManager.OwnedSide robotPosition)
     {
         logger = LoggerFactory.createNewLogger(DoubleCubeAutoSelector.class);
-        //Scale = getOwnedSide(AutoManager.GameFeature.SCALE);
+        //Scale = getOwnedSide(GameDataPoller.GameFeature.SCALE);
         Scale = AutoManager.OwnedSide.LEFT; //TODO: TEMPORARY AF THIS BOY IS JUST FOR TESTING
+        //Scale = getOwnedSide(AutoManager.GameFeature.SCALE);
 
         logger.info("Scale is on the {}", Scale);
 
