@@ -6,15 +6,13 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
 import frc.team1983.commands.Manual;
+import frc.team1983.commands.climber.ClimbStart;
+import frc.team1983.commands.climber.ClimbStop;
+import frc.team1983.commands.climber.PrepareClimb;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.commands.collector.CollectorIntakeSpeed;
 import frc.team1983.commands.collector.CollectorRotate;
-import frc.team1983.commands.collector.SetRotateSpeed;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
-import frc.team1983.commands.elevator.SetElevatorSpeed;
-import frc.team1983.commands.ramps.LowerRamps;
-import frc.team1983.commands.ramps.PropRamps;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import org.apache.logging.log4j.core.Logger;
@@ -99,13 +97,15 @@ public class OI
 
         //Drop/Prop
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_LEFT,
-                      new LowerRamps(robot.getRamps(), true));
+                      new ClimbStart(robot.getClimber()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_RIGHT,
-                      new LowerRamps(robot.getRamps(), false));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP_LEFT,
-                      new PropRamps(robot.getRamps(), true));
+                      new ClimbStop(robot.getClimber()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP_RIGHT,
-                      new PropRamps(robot.getRamps(), false));
+                      new PrepareClimb(robot.getClimber(),robot.getRamps()));
+
+        //this needs to get done, gonna be a bag motor driving backwards, dunno where to put that in the code so ya know - tucker
+        // bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP_RIGHT,
+        //              new PropRamps(robot.getClimber().
 
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH,
                    new Manual(this, robot.getCollector(), robot.getElevator()));

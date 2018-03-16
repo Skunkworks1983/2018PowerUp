@@ -24,7 +24,7 @@ public class PrepareClimb extends Command {
 
     @Override
     protected void execute() {
-        ramp.unlock();
+        ramp.unlock(true);
         climber.deployHooks();
     }
 

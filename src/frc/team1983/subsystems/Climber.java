@@ -23,31 +23,31 @@ public class Climber extends Subsystem {
 
         hooks = new ServoWrapper(Constants.MotorMap.Climber.HOOKS);
     }
-
+    //what is this
     public void stabilize(){
         stabilizer.set(1);
     }
-
+    //what is this
     public void destabilize(){
         stabilizer.set(0);
     }
-
+    //explain
     public void jackUp(){
         magicJacks.set(1); // applejacks
     }
-
+    //explain
     public void jackDown(){
         magicJacks.set(0);
     }
-
+    //this makes the dog gears engage
     public void engage(){ // cinnamon
-        camLeft.set(1);
-        camRight.set(1);
+        camLeft.set(1.);
+        camRight.set(1.);
     }
-
+    //dogs go out
     public void disengage(){
-        camLeft.set(0);
-        camRight.set(0);
+        camLeft.set(0.);
+        camRight.set(0.);
     }
 
     public void deployHooks(){
