@@ -82,8 +82,6 @@ public class OI
 
         //TODO tune this pid
         //Collector rotate
-        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.UP,
-                       new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.UP_TICKS));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.UP,
                       new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.MID_TICKS));
         bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.DOWN,

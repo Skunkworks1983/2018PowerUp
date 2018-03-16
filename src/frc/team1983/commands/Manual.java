@@ -35,15 +35,15 @@ public class Manual extends Command
     @Override
     protected void execute()
     {
-        if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_INTAKE))
-        {
-            collector.setLeft(ControlMode.PercentOutput, 0.5);
-            collector.setRight(ControlMode.PercentOutput, 0.5);
-        }
-        if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_EXPEL))
+        if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_INTAKE)) //TODO: stopping intake doesn't work
         {
             collector.setLeft(ControlMode.PercentOutput, -0.5);
             collector.setRight(ControlMode.PercentOutput, -0.5);
+        }
+        if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_EXPEL))
+        {
+            collector.setLeft(ControlMode.PercentOutput, 0.5);
+            collector.setRight(ControlMode.PercentOutput, 0.5);
         }
         if(!oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_INTAKE) &&
                 !oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_EXPEL))

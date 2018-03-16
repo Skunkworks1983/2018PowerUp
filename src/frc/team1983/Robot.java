@@ -14,6 +14,7 @@ import frc.team1983.commands.autonomous.deadreckoningautos.SwitchCloseScaleClose
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.RunTankDrive;
+import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
@@ -77,9 +78,9 @@ public class Robot extends IterativeRobot
         robotLogger.info("robotInit");
 
         autonomousSelector = new SendableChooser();
-        autonomousSelector.addDefault("Robot is on the left", AutoManager.OwnedSide.LEFT);
-        autonomousSelector.addObject("Robot is on the right", AutoManager.OwnedSide.RIGHT);
-        SmartDashboard.putData("Robot position", autonomousSelector);
+        //autonomousSelector.addDefault("Robot is on the left", AutoManager.OwnedSide.LEFT);
+        //autonomousSelector.addObject("Robot is on the right", AutoManager.OwnedSide.RIGHT);
+        //SmartDashboard.putData("Robot position", autonomousSelector);
     }
 
     @Override
@@ -120,8 +121,9 @@ public class Robot extends IterativeRobot
 
 
         //Scheduler.getInstance().add(group);
-        Scheduler.getInstance().add(new SwitchCloseScaleClose(drivebase, dashboard, oi, elevator, collector, AutoManager.OwnedSide.LEFT));
+        //Scheduler.getInstance().add(new SwitchCloseScaleClose(drivebase, dashboard, oi, elevator, collector, AutoManager.OwnedSide.LEFT));
         //Scheduler.getInstance().add(new DoubleCubeAutoSelector(drivebase, dashboard, oi, elevator, collector, robotPosition));
+        Scheduler.getInstance().add(new SetElevatorSetpoint(Constants.OIMap.Setpoint.LOW, elevator, oi));
 
     }
 
@@ -157,9 +159,9 @@ public class Robot extends IterativeRobot
         SmartDashboard.updateValues();
         SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
         SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
-        robotLogger.info("gyro{}", drivebase.getGyro().getAngle());
-        robotLogger.info("Left drivebase encoder is {}", drivebase.getLeftEncoderValue());
-        robotLogger.info("Right drivebase encoder is {}", drivebase.getRightEncoderValue());
+        //robotLogger.info("gyro{}", drivebase.getGyro().getAngle());
+        //robotLogger.info("Left drivebase encoder is {}", drivebase.getLeftEncoderValue());
+        //robotLogger.info("Right drivebase encoder is {}", drivebase.getRightEncoderValue());
 
     }
 
@@ -192,7 +194,7 @@ public class Robot extends IterativeRobot
         {
             motors.add(new Motor(i, false));
             motors.get(i).setNeutralMode(NeutralMode.Coast);
-            robotLogger.info("Initialized motor " + i);
+            //robotLogger.info("Initialized motor " + i);
         }
 
         runOneMotor.initialize(motors, motorUp, motorDown, manualSpeed);

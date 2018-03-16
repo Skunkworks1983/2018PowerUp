@@ -106,9 +106,9 @@ public class Constants
     public static class MotorSetpoints
     {
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
-        public static final double COLLECTOR_INTAKE_SPEED = 0.75;
-        public static final double COLLECTOR_EXPEL_SPEED = -0.75;
-        public static final double COLLECTOR_SLOW_EXPEL_SPEED = -0.2;
+        public static final double COLLECTOR_INTAKE_SPEED = -0.75;
+        public static final double COLLECTOR_EXPEL_SPEED = 0.75;
+        public static final double COLLECTOR_SLOW_EXPEL_SPEED = 0.2;
         public static final double COLLECTOR_ROTATE_SPEED = -0.5;
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
@@ -174,14 +174,14 @@ public class Constants
 
         public static class CollectorRotate
         {
-            public static final double P = 1.8;//.01; //TODO: find pid values
+            public static final double P = 1.8;//.01;
             public static final double I = 0;
             public static final double D = 0;
             public static final double F = 0;//.002;
 
-            public static final double UP_TICKS = 0;
+            public static final double UP_TICKS = -100; //response to slop in chain
             public static final double DOWN_TICKS = 1300;
-            public static final double MID_TICKS = 650;
+            public static final double MID_TICKS = 300;//response to slop in chain
         }
 
         //setpoints for motors
@@ -321,7 +321,7 @@ public class Constants
             SWITCH(8925+400), // elevator halfway point
             LOW(22700 +400),
             MID(25700 +400),
-            TOP(28300 +400); //TODO: add 400 once magnet moves
+            TOP(28300); //TODO: add 400 once magnet moves
 
             private final double encoderTicks;
 

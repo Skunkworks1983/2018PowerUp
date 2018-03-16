@@ -35,6 +35,7 @@ public class CollectorRotate extends CommandBase
     {
         logger.info("Rotate initialized");
         collector.setRotate(ControlMode.Position, setpoint);
+        logger.info("Collector setpoint{}", setpoint);
     }
 
     @Override
