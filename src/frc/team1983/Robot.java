@@ -126,71 +126,13 @@ public class Robot extends IterativeRobot
         updateState(Constants.MotorMap.Mode.AUTO);
 
         drivebase.setBrakeMode(true);
-
-        Path test = new Path(new ArrayList<DriveProfile>(Arrays.asList(
-            new DriveArc(drivebase, 3, -90, 2.5),
-            new DriveFeet(drivebase, -3, 2, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_TRAVEL}),
-            new DriveArc(drivebase, -3, -90, 2.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
-            new DriveFeet(drivebase, 1.5, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
-                                                                  )));
-
-
-        /*
-        Path switchCloseScaleClose = new Path(new ArrayList<>(Arrays.asList(
-            new DriveFeet(drivebase, -17, 3),
-            new DriveArc(drivebase, -3, 90, 1.5),
-            new DriveFeet(drivebase, -4, 1),
-            new DriveArc(drivebase, -1, -60, 1),
-            new DriveArc(drivebase, 0, 0, 1)
-                                                                           )));
-
-        Path switchFarScaleClose = new Path(new ArrayList<>(Arrays.asList(
-            new DriveFeet(drivebase, -15, 2),
-            new DriveArc(drivebase, 1, 90, 1),
-            new DriveArc(drivebase, -1, 90, 1),
-            new DriveArc(drivebase, 3, 10, 1)
-                                                                         )));
-
-        Path switchCloseScaleFar = new Path(new ArrayList<>(Arrays.asList(
-            new DriveFeet(drivebase, -15, 3),
-            new DriveArc(drivebase, -2, -45, 1)
-                                                                         )));
-        */
-
-        /*
-        Path switchFarScaleFar = new Path(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, -16, 2),
-                new DriveArc(drivebase, -2, 90, 1),
-                new DriveFeet(drivebase, -17, 2),
-                new DriveArc(drivebase, 1, 60, 1.5),
-                new DriveArc(drivebase, 1, -60, 1),
-                new DriveFeet(drivebase, 1, 0.5),
-                new DriveArc(drivebase, -3, -70, 1),
-                new DriveArc(drivebase, -3, 70, 1),
-                new DriveFeet(drivebase, -2, 0.5),
-                new DriveArc(drivebase, 2, 70, 1)
-                                                                       )));
-       */
-
-        /*Scheduler.getInstance().add(new Path(new ArrayList<>(Arrays.asList(
-            new DriveFeet(drivebase, 10, 2)
-                                                                          ))));*/
-
-        //Scheduler.getInstance().add(new DriveFeet(drivebase, 6, 2));
-        //Scheduler.getInstance().add(smellyParser.constructPath(new File("/U/2CubeLeftLeft.json")).getCommands());
-        Scheduler.getInstance().add(test.getCommands());
     }
 
     @Override
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
-        //autoManager.execute();
-
-        /*robotLogger.info(drivebase.left1.getClosedLoopError(0) + " & " + drivebase.left1.getClosedLoopTarget(0) +
-                         ", " + drivebase.right1.getClosedLoopError(0) + " & " + drivebase.right1.getClosedLoopTarget(0));
-                         */
-        //robotLogger.info(drivebase.left1.getMotorOutputPercent() + ", " + drivebase.right1.getMotorOutputPercent());
+        autoManager.execute();
     }
 
     @Override
@@ -208,7 +150,6 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-        robotLogger.info(drivebase.getGyro().getAngle());
     }
 
     @Override
