@@ -137,11 +137,14 @@ public class AutoManager
 
     public void execute()
     {
+        logger.info("Executing AM");
         if(!gameDataAlreadyPolled)
         {
+            logger.info("Not polled");
             gsm = DriverStation.getInstance().getGameSpecificMessage();
             if(gsm.length() == 3 || ownedSideOverride.getSelected() != OwnedSide.UNKNOWN)
             {
+                logger.info("Data found");
                 gameDataAlreadyPolled = true;
 
                 logger.info("running autonomous " + dashboard.getSelectedAutoChoice().getSelectableAuto());

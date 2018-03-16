@@ -2,13 +2,9 @@ package frc.team1983.util.path;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
-import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveProfile;
-import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.subsystems.Drivebase;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
@@ -16,105 +12,26 @@ import java.util.ArrayList;
 public class Path extends CommandGroup
 {
     private Logger logger;
-    private ArrayList<DriveProfile> points;
 
-    public Path(ArrayList<DriveProfile> points)
+    private ArrayList<DriveProfile> drives;
+
+    public Path(ArrayList<DriveProfile> drives)
     {
         this.logger = LoggerFactory.createNewLogger(this.getClass());
-        this.points = points;
 
-        DriveProfile.stitch(points);
+        this.drives = drives;
 
-        for(DriveProfile point : points)
+        for(DriveProfile drive : drives)
         {
             CommandGroup movement = new CommandGroup();
-            movement.addParallel(point);
+            movement.addParallel(drive);
 
-            for(Command action : point.getActions())
+            for(CommandBase action : drive.getActions())
             {
                 movement.addParallel(action);
             }
 
             addSequential(movement);
         }
-
-        if(Robot.getInstance().getAutoManager().getRobotPosition() == AutoManager.OwnedSide.RIGHT)
-        {
-            flipSide();
-        }
-    }
-
-    public ArrayList<DriveProfile> getPoints()
-    {
-        return points;
-    }
-
-    public Command getPoint(int i)
-    {
-        if(i < points.size())
-        {
-            return points.get(i);
-        }
-        else
-        {
-            throw new IllegalArgumentException("index " + i + " is out of bounds");
-        }
-    }
-
-    public int getComponentCount()
-    {
-        int counter = 0;
-        for(DriveProfile point : points)
-        {
-            counter += point.getActions().size() + 1;
-        }
-        return counter;
-    }
-
-    /*public Command getComponent(int i)
-    {
-        return points.get(i);
-    }*/
-
-    public void flipSide()
-    {
-        ArrayList<DriveProfile> newPoints = new ArrayList<>();
-        Drivebase drivebase = Robot.getInstance().getDrivebase();
-        for(DriveProfile drive : points)
-        {
-            if(drive instanceof DriveArc)
-            {
-                newPoints.add(new DriveArc(drivebase, -((DriveArc) drive).radius, -((DriveArc) drive).angle, ((DriveArc) drive).time, ((DriveArc) drive).actions));
-            }
-            else
-            {
-                newPoints.add(drive);
-            }
-        }
-
-
-    }
-
-    public CommandGroup getCommands()
-    {
-        CommandGroup group = new CommandGroup();
-
-        for(DriveProfile point : points)
-        {
-            CommandGroup movement = new CommandGroup();
-
-            movement.addParallel(point);
-            for(CommandBase action : point.getActions())
-            {
-                action.configTimeout(point.getTimeout());
-                movement.addParallel(action);
-            }
-
-            group.addSequential(movement);
-        }
-
-        DriveProfile.stitch(points);
-
-        return group;
     }
 }

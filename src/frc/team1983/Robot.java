@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.team1983.commands.autonomous.actions.ActionsEnum;
+import frc.team1983.commands.autonomous.profiled.MidLeft;
 import frc.team1983.commands.autonomous.profiled.SwitchCloseScaleClose;
 import frc.team1983.commands.autonomous.profiled.SwitchCloseScaleFar;
 import frc.team1983.commands.autonomous.profiled.SwitchFarScaleFar;
@@ -126,6 +127,7 @@ public class Robot extends IterativeRobot
         updateState(Constants.MotorMap.Mode.AUTO);
 
         drivebase.setBrakeMode(true);
+        //Scheduler.getInstance().add(new MidLeft(drivebase));
     }
 
     @Override

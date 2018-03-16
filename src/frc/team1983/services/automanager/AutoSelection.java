@@ -6,6 +6,8 @@ import frc.team1983.commands.autonomous.AutoMotionProfilePicker;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
 import frc.team1983.commands.autonomous.PlaceCubeInScale;
 import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
+import frc.team1983.commands.autonomous.profiled.MidLeft;
+import frc.team1983.commands.autonomous.profiled.MidRight;
 import frc.team1983.commands.autonomous.profiled.SwitchCloseScaleClose;
 import frc.team1983.commands.autonomous.profiled.SwitchFarScaleFar;
 import frc.team1983.services.logger.LoggerFactory;
@@ -19,6 +21,14 @@ public enum AutoSelection
 
     MP_SWITCH_CLOSE_SCALE_CLOSE("Scale Close Switch Close", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
         return new SwitchCloseScaleClose(drivebase);
+    }),
+
+    MP_MID_SWITCH_LEFT("Start Middle Switch Left", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
+        return new MidLeft(drivebase);
+    }),
+
+    MP_MID_SWITCH_RIGHT("Start Middle Switch Right", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
+        return new MidRight(drivebase);
     }),
 
     EXCHANGE_ZONE("Exchange Zone", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
