@@ -2,11 +2,10 @@ package frc.team1983.services.automanager;
 
 import frc.team1983.commands.autonomous.AutoPicker;
 import frc.team1983.commands.autonomous.BackupAutoPicker;
-import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
-import frc.team1983.commands.autonomous.PlaceCubeInScale;
-import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
-import frc.team1983.commands.autonomous.profiled.MidLeft;
-import frc.team1983.commands.autonomous.profiled.MidRight;
+import frc.team1983.commands.autonomous.profiled.LeftScaleLeft;
+import frc.team1983.commands.autonomous.profiled.LeftScaleRight;
+import frc.team1983.commands.autonomous.profiled.MidSwitchLeft;
+import frc.team1983.commands.autonomous.profiled.MidSwitchRight;
 import frc.team1983.commands.autonomous.profiled.SwitchCloseScaleClose;
 import frc.team1983.commands.autonomous.profiled.SwitchFarScaleFar;
 
@@ -22,11 +21,19 @@ public enum AutoSelection
     }),
 
     MP_MID_SWITCH_LEFT("Start Middle Switch Left", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
-        return new MidLeft(drivebase);
+        return new MidSwitchLeft(drivebase);
     }),
 
     MP_MID_SWITCH_RIGHT("Start Middle Switch Right", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
-        return new MidRight(drivebase);
+        return new MidSwitchRight(drivebase);
+    }),
+
+    MP_LEFT_SCALE_LEFT("Start Left Scale Left", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
+        return new LeftScaleLeft(drivebase);
+    }),
+
+    MP_LEFT_SCALE_RIGHT("Start Left Scale Right", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
+        return new LeftScaleRight(drivebase);
     }),
     /*
     EXCHANGE_ZONE("Exchange Zone", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
