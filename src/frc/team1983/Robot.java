@@ -1,12 +1,14 @@
 package frc.team1983;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.commands.drivebase.DriveArc;
-import frc.team1983.commands.drivebase.DriveFeet;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.commands.autonomous.deadreckoningautos.SwitchCloseScaleClose;
+import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.RunTankDrive;
-import frc.team1983.commands.drivebase.TurnDegree;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
@@ -17,13 +19,11 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
+import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.util.control.ProfileController;
-import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
@@ -37,7 +37,11 @@ public class Robot extends IterativeRobot
 
     private DashboardWrapper dashboardWrapper;
     private StatefulDashboard dashboard;
+    private Subsystem subsystem;
+    private GyroPidInput pidSource;
     private AutoManager autoManager;
+    private SendableChooser autonomousSelector;
+    private AutoManager.OwnedSide robotPosition;
 
     private static Robot instance;
 
@@ -75,8 +79,6 @@ public class Robot extends IterativeRobot
         updateState(Constants.MotorMap.Mode.DISABLED);
 
         autoManager.resetGameData();
-
-        drivebase.getGyro().initGyro();
     }
 
     @Override
@@ -98,7 +100,6 @@ public class Robot extends IterativeRobot
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
-
         autoManager.execute();
     }
 

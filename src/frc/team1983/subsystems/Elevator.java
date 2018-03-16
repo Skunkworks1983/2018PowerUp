@@ -1,10 +1,6 @@
 package frc.team1983.subsystems;
 
-import com.ctre.phoenix.motion.MotionProfileStatus;
-import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
@@ -48,6 +44,12 @@ public class Elevator extends Subsystem
         right2.follow(right1);
         left1.follow(right1);
         left2.follow(right1);
+
+        right1.configClosedloopRamp(.5, 0);
+
+        right1.setSensorPhase(true);
+
+        right1.setSelectedSensorPosition(0, 0, 100);
     }
 
     public void initDefaultCommand()
@@ -124,6 +126,11 @@ public class Elevator extends Subsystem
         right1.setSensorPhase(true);
         this.setpoint = setpoint;
         right1.set(ControlMode.Position, setpoint);
+    }
+    @Override
+    public void periodic()
+    {
+        //logger.debug("Error1: {}\tSetpoint: {}", right1.getClosedLoopError(0), right1.getClosedLoopTarget(0));
     }
 
     public double getCurrentDraw()

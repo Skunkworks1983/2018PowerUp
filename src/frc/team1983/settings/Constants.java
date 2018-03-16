@@ -105,7 +105,7 @@ public class Constants
     {
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
         public static final double COLLECTOR_INTAKE_SPEED = 0.75;
-        public static final double COLLECTOR_EXPEL_SPEED = -0.7;
+        public static final double COLLECTOR_EXPEL_SPEED = -0.75;
         public static final double COLLECTOR_SLOW_EXPEL_SPEED = -0.2;
         public static final double COLLECTOR_ROTATE_SPEED = -0.7;
 
@@ -190,14 +190,31 @@ public class Constants
         //PIDF values for the SimpleTurnAngle command
         public static class TurnAnglePid
         {
-            public static final double P = 0.005; //TODO: tune pid
-            public static final double I = 0;
-            public static final double D = 0;
-            public static final double F = 0;
+            public static class DifferentialAdjustmentPid
+            {
+                public static final double P = 0.0195; //TODO: tune pid
+                public static final double I = 0;
+                public static final double D = 0.08;
+                public static final double F = 0;
+            }
+            public static class DifferentialPivotPid
+            {
+                public static final double P = 0.00001;
+                public static final double I = 0;
+                public static final double D = 0;
+                public static final double F = 0;
+            }
+            public static class SimpleTurnPid
+            {
+                public static final double P = 0;
+                public static final double I = 0;
+                public static final double D = 0;
+                public static final double F = 0;
+            }
 
-            public static final double ABSOLUTE_TOLERANCE = 5;
+            public static final double ABSOLUTE_TOLERANCE = 3;
 
-            public static final double DEFAULT_TIMEOUT = 3 / 2.;
+            public static final double DEFAULT_TIMEOUT = 2.;
         }
 
         public static class CollectorRotate
@@ -208,7 +225,8 @@ public class Constants
             public static final double F = 0;//.002;
 
             public static final double UP_TICKS = 0;
-            public static final double DOWN_TICKS = -1300;
+            public static final double DOWN_TICKS = 1300;
+            public static final double MID_TICKS = 650;
         }
 
         //setpoints for motors
@@ -266,6 +284,8 @@ public class Constants
 
         public static final double MAX_OUTPUT = 0.5;
         public static final double DISTANCE_SCALAR = 1000;
+
+        public static final double DIFFERENTIAL_TURN_ANGLE_BASESPEED = .26;
     }
 
     //this contains all values relevant to the OIMap.
@@ -343,10 +363,10 @@ public class Constants
         {
             BOTTOM(0),
             TRAVEL(1560),
-            SWITCH(11000), // elevator halfway point
-            LOW(22700),
-            MID(25700),
-            TOP(28300); //TODO: add 400 once magnet moves
+            SWITCH(8925+400), // elevator halfway point
+            LOW(22700 +400),
+            MID(25700 +400),
+            TOP(28300 +400); //TODO: add 400 once magnet moves
 
             private final double encoderTicks;
 

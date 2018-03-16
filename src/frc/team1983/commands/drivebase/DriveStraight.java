@@ -1,7 +1,6 @@
 package frc.team1983.commands.drivebase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.StatefulDashboard;
@@ -15,6 +14,8 @@ import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DriveStraightPidOutput;
 import org.apache.logging.log4j.core.Logger;
 
+import static java.lang.Math.abs;
+
 
 //Moves the robot forward a specified number of feet.
 //has case for when gyro eventually explodes
@@ -25,26 +26,27 @@ public class DriveStraight extends CommandBase
     private double rightEncoderStart;
     private Drivebase drivebase;
     private PIDSource pidSource;
-    private PIDOutput pidOut;
+    private DriveStraightPidOutput pidOut;
     private PidControllerWrapper driveStraightPid;
     private Gyro gyro;
     private double baseSpeed;
     private StatefulDashboard dashboard;
+    double initialBaseSpeed;
 
     private Logger logger;
 
-    public DriveStraight(StatefulDashboard dashboard, double distance, Drivebase drivebase)
+    public DriveStraight(Drivebase drivebase, StatefulDashboard dashboard, double distance)
     {
-        this(dashboard, distance, drivebase, Constants.PidConstants.DriveStraightPid.DEFAULT_BASE_SPEED);
+        this(drivebase, dashboard, distance, Constants.PidConstants.DriveStraightPid.DEFAULT_BASE_SPEED);
     }
 
-    public DriveStraight(StatefulDashboard dashboard, double distance, Drivebase drivebase, double baseSpeed)
+    public DriveStraight(Drivebase drivebase, StatefulDashboard dashboard, double distance, double baseSpeed)
     {
-        this(dashboard, distance, drivebase, baseSpeed, Constants.PidConstants.DriveStraightPid.DEFAULT_TIMEOUT);
+        this(drivebase, dashboard, distance, baseSpeed, Constants.PidConstants.DriveStraightPid.DEFAULT_TIMEOUT);
     }
 
-    public DriveStraight(StatefulDashboard dashboard, double distance,
-                         Drivebase drivebase, double baseSpeed, double timeout)
+    public DriveStraight(Drivebase drivebase, StatefulDashboard dashboard, double distance,
+                         double baseSpeed, double timeout)
     {
         this.baseSpeed = baseSpeed;
         setTimeout(timeout);
@@ -70,7 +72,21 @@ public class DriveStraight extends CommandBase
     @Override
     public void initialize()
     {
+        gyro.checkGyroStatus();
         logger.info("gyro status{}", gyro.isDead());
+        leftEncoderStart = drivebase.getLeftDistance();
+        rightEncoderStart = drivebase.getRightDistance();
+        logger.info("Left encoder start {} \t RightEncoderStart {}", leftEncoderStart, rightEncoderStart);
+        if(distance > 0)
+        {
+            logger.info("distance greater than zero");
+        }
+        else
+        {
+            logger.info("distance less than zero");
+            baseSpeed = -baseSpeed;
+
+        }
         pidOut = new DriveStraightPidOutput(drivebase, baseSpeed);
         pidSource = gyro.isDead() ? new EncoderTurnAnglePidInput(drivebase) : new GyroPidInput(drivebase.getGyro());
 
@@ -79,37 +95,24 @@ public class DriveStraight extends CommandBase
                                                     dashboard.getDouble(this, "kD"),
                                                     dashboard.getDouble(this, "kF"),
                                                     pidSource, pidOut);
-
         driveStraightPid.setSetpoint(pidSource.pidGet());
         driveStraightPid.setOutputRange(-Constants.AutoValues.MAX_OUTPUT, Constants.AutoValues.MAX_OUTPUT);
         driveStraightPid.enable();
-        leftEncoderStart = drivebase.getLeftDistance();
-        rightEncoderStart = drivebase.getRightDistance();
-
-        if(distance < 0)
-        {
-            pidOut = new DriveStraightPidOutput(drivebase, baseSpeed);
-            pidSource = gyro.isDead() ? new EncoderTurnAnglePidInput(drivebase) : new GyroPidInput(drivebase.getGyro());
-
-            driveStraightPid = new PidControllerWrapper(dashboard.getDouble(this, "kP"),
-                                                        dashboard.getDouble(this, "kI"),
-                                                        dashboard.getDouble(this, "kD"),
-                                                        dashboard.getDouble(this, "kF"),
-                                                        pidSource, pidOut);
-
-            driveStraightPid.setSetpoint(pidSource.pidGet());
-            driveStraightPid.setOutputRange(-Constants.AutoValues.MAX_OUTPUT, Constants.AutoValues.MAX_OUTPUT);
-            driveStraightPid.enable();
-            leftEncoderStart = drivebase.getLeftDistance();
-            rightEncoderStart = drivebase.getRightDistance();
-        }
-
+        logger.info("Distance setpoint {}", distance);
+        initialBaseSpeed = baseSpeed;
     }
 
     @Override
     public void execute()
     {
         //logger.info("angle{}", driveStraightPid.getError());
+        if (abs(drivebase.getLeftDistance() - leftEncoderStart) > abs(distance) * 0.25)
+        {
+            baseSpeed = Math.max(Math.min(initialBaseSpeed * ((4./3) * ((abs(distance) - abs(drivebase.getLeftDistance() - leftEncoderStart)) / abs(distance))), abs(initialBaseSpeed)), -abs(initialBaseSpeed));
+            pidOut.setBaseSpeed(baseSpeed);
+            logger.info("Base speed scaling is {}", Math.max(Math.min(initialBaseSpeed * ((4./3) * ((abs(distance) - abs(drivebase.getLeftDistance() - leftEncoderStart)) / abs(distance))), abs(initialBaseSpeed)), -abs(initialBaseSpeed)));
+        }
+
     }
 
     @Override
@@ -117,13 +120,17 @@ public class DriveStraight extends CommandBase
     {
         //condition checks if command is timed out or if we have gone the desired distance
         //using the average of the two offset distances travelled
-        return isTimedOut() || (((drivebase.getLeftDistance() - leftEncoderStart) +
-                (drivebase.getRightDistance() - rightEncoderStart))) / 2 >= distance;
+        return isTimedOut() || ((abs((drivebase.getLeftDistance()) - (leftEncoderStart)) +
+                abs((drivebase.getRightDistance()) - (rightEncoderStart)))) / 2 >= abs(distance);
     }
 
     @Override
     public void end()
     {
+        logger.info("isTimedOut{}", isTimedOut());
+        logger.info("averaged distance{} \t raw left{} \t raw right{}", (abs((drivebase.getLeftDistance()) - (leftEncoderStart)) +
+                abs((drivebase.getRightDistance()) - (rightEncoderStart)) / 2), drivebase.getLeftDistance(), drivebase.getRightDistance());
+        logger.info("Reached end");
         driveStraightPid.disable();
 
         drivebase.setLeft(ControlMode.PercentOutput, 0);
