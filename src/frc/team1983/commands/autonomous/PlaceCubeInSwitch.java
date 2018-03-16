@@ -26,7 +26,7 @@ public class PlaceCubeInSwitch extends CommandGroup
     {
         logger = LoggerFactory.createNewLogger(PlaceCubeInSwitch.class);
         //double distanceFromLeftWall = SmartDashboard.getNumber("Distance from left wall", 0);
-        super.addSequential(new CollectorRotate(collector, false));
+        super.addSequential(new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS));
         super.addSequential(new DriveStraight(drivebase, dashboard, 10.0)); //are these numbers too magical? they're field constants
 
         //detects which side of the switch to place in
