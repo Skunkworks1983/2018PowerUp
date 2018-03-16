@@ -15,7 +15,7 @@ public class CollectorExpel extends CommandBase
     private double speed;
 
     public CollectorExpel(Collector collector, double speed) {
-        this(collector, 1, 1); //timeout won't matter in teleop but can be applied if necessary
+        this(collector, speed, 10); //timeout won't matter in teleop but can be applied if necessary
     }
     public CollectorExpel(Collector collector, double speed, double timeout)
     {
