@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.commands.autonomous.deadreckoningautos.MidToSwitch;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
@@ -111,6 +112,7 @@ public class Robot extends IterativeRobot
         drivebase.setBrakeMode(true);
 
         robotPosition = (AutoManager.OwnedSide) autonomousSelector.getSelected();
+        Scheduler.getInstance().add(new MidToSwitch(drivebase, dashboard, oi, elevator, collector, AutoManager.OwnedSide.LEFT));
         }
 
     @Override

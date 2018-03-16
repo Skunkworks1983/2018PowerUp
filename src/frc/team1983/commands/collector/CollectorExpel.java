@@ -44,7 +44,7 @@ public class CollectorExpel extends CommandBase
     public boolean isFinished()
     {
 
-        return isTimedOut(); //TODO: fix this, will break autos
+        return isTimedOut();
     }
 
 
