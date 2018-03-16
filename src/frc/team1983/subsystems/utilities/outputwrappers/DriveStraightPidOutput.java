@@ -18,6 +18,10 @@ public class DriveStraightPidOutput extends PidOutputWrapper
         this.baseSpeed = baseSpeed;
     }
 
+    public void setBaseSpeed(double speed)
+    {
+        baseSpeed = speed;
+    }
     public void writeHelper(double out)
     {
         //commented out because set() MAYBE doesn't care if values go out of bounds

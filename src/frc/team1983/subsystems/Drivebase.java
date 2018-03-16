@@ -112,6 +112,12 @@ public class Drivebase extends Subsystem
         right1.setProfile(profile);
     }
 
+    public void resetEncoders()
+    {
+        right1.setSelectedSensorPosition(0, 0, 0);
+        left1.setSelectedSensorPosition(0, 0, 0);
+    }
+
     public void runProfiles()
     {
         left1.runProfile();

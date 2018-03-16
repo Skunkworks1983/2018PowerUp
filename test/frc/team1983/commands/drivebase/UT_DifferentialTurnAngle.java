@@ -1,15 +1,16 @@
 package frc.team1983.commands.drivebase;
-
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.HLUsageReporting;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
-import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.testutility.FakeScheduler;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
@@ -19,32 +20,29 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-
-public class UT_Simple_TurnAngle
+public class UT_DifferentialTurnAngle
 {
-    private SimpleTurnAngle simpleTurnAngle;
+    private DifferentialTurnAngle differentialTurnAngle;
     private FakeScheduler fakeScheduler;
+
     @Mock
     private StatefulDashboard dashboard;
     @Mock
     private Gyro gyro;
     @Mock
-    private Drivebase drivebase;
-    @Mock
-    private GyroPidInput gyroPidInput;
+    Drivebase drivebase;
+
+    PIDController pivotPid;
     @Mock
     private Timer.StaticInterface timerStaticInterface;
     @Mock
     private Timer.Interface timerInterface;
     @Mock
     private HLUsageReporting.Interface hlUsageReporting;
-
-
     @Before
     public void setup()
     {
@@ -71,41 +69,20 @@ public class UT_Simple_TurnAngle
         HLUsageReporting.SetImplementation(hlUsageReporting);
         fakeScheduler = new FakeScheduler();
         when(drivebase.getGyro()).thenReturn(gyro);
-        simpleTurnAngle = new SimpleTurnAngle(dashboard, 90, drivebase);
+        differentialTurnAngle = new DifferentialTurnAngle(drivebase, dashboard, 0);
     }
-
     @After
     public void teardown()
     {
-        simpleTurnAngle.end();
+        differentialTurnAngle.end();
     }
 
     @Test
-    public void turnAngleUsesGyroWhenGyroIsWorking()
-    {
-        when(gyro.isDead()).thenReturn(false);
-        fakeScheduler.add(simpleTurnAngle);
-        fakeScheduler.run(1);
-        verify(gyro, atLeastOnce()).getAngle();
-    }
-
-    @Test
-    public void turnAngleUsesEncoderWhenGyroIsDead()
-    {
-        when(gyro.isDead()).thenReturn(true);
-        fakeScheduler.add(simpleTurnAngle);
-        fakeScheduler.run(1);
-        verify(drivebase, atLeastOnce()).getLeftDist();
-
-    }
-
-    @Test
-    public void turnPidStopsIfPidOvershootsAndRecorrects()
+    public void adjustmentPidStopsIfPidOvershootsAndRecorrects()
     {
         //answer gives us a different value every time as the turnPid gets us closer to targetAngle
         //returns 0 first time called for initial angle
         //mimics overshooting and then lining up
-        when(gyro.isDead()).thenReturn(false);
         AtomicReference<Integer> counter = new AtomicReference<>(0);
         when(gyro.getAngle()).then(new Answer<Double>()
         {
@@ -127,10 +104,24 @@ public class UT_Simple_TurnAngle
             }
         });
 
-        fakeScheduler.add(simpleTurnAngle);
+        fakeScheduler.add(differentialTurnAngle);
         fakeScheduler.run(25);
-        assertThat(fakeScheduler.getOrderFinished().get(0), is(simpleTurnAngle));
+        assertThat(fakeScheduler.getOrderFinished().get(0), is(differentialTurnAngle));
 
     }
+
+    @Ignore
+    @Test
+    public void pivotPidOutputZeroWhenBothSidesHaveGoneSameDistance()
+    {
+        when(drivebase.getRightDist()).thenReturn(5.);
+        when(drivebase.getLeftDist()).thenReturn(5.);
+        fakeScheduler.add(differentialTurnAngle);
+        fakeScheduler.run();
+        verify(drivebase).setLeft(ControlMode.PercentOutput, Constants.AutoValues.DIFFERENTIAL_TURN_ANGLE_BASESPEED);
+        verify(drivebase).setRight(ControlMode.PercentOutput, Constants.AutoValues.DIFFERENTIAL_TURN_ANGLE_BASESPEED);
+    }
+
+
 
 }

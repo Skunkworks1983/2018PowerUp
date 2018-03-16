@@ -44,8 +44,8 @@ public class Constants
 
         public static class Elevator
         {
-            public static final int RIGHT1 = 6;
-            public static final int RIGHT2 = 5;
+            public static final int RIGHT1 = 5;
+            public static final int RIGHT2 = 6;
 
             public static final int LEFT1 = 9;
             public static final int LEFT2 = 4;
@@ -130,7 +130,7 @@ public class Constants
     {
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
         public static final double COLLECTOR_INTAKE_SPEED = 0.75;
-        public static final double COLLECTOR_EXPEL_SPEED = -0.5;
+        public static final double COLLECTOR_EXPEL_SPEED = -0.75;
         public static final double COLLECTOR_SLOW_EXPEL_SPEED = -0.2;
         public static final double COLLECTOR_ROTATE_SPEED = -0.5;
 
@@ -154,7 +154,7 @@ public class Constants
     public static class PidConstants
     {
         //PIDF values for the DriveStraight command
-        public static class DriveStrightPid
+        public static class DriveStraightPid
         {
             public static final double P = 0.11;
             public static final double I = 0;
@@ -168,14 +168,31 @@ public class Constants
         //PIDF values for the SimpleTurnAngle command
         public static class TurnAnglePid
         {
-            public static final double P = 0.005; //TODO: tune pid
-            public static final double I = 0;
-            public static final double D = 0;
-            public static final double F = 0;
+            public static class DifferentialAdjustmentPid
+            {
+                public static final double P = 0.0195; //TODO: tune pid
+                public static final double I = 0;
+                public static final double D = 0.08;
+                public static final double F = 0;
+            }
+            public static class DifferentialPivotPid
+            {
+                public static final double P = 0.00001;
+                public static final double I = 0;
+                public static final double D = 0;
+                public static final double F = 0;
+            }
+            public static class SimpleTurnPid
+            {
+                public static final double P = 0;
+                public static final double I = 0;
+                public static final double D = 0;
+                public static final double F = 0;
+            }
 
-            public static final double ABSOLUTE_TOLERANCE = 5;
+            public static final double ABSOLUTE_TOLERANCE = 3;
 
-            public static final double DEFAULT_TIMEOUT = 3 / 2.;
+            public static final double DEFAULT_TIMEOUT = 2.;
         }
 
         public static class CollectorRotate
@@ -186,7 +203,8 @@ public class Constants
             public static final double F = 0;//.002;
 
             public static final double UP_TICKS = 0;
-            public static final double DOWN_TICKS = -1300;
+            public static final double DOWN_TICKS = 1300;
+            public static final double MID_TICKS = 650;
         }
 
         //setpoints for motors
@@ -202,27 +220,50 @@ public class Constants
         {
             public static final int ELEVATOR_BOTTOM = 0;
             //Actually negative, but ya know,
-            public static final int ELEVATOR_TOP = 29000 - 485; //Addition is to keep it from hitting the max position
+            public static final int ELEVATOR_TOP = 29000 - 300; //Addition is to keep it from hitting the max position
+            public static final double ELEVATOR_MID_PERCENT = 0.979; //constant chosen to reproduce trial and error values
+            public static final double ELEVATOR_LOW_PERCENT = 0.96;
+            public static final double ELEVATOR_TRAVEL_PERCENT = 0.03; //taking thomas' 800 number, actual percent is 2.8
+            public static final double ELEVATOR_TOP_PERCENT = 0.99;
 
-            public static final double P = 0.13;
-            public static final double I = 0;
-            public static final double D = 3;
-            public static final double F = 0.001;
+            public static class Slot0
+            {
+                public static final double P = 0.175;
+                public static final double I = 0.00015;
+                public static final double D = 0.1;
+                public static final double F = 0;
+                public static final int I_ZONE = 1000;
+
+                public static final int ALLOWABLE_CLOSED_LOOP_ERROR = 50;
+            }
+            public static class Slot1
+            {
+                public static final double P = 0.08;
+                public static final double I = 0.00005;
+                public static final double D = 0.5;
+                public static final double F = 0;
+                public static final int I_ZONE = 800;
+
+                public static final int ALLOWABLE_CLOSED_LOOP_ERROR = 50;
+            }
+
         }
     }
 
     public static class AutoValues
     {
-        public static final double WHEELBASE_RADIUS = 25.625/2/12; //T fix magic number
+        public static final double WHEELBASE_RADIUS = 25.625 / 2 / 12; //T fix magic number
         public static final double WHEELBASE_CIRCUMFERENCE = 2 * Math.PI * WHEELBASE_RADIUS;
         public static final double WHEELBASE_DEGREES = WHEELBASE_CIRCUMFERENCE / 360.;
         public static final double EFFECTIVE_REDUCTION_DRIVEBASE = 18 / 24.;
         public static final double WHEEL_CIRCUMFERENCE = 6 * Math.PI / 12.;
         public static final double DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT = 1.4;
-        public static final double DRIVEBASE_ENCODER_FUDGE_FACTOR = 6/6.3;
+        public static final double DRIVEBASE_ENCODER_FUDGE_FACTOR = 6 / 6.3;
 
         public static final double MAX_OUTPUT = 0.5;
         public static final double DISTANCE_SCALAR = 1000;
+
+        public static final double DIFFERENTIAL_TURN_ANGLE_BASESPEED = .26;
     }
 
     //this contains all values relevant to the OIMap.
@@ -298,11 +339,25 @@ public class Constants
         //Enums for presets
         public enum Setpoint
         {
-            BOTTOM,
-            SWITCH,
-            LOW,
-            MID,
-            TOP
+            BOTTOM(0),
+            TRAVEL(1560),
+            SWITCH(8925+400), // elevator halfway point
+            LOW(22700 +400),
+            MID(25700 +400),
+            TOP(28300 +400); //TODO: add 400 once magnet moves
+
+            private final double encoderTicks;
+
+            Setpoint(double encoderTicks)
+            {
+                this.encoderTicks = encoderTicks;
+            }
+
+            public double getEncoderTicks()
+            {
+                return encoderTicks;
+            }
+
         }
     }
 
