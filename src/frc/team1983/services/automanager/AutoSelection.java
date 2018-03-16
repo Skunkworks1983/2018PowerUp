@@ -12,7 +12,7 @@ import frc.team1983.commands.autonomous.profiled.SwitchFarScaleFar;
 
 public enum AutoSelection
 {
-    /*
+
     MP_SWITCH_FAR_SCALE_FAR("Scale Far Switch Far", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
         return new SwitchFarScaleFar(drivebase);
     }),
@@ -28,7 +28,7 @@ public enum AutoSelection
     MP_MID_SWITCH_RIGHT("Start Middle Switch Right", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
         return new MidRight(drivebase);
     }),
-
+    /*
     EXCHANGE_ZONE("Exchange Zone", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
         return new PlaceCubeInExchangeZone(drivebase, statefulDashboard);
     }),
