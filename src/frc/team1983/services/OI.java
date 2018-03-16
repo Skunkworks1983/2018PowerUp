@@ -1,6 +1,5 @@
 package frc.team1983.services;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,14 +7,8 @@ import frc.team1983.Robot;
 import frc.team1983.commands.Manual;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.commands.collector.CollectorIntakeSpeed;
 import frc.team1983.commands.collector.CollectorRotate;
-import frc.team1983.commands.collector.SetRotateSpeed;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
-import frc.team1983.commands.elevator.SetElevatorSpeed;
-import frc.team1983.commands.ramps.LowerRamps;
-import frc.team1983.commands.ramps.PropRamps;
-import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import org.apache.logging.log4j.core.Logger;
 
