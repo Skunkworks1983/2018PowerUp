@@ -6,17 +6,16 @@ import frc.team1983.services.logger.LoggerFactory;
 import org.apache.logging.log4j.core.Logger;
 
 
-public class AutoDoubleCubeAutoPicker extends CommandGroup
+public class BackupAutoPicker extends CommandGroup
 {
-
-    public AutoDoubleCubeAutoPicker(AutoManager autoManager)
+    public BackupAutoPicker(AutoManager autoManager)
     {
         Logger logger = LoggerFactory.createNewLogger(this.getClass());
 
         if(autoManager.getOwnedSide(AutoManager.GameFeature.SWITCH_NEAR) ==
                 autoManager.getOwnedSide(AutoManager.GameFeature.SCALE) &&
                 autoManager.getOwnedSide(AutoManager.GameFeature.SWITCH_NEAR) ==
-                autoManager.getRobotPosition())
+                        autoManager.getRobotPosition())
         {
             logger.info("Running SwitchCloseScaleClose");
             //Scheduler.getInstance().add(new SwitchCloseScaleClose(drivebase, dashboard, oi, elevator, collector, robotPosition));
@@ -24,21 +23,21 @@ public class AutoDoubleCubeAutoPicker extends CommandGroup
         else if(autoManager.getOwnedSide(AutoManager.GameFeature.SWITCH_NEAR) !=
                 autoManager.getOwnedSide(AutoManager.GameFeature.SCALE) &&
                 autoManager.getOwnedSide(AutoManager.GameFeature.SWITCH_NEAR) ==
-                autoManager.getRobotPosition())
+                        autoManager.getRobotPosition())
         {
             //switch close scale far
         }
         else if(autoManager.getOwnedSide(AutoManager.GameFeature.SWITCH_NEAR) !=
                 autoManager.getOwnedSide(AutoManager.GameFeature.SCALE) &&
                 autoManager.getOwnedSide(AutoManager.GameFeature.SWITCH_NEAR) !=
-                autoManager.getRobotPosition())
+                        autoManager.getRobotPosition())
         {
             //switch far scale close
         }
         else if(autoManager.getOwnedSide(AutoManager.GameFeature.SWITCH_NEAR) ==
                 autoManager.getOwnedSide(AutoManager.GameFeature.SCALE) &&
                 autoManager.getOwnedSide(AutoManager.GameFeature.SWITCH_NEAR) !=
-                autoManager.getRobotPosition())
+                        autoManager.getRobotPosition())
         {
             //switch far scale far
         }

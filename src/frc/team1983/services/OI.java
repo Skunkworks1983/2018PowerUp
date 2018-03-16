@@ -44,6 +44,8 @@ public class OI
         this.right = right;
         this.panel = panel;
         this.joystickButtons = joystickButtons;
+
+        this.logger = LoggerFactory.createNewLogger(this.getClass());
     }
 
     // put your command bindings in here :)
@@ -52,6 +54,8 @@ public class OI
         initializeButtons(Constants.OIMap.Joystick.LEFT);
         initializeButtons(Constants.OIMap.Joystick.RIGHT);
         initializeButtons(Constants.OIMap.Joystick.PANEL);
+
+        logger.info("Initializing Bindings");
 
         //Collector intake/expel
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
@@ -82,16 +86,6 @@ public class OI
                       new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, robot.getElevator(), this));
         bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
                        new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, robot.getElevator(), this));
-
-        //Drop/Prop
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_LEFT,
-                      new LowerRamps(robot.getRamps(), true));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_RIGHT,
-                      new LowerRamps(robot.getRamps(), false));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP_LEFT,
-                      new PropRamps(robot.getRamps(), true));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP_RIGHT,
-                      new PropRamps(robot.getRamps(), false));
 
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH,
                    new Manual(this, robot.getCollector(), robot.getElevator()));
