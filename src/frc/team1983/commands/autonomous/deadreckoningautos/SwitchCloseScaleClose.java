@@ -42,7 +42,7 @@ public class SwitchCloseScaleClose extends CommandGroup
         super.addParallel(new CollectorExpel(collector, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED, 1));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
         super.addSequential(new DriveStraight(drivebase, dashboard, -1.0, .75));
-//ur double gay
+
         //CUBE LINEUP
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0 * reflectionVariable));
         super.addSequential(new DriveStraight(drivebase, dashboard, -3, .75));

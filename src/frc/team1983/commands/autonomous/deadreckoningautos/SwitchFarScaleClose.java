@@ -30,7 +30,6 @@ public class SwitchFarScaleClose extends CommandGroup
         if (robotPosition == AutoManager.OwnedSide.LEFT) { reflectionVariable = 1; }
         else { reflectionVariable = -1; }
         logger.info("Reflection variable is {}", reflectionVariable);
-// ur gay
 
         //SWITCH APPROACH & DROPOFF
         super.addSequential(new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS));
