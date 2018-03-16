@@ -2,11 +2,6 @@ package frc.team1983.services.automanager;
 
 import frc.team1983.commands.autonomous.AutoPicker;
 import frc.team1983.commands.autonomous.BackupAutoPicker;
-import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
-import frc.team1983.commands.autonomous.PlaceCubeInScale;
-import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
-import frc.team1983.commands.autonomous.profiled.SwitchCloseScaleClose;
-import frc.team1983.commands.autonomous.profiled.SwitchFarScaleFar;
 
 public enum AutoSelection
 {

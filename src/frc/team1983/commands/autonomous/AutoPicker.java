@@ -8,16 +8,44 @@ public class AutoPicker extends CommandGroup
 {
     public AutoPicker(AutoManager autoManager)
     {
+        AutoManager.OwnedSide switchPosition, scalePosition;
+        switchPosition = autoManager.getOwnedSide(AutoManager.GameFeature.SWITCH_NEAR);
+        scalePosition = autoManager.getOwnedSide(AutoManager.GameFeature.SCALE);
+
         switch(autoManager.getRobotPosition())
         {
             case UNKNOWN:
-                //add the middle profile
-                break;
-            case RIGHT:
-                //add the side profile, with right condition
+                if(switchPosition == AutoManager.OwnedSide.LEFT)
+                {
+
+                }
+                else
+                {
+                    // run right side auto if unknown also
+                }
+
                 break;
             case LEFT:
-                //add the side profile, with left condition
+                if(switchPosition == AutoManager.OwnedSide.LEFT)
+                {
+
+                }
+                else
+                {
+                    // run right side auto if unknown also
+                }
+
+                break;
+            case RIGHT:
+                if(switchPosition == AutoManager.OwnedSide.LEFT)
+                {
+
+                }
+                else
+                {
+                    // run right side auto if unknown also
+                }
+
                 break;
         }
     }
