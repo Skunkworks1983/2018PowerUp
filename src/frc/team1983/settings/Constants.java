@@ -133,12 +133,12 @@ public class Constants
             public static class Left
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.6,
+                        0.75,
                         0,
-                        0.55,
+                        0.45,
                         0,
                         0,
-                        1023 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
+                        1750 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
                         0 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75)
                 );
 
@@ -147,18 +147,18 @@ public class Constants
             public static class Right
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.6,
+                        0.75,
                         0,
-                        0.55,
+                        0.45,
                         0,
                         0,
-                        1023 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
+                        1750 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
                         0 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75)
                 );
             }
 
             public static ClosedLoopGains HEADINGCORRECTION = new ClosedLoopGains(
-                    0.06, 0.01, 0.07, 0
+                    0.08, 0.0035, 0, 0
             );
         }
 
@@ -378,13 +378,13 @@ public class Constants
         public static final double DEFAULT_MOTIONPROFILE_ACCEL_TIME = 0.5; // [0-1]
         public static final int MIN_POINTS_IN_TALON = 3;
 
-        public static final double DRIVEBASE_LEFT_MAX_TICKS_PER_SEC = 13600.0;
-        public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14300.0;
+        public static final double DRIVEBASE_LEFT_MAX_TICKS_PER_SEC = 14000.0;
+        public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14600.0;
 
         public static final double ELEVATOR_MAX_TICKS_PER_SEC = 0;
 
-        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(14/12);
-        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.5;
-        public static final double DRIVEBASE_HEADING_END_RANGE = 7;
+        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(3/12);
+        public static final double DRIVEBASE_IN_RANGE_END_TIME = 1;
+        public static final double DRIVEBASE_HEADING_END_RANGE = 4;
     }
 }

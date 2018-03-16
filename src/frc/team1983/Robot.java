@@ -3,8 +3,10 @@ package frc.team1983;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
+import frc.team1983.commands.drivebase.TurnDegree;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
@@ -90,10 +92,6 @@ public class Robot extends IterativeRobot
         updateState(Constants.MotorMap.Mode.AUTO);
 
         drivebase.setBrakeMode(true);
-
-        Scheduler.getInstance().add(new Path(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, 6, 2)
-                                                                          ))));
     }
 
     @Override
@@ -101,7 +99,7 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
 
-        //autoManager.execute();
+        autoManager.execute();
     }
 
     @Override
@@ -120,7 +118,6 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-        robotLogger.info("leftvel (u/s): " + drivebase.getLeftEncoderVelocity() * 10 + ", rightvel (u/s): " + drivebase.getRightEncoderVelocity() * 10);
     }
 
     @Override

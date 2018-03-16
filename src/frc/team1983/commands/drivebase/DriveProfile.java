@@ -110,7 +110,7 @@ public class DriveProfile extends CommandBase
             totalDistance = (leftDistance + rightDistance) / 2;
 
             headingLoop.enable();
-            headingLoop.setOutputRange(-0.4, 0.4);
+            headingLoop.setOutputRange(-0.6, 0.6);
         }
 
         drivebase.setLeftProfile(leftProfile);
@@ -122,6 +122,8 @@ public class DriveProfile extends CommandBase
     @Override
     public void execute()
     {
+        logger.info(drivebase.getLeftError());
+
         if(runHeadingCorrection)
         {
             //double desiredHeading = startHeading + (deltaHeading * ((Math.min(timeSinceInitialized(), duration) / duration)));
@@ -144,7 +146,9 @@ public class DriveProfile extends CommandBase
 
         if(!stitched)
         {
-            if(onTarget())
+            logger.info(onTargetTime);
+
+            if(onTarget() && lastOnTargetTimestamp != 0)
             {
                 onTargetTime += (System.currentTimeMillis() - lastOnTargetTimestamp) * 0.001;
                 lastOnTargetTimestamp = System.currentTimeMillis();
@@ -153,6 +157,8 @@ public class DriveProfile extends CommandBase
             {
                 onTargetTime = 0;
             }
+
+            lastOnTargetTimestamp = System.currentTimeMillis();
 
             finished &= (onTargetTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME);
         }

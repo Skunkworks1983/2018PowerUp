@@ -14,7 +14,7 @@ public class MidSwitchLeft extends Path
     public MidSwitchLeft(Drivebase drivebase)
     {
         super(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, -0.5, 0.5),
+                new DriveFeet(drivebase, -1, 0.5),
                 new DriveArc(drivebase, -3, 90, 1.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_TRAVEL}),
                 new DriveFeet(drivebase, 4, 1),
                 new DriveArc(drivebase, 3, 90, 1.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),

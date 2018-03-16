@@ -1,8 +1,10 @@
 package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.team1983.commands.autonomous.profiled.MidLeft;
-import frc.team1983.commands.autonomous.profiled.MidRight;
+import frc.team1983.commands.autonomous.profiled.LeftScaleLeft;
+import frc.team1983.commands.autonomous.profiled.LeftScaleRight;
+import frc.team1983.commands.autonomous.profiled.MidSwitchLeft;
+import frc.team1983.commands.autonomous.profiled.MidSwitchRight;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.automanager.AutoManager;
@@ -26,22 +28,23 @@ public class AutoPicker extends CommandGroup
             case UNKNOWN:
                 if(switchPosition == AutoManager.OwnedSide.LEFT)
                 {
-                    addSequential(new MidLeft(drivebase));
+                    addSequential(new MidSwitchLeft(drivebase));
                 }
                 else
                 {
                     // run right side auto if unknown also
-                    addSequential(new MidRight(drivebase));
+                    addSequential(new MidSwitchRight(drivebase));
                 }
 
                 break;
             case LEFT:
                 if(switchPosition == AutoManager.OwnedSide.LEFT)
                 {
-
+                    addSequential(new LeftScaleLeft(drivebase));
                 }
                 else
                 {
+                    addSequential(new LeftScaleRight(drivebase));
                     // run right side auto if unknown also
                 }
 
