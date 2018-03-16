@@ -30,7 +30,9 @@ public class LeftScaleRight extends Path
                 new DriveFeet(drivebase, -14, 2, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_TRAVEL}),
                 new DriveArc(drivebase, -3, 90, 1),
                 new DriveFeet(drivebase, -10, 2, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
-                new DriveArc(drivebase, -3, 90, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE})
+                new DriveArc(drivebase, -3, 90, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE}),
+                new DriveFeet(drivebase, 4, 1.5),
+                new DriveFeet(drivebase, 0.5, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
                                            )));
     }
 }
