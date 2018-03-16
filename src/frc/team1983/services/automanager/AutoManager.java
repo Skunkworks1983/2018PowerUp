@@ -33,10 +33,15 @@ public class AutoManager
         gameDataAlreadyPolled = false;
         logger = LoggerFactory.createNewLogger(this.getClass());
 
-        dashboard.addAutoChooserAutoDefault(AutoSelection.EXCHANGE_ZONE);
+        AutoSelection defaultSelection = AutoSelection.AUTO_MP;
+        dashboard.addAutoChooserAutoDefault(defaultSelection);
+
         for(AutoSelection selection : AutoSelection.values())
         {
-            dashboard.addAutoChooserAutoChoice(selection);
+            if(selection != defaultSelection)
+            {
+                dashboard.addAutoChooserAutoChoice(selection);
+            }
         }
 
         robotPositionSelector = new SendableChooser<>();

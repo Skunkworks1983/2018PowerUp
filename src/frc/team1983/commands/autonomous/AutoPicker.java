@@ -4,10 +4,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.services.automanager.AutoManager;
 
 
-public class AutoMotionProfilePicker extends CommandGroup
+public class AutoPicker extends CommandGroup
 {
-
-    public AutoMotionProfilePicker(AutoManager autoManager)
+    public AutoPicker(AutoManager autoManager)
     {
         switch(autoManager.getRobotPosition())
         {

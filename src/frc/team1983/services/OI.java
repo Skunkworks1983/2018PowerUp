@@ -83,16 +83,6 @@ public class OI
         bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
                        new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, robot.getElevator(), this));
 
-        //Drop/Prop
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_LEFT,
-                      new LowerRamps(robot.getRamps(), true));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_RIGHT,
-                      new LowerRamps(robot.getRamps(), false));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP_LEFT,
-                      new PropRamps(robot.getRamps(), true));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP_RIGHT,
-                      new PropRamps(robot.getRamps(), false));
-
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH,
                    new Manual(this, robot.getCollector(), robot.getElevator()));
     }
