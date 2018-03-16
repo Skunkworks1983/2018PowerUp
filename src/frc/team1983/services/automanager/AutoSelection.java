@@ -15,11 +15,19 @@ public enum AutoSelection
     }),
 
     MP_MID_SWITCH_LEFT("Start Middle Switch Left", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
-        return new MidLeft(drivebase);
+        return new MidSwitchLeft(drivebase);
     }),
 
     MP_MID_SWITCH_RIGHT("Start Middle Switch Right", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
-        return new MidRight(drivebase);
+        return new MidSwitchRight(drivebase);
+    }),
+
+    MP_LEFT_SCALE_LEFT("Start Left Scale Left", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
+        return new LeftScaleLeft(drivebase);
+    }),
+
+    MP_LEFT_SCALE_RIGHT("Start Left Scale Right", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
+        return new LeftScaleRight(drivebase);
     }),
     */
     /*

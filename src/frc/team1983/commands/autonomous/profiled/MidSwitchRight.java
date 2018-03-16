@@ -9,9 +9,9 @@ import frc.team1983.util.path.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MidRight extends Path
+public class MidSwitchRight extends Path
 {
-    public MidRight(Drivebase drivebase)
+    public MidSwitchRight(Drivebase drivebase)
     {
         super(
                 new ArrayList<>(Arrays.asList(
