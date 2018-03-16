@@ -1,5 +1,6 @@
 package frc.team1983;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.drivebase.DriveFeet;
@@ -109,9 +110,8 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.TELEOP);
 
-        oi.initializeBindings(this);
-
         drivebase.setBrakeMode(false);
+        oi.initializeBindings(this);
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
     }
