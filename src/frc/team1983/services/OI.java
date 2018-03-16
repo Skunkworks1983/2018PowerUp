@@ -9,6 +9,7 @@ import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.commands.collector.CollectorRotate;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import org.apache.logging.log4j.core.Logger;
 
@@ -37,6 +38,8 @@ public class OI
         this.right = right;
         this.panel = panel;
         this.joystickButtons = joystickButtons;
+
+        this.logger = LoggerFactory.createNewLogger(this.getClass());
     }
 
     // put your command bindings in here :)
@@ -45,6 +48,8 @@ public class OI
         initializeButtons(Constants.OIMap.Joystick.LEFT);
         initializeButtons(Constants.OIMap.Joystick.RIGHT);
         initializeButtons(Constants.OIMap.Joystick.PANEL);
+
+        logger.info("Initializing Bindings");
 
         //Collector intake/expel
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,

@@ -14,6 +14,15 @@ public enum AutoSelection
         return new SwitchCloseScaleClose(drivebase);
     }),
 
+    MP_MID_SWITCH_LEFT("Start Middle Switch Left", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
+        return new MidLeft(drivebase);
+    }),
+
+    MP_MID_SWITCH_RIGHT("Start Middle Switch Right", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
+        return new MidRight(drivebase);
+    }),
+    */
+    /*
     EXCHANGE_ZONE("Exchange Zone", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
         return new PlaceCubeInExchangeZone(drivebase, statefulDashboard);
     }),
@@ -25,9 +34,7 @@ public enum AutoSelection
     }),
     */
 
-    MP_AUTO_PICKER("GAMEDATA MP AUTO PICKER", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
-        return new AutoPicker(autoManager);
-    }),
+    MP_AUTO_PICKER("GAMEDATA MP AUTO PICKER", AutoPicker::new),
 
     BACKUP_AUTO_PICKER("GAMEDATA BACKUP AUTO PICKER", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
         return new BackupAutoPicker(autoManager);

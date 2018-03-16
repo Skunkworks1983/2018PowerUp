@@ -54,10 +54,6 @@ public class Robot extends IterativeRobot
         drivebase = new Drivebase();
         collector = new Collector();
         elevator = new Elevator();
-
-        DriverStation.getInstance().waitForData();
-
-        oi.initializeBindings(this);
     }
 
     @Override
@@ -107,6 +103,7 @@ public class Robot extends IterativeRobot
         updateState(Constants.MotorMap.Mode.TELEOP);
 
         drivebase.setBrakeMode(false);
+        oi.initializeBindings(this);
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
     }
