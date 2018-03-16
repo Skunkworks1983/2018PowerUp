@@ -33,7 +33,7 @@ public class AutoManager
         gameDataAlreadyPolled = false;
         logger = LoggerFactory.createNewLogger(this.getClass());
 
-        AutoSelection defaultSelection = AutoSelection.AUTO_MP;
+        AutoSelection defaultSelection = AutoSelection.MP_AUTO_PICKER;
         dashboard.addAutoChooserAutoDefault(defaultSelection);
 
         for(AutoSelection selection : AutoSelection.values())
@@ -148,10 +148,6 @@ public class AutoManager
             if(gsm.length() == 3 || ownedSideOverride.getSelected() != OwnedSide.UNKNOWN)
             {
                 gameDataAlreadyPolled = true;
-
-                logger.info("running autonomous " + dashboard.getSelectedAutoChoice().getSelectableAuto());
-
-                logger.info("Got game data");
 
                 Scheduler.getInstance().add(dashboard.getSelectedAutoChoice().getSelectableAuto().createCommand(
                         Robot.getInstance().getDrivebase(), Robot.getInstance().getCollector(),

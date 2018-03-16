@@ -1,6 +1,5 @@
 package frc.team1983.services.automanager;
 
-import frc.team1983.commands.CommandBase;
 import frc.team1983.commands.autonomous.AutoPicker;
 import frc.team1983.commands.autonomous.BackupAutoPicker;
 import frc.team1983.commands.autonomous.PlaceCubeInExchangeZone;
@@ -8,8 +7,6 @@ import frc.team1983.commands.autonomous.PlaceCubeInScale;
 import frc.team1983.commands.autonomous.PlaceCubeInSwitch;
 import frc.team1983.commands.autonomous.profiled.SwitchCloseScaleClose;
 import frc.team1983.commands.autonomous.profiled.SwitchFarScaleFar;
-import frc.team1983.services.logger.LoggerFactory;
-import org.apache.logging.log4j.core.Logger;
 
 public enum AutoSelection
 {
@@ -25,22 +22,19 @@ public enum AutoSelection
     EXCHANGE_ZONE("Exchange Zone", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
         return new PlaceCubeInExchangeZone(drivebase, statefulDashboard);
     }),
-
     SCALE("Scale", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
         return new PlaceCubeInScale(drivebase, statefulDashboard);
     }),
-
     SWITCH("Switch", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
         return new PlaceCubeInSwitch(drivebase, statefulDashboard);
     }),
-
     */
 
-    AUTO_MP("AutoSelection SmellyDrive", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
+    MP_AUTO_PICKER("GAMEDATA MP AUTO PICKER", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
         return new AutoPicker(autoManager);
     }),
 
-    AUTO_BACKUP("AutoSelection DoubleCubeAuto", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
+    BACKUP_AUTO_PICKER("GAMEDATA BACKUP AUTO PICKER", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
         return new BackupAutoPicker(autoManager);
     });
 
