@@ -10,11 +10,13 @@ public class LowerRamps extends CommandBase
 {
     private Ramps ramp;
     private Logger logger;
+    private boolean left;
 
-    public LowerRamps(Ramps ramp)
+    public LowerRamps(Ramps ramp, boolean left)
     {
         requires(ramp);
         this.ramp = ramp;
+        this.left = left;
         logger = LoggerFactory.createNewLogger(LowerRamps.class);
     }
 
@@ -27,7 +29,7 @@ public class LowerRamps extends CommandBase
     @Override
     public void execute()
     {
-        ramp.unlock();
+        ramp.unlock(left);
     }
 
     @Override
@@ -39,7 +41,7 @@ public class LowerRamps extends CommandBase
     @Override
     public void end()
     {
-        ramp.lock();
+        ramp.lock(left);
     }
 
     @Override

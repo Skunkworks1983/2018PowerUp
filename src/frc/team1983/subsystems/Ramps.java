@@ -25,28 +25,60 @@ public class Ramps extends Subsystem
         logger = LoggerFactory.createNewLogger(Ramps.class);
     }
 
-    public void lock()
+    public void lock(boolean left)
     {
-        leftLock.set(0);
-        rightLock.set(0);
+        if(left)
+        {
+            leftLock.set(0.2);
+        }
+        else
+        {
+            rightLock.set(0.2);
+        }
     }
 
-    public void unlock()
+    public void unlock(boolean left)
     {
-        leftLock.set(1);
-        rightLock.set(1);
+        if(left)
+        {
+            leftLock.set(1);
+        }
+        else
+        {
+            rightLock.set(1);
+        }
     }
 
-    public void unprop()
+    public void unprop(boolean left)
     {
-        leftLeg.set(1);
-        rightLeg.set(1);
+        if(left)
+        {
+            leftLeg.set(1);
+        }
+        else
+        {
+            rightLeg.set(1);
+        }
     }
 
-    public void prop()
+    public void prop(boolean left)
     {
-        leftLeg.set(0);
-        rightLeg.set(0);
+        if(left)
+        {
+            leftLeg.set(0);
+        }
+        else
+        {
+            rightLeg.set(0);
+        }
+    }
+
+    public void reset()
+    {
+        unprop(true);
+        unprop(false);
+        lock(true);
+        lock(false);
     }
 
     public void initDefaultCommand()

@@ -2,10 +2,11 @@ package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team1983.Robot;
+import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
-import frc.team1983.commands.drivebase.TurnAngle;
+import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import org.apache.logging.log4j.core.Logger;
 
@@ -17,23 +18,30 @@ import org.apache.logging.log4j.core.Logger;
 public class PlaceCubeInExchangeZone extends CommandGroup
 {
 
-    private Drivebase drivebase = Robot.getInstance().getDrivebase();
-    double distanceFromLeftWall = SmartDashboard.getNumber("Distance from left wall", 0);
+    private Drivebase drivebase;
+    private double distanceFromLeftWall = SmartDashboard.getNumber("Distance from left wall", 5);
+    private StatefulDashboard dashboard;
 
     private Logger logger;
 
-    public PlaceCubeInExchangeZone()
+    public PlaceCubeInExchangeZone(Drivebase drivebase, StatefulDashboard dashboard)
     {
+        this.drivebase = drivebase;
         logger = LoggerFactory.createNewLogger(PlaceCubeInExchangeZone.class);
         //these are approximate values! they'll be subbed out later for stuff that works with motion profiling
-        super.addSequential(new DriveStraight(5, drivebase));
-        super.addSequential(new TurnAngle(90, drivebase));
-        super.addSequential(new DriveStraight(distanceFromLeftWall - 8.5, drivebase));
-        super.addSequential(new TurnAngle(90, drivebase));
-        super.addSequential(new DriveStraight(5, drivebase));
+        //goes forward and crosses the line, then turns toward middle
+        super.addSequential(new DriveStraight(drivebase, dashboard, 5+ Constants.AutoValues.DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT, .25));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 85));
+
+        //drives perpendicular to exchange port, and then turns toward it
+        super.addSequential(new DriveStraight(drivebase, dashboard, 8.25 - distanceFromLeftWall, .25));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 85));
+
+        //drives into exchange port, then expels cube, and then backs up
+        super.addSequential(new DriveStraight(drivebase, dashboard, 3+Constants.AutoValues.DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT, .25));
         //super.addSequential(new Elevator(exchange zone height, elevator);
         //super.addSequential(new Collector(expel, collector);
-        super.addSequential(new DriveStraight(-14, drivebase));
+        //super.addSequential(new DriveStraight(dashboard, -6.75+Constants.AutoValues.DISTANCE_FROM_ENCODER_TO_END_OF_ROBO T, drivebase, .5));
 
 
 

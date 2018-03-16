@@ -2,12 +2,11 @@ package frc.team1983.commands.drivebase;
 
 import edu.wpi.first.wpilibj.HLUsageReporting;
 import edu.wpi.first.wpilibj.Timer;
+import frc.team1983.services.StatefulDashboard;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
-import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
-import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseRotationPidOutput;
 import frc.team1983.testutility.FakeScheduler;
 import org.junit.After;
 import org.junit.Before;
@@ -26,11 +25,12 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 
-public class UT_TurnAngle
+public class UT_Simple_TurnAngle
 {
-    private TurnAngle turnAngle;
+    private SimpleTurnAngle simpleTurnAngle;
     private FakeScheduler fakeScheduler;
-
+    @Mock
+    private StatefulDashboard dashboard;
     @Mock
     private Gyro gyro;
     @Mock
@@ -71,20 +71,20 @@ public class UT_TurnAngle
         HLUsageReporting.SetImplementation(hlUsageReporting);
         fakeScheduler = new FakeScheduler();
         when(drivebase.getGyro()).thenReturn(gyro);
-        turnAngle = new TurnAngle(10, drivebase);
+        simpleTurnAngle = new SimpleTurnAngle(dashboard, 90, drivebase);
     }
 
     @After
     public void teardown()
     {
-        turnAngle.end();
+        simpleTurnAngle.end();
     }
 
     @Test
     public void turnAngleUsesGyroWhenGyroIsWorking()
     {
         when(gyro.isDead()).thenReturn(false);
-        fakeScheduler.add(turnAngle);
+        fakeScheduler.add(simpleTurnAngle);
         fakeScheduler.run(1);
         verify(gyro, atLeastOnce()).getAngle();
     }
@@ -93,9 +93,9 @@ public class UT_TurnAngle
     public void turnAngleUsesEncoderWhenGyroIsDead()
     {
         when(gyro.isDead()).thenReturn(true);
-        fakeScheduler.add(turnAngle);
+        fakeScheduler.add(simpleTurnAngle);
         fakeScheduler.run(1);
-        verify(drivebase, atLeastOnce()).getLeftEncoderValue();
+        verify(drivebase, atLeastOnce()).getLeftDist();
 
     }
 
@@ -120,16 +120,16 @@ public class UT_TurnAngle
                 else
                 {
                     counter.set(counter.get() + 1);
-                    return Math.sin(counter.get().doubleValue()) / counter.get().doubleValue() * (Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE +1) + 10;
+                    return Math.sin(counter.get().doubleValue()) / counter.get().doubleValue() * (Constants.PidConstants.TurnAnglePid.ABSOLUTE_TOLERANCE +1) + 90;
                     //mimics oscillation of robot when trying get within absolute tolerance
                 }
 
             }
         });
 
-        fakeScheduler.add(turnAngle);
+        fakeScheduler.add(simpleTurnAngle);
         fakeScheduler.run(25);
-        assertThat(fakeScheduler.getOrderFinished().get(0), is(turnAngle));
+        assertThat(fakeScheduler.getOrderFinished().get(0), is(simpleTurnAngle));
 
     }
 

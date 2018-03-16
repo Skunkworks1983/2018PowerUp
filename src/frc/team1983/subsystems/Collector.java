@@ -8,7 +8,6 @@ import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.sensors.DigitalInputWrapper;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.subsystems.utilities.MotorGroup;
 import org.apache.logging.log4j.core.Logger;
 
 //Subsystem that will acquire and expel the Power Cubes.
@@ -40,16 +39,19 @@ public class Collector extends Subsystem
         rotate.config_kF(0, Constants.PidConstants.CollectorRotate.F, 0);
 
         rotate.configClosedloopRamp(0.25, 0);
-        rotate.configPeakOutputForward(0.75, 0);
+        rotate.configPeakOutputForward(0.3, 0);
+
+        //TODO reset rotate encoder on startup
 
         rotate.selectProfileSlot(0, 0);
-
+        rotate.setSensorPhase(true);
         logger = LoggerFactory.createNewLogger(Collector.class);
+
+
     }
 
     public void initDefaultCommand()
     {
-
     }
 
     public void setLeft(ControlMode mode, double value)
@@ -64,7 +66,6 @@ public class Collector extends Subsystem
 
     public void setRotate(ControlMode mode, double value)
     {
-        logger.info("Set rotate");
         rotate.set(mode, value);
     }
 
@@ -81,6 +82,13 @@ public class Collector extends Subsystem
     public double getPosition()
     {
         return rotate.getSelectedSensorPosition(0);
+    }
+
+    @Override
+    public void periodic()
+    {
+        //logger.trace("Collector pos: {}", getPosition());
+        //logger.trace("Collector error: {}", rotate.getClosedLoopError(0));
     }
 }
 

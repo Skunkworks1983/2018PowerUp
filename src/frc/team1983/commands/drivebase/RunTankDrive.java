@@ -9,20 +9,20 @@ import frc.team1983.subsystems.Drivebase;
 import org.apache.logging.log4j.core.Logger;
 
 //Default command for drivebase during Teleop
-public class TankDrive extends CommandBase
+public class RunTankDrive extends CommandBase
 {
     private Drivebase drivebase;
     private OI oi;
     private Logger logger;
 
-    public TankDrive(Drivebase drivebase, OI oi)
+    public RunTankDrive(Drivebase drivebase, frc.team1983.services.OI oi)
     {
         requires(drivebase);
 
         this.drivebase = drivebase;
         this.oi = oi;
 
-        logger = LoggerFactory.createNewLogger(TankDrive.class);
+        logger = LoggerFactory.createNewLogger(RunTankDrive.class);
     }
 
     @Override
@@ -34,13 +34,8 @@ public class TankDrive extends CommandBase
     @Override
     public void execute()
     {
-        double leftSpeed = oi.getAxis(Constants.OIMap.Joystick.LEFT, Constants.OIMap.Axis.Y);
-        double rightSpeed = oi.getAxis(Constants.OIMap.Joystick.RIGHT, Constants.OIMap.Axis.Y);
-
-        logger.info("Left: {}, Right: {}", leftSpeed, rightSpeed);
-
-        drivebase.setLeft(ControlMode.PercentOutput, leftSpeed);
-        drivebase.setRight(ControlMode.PercentOutput, rightSpeed);
+        drivebase.setLeft(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.LEFT, Constants.OIMap.Axis.Y));
+        drivebase.setRight(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.RIGHT, Constants.OIMap.Axis.Y));
     }
 
     @Override
@@ -50,17 +45,15 @@ public class TankDrive extends CommandBase
     }
 
     @Override
+    public void interrupted()
+    {
+        end();
+    }
+
+    @Override
     public void end()
     {
         drivebase.setLeft(ControlMode.PercentOutput, 0);
         drivebase.setRight(ControlMode.PercentOutput, 0);
     }
-
-    @Override
-    public void interrupted()
-    {
-        this.end();
-    }
-
-
 }

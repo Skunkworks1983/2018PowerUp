@@ -1,11 +1,16 @@
 package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.commands.collector.CollectorExpel;
+import frc.team1983.commands.collector.CollectorRotate;
+import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
-import frc.team1983.commands.drivebase.TurnAngle;
+import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.settings.Constants;
+import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
+import frc.team1983.subsystems.Elevator;
 import org.apache.logging.log4j.core.Logger;
 
 
@@ -16,35 +21,33 @@ public class PlaceCubeInSwitch extends CommandGroup
     private boolean isOurColorLeft = true; //TODO: GET SOME REAL INFORMATION FOR THIS
     private Logger logger;
 
-    public PlaceCubeInSwitch(Drivebase drivebase)
+
+    public PlaceCubeInSwitch(Drivebase drivebase, StatefulDashboard dashboard, Elevator elevator, Collector collector)
     {
         logger = LoggerFactory.createNewLogger(PlaceCubeInSwitch.class);
-        double distanceFromLeftWall = SmartDashboard.getNumber("Distance from left wall", 0);
+        //double distanceFromLeftWall = SmartDashboard.getNumber("Distance from left wall", 0);
+        super.addSequential(new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 10.0)); //are these numbers too magical? they're field constants
 
-        super.addSequential(new DriveStraight(7.0, drivebase)); //are these numbers too magical? they're field constants
+        //detects which side of the switch to place in
+        if(isOurColorLeft)
+        {
+            super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90));
+        }
+        else
+        {
+            super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90));
+        }
 
-           //detects which side of the switch to place in
-            if (isOurColorLeft)
-            {
-                super.addSequential(new TurnAngle(-90, drivebase));
+        //super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi), 2);
+        super.addSequential(new DriveStraight(drivebase, dashboard, 2.0));
+        super.addSequential(new CollectorExpel(collector, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED));
+        //drive to be equally distant from the left wall as the left side of the switch is. (7.5 ft away)
 
-                //drive to be equally distant from the left wall as the left side of the switch is. (7.5 ft away)
-                super.addSequential(new DriveStraight((distanceFromLeftWall - 7.5), drivebase));
-                super.addSequential(new TurnAngle(90, drivebase));
 
-            } else
-            {
-                super.addSequential(new TurnAngle(90, drivebase));
-                super.addSequential(new DriveStraight(7.0, drivebase));
-
-                //drive to be equally distant from the left wall as the right side of the switch is (19.5 ft away)
-                super.addSequential(new DriveStraight((19.5 - distanceFromLeftWall), drivebase));
-                super.addSequential(new TurnAngle(-90, drivebase));
-            }
-            super.addSequential(new DriveStraight(7, drivebase));
-            //super.addSequential(raise elevator);
-            //super.addSequential(eject cube);
-            //super.addSequential(lower elevator);
+        //super.addSequential(raise elevator);
+        //super.addSequential(eject cube);
+        //super.addSequential(lower elevator);
     }
 }
 
