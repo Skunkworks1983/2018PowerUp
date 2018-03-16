@@ -226,11 +226,6 @@ public class Robot extends IterativeRobot
         return drivebase;
     }
 
-    public Ramps getRamps()
-    {
-        return ramps;
-    }
-
     public Elevator getElevator()
     {
         return elevator;
