@@ -6,15 +6,14 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
 import frc.team1983.commands.Manual;
+import frc.team1983.commands.climber.CreateTension;
+import frc.team1983.commands.climber.DropFork;
+import frc.team1983.commands.climber.EngageDogGears;
+import frc.team1983.commands.climber.Hook;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.commands.collector.CollectorIntakeSpeed;
 import frc.team1983.commands.collector.CollectorRotate;
-import frc.team1983.commands.collector.SetRotateSpeed;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
-import frc.team1983.commands.elevator.SetElevatorSpeed;
-import frc.team1983.commands.ramps.LowerRamps;
-import frc.team1983.commands.ramps.PropRamps;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import org.apache.logging.log4j.core.Logger;
@@ -84,7 +83,6 @@ public class OI
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.DOWN,
                       new CollectorRotate(robot.getCollector(), false));
 
-        //TODO tune this pid
         //Elevator setpoints
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
                   new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator(), this));
@@ -98,14 +96,14 @@ public class OI
                   new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, robot.getElevator(), this));
 
         //Drop/Prop
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_LEFT,
-                      new LowerRamps(robot.getRamps(), true));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_RIGHT,
-                      new LowerRamps(robot.getRamps(), false));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP_LEFT,
-                      new PropRamps(robot.getRamps(), true));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP_RIGHT,
-                      new PropRamps(robot.getRamps(), false));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.HOOK,
+                      new Hook(robot.getClimber()));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.DROP_FORKS,
+                      new DropFork(robot.getClimber()));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.CREATE_TENSION,
+                      new CreateTension(robot.getClimber()));
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.ENGAGE_DOG_GEARS,
+                      new EngageDogGears(robot.getClimber()));
 
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH,
                    new Manual(this, robot.getCollector(), robot.getElevator()));

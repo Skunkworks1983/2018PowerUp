@@ -90,16 +90,24 @@ public class Constants
 
         public static class Climber // magic numbers
         {
-            public static final int STABILIZER = 16;
+            //two drop
+            //two hook
+            //two cam servos
+            //two limit switches on cam servos
 
-            public static final int MAGIC_JACKS = 17;
-            public static final int CLIMBER_MOTOR = 21;
-            public static final boolean CLIMBER_MOTOR_REVERSED = false;
+            public static final int TENSION_MOTOR = 3;
+            public static final boolean TENSION_MOTOR_REVERSED = false;
 
-            public static final int CAM_LEFT = 18;
-            public static final int CAM_RIGHT = 19;
+            public static final int DROP_SERVO_LEFT = 0;
+            public static final int DROP_SERVO_RIGHT = 0;
 
-            public static final int HOOKS = 20;
+            public static final int HOOK_SERVO_0 = 0;
+            public static final int HOOK_SERVO_1 = 0;
+
+            public static final int CAM_SERVO_LEFT = 0;
+            public static final int CAM_SERVO_RIGHT = 0;
+
+            public static final double UPPER_TENSION_MOTOR_CURRENT = 30;
         }
 
 
@@ -279,12 +287,12 @@ public class Constants
             public static final int M_DOWN = 5;
         }
 
-        public static class RampButtons
+        public static class ClimberButtons
         {
-            public static final int DROP_LEFT = 20;
-            public static final int DROP_RIGHT = 21;
-            public static final int PROP_LEFT = 22;
-            public static final int PROP_RIGHT = 23;
+            public static final int HOOK = 20;
+            public static final int DROP_FORKS = 21;
+            public static final int CREATE_TENSION = 22;
+            public static final int ENGAGE_DOG_GEARS = 23;
         }
 
         //Enums for presets
@@ -305,6 +313,14 @@ public class Constants
         {
             public static final int IS_CONNECTED_TIMEOUT = 500;
             public static final int IS_CALIBRATING_TIMEOUT = 500;
+        }
+
+        public static class Collector
+        {
+            public static final int LEFT_CAM_SWITCH = 0; //TODO find port
+            public static final int RIGHT_CAM_SWITCH = 0; //TODO find port
+            public static final boolean LEFT_CAM_REVERSED = false;
+            public static final boolean RIGHT_CAM_REVERSED = false;
         }
     }
 
