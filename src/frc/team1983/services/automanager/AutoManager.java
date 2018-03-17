@@ -44,16 +44,10 @@ public class AutoManager
             }
         }
 
-        robotPositionSelector = new SendableChooser<>();
-        robotPositionSelector.addDefault("Left", OwnedSide.LEFT);
-        robotPositionSelector.addObject("Middle", OwnedSide.UNKNOWN); //A little confusing, but easier on our logic
-        robotPositionSelector.addObject("Right", OwnedSide.RIGHT);
-        SmartDashboard.putData("Robot Position Selector", robotPositionSelector); //TODO implement in dashboard wrapper
-
         ownedSideOverride = new SendableChooser<>();
         ownedSideOverride.addDefault("Use game data", OwnedSide.UNKNOWN);
-        ownedSideOverride.addObject("Left", OwnedSide.LEFT);
-        ownedSideOverride.addObject("Right", OwnedSide.RIGHT);
+        /*ownedSideOverride.addObject("Left", OwnedSide.LEFT);
+        ownedSideOverride.addObject("Right", OwnedSide.RIGHT);*/
         SmartDashboard.putData("Owned Side Override", ownedSideOverride); //TODO implement in dashboard wrapper
     }
 
