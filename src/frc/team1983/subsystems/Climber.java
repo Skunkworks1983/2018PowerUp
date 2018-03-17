@@ -86,6 +86,11 @@ public class Climber extends Subsystem
         haveTension = true;
     }
 
+    public boolean haveTension()
+    {
+        return haveTension;
+    }
+
     public void engageDogGear() //throws HookNotEngagedException, NoTensionException
     {/*
         if(!hookEngaged)
@@ -109,5 +114,17 @@ public class Climber extends Subsystem
     public void initDefaultCommand()
     {
 
+    }
+
+    public boolean getCamSwitch(boolean left)
+    {
+        if(left)
+        {
+            return leftCamSwitch.get();
+        }
+        else
+        {
+            return rightCamSwitch.get();
+        }
     }
 }

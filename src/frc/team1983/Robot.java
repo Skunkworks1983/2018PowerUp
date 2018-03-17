@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.autonomous.deadreckoningautos.SwitchCloseScaleClose;
+import frc.team1983.commands.climber.MonitorCams;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.RunTankDrive;
@@ -145,6 +146,7 @@ public class Robot extends IterativeRobot
         }
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
+        Scheduler.getInstance().add(new MonitorCams(climber));
 
         drivebase.setBrakeMode(false);
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
