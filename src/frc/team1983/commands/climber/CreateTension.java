@@ -25,9 +25,9 @@ public class CreateTension extends CommandBase
     {
         try
         {
-            climber.setTensionMotor(.5);
+            climber.setTensionMotor(.5); //TODO find a good speed
         }
-        catch(HookNotEngagedException e)
+        catch(Exception e) //Should be HookNotEngaged exception
         {
             logger.warn("Tried to create tension, but hooks were not engaged", e);
             finished = true;

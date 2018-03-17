@@ -107,6 +107,8 @@ public class Constants
             public static final int CAM_SERVO_LEFT = 0;
             public static final int CAM_SERVO_RIGHT = 0;
 
+            //free current 1.8 amps
+            //stall current 41 amps
             public static final double UPPER_TENSION_MOTOR_CURRENT = 30;
         }
 

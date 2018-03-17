@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
 import frc.team1983.commands.Manual;
 import frc.team1983.commands.climber.CreateTension;
-import frc.team1983.commands.climber.DropFork;
+import frc.team1983.commands.climber.DropForks;
 import frc.team1983.commands.climber.EngageDogGears;
 import frc.team1983.commands.climber.Hook;
 import frc.team1983.commands.collector.CollectorExpel;
@@ -112,7 +112,7 @@ public class OI
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.HOOK,
                       new Hook(robot.getClimber()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.DROP_FORKS,
-                      new DropFork(robot.getClimber()));
+                      new DropForks(robot.getClimber()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.CREATE_TENSION,
                       new CreateTension(robot.getClimber()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.ENGAGE_DOG_GEARS,

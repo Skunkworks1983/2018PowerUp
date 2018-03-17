@@ -3,11 +3,11 @@ package frc.team1983.commands.climber;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.subsystems.Climber;
 
-public class DropFork extends CommandBase
+public class DropForks extends CommandBase
 {
     private Climber climber;
 
-    public DropFork(Climber climber)
+    public DropForks(Climber climber)
     {
         this.climber = climber;
     }

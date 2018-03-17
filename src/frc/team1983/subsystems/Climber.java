@@ -60,12 +60,12 @@ public class Climber extends Subsystem
         hookEngaged = true;
     }
 
-    public void setTensionMotor(double speed) throws HookNotEngagedException
-    {
+    public void setTensionMotor(double speed)// throws HookNotEngagedException
+    {/*
         if(!hookEngaged)
         {
             throw new HookNotEngagedException();
-        }
+        }*/
         tensionMotor.set(ControlMode.PercentOutput, speed);
     }
 
@@ -86,8 +86,8 @@ public class Climber extends Subsystem
         haveTension = true;
     }
 
-    public void engageDogGear() throws HookNotEngagedException, NoTensionException
-    {
+    public void engageDogGear() //throws HookNotEngagedException, NoTensionException
+    {/*
         if(!hookEngaged)
         {
             throw new HookNotEngagedException();
@@ -95,7 +95,7 @@ public class Climber extends Subsystem
         if(!haveTension)
         {
             throw new NoTensionException();
-        }
+        }*/
         camLeft.set(1.0);
         camRight.set(1.0);
     }

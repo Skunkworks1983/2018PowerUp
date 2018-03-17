@@ -21,9 +21,8 @@ public class EngageDogGears extends CommandBase
     @Override
     public void initialize()
     {
-        try
-        {
-            climber.engageDogGear();
+        //try {
+            climber.engageDogGear();/*
         }
         catch(HookNotEngagedException e)
         {
@@ -32,7 +31,7 @@ public class EngageDogGears extends CommandBase
         catch(NoTensionException e)
         {
             logger.warn("Attempted to engage dog gear before tension was created", e);
-        }
+        }*/
     }
 
     @Override
