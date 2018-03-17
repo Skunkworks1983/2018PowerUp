@@ -47,8 +47,8 @@ public class AutoManager
 
         ownedSideOverride = new SendableChooser<>();
         ownedSideOverride.addDefault("Use game data", OwnedSide.UNKNOWN);
-        ownedSideOverride.addObject("Left", OwnedSide.LEFT);
-        ownedSideOverride.addObject("Right", OwnedSide.RIGHT);
+        /*ownedSideOverride.addObject("Left", OwnedSide.LEFT);
+        ownedSideOverride.addObject("Right", OwnedSide.RIGHT);*/
         SmartDashboard.putData("Owned Side Override", ownedSideOverride); //TODO implement in dashboard wrapper
     }
 
