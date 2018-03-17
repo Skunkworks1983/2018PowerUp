@@ -44,9 +44,7 @@ public enum AutoSelection
 
     MP_AUTO_PICKER("GAMEDATA MP AUTO PICKER", AutoPicker::new),
 
-    BACKUP_AUTO_PICKER("GAMEDATA BACKUP AUTO PICKER", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
-        return new BackupAutoPicker(autoManager);
-    });
+    BACKUP_AUTO_PICKER("GAMEDATA BACKUP AUTO PICKER", BackupAutoPicker::new);
 
     private String readableName;
     private SelectableAuto selectableAuto;
