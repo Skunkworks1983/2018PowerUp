@@ -49,7 +49,7 @@ public class SwitchCloseScaleClose extends CommandGroup
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -45.0 * reflectionVariable));
 
         //CUBE APPROACH/COLLECT
-        super.addParallel(new CollectorIntake(collector, false));
+        super.addParallel(new CollectorIntake(collector, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, 5.0, .2));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
         super.addSequential(new DriveStraight(drivebase, dashboard, -5.0, .75));

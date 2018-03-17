@@ -47,7 +47,7 @@ public class SwitchCloseScaleFar extends CommandGroup
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0));
 
         //CUBE COLLECT
-        super.addParallel(new CollectorIntake(collector, false));
+        super.addParallel(new CollectorIntake(collector, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3.0, .35));
         super.addSequential(new DriveStraight(drivebase, dashboard, -3.0));
 
