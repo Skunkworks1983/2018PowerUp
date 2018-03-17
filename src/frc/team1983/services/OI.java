@@ -57,11 +57,11 @@ public class OI
 
         //Collector intake/expel
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
-                      new CollectorIntake(robot.getCollector()));
+                      new CollectorIntake(robot.getCollector(), false));
 
 
         bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
-                       new CollectorIntake(robot.getCollector()));
+                       new CollectorIntake(robot.getCollector(), true));
 
 
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.EXPEL,

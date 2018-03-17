@@ -16,7 +16,7 @@ public class CollectorIntake extends CommandBase
 
     private Logger logger;
 
-    public CollectorIntake(Collector collector)
+    public CollectorIntake(Collector collector, boolean stop)
     {
         logger = LoggerFactory.createNewLogger(CollectorIntake.class);
         requires(collector);
@@ -28,7 +28,7 @@ public class CollectorIntake extends CommandBase
 
     public CollectorIntake(Collector collector, double timeout)
     {
-        this(collector);
+        this(collector, false);
         setTimeout(timeout);
     }
 

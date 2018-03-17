@@ -73,7 +73,6 @@ public class Manual extends Command
 
         if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.M_UP))
         {
-            logger.info("Elevator up being run");
             elevator.set(ControlMode.PercentOutput, 0.4);
         }
         if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.M_DOWN))
