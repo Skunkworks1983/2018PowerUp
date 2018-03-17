@@ -31,7 +31,7 @@ public class MonitorCams extends CommandBase
         {
             if(!climber.haveTension())
             {
-                logger.warn("Left cam limit switch engaged, but the climber does not have tension!");
+                //logger.warn("Left cam limit switch engaged, but the climber does not have tension!");
             }
             SmartDashboard.putBoolean("Left cam limit switch engaged", true);
         }

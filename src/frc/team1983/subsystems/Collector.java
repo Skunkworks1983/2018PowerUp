@@ -44,7 +44,7 @@ public class Collector extends Subsystem
         //TODO reset rotate encoder on startup
 
         rotate.selectProfileSlot(0, 0);
-        rotate.setSensorPhase(true);
+        rotate.setSensorPhase(false);
         logger = LoggerFactory.createNewLogger(Collector.class);
 
 

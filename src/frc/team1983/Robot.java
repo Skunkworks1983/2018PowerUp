@@ -146,10 +146,10 @@ public class Robot extends IterativeRobot
         }
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
-        Scheduler.getInstance().add(new MonitorCams(climber));
+        //Scheduler.getInstance().add(new MonitorCams(climber));
 
         drivebase.setBrakeMode(false);
-        Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
+        //Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
         //Scheduler.getInstance().add(new CollectorRotate(collector, true));
     }
 
@@ -162,9 +162,9 @@ public class Robot extends IterativeRobot
         SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
         SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
 
-        robotLogger.info("gyro{}", drivebase.getGyro().getAngle());
-        robotLogger.info("Left drivebase encoder is {}", drivebase.getLeftEncoderValue());
-        robotLogger.info("Right drivebase encoder is {}", drivebase.getRightEncoderValue());
+        //robotLogger.info("gyro{}", drivebase.getGyro().getAngle());
+        //robotLogger.info("Left drivebase encoder is {}", drivebase.getLeftEncoderValue());
+        //robotLogger.info("Right drivebase encoder is {}", drivebase.getRightEncoderValue());
 
     }
 

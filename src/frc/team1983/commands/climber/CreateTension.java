@@ -1,21 +1,23 @@
 package frc.team1983.commands.climber;
 
 import frc.team1983.commands.CommandBase;
+import frc.team1983.services.OI;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Climber;
-import frc.team1983.subsystems.utilities.climberexceptions.HookNotEngagedException;
 import org.apache.logging.log4j.core.Logger;
 
 public class CreateTension extends CommandBase
 {
     private Climber climber;
+    private OI oi;
     private Logger logger;
     private boolean finished;
 
-    public CreateTension(Climber climber)
+    public CreateTension(Climber climber, OI oi)
     {
         this.climber = climber;
+        this.oi = oi;
         logger = LoggerFactory.createNewLogger(this.getClass());
         finished = false;
     }
@@ -37,11 +39,13 @@ public class CreateTension extends CommandBase
     @Override
     public void execute()
     {
-        if(climber.getTensionCurrent() > Constants.MotorMap.Climber.UPPER_TENSION_MOTOR_CURRENT)
+        if(climber.getTensionCurrent() > Constants.MotorMap.Climber.UPPER_TENSION_MOTOR_CURRENT ||
+                !oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.CREATE_TENSION))
         {
             finished = true;
             climber.confirmTensionCreation();
         }
+
     }
 
     @Override
@@ -59,6 +63,6 @@ public class CreateTension extends CommandBase
     @Override
     public void interrupted()
     {
-
+        end();
     }
 }

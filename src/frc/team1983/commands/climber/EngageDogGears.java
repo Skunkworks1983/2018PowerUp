@@ -3,16 +3,15 @@ package frc.team1983.commands.climber;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.Climber;
-import frc.team1983.subsystems.utilities.climberexceptions.HookNotEngagedException;
-import frc.team1983.subsystems.utilities.climberexceptions.NoTensionException;
 import org.apache.logging.log4j.core.Logger;
 
 public class EngageDogGears extends CommandBase
 {
     private Climber climber;
     private Logger logger;
+    private boolean disengage;
 
-    public EngageDogGears(Climber climber)
+    public EngageDogGears(Climber climber, boolean disengage)
     {
         this.climber = climber;
         logger = LoggerFactory.createNewLogger(this.getClass());
@@ -32,6 +31,10 @@ public class EngageDogGears extends CommandBase
         {
             logger.warn("Attempted to engage dog gear before tension was created", e);
         }*/
+        if(disengage == true)
+        {
+            climber.disengageDogGear();
+        }
     }
 
     @Override
@@ -57,4 +60,5 @@ public class EngageDogGears extends CommandBase
     {
 
     }
+
 }

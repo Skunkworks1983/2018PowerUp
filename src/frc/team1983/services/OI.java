@@ -71,27 +71,45 @@ public class OI
         //Collector intake/expel
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
                       new CollectorIntake(robot.getCollector(), false));
+
+
         bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
                        new CollectorIntake(robot.getCollector(), true));
+
+
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.EXPEL,
-                   new CollectorExpel(robot.getCollector(), Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED));
+                      new CollectorExpel(robot.getCollector(), Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED));
+
+
         bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.EXPEL,
                        new CollectorExpel(robot.getCollector(), 0));
+
+
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.BOOP,
-                   new CollectorExpel(robot.getCollector(), Constants.MotorSetpoints.COLLECTOR_SLOW_EXPEL_SPEED));
+                      new CollectorExpel(robot.getCollector(), Constants.MotorSetpoints.COLLECTOR_SLOW_EXPEL_SPEED));
+
+
         bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.BOOP,
                        new CollectorExpel(robot.getCollector(), 0));
 
         //TODO tune this pid
         //Collector rotate
         bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.UP,
-                       new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.UP_TICKS));
+                       new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.MID_TICKS));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.UP,
-                      new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.MID_TICKS));
-        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.DOWN,
-                       new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.DOWN_TICKS));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.DOWN,
-                      new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.MID_TICKS));
+                      new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.UP_TICKS));
+
+
+        bindToReleased(Constants.OIMap.Joystick.PANEL,
+                       Constants.OIMap.CollectorButtons.DOWN,
+                       new CollectorRotate(robot.getCollector(),
+                                           Constants.PidConstants.CollectorRotate.DOWN_TICKS));
+
+
+        bindToPressed(Constants.OIMap.Joystick.PANEL,
+                      Constants.OIMap.CollectorButtons.DOWN,
+                      new CollectorRotate(robot.getCollector(),
+                                          Constants.PidConstants.CollectorRotate.MID_TICKS));
 
         //TODO tune this pid
         //Elevator setpoints
@@ -114,11 +132,13 @@ public class OI
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.DROP_FORKS,
                       new DropForks(robot.getClimber()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.CREATE_TENSION,
-                      new CreateTension(robot.getClimber()));
+                      new CreateTension(robot.getClimber(), robot.getOI()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.ENGAGE_DOG_GEARS,
-                      new EngageDogGears(robot.getClimber()));
+                      new EngageDogGears(robot.getClimber(), false));
+        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.ENGAGE_DOG_GEARS,
+                       new EngageDogGears(robot.getClimber(), true));
 
-        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH,
+        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH,
                    new Manual(this, robot.getCollector(), robot.getElevator()));
     }
 

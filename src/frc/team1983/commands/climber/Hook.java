@@ -38,6 +38,6 @@ public class Hook extends CommandBase
     @Override
     public void interrupted()
     {
-
+        end();
     }
 }
