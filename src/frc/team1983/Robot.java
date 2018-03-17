@@ -5,12 +5,14 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.autonomous.deadreckoningautos.SwitchCloseScaleClose;
+import frc.team1983.commands.climber.MonitorCams;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.RunTankDrive;
@@ -21,10 +23,10 @@ import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
+import frc.team1983.subsystems.Climber;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
-import frc.team1983.subsystems.Ramps;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.util.control.ProfileController;
@@ -39,7 +41,7 @@ public class Robot extends IterativeRobot
     private Drivebase drivebase;
     private Elevator elevator;
     private Collector collector;
-    private Ramps ramps;
+    private Climber climber;
     private DashboardWrapper dashboardWrapper;
     private StatefulDashboard dashboard;
     private Subsystem subsystem;
@@ -73,7 +75,7 @@ public class Robot extends IterativeRobot
         drivebase = new Drivebase();
         collector = new Collector();
         elevator = new Elevator();
-        ramps = new Ramps();
+        climber = new Climber();
 
         robotLogger.info("robotInit");
 
@@ -146,9 +148,10 @@ public class Robot extends IterativeRobot
         }
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
+        //Scheduler.getInstance().add(new MonitorCams(climber));
 
         drivebase.setBrakeMode(false);
-        Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
+        //Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
         //Scheduler.getInstance().add(new CollectorRotate(collector, true));
     }
 
@@ -156,9 +159,11 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+
         SmartDashboard.updateValues();
         SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
         SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
+
         //robotLogger.info("gyro{}", drivebase.getGyro().getAngle());
         //robotLogger.info("Left drivebase encoder is {}", drivebase.getLeftEncoderValue());
         //robotLogger.info("Right drivebase encoder is {}", drivebase.getRightEncoderValue());
@@ -225,11 +230,6 @@ public class Robot extends IterativeRobot
         return drivebase;
     }
 
-    public Ramps getRamps()
-    {
-        return ramps;
-    }
-
     public Elevator getElevator()
     {
         return elevator;
@@ -243,6 +243,10 @@ public class Robot extends IterativeRobot
     public Collector getCollector()
     {
         return collector;
+    }
+
+    public Climber getClimber() {
+        return climber;
     }
 
     public StatefulDashboard getStatefulDashboard()
