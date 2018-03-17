@@ -9,13 +9,14 @@ import frc.team1983.util.path.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class LeftScaleLeft extends Path
+public class RightScaleRight extends Path
 {
-    public LeftScaleLeft(Drivebase drivebase)
+    public RightScaleRight(Drivebase drivebase)
     {
         super(new ArrayList<>(Arrays.asList(
+                new DriveFeet(drivebase, -0.5, 0.5),
                 new DriveFeet(drivebase, -22, 2.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_TRAVEL}),
-                new DriveArc(drivebase, 3, -90, 2.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE}),
+                new DriveArc(drivebase, -3, 90, 2.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE}),
                 new DriveFeet(drivebase, 3, 2),
                 new DriveFeet(drivebase, 0, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}),
                 new DriveFeet(drivebase, -3, 1.5),

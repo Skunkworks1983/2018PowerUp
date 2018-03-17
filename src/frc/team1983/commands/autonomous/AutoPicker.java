@@ -5,6 +5,8 @@ import frc.team1983.commands.autonomous.profiled.LeftScaleLeft;
 import frc.team1983.commands.autonomous.profiled.LeftScaleRight;
 import frc.team1983.commands.autonomous.profiled.MidSwitchLeft;
 import frc.team1983.commands.autonomous.profiled.MidSwitchRight;
+import frc.team1983.commands.autonomous.profiled.RightScaleLeft;
+import frc.team1983.commands.autonomous.profiled.RightScaleRight;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.automanager.AutoManager;
@@ -50,12 +52,13 @@ public class AutoPicker extends CommandGroup
 
                 break;
             case RIGHT:
-                if(switchPosition == AutoManager.OwnedSide.LEFT)
+                if(switchPosition == AutoManager.OwnedSide.RIGHT)
                 {
-
+                    addSequential(new RightScaleRight(drivebase));
                 }
                 else
                 {
+                    addSequential(new RightScaleLeft(drivebase));
                     // run right side auto if unknown also
                 }
 

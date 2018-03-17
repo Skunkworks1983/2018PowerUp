@@ -122,8 +122,6 @@ public class DriveProfile extends CommandBase
     @Override
     public void execute()
     {
-        logger.info(drivebase.getLeftError());
-
         if(runHeadingCorrection)
         {
             //double desiredHeading = startHeading + (deltaHeading * ((Math.min(timeSinceInitialized(), duration) / duration)));
@@ -168,6 +166,10 @@ public class DriveProfile extends CommandBase
         }
 
         finished |= isTimedOut();
+        if(isTimedOut())
+        {
+            logger.info("timed out");
+        }
         return finished;
     }
 
@@ -198,9 +200,6 @@ public class DriveProfile extends CommandBase
                                    " , gyro error: " + (endHeading - drivebase.getGyro().getAngle()));
 
         drivebase.stopProfiles();
-
-        drivebase.left1.set(ControlMode.PercentOutput, 0);
-        drivebase.left1.set(ControlMode.PercentOutput, 0);
 
         if(runHeadingCorrection)
         {
