@@ -1,6 +1,5 @@
 package frc.team1983.util.math;
 
-import frc.team1983.util.math.Vector2;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

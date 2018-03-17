@@ -1,6 +1,5 @@
 package frc.team1983.services;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
@@ -10,8 +9,6 @@ import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.commands.collector.CollectorRotate;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
-import frc.team1983.commands.ramps.LowerRamps;
-import frc.team1983.commands.ramps.PropRamps;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import org.apache.logging.log4j.core.Logger;
@@ -24,34 +21,25 @@ import java.util.HashMap;
 */
 public class OI
 {
-    private DriverStation ds;
-
-    private Joystick left, right, panel, manual;
-    private HashMap<Joystick, JoystickButton[]> joystickButtons;
-
     private Logger logger;
 
-    public OI(DriverStation ds)
+    private Joystick left, right, panel;
+    private HashMap<Joystick, JoystickButton[]> joystickButtons;
+
+    public OI()
     {
         this(new Joystick(Constants.OIMap.Joystick.LEFT.ordinal()), new Joystick(Constants.OIMap.Joystick.RIGHT.ordinal()),
              new Joystick(Constants.OIMap.Joystick.PANEL.ordinal()), new HashMap<>());
-        logger = LoggerFactory.createNewLogger(this.getClass());
-
-        this.ds = ds;
-
-        manual = new Joystick(Constants.OIMap.Joystick.MANUAL.ordinal());
-
-        initializeButtons(Constants.OIMap.Joystick.MANUAL);
     }
 
     protected OI(Joystick left, Joystick right, Joystick panel, HashMap<Joystick, JoystickButton[]> joystickButtons)
     {
-        logger = LoggerFactory.createNewLogger(this.getClass());
-
         this.left = left;
         this.right = right;
         this.panel = panel;
         this.joystickButtons = joystickButtons;
+
+        this.logger = LoggerFactory.createNewLogger(this.getClass());
     }
 
     // put your command bindings in here :)
@@ -61,10 +49,7 @@ public class OI
         initializeButtons(Constants.OIMap.Joystick.RIGHT);
         initializeButtons(Constants.OIMap.Joystick.PANEL);
 
-        if(manual != null)
-        {
-            initializeButtons(Constants.OIMap.Joystick.MANUAL);
-        }
+        logger.info("Initializing Bindings");
 
         //Collector intake/expel
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
@@ -103,16 +88,6 @@ public class OI
                       new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, robot.getElevator(), this));
         bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
                        new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, robot.getElevator(), this));
-
-        //Drop/Prop
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_LEFT,
-                      new LowerRamps(robot.getRamps(), true));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.DROP_RIGHT,
-                      new LowerRamps(robot.getRamps(), false));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP_LEFT,
-                      new PropRamps(robot.getRamps(), true));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.RampButtons.PROP_RIGHT,
-                      new PropRamps(robot.getRamps(), false));
 
         bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH,
                    new Manual(this, robot.getCollector(), robot.getElevator()));
@@ -162,8 +137,6 @@ public class OI
                 return right != null;
             case PANEL:
                 return panel != null;
-            case MANUAL:
-                return manual != null;
         }
 
         return false;
@@ -181,8 +154,6 @@ public class OI
                     return right;
                 case PANEL:
                     return panel;
-                case MANUAL:
-                    return manual;
             }
         }
 
@@ -202,8 +173,6 @@ public class OI
                     return joystickButtons.get(right);
                 case PANEL:
                     return joystickButtons.get(panel);
-                case MANUAL:
-                    return joystickButtons.get(manual);
             }
         }
 

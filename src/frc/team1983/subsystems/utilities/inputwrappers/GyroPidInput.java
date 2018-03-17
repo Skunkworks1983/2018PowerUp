@@ -18,7 +18,6 @@ public class GyroPidInput extends PidInputWrapper
 
     public double pidGet()
     {
-        //logger.info("real nice angle {}", gyro.getAngle());
         return gyro.getAngle();
     }
 }

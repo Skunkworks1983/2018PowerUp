@@ -1,17 +1,12 @@
 package frc.team1983;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.autonomous.deadreckoningautos.SwitchCloseScaleClose;
-import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
@@ -25,7 +20,6 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.Ramps;
-import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.util.control.ProfileController;
 import org.apache.logging.log4j.core.Logger;
@@ -35,11 +29,13 @@ import java.util.ArrayList;
 public class Robot extends IterativeRobot
 {
     private static Logger robotLogger;
+    private ArrayList<ProfileController> profileControllers = new ArrayList<>();
+
     private OI oi;
     private Drivebase drivebase;
     private Elevator elevator;
     private Collector collector;
-    private Ramps ramps;
+
     private DashboardWrapper dashboardWrapper;
     private StatefulDashboard dashboard;
     private Subsystem subsystem;
@@ -47,10 +43,6 @@ public class Robot extends IterativeRobot
     private AutoManager autoManager;
     private SendableChooser autonomousSelector;
     private AutoManager.OwnedSide robotPosition;
-
-    private ArrayList<ProfileController> profileControllers = new ArrayList<ProfileController>();
-
-    private RunOneMotor runOneMotor;
 
     private static Robot instance;
 
@@ -68,19 +60,11 @@ public class Robot extends IterativeRobot
         dashboard.populate();
         autoManager = new AutoManager(dashboardWrapper);
 
-        oi = new OI(DriverStation.getInstance());
+        oi = new OI();
 
         drivebase = new Drivebase();
         collector = new Collector();
         elevator = new Elevator();
-        ramps = new Ramps();
-
-        robotLogger.info("robotInit");
-
-        autonomousSelector = new SendableChooser();
-        //autonomousSelector.addDefault("Robot is on the left", AutoManager.OwnedSide.LEFT);
-        //autonomousSelector.addObject("Robot is on the right", AutoManager.OwnedSide.RIGHT);
-        //SmartDashboard.putData("Robot position", autonomousSelector);
     }
 
     @Override
@@ -95,74 +79,47 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.DISABLED);
 
-        dashboard.store();
-
         autoManager.resetGameData();
     }
 
     @Override
     public void disabledPeriodic()
     {
+
     }
 
     @Override
     public void autonomousInit()
     {
-        robotLogger.info("AutoInit");
-        drivebase.resetEncoders();
         Scheduler.getInstance().removeAll();
-        //drivebase.getGyro().initGyro();
+        updateState(Constants.MotorMap.Mode.AUTO);
+
         drivebase.setBrakeMode(true);
-
-        robotPosition = (AutoManager.OwnedSide) autonomousSelector.getSelected();
-        CommandGroup group = new CommandGroup();
-        group.addSequential(new DriveStraight(drivebase, dashboard, 10));
-        group.addSequential(new DriveStraight(drivebase, dashboard, -10));
-
-
-        //Scheduler.getInstance().add(group);
-        //Scheduler.getInstance().add(new SwitchCloseScaleClose(drivebase, dashboard, oi, elevator, collector, AutoManager.OwnedSide.LEFT));
-        //Scheduler.getInstance().add(new DoubleCubeAutoSelector(drivebase, dashboard, oi, elevator, collector, robotPosition));
-        Scheduler.getInstance().add(new SetElevatorSetpoint(Constants.OIMap.Setpoint.LOW, elevator, oi));
-
     }
 
     @Override
     public void autonomousPeriodic()
     {
-        //autoManager.execute();
         Scheduler.getInstance().run();
+        autoManager.execute();
     }
 
     @Override
     public void teleopInit()
     {
         Scheduler.getInstance().removeAll();
-        oi.initializeBindings(this);
-
-        if(runOneMotor != null)
-        {
-            runOneMotor.end();
-        }
-
-        Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
+        updateState(Constants.MotorMap.Mode.TELEOP);
 
         drivebase.setBrakeMode(false);
+        oi.initializeBindings(this);
+
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
-        //Scheduler.getInstance().add(new CollectorRotate(collector, true));
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-        SmartDashboard.updateValues();
-        SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
-        SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
-        //robotLogger.info("gyro{}", drivebase.getGyro().getAngle());
-        //robotLogger.info("Left drivebase encoder is {}", drivebase.getLeftEncoderValue());
-        //robotLogger.info("Right drivebase encoder is {}", drivebase.getRightEncoderValue());
-
     }
 
     @Override
@@ -204,10 +161,10 @@ public class Robot extends IterativeRobot
     @Override
     public void testPeriodic()
     {
-        runOneMotor.execute();
+
     }
 
-    public void updateState(Constants.MotorMap.Mode mode)
+    private void updateState(Constants.MotorMap.Mode mode)
     {
         for(ProfileController controller : profileControllers)
         {
@@ -223,11 +180,6 @@ public class Robot extends IterativeRobot
     public Drivebase getDrivebase()
     {
         return drivebase;
-    }
-
-    public Ramps getRamps()
-    {
-        return ramps;
     }
 
     public Elevator getElevator()
@@ -255,12 +207,18 @@ public class Robot extends IterativeRobot
         return dashboardWrapper;
     }
 
+    public AutoManager getAutoManager()
+    {
+        return autoManager;
+    }
+
     public static Robot getInstance()
     {
         if(instance == null)
         {
             instance = new Robot();
         }
+
         return instance;
     }
 }

@@ -33,10 +33,15 @@ public class AutoManager
         gameDataAlreadyPolled = false;
         logger = LoggerFactory.createNewLogger(this.getClass());
 
-        dashboard.addAutoChooserAutoDefault(AutoSelection.EXCHANGE_ZONE);
+        AutoSelection defaultSelection = AutoSelection.MP_AUTO_PICKER;
+        dashboard.addAutoChooserAutoDefault(defaultSelection);
+
         for(AutoSelection selection : AutoSelection.values())
         {
-            dashboard.addAutoChooserAutoChoice(selection);
+            if(selection != defaultSelection)
+            {
+                dashboard.addAutoChooserAutoChoice(selection);
+            }
         }
 
         robotPositionSelector = new SendableChooser<>();
@@ -137,14 +142,15 @@ public class AutoManager
 
     public void execute()
     {
+        logger.info("Executing AM");
         if(!gameDataAlreadyPolled)
         {
+            logger.info("Not polled");
             gsm = DriverStation.getInstance().getGameSpecificMessage();
             if(gsm.length() == 3 || ownedSideOverride.getSelected() != OwnedSide.UNKNOWN)
             {
+                logger.info("Data found");
                 gameDataAlreadyPolled = true;
-
-                logger.info("Got game data");
 
                 Scheduler.getInstance().add(dashboard.getSelectedAutoChoice().getSelectableAuto().createCommand(
                         Robot.getInstance().getDrivebase(), Robot.getInstance().getCollector(),

@@ -74,8 +74,8 @@ public class DriveStraight extends CommandBase
     {
         gyro.checkGyroStatus();
         logger.info("gyro status{}", gyro.isDead());
-        leftEncoderStart = drivebase.getLeftDist();
-        rightEncoderStart = drivebase.getRightDist();
+        leftEncoderStart = drivebase.getLeftDistance();
+        rightEncoderStart = drivebase.getRightDistance();
         logger.info("Left encoder start {} \t RightEncoderStart {}", leftEncoderStart, rightEncoderStart);
         if(distance > 0)
         {
@@ -100,18 +100,17 @@ public class DriveStraight extends CommandBase
         driveStraightPid.enable();
         logger.info("Distance setpoint {}", distance);
         initialBaseSpeed = baseSpeed;
-
     }
 
     @Override
     public void execute()
     {
         //logger.info("angle{}", driveStraightPid.getError());
-        if (abs(drivebase.getLeftDist() - leftEncoderStart) > abs(distance) * 0.25)
+        if (abs(drivebase.getLeftDistance() - leftEncoderStart) > abs(distance) * 0.25)
         {
-            baseSpeed = Math.max(Math.min(initialBaseSpeed * ((4./3) * ((abs(distance) - abs(drivebase.getLeftDist() - leftEncoderStart)) / abs(distance))), abs(initialBaseSpeed)), -abs(initialBaseSpeed));
+            baseSpeed = Math.max(Math.min(initialBaseSpeed * ((4./3) * ((abs(distance) - abs(drivebase.getLeftDistance() - leftEncoderStart)) / abs(distance))), abs(initialBaseSpeed)), -abs(initialBaseSpeed));
             pidOut.setBaseSpeed(baseSpeed);
-            logger.info("Base speed scaling is {}", Math.max(Math.min(initialBaseSpeed * ((4./3) * ((abs(distance) - abs(drivebase.getLeftDist() - leftEncoderStart)) / abs(distance))), abs(initialBaseSpeed)), -abs(initialBaseSpeed)));
+            logger.info("Base speed scaling is {}", Math.max(Math.min(initialBaseSpeed * ((4./3) * ((abs(distance) - abs(drivebase.getLeftDistance() - leftEncoderStart)) / abs(distance))), abs(initialBaseSpeed)), -abs(initialBaseSpeed)));
         }
 
     }
@@ -121,18 +120,16 @@ public class DriveStraight extends CommandBase
     {
         //condition checks if command is timed out or if we have gone the desired distance
         //using the average of the two offset distances travelled
-        return isTimedOut() || ((abs((drivebase.getLeftDist()) - (leftEncoderStart)) +
-                abs((drivebase.getRightDist()) - (rightEncoderStart)))) / 2 >= abs(distance);
-
-
+        return isTimedOut() || ((abs((drivebase.getLeftDistance()) - (leftEncoderStart)) +
+                abs((drivebase.getRightDistance()) - (rightEncoderStart)))) / 2 >= abs(distance);
     }
 
     @Override
     public void end()
     {
         logger.info("isTimedOut{}", isTimedOut());
-        logger.info("averaged distance{} \t raw left{} \t raw right{}", (abs((drivebase.getLeftDist()) - (leftEncoderStart)) +
-                abs((drivebase.getRightDist()) - (rightEncoderStart)) / 2), drivebase.getLeftDist(), drivebase.getRightDist());
+        logger.info("averaged distance{} \t raw left{} \t raw right{}", (abs((drivebase.getLeftDistance()) - (leftEncoderStart)) +
+                abs((drivebase.getRightDistance()) - (rightEncoderStart)) / 2), drivebase.getLeftDistance(), drivebase.getRightDistance());
         logger.info("Reached end");
         driveStraightPid.disable();
 

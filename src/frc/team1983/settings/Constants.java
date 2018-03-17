@@ -1,6 +1,9 @@
 package frc.team1983.settings;
 
 
+import frc.team1983.subsystems.Drivebase;
+import frc.team1983.util.control.ClosedLoopGains;
+
 import java.io.File;
 
 //This file contains all constants used across the entire robot, stored within subclasses.
@@ -22,8 +25,8 @@ public class Constants
             public static final int LEFT_3 = 15;
 
             public static final int RIGHT_1 = 1;
-            public static final int RIGHT_2 = 2;
-            public static final int RIGHT_3 = 0;
+            public static final int RIGHT_2 = 0;
+            public static final int RIGHT_3 = 2;
 
             public static final boolean LEFT1_REVERSED = true;
             public static final boolean LEFT2_REVERSED = true;
@@ -87,20 +90,15 @@ public class Constants
             public static final int LEFT_LEG = 1;
             public static final int RIGHT_LEG = 3;
         }
+    }
 
-        //Random and hard to classify drivebase constants
-        public static class DrivebaseConstants
-        {
-            public static final double DRIVEBASE_TICKS_PER_FOOT = 1000 / AutoValues.EFFECTIVE_REDUCTION_DRIVEBASE
-                    / AutoValues.WHEEL_CIRCUMFERENCE;
-            public static final int RIGHT1 = 0;
-            public static final int RIGHT2 = 0;
-
-            public static final boolean LEFT1_REVERSED = true;
-            public static final boolean LEFT2_REVERSED = false;
-            public static final boolean RIGHT1_REVERSED = true;
-            public static final boolean RIGHT2_REVERSED = false;
-        }
+    public static class SmellyParser
+    {
+        public static final File SMELLY_FOLDER = new File("/u/");
+        public static final File SMELLY_UT_FOLDER = new File(
+                "..\\test\\frc\\team1983\\util\\paths");
+        public static final String AUTO_PATH_KEY = "SmellyPath";
+        public static final File DEFAULT_PATH = new File("/home/lvuser/DefaultSmellyPath.json");
     }
 
     public static class MotorSetpoints
@@ -130,6 +128,53 @@ public class Constants
     //this class contains subclasses that contain PIDF values used in commands.
     public static class PidConstants
     {
+        public static class Drivebase
+        {
+            public static class Left
+            {
+                public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+                        0.65,
+                        0,
+                        0.75,
+                        0,
+                        0,
+                        1500 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
+                        0 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75)
+                );
+
+            }
+
+            public static class Right
+            {
+                public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+                        0.65,
+                        0,
+                        0.75,
+                        0,
+                        0,
+                        1500 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
+                        0 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75)
+                );
+            }
+
+            public static ClosedLoopGains HEADINGCORRECTION = new ClosedLoopGains(
+                    0.12, 0.002, 0, 0
+            );
+        }
+
+        public static class Elevator
+        {
+            public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+            );
+        }
+
         //PIDF values for the DriveStraight command
         public static class DriveStraightPid
         {
@@ -253,7 +298,7 @@ public class Constants
 
         public enum Joystick
         {
-            LEFT, RIGHT, PANEL, MANUAL
+            LEFT, RIGHT, PANEL
         }
 
         public class Axis
@@ -352,5 +397,14 @@ public class Constants
     {
         public static final double DEFAULT_MOTIONPROFILE_ACCEL_TIME = 0.5; // [0-1]
         public static final int MIN_POINTS_IN_TALON = 3;
+
+        public static final double DRIVEBASE_LEFT_MAX_TICKS_PER_SEC = 14000.0;
+        public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14600.0;
+
+        public static final double ELEVATOR_MAX_TICKS_PER_SEC = 0;
+
+        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(3/12);
+        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.75;
+        public static final double DRIVEBASE_HEADING_END_RANGE = 2;
     }
 }

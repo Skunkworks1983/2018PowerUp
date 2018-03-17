@@ -91,4 +91,3 @@ public class Collector extends Subsystem
         //logger.trace("Collector error: {}", rotate.getClosedLoopError(0));
     }
 }
-

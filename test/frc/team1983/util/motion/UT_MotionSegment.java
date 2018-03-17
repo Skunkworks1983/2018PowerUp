@@ -11,14 +11,14 @@ import static org.junit.Assert.fail;
 public class UT_MotionSegment
 {
     private MotionSegment segment;
-    private MotionProfilePoint start;
-    private MotionProfilePoint end;
+    private MotionPoint start;
+    private MotionPoint end;
 
     @Before
     public void setup()
     {
-        start = new MotionProfilePoint(1, 1);
-        end = new MotionProfilePoint(2, 2);
+        start = new MotionPoint(1, 1);
+        end = new MotionPoint(2, 2);
 
         segment = new MotionSegment(start, end);
     }
@@ -36,14 +36,13 @@ public class UT_MotionSegment
 
         try
         {
-            MotionSegment seg = new MotionSegment(new MotionProfilePoint(0, 0), new MotionProfilePoint(0, 1));
-        }
-        catch (RuntimeException exception)
+            MotionSegment seg = new MotionSegment(new MotionPoint(0, 0), new MotionPoint(0, 1));
+        } catch (RuntimeException exception)
         {
             thrown = true;
         }
 
-        if(!thrown)
+        if (!thrown)
             fail();
     }
 
@@ -54,31 +53,30 @@ public class UT_MotionSegment
 
         try
         {
-            segment.evaluate(end.getVelocity() + 1);
-        }
-        catch (RuntimeException exception)
+            segment.evaluateVelocity(end.getVelocity() + 1);
+        } catch (RuntimeException exception)
         {
             thrown = true;
         }
 
-        if(!thrown)
+        if (!thrown)
             fail();
     }
 
     @Test
     public void returnsBoundsForBoundsInput()
     {
-        assertThat(segment.evaluate(start.getTime()), is(start.getTime()));
-        assertThat(segment.evaluate(start.getVelocity()), is(start.getVelocity()));
+        assertThat(segment.evaluateVelocity(start.getTime()), is(start.getTime()));
+        assertThat(segment.evaluateVelocity(start.getVelocity()), is(start.getVelocity()));
 
-        assertThat(segment.evaluate(end.getX()), is(end.getTime()));
-        assertThat(segment.evaluate(end.getVelocity()), is(end.getVelocity()));
+        assertThat(segment.evaluateVelocity(end.getX()), is(end.getTime()));
+        assertThat(segment.evaluateVelocity(end.getVelocity()), is(end.getVelocity()));
     }
 
     @Test
     public void returnsCorrectValueForValidInput()
     {
-        assertThat(segment.evaluate((start.getTime() + end.getTime()) / 2), is((start.getTime() + end.getTime()) / 2));
-        assertThat(segment.evaluate((start.getVelocity() + end.getVelocity()) / 2), is((start.getVelocity() + end.getVelocity()) / 2));
+        assertThat(segment.evaluateVelocity((start.getTime() + end.getTime()) / 2), is((start.getTime() + end.getTime()) / 2));
+        assertThat(segment.evaluateVelocity((start.getVelocity() + end.getVelocity()) / 2), is((start.getVelocity() + end.getVelocity()) / 2));
     }
 }

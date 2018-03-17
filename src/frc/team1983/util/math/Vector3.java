@@ -2,7 +2,12 @@ package frc.team1983.util.math;
 
 public class Vector3
 {
-    private double x, y, z;
+    protected double x = 0, y = 0, z = 0;
+
+    public Vector3()
+    {
+
+    }
 
     public Vector3(double x, double y, double z)
     {
@@ -11,10 +16,19 @@ public class Vector3
         this.z = z;
     }
 
-
     public double getX()
     {
         return x;
+    }
+
+    public double getY()
+    {
+        return y;
+    }
+
+    public double getZ()
+    {
+        return z;
     }
 
     public void setX(double x)
@@ -22,21 +36,9 @@ public class Vector3
         this.x = x;
     }
 
-
-    public double getY()
-    {
-        return y;
-    }
-
     public void setY(double y)
     {
         this.y = y;
-    }
-
-
-    public double getZ()
-    {
-        return this.z;
     }
 
     public void setZ(double z)
@@ -47,8 +49,9 @@ public class Vector3
 
     public double getMagnitude()
     {
-        return Math.pow(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2), 1/2);
+        return Math.pow(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2), 1 / 2);
     }
+
 
     public static Vector3 getNormalized(Vector3 vec)
     {

@@ -16,7 +16,7 @@ public class CollectorIntake extends CommandBase
 
     private Logger logger;
 
-    public CollectorIntake(Collector collector, boolean stop)
+    public CollectorIntake(Collector collector)
     {
         logger = LoggerFactory.createNewLogger(CollectorIntake.class);
         requires(collector);
@@ -24,6 +24,12 @@ public class CollectorIntake extends CommandBase
 
         leftCounter = Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME;
         rightCounter = Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME;
+    }
+
+    public CollectorIntake(Collector collector, double timeout)
+    {
+        this(collector);
+        setTimeout(timeout);
     }
 
     @Override
@@ -71,7 +77,7 @@ public class CollectorIntake extends CommandBase
     @Override
     public boolean isFinished() //isFinished when expel starts
     {
-        return false;
+        return isTimedOut();
     }
 
     @Override

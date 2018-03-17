@@ -27,6 +27,12 @@ public class CollectorExpel extends CommandBase
 
     }
 
+    /*public CollectorExpel(Collector collector, boolean shoot, double timeout)
+    {
+        this(collector, shoot);
+        setTimeout(timeout);
+    }*/
+
     @Override
     public void initialize()
     {
@@ -43,8 +49,7 @@ public class CollectorExpel extends CommandBase
     @Override
     public boolean isFinished()
     {
-
-        return isTimedOut(); //TODO: fix this, will break autos
+        return isTimedOut();
     }
 
 
