@@ -90,7 +90,6 @@ public class Constants
             public static final int LEFT_LEG = 1;
             public static final int RIGHT_LEG = 3;
         }
-    }
 
         public static class Climber // magic numbers
         {
