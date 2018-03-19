@@ -114,8 +114,8 @@ public class UT_DifferentialTurnAngle
     @Test
     public void pivotPidOutputZeroWhenBothSidesHaveGoneSameDistance()
     {
-        when(drivebase.getRightDist()).thenReturn(5.);
-        when(drivebase.getLeftDist()).thenReturn(5.);
+        when(drivebase.getRightDistance()).thenReturn(5.);
+        when(drivebase.getLeftDistance()).thenReturn(5.);
         fakeScheduler.add(differentialTurnAngle);
         fakeScheduler.run();
         verify(drivebase).setLeft(ControlMode.PercentOutput, Constants.AutoValues.DIFFERENTIAL_TURN_ANGLE_BASESPEED);
