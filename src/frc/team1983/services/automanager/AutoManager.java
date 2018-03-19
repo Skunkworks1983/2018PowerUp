@@ -49,6 +49,12 @@ public class AutoManager
         /*ownedSideOverride.addObject("Left", OwnedSide.LEFT);
         ownedSideOverride.addObject("Right", OwnedSide.RIGHT);*/
         SmartDashboard.putData("Owned Side Override", ownedSideOverride); //TODO implement in dashboard wrapper
+
+        robotPositionSelector = new SendableChooser<>();
+        robotPositionSelector.addDefault("Middle", OwnedSide.UNKNOWN);
+        robotPositionSelector.addObject("Right", OwnedSide.RIGHT);
+        robotPositionSelector.addObject("LEFT", OwnedSide.LEFT);
+        SmartDashboard.putData("Robot Position Selector", robotPositionSelector);
     }
 
     public enum GameFeature
@@ -136,14 +142,11 @@ public class AutoManager
 
     public void execute()
     {
-        logger.info("Executing AM");
         if(!gameDataAlreadyPolled)
         {
-            logger.info("Not polled");
             gsm = DriverStation.getInstance().getGameSpecificMessage();
             if(gsm.length() == 3 || ownedSideOverride.getSelected() != OwnedSide.UNKNOWN)
             {
-                logger.info("Data found");
                 gameDataAlreadyPolled = true;
 
                 Scheduler.getInstance().add(dashboard.getSelectedAutoChoice().getSelectableAuto().createCommand(

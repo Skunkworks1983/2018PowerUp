@@ -18,6 +18,7 @@ public class CreateTension extends CommandBase
     {
         this.climber = climber;
         this.oi = oi;
+        requires(climber);
         logger = LoggerFactory.createNewLogger(this.getClass());
         finished = false;
     }
@@ -27,7 +28,7 @@ public class CreateTension extends CommandBase
     {
         try
         {
-            climber.setTensionMotor(.5); //TODO find a good speed
+            climber.setTensionMotor(1); //TODO find a good speed
         }
         catch(Exception e) //Should be HookNotEngaged exception
         {
@@ -39,7 +40,7 @@ public class CreateTension extends CommandBase
     @Override
     public void execute()
     {
-        if(climber.getTensionCurrent() > Constants.MotorMap.Climber.UPPER_TENSION_MOTOR_CURRENT ||
+        if(/*climber.getTensionCurrent() > Constants.MotorMap.Climber.UPPER_TENSION_MOTOR_CURRENT ||*/
                 !oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.CREATE_TENSION))
         {
             finished = true;

@@ -39,25 +39,35 @@ public class Climber extends Subsystem
                                                  Constants.SensorMap.Collector.RIGHT_CAM_REVERSED);
 
         tensionMotor = new Motor(Constants.MotorMap.Climber.TENSION_MOTOR, Constants.MotorMap.Climber.TENSION_MOTOR_REVERSED);
+
+        hookEngaged = false;
+        dogGearEngaged = false;
     }
 
     public void lockForks()
     {
         leftForkLock.set(0);
-        rightForkLock.set(0);
+        rightForkLock.set(1);
     }
 
     public void unlockForks()
     {
         leftForkLock.set(1);
-        rightForkLock.set(1);
+        rightForkLock.set(0);
     }
 
     public void hook()
     {
-        hook0.set(1);
-        hook1.set(1);
+        //Determined experimentally
+        hook0.set(0.5);
+        hook1.set(0.5);
         hookEngaged = true;
+    }
+
+    public void unhook()
+    {
+        hook0.set(0);
+        hook1.set(1);
     }
 
     public void setTensionMotor(double speed)// throws HookNotEngagedException
@@ -102,13 +112,17 @@ public class Climber extends Subsystem
             throw new NoTensionException();
         }*/
         camLeft.set(1.0);
-        camRight.set(1.0);
+        camRight.set(0.0);
+
+        //Necessary to be able to backdrive the hook servos
+        hook0.setRaw(0);
+        hook1.setRaw(0);
     }
 
     public void disengageDogGear()
     {
         camLeft.set(0.2);
-        camRight.set(0.2);
+        camRight.set(0.8);
     }
 
     public void initDefaultCommand()
@@ -126,5 +140,10 @@ public class Climber extends Subsystem
         {
             return rightCamSwitch.get();
         }
+    }
+
+    public double getHookPosition()
+    {
+        return hook0.getPosition();
     }
 }

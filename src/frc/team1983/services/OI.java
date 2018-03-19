@@ -9,6 +9,7 @@ import frc.team1983.commands.climber.CreateTension;
 import frc.team1983.commands.climber.DropForks;
 import frc.team1983.commands.climber.EngageDogGears;
 import frc.team1983.commands.climber.Hook;
+import frc.team1983.commands.climber.StopTensioning;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.commands.collector.CollectorRotate;
@@ -120,6 +121,9 @@ public class OI
                       new DropForks(robot.getClimber()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.CREATE_TENSION,
                       new CreateTension(robot.getClimber(), robot.getOI()));
+        /*bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.CREATE_TENSION,
+                       new StopTensioning(robot.getClimber()));*/
+
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.ENGAGE_DOG_GEARS,
                       new EngageDogGears(robot.getClimber(), false));
         bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.ENGAGE_DOG_GEARS,
@@ -152,9 +156,20 @@ public class OI
         if(joystickExists(joystick))
         {
             Joystick joy = getJoystick(joystick);
-            JoystickButton[] buttons = new JoystickButton[joy.getButtonCount()];
+            int count = 0;
 
-            for(int i = 0; i < joy.getButtonCount(); i++)
+            switch(joystick)
+            {
+                case LEFT:
+                case RIGHT:
+                    count = Constants.OIMap.JOY_BUTTON_COUNT;
+                    break;
+                case PANEL:
+                    count = Constants.OIMap.OI_BUTTON_COUNT;
+            }
+            JoystickButton[] buttons = new JoystickButton[count];
+
+            for(int i = 0; i < count; i++)
             {
                 buttons[i] = new JoystickButton(joy, i + 1);
             }
@@ -247,25 +262,25 @@ public class OI
 
     public void bindToPressed(Constants.OIMap.Joystick joystick, int button, Command command)
     {
-        if(buttonExists(joystick, button))
-        {
+        //if(buttonExists(joystick, button))
+        //{
             getJoystickButtons(joystick)[button].whenPressed(command);
-        }
+        //}
     }
 
     public void bindToHeld(Constants.OIMap.Joystick joystick, int button, Command command)
     {
-        if(buttonExists(joystick, button))
-        {
+        //if(buttonExists(joystick, button))
+        //{
             getJoystickButtons(joystick)[button].whileHeld(command);
-        }
+        //}
     }
 
     public void bindToReleased(Constants.OIMap.Joystick joystick, int button, Command command)
     {
-        if(buttonExists(joystick, button))
-        {
+        //if(buttonExists(joystick, button))
+        //{
             getJoystickButtons(joystick)[button].whenReleased(command);
-        }
+        //}
     }
 }

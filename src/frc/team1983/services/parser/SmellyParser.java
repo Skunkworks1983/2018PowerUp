@@ -34,13 +34,13 @@ public class SmellyParser
         this.dashboard = dashboard;
         logger = LoggerFactory.createNewLogger(this.getClass());
         filter = (file, name) -> name.toLowerCase().endsWith(".json");
-        dashboard.putNumber(Constants.SmellyParser.AUTO_PATH_KEY, 0.0);
+        //dashboard.putNumber(Constants.SmellyParser.AUTO_PATH_KEY, 0.0);
 
         files = dir.listFiles(filter);
         if(files == null)
         {
             files = new File[1];
-            files[0] = Constants.SmellyParser.DEFAULT_PATH;
+            //files[0] = Constants.SmellyParser.DEFAULT_PATH;
             logger.error("Found no json files on usb drive, using default path");
         }
 

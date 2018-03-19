@@ -18,11 +18,6 @@ public abstract class CommandBase extends Command
         setTimeout(timeout);
     }
 
-    public double getTimeout()
-    {
-        return getTimeout();
-    }
-
     @Override
     public abstract void initialize();
 

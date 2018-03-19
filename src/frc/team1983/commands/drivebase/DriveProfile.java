@@ -14,6 +14,7 @@ import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseAuxiliaryPidOutput;
+import frc.team1983.util.control.ClosedLoopGains;
 import frc.team1983.util.motion.profiles.CruiseProfile;
 import org.apache.logging.log4j.core.Logger;
 
@@ -144,7 +145,7 @@ public class DriveProfile extends CommandBase
 
         if(!stitched)
         {
-            logger.info(onTargetTime);
+            //logger.info(onTargetTime);
 
             if(onTarget() && lastOnTargetTimestamp != 0)
             {
@@ -240,5 +241,16 @@ public class DriveProfile extends CommandBase
     public ArrayList<CommandBase> getActions()
     {
         return actions;
+    }
+
+    protected void setHeadingLoopGains(ClosedLoopGains gains)
+    {
+        if(runHeadingCorrection)
+        {
+            headingLoop.setP(gains.get_kP());
+            headingLoop.setI(gains.get_kI());
+            headingLoop.setD(gains.get_kD());
+            headingLoop.setF(gains.get_kF());
+        }
     }
 }

@@ -26,6 +26,8 @@ public class DriveArc extends DriveProfile
         this.angle = angle;
         this.time = time;
         this.actions = actions;
+
+        setHeadingLoopGains(Constants.PidConstants.Drivebase.AUX_ARC);
     }
 
     public DriveArc(Drivebase drivebase, double radius, double angle, double time)

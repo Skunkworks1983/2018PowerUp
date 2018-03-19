@@ -79,10 +79,12 @@ public class Robot extends IterativeRobot
 
         robotLogger.info("robotInit");
 
-        autonomousSelector = new SendableChooser();
+        //autonomousSelector = new SendableChooser();
         //autonomousSelector.addDefault("Robot is on the left", AutoManager.OwnedSide.LEFT);
         //autonomousSelector.addObject("Robot is on the right", AutoManager.OwnedSide.RIGHT);
         //SmartDashboard.putData("Robot position", autonomousSelector);
+
+        oi.initializeBindings(this);
     }
 
     @Override
@@ -120,6 +122,8 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
         autoManager.execute();
+
+        robotLogger.info("Left: {} Right: {} Gyro: {}", drivebase.getLeftDistance(), drivebase.getRightDistance(), drivebase.getGyro().getAngle());
     }
 
     @Override
@@ -127,12 +131,11 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.TELEOP);
+        //oi.initializeBindings(this);
 
-        drivebase.setBrakeMode(false);
-        oi.initializeBindings(this);
+        climber.disengageDogGear();
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
-        //Scheduler.getInstance().add(new MonitorCams(climber));
 
         drivebase.setBrakeMode(false);
         //Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));

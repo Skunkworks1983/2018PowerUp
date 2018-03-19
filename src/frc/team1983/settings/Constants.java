@@ -102,15 +102,15 @@ public class Constants
             public static final boolean TENSION_MOTOR_REVERSED = false;
 
             public static final int DROP_SERVO_LEFT = 0;
-            public static final int DROP_SERVO_RIGHT = 4;
+            public static final int DROP_SERVO_RIGHT = 7;
 
-            public static final int HOOK_SERVO_0 = 1;
-            public static final int HOOK_SERVO_1 = 5;
+            public static final int HOOK_SERVO_0 = 4;
+            public static final int HOOK_SERVO_1 = 6;
 
             public static final int CAM_SERVO_LEFT = 2;
             public static final int CAM_SERVO_RIGHT = 3;
 
-            public static final int CAM_SWITCH_LEFT = 4;
+            public static final int CAM_SWITCH_LEFT = 8;
             public static final int CAME_SWTICH_RIGHT = 5;
 
             //free current 1.8 amps
@@ -191,7 +191,15 @@ public class Constants
             }
 
             public static ClosedLoopGains HEADINGCORRECTION = new ClosedLoopGains(
-                    0.12, 0.002, 0, 0
+                    0.09, 0, 0.03, 0
+            );
+
+            public static ClosedLoopGains AUX_STRAIGHT = new ClosedLoopGains(
+                    0.04, 0, 0, 0
+            );
+
+            public static ClosedLoopGains AUX_ARC = new ClosedLoopGains(
+                    0.09, 0, 0.04, 0
             );
         }
 
@@ -329,6 +337,9 @@ public class Constants
         public static final double JOYSTICK_DEADZONE = 0.15;
         public static final double JOYSTICK_RAMP_EXPONENT = 2;
 
+        public static final int JOY_BUTTON_COUNT = 5; //TODO TODO TODO: CHANGE
+        public static final int OI_BUTTON_COUNT = 24; //TODO TODO TODO: CHANGE
+
         public enum Joystick
         {
             LEFT, RIGHT, PANEL
@@ -395,8 +406,8 @@ public class Constants
         public enum Setpoint
         {
             BOTTOM(0),
-            TRAVEL(1860),
-            SWITCH(8925+400), // elevator halfway point
+            TRAVEL(1960), //upped from 1860
+            SWITCH(9125+400), // elevator halfway point
             LOW(22700 +400),
             MID(25700 +400),
             TOP(28600); //TODO: add 400 once magnet moves
