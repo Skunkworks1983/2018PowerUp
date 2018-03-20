@@ -39,7 +39,7 @@ public class PlaceCubeInSwitch extends CommandGroup
             super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90));
         }
 
-        //super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi), 2);
+        //super.addSequential(new SetElevatorSetpoint(Constants.OIMap.ElevatorSetpoints.SWITCH, elevator, oi), 2);
         super.addSequential(new DriveStraight(drivebase, dashboard, 2.0));
         super.addSequential(new CollectorExpel(collector, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED));
         //drive to be equally distant from the left wall as the left side of the switch is. (7.5 ft away)

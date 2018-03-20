@@ -2,6 +2,7 @@ package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1983.Robot;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.utilities.Motor;
@@ -11,12 +12,12 @@ import org.apache.logging.log4j.core.Logger;
 //The elevator subsystem
 public class Elevator extends Subsystem
 {
+
     private Motor right1, right2;
     private Motor left1, left2;
+    private Constants.ElevatorSetpoints setpoint;
 
     private Logger logger;
-
-    private double setpoint;
 
     public Elevator()
     {
@@ -102,7 +103,7 @@ public class Elevator extends Subsystem
         return left1.isProfileFinished();
     }
 
-    public double getSetpoint()
+    public Constants.ElevatorSetpoints getSetpoint()
     {
         return setpoint;
     }
@@ -121,16 +122,28 @@ public class Elevator extends Subsystem
         }
     }
 
-    public void setSetpoint(double setpoint)
+    public void setWantedState(Constants.ElevatorSetpoints setpoint)
     {
-        right1.setSensorPhase(true);
         this.setpoint = setpoint;
-        right1.set(ControlMode.Position, setpoint);
     }
+
     @Override
     public void periodic()
     {
         //logger.debug("Error1: {}\tSetpoint: {}", right1.getClosedLoopError(0), right1.getClosedLoopTarget(0));
+
+        if(!(setpoint != Constants.ElevatorSetpoints.BOTTOM && setpoint != Constants.ElevatorSetpoints.TRAVEL
+            && Robot.getInstance().isCollectorUp()))
+        {
+            right1.setSensorPhase(true);
+            right1.set(ControlMode.Position, setpoint.getEncoderTicks());
+        }
+        else
+        {
+            logger.debug("Elevator setpoint was high and collector was up, going to travel");
+            right1.setSensorPhase(true);
+            right1.set(ControlMode.Position, Constants.ElevatorSetpoints.TRAVEL.getEncoderTicks());
+        }
     }
 
     public double getCurrentDraw()

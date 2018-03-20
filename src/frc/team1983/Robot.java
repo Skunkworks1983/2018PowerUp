@@ -232,6 +232,11 @@ public class Robot extends IterativeRobot
         return collector;
     }
 
+    public boolean isCollectorUp()
+    {
+        return collector.isUp();
+    }
+
     public Climber getClimber() {
         return climber;
     }

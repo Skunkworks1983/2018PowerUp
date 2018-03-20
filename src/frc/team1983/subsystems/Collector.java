@@ -84,6 +84,11 @@ public class Collector extends Subsystem
         return rotate.getSelectedSensorPosition(0);
     }
 
+    public boolean isUp()
+    {
+        return getPosition() < 0; //Top is -300, so allow for some error
+    }
+
     @Override
     public void periodic()
     {

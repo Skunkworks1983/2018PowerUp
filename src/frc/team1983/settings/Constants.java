@@ -117,21 +117,15 @@ public class Constants
             //stall current 41 amps
             public static final double UPPER_TENSION_MOTOR_CURRENT = 30;
         }
+    }
 
-
-        //Random and hard to classify drivebase constants
-        public static class DrivebaseConstants
-        {
-            public static final double DRIVEBASE_TICKS_PER_FOOT = 1000 / AutoValues.EFFECTIVE_REDUCTION_DRIVEBASE
-                    / AutoValues.WHEEL_CIRCUMFERENCE;
-            public static final int RIGHT1 = 0;
-            public static final int RIGHT2 = 0;
-
-            public static final boolean LEFT1_REVERSED = true;
-            public static final boolean LEFT2_REVERSED = false;
-            public static final boolean RIGHT1_REVERSED = true;
-            public static final boolean RIGHT2_REVERSED = false;
-        }
+    public static class SmellyParser
+    {
+        public static final File SMELLY_FOLDER = new File("/u/");
+        public static final File SMELLY_UT_FOLDER = new File(
+                "..\\test\\frc\\team1983\\util\\paths");
+        public static final String AUTO_PATH_KEY = "SmellyPath";
+        public static final File DEFAULT_PATH = new File("/home/lvuser/DefaultSmellyPath.json");
     }
 
     public static class MotorSetpoints
@@ -402,29 +396,6 @@ public class Constants
             public static final int ENGAGE_DOG_GEARS = 23;
         }
 
-        //Enums for presets
-        public enum Setpoint
-        {
-            BOTTOM(0),
-            TRAVEL(1960), //upped from 1860
-            SWITCH(9125+400), // elevator halfway point
-            LOW(22700 +400),
-            MID(25700 +400),
-            TOP(28600); //TODO: add 400 once magnet moves
-
-            private final double encoderTicks;
-
-            Setpoint(double encoderTicks)
-            {
-                this.encoderTicks = encoderTicks;
-            }
-
-            public double getEncoderTicks()
-            {
-                return encoderTicks;
-            }
-
-        }
     }
 
 
@@ -458,5 +429,29 @@ public class Constants
         public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(3/12);
         public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.75;
         public static final double DRIVEBASE_HEADING_END_RANGE = 2;
+    }
+
+    //Enums for presets
+    public static enum ElevatorSetpoints
+    {
+        BOTTOM(0),
+        TRAVEL(1960), //upped from 1860
+        SWITCH(9125+400), // elevator halfway point
+        LOW(22700 +400),
+        MID(25700 +400),
+        TOP(28600); //TODO: add 400 once magnet moves
+
+        private final double encoderTicks;
+
+        ElevatorSetpoints(double encoderTicks)
+        {
+            this.encoderTicks = encoderTicks;
+        }
+
+        public double getEncoderTicks()
+        {
+            return encoderTicks;
+        }
+
     }
 }
