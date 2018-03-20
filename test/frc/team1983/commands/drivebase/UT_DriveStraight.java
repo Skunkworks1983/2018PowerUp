@@ -103,7 +103,7 @@ public class UT_DriveStraight
     public void driveStraightGoesCorrectDistanceWhenStartingPositionIsNegative()
     {
         AtomicReference<Integer> counter = new AtomicReference<>(-2);
-        when(drivebase.getLeftDist()).then(new Answer<Double>()
+        when(drivebase.getLeftDistance()).then(new Answer<Double>()
         {
             @Override
             public Double answer(InvocationOnMock invocationOnMock) throws Throwable
@@ -125,7 +125,7 @@ public class UT_DriveStraight
             }
         });
         AtomicReference<Integer> counter2 = new AtomicReference<>(-2);
-        when(drivebase.getRightDist()).then(new Answer<Double>()
+        when(drivebase.getRightDistance()).then(new Answer<Double>()
         {
             @Override
             public Double answer(InvocationOnMock invocationOnMock) throws Throwable

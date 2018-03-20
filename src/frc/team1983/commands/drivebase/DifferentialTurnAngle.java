@@ -72,7 +72,7 @@ public class DifferentialTurnAngle extends CommandBase
     public void initialize()
     {
         //initialAngle = encoderTurnAnglePidInput.pidGet();
-        gyro.checkGyroStatus();
+        gyro.initialize();
         initialAngle = gyroPidInput.pidGet();
         pivotPidSource = new DifferentialTurnAnglePidInput(drivebase);
         if(targetAngle < 0)

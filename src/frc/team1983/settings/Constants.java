@@ -174,7 +174,6 @@ public class Constants
                         1500 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
                         0 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75)
                 );
-
             }
 
             public static class Right

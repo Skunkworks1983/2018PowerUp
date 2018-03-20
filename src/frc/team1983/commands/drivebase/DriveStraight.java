@@ -72,7 +72,7 @@ public class DriveStraight extends CommandBase
     @Override
     public void initialize()
     {
-        gyro.checkGyroStatus();
+        gyro.initialize();
         logger.info("gyro status{}", gyro.isDead());
         leftEncoderStart = drivebase.getLeftDistance();
         rightEncoderStart = drivebase.getRightDistance();
