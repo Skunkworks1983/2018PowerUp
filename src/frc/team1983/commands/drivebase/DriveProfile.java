@@ -1,10 +1,8 @@
 package frc.team1983.commands.drivebase;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.commands.autonomous.actions.ActionsEnum;
@@ -14,7 +12,7 @@ import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseAuxiliaryPidOutput;
-import frc.team1983.util.control.ClosedLoopGains;
+import frc.team1983.util.control.PIDFSVAGains;
 import frc.team1983.util.motion.profiles.CruiseProfile;
 import org.apache.logging.log4j.core.Logger;
 
@@ -82,10 +80,7 @@ public class DriveProfile extends CommandBase
         if(runHeadingCorrection)
         {
             headingLoop = new PIDController(
-                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kP(),
-                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kI(),
-                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kD(),
-                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kF(),
+                    0, 0, 0, 0,
                     pidInput, pidOutput
             );
         }
@@ -243,7 +238,7 @@ public class DriveProfile extends CommandBase
         return actions;
     }
 
-    protected void setHeadingLoopGains(ClosedLoopGains gains)
+    protected void setHeadingLoopGains(PIDFSVAGains gains)
     {
         if(runHeadingCorrection)
         {

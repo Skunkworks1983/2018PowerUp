@@ -1,26 +1,26 @@
 package frc.team1983.util.control;
 
-public class ClosedLoopGains
+public class PIDFSVAGains
 {
     private double kP = 0, kI = 0, kD = 0, kF = 0;
     private double kS = 0, kV = 0, kA = 0;
 
-    public ClosedLoopGains()
+    public PIDFSVAGains()
     {
 
     }
 
-    public ClosedLoopGains(double kP, double kI, double kD, double kF, double kS, double kV, double kA)
+    public PIDFSVAGains(double kP, double kI, double kD, double kF, double kS, double kV, double kA)
     {
         set(kP, kI, kD, kF, kS, kV, kA);
     }
 
-    public ClosedLoopGains(double kP, double kI, double kD, double kF)
+    public PIDFSVAGains(double kP, double kI, double kD, double kF)
     {
         set(kP, kI, kD, kF);
     }
 
-    public ClosedLoopGains(double kS, double kV, double kA)
+    public PIDFSVAGains(double kS, double kV, double kA)
     {
         set(kS, kV, kA);
     }

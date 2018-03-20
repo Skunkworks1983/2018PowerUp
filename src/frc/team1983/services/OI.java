@@ -9,11 +9,8 @@ import frc.team1983.commands.climber.CreateTension;
 import frc.team1983.commands.climber.DropForks;
 import frc.team1983.commands.climber.EngageDogGears;
 import frc.team1983.commands.climber.Hook;
-import frc.team1983.commands.climber.StopTensioning;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.commands.collector.CollectorRotate;
-import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import org.apache.logging.log4j.core.Logger;
@@ -54,8 +51,6 @@ public class OI
         initializeButtons(Constants.OIMap.Joystick.RIGHT);
         initializeButtons(Constants.OIMap.Joystick.PANEL);
 
-        logger.info("Initializing Bindings");
-
         //Collector intake/expel
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
                       new CollectorIntake(robot.getCollector(), false));
@@ -76,43 +71,8 @@ public class OI
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.BOOP,
                       new CollectorExpel(robot.getCollector(), Constants.MotorSetpoints.COLLECTOR_SLOW_EXPEL_SPEED));
 
-
         bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.BOOP,
                        new CollectorExpel(robot.getCollector(), 0));
-
-        //TODO tune this pid
-        //Collector rotate
-        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.UP,
-                       new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.MID_TICKS));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.UP,
-                      new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.UP_TICKS));
-
-
-        bindToReleased(Constants.OIMap.Joystick.PANEL,
-                       Constants.OIMap.CollectorButtons.DOWN,
-                       new CollectorRotate(robot.getCollector(),
-                                           Constants.PidConstants.CollectorRotate.DOWN_TICKS));
-
-
-        bindToPressed(Constants.OIMap.Joystick.PANEL,
-                      Constants.OIMap.CollectorButtons.DOWN,
-                      new CollectorRotate(robot.getCollector(),
-                                          Constants.PidConstants.CollectorRotate.MID_TICKS));
-
-        //TODO tune this pid
-        //Elevator setpoints
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator(), this));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.SWITCH,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator(), this));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.LOW,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.LOW, robot.getElevator(), this));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.MID,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.MID, robot.getElevator(), this));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.TOP,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, robot.getElevator(), this));
-        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
-                       new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, robot.getElevator(), this));
 
         //Climber switches
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.HOOK,
@@ -133,16 +93,6 @@ public class OI
                    new Manual(this, robot.getCollector(), robot.getElevator()));
     }
 
-    public double getElevatorSliderPos()
-    {
-        //The 2017 slider on the OIMap was a joystick axis. All code taken from 2017
-        double x = getAxis(Constants.OIMap.Joystick.PANEL, 0);
-        x = Math.pow(x, 10);
-        x = x / Constants.OIMap.OIConstants.SLIDER_SCALAR;
-        x = 1 - x;
-        return x;
-    }
-
     public double getFixedAxis(Constants.OIMap.Joystick joystick, int axis)
     {
         double raw = getAxis(joystick, axis);
@@ -156,6 +106,7 @@ public class OI
         if(joystickExists(joystick))
         {
             Joystick joy = getJoystick(joystick);
+
             int count = 0;
 
             switch(joystick)
@@ -167,6 +118,7 @@ public class OI
                 case PANEL:
                     count = Constants.OIMap.OI_BUTTON_COUNT;
             }
+
             JoystickButton[] buttons = new JoystickButton[count];
 
             for(int i = 0; i < count; i++)
