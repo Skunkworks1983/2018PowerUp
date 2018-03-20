@@ -1,39 +1,53 @@
 package frc.team1983.util.motion;
 
+/*
+velocities are in units per second
+*/
 public class MotionSegment
 {
-    private MotionProfilePoint start, end;
-    private double slope;
+    public MotionPoint start, end;
 
-    public MotionSegment(MotionProfilePoint start, MotionProfilePoint end) throws RuntimeException
+    public MotionSegment(MotionPoint start, MotionPoint end)
     {
-        // check if segment is a function
-        if(start.getTime() == end.getTime())
-            throw new RuntimeException("MotionSegment not a function");
-
-        this.start = start;
-        this.end = end;
-        this.slope = (end.getVelocity() - start.getVelocity()) / (end.getTime() - start.getTime());
-    }
-
-    public double evaluate(double time) throws RuntimeException
-    {
-        if(start.getTime() <= time && time <= end.getTime())
+        if(start.getTime() != end.getTime())
         {
-            return start.getVelocity() + (time - start.getTime()) * slope;
+            this.start = start;
+            this.end = end;
         }
         else
         {
-            throw new RuntimeException("Time " + time + " not in domain of segment");
+            throw new IllegalArgumentException("MotionSegment slope is undefined");
         }
     }
 
-    public MotionProfilePoint getStart()
+    public MotionSegment(double startTime, double startVelocity, double endTime, double endVelocity)
+    {
+        this(new MotionPoint(startTime, startVelocity), new MotionPoint(endTime, endVelocity));
+    }
+
+    public double evaluateVelocity(double time)
+    {
+        if(start.getTime() <= time && time <= end.getTime())
+        {
+            return start.getVelocity() + ((time - start.getTime()) * evaluateAcceleration());
+        }
+        else
+        {
+            throw new IllegalArgumentException("time " + time + " is not in domain of MotionSegment [" + start.getTime() + ", " + end.getTime() + "]");
+        }
+    }
+
+    public double evaluateAcceleration()
+    {
+        return (end.getVelocity() - start.getVelocity()) / (end.getTime() - start.getTime());
+    }
+
+    public MotionPoint getStart()
     {
         return start;
     }
 
-    public MotionProfilePoint getEnd()
+    public MotionPoint getEnd()
     {
         return end;
     }

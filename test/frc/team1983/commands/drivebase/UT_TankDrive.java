@@ -9,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -18,7 +16,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class UT_TankDrive
 {
-    private TankDrive tankDrive;
+    private RunTankDrive tankDrive;
     @Mock
     private Drivebase drivebase;
     @Mock
@@ -29,7 +27,7 @@ public class UT_TankDrive
     public void setup()
     {
         initMocks(this);
-        tankDrive = new TankDrive(drivebase, oi);
+        tankDrive = new RunTankDrive(drivebase, oi);
     }
 
     @After

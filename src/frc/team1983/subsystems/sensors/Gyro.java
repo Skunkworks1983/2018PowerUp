@@ -1,6 +1,7 @@
 package frc.team1983.subsystems.sensors;
 
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SPI;
 import frc.team1983.settings.Constants.SensorMap.GyroConstants;
 
@@ -9,44 +10,80 @@ import frc.team1983.settings.Constants.SensorMap.GyroConstants;
 public class Gyro extends AHRS
 {
     private boolean isDead;
+    private boolean isBigGyro; //true is big navx, false is lil navx
 
     public Gyro(SPI.Port port)
     {
         super(port);
         isDead = false;
+        isBigGyro = true;
+    }
+
+    public Gyro(I2C.Port port)
+    {
+        super(port);
+        isDead = false;
+        isBigGyro = false;
     }
 
     //Iterates to ensure that the gyro is initializing correctly, otherwise let other commands know that the gyro doesn't work.
-    public void initGyro()
+    public void checkGyroStatus()
     {
-        int counter = 0;
-
-        while(!isConnected())
+        if(isBigGyro)
         {
-            counter++;
-            if(counter > GyroConstants.IS_CONNECTED_TIMEOUT)
+            int counter = 0;
+            while(!isConnected())
             {
-                isDead = true;
-                break;
+                counter++;
+                if(counter > GyroConstants.IS_CONNECTED_TIMEOUT)
+                {
+                    isDead = true;
+                    break;
+                }
+            }
+
+            counter = 0;
+            while(!isCalibrating())
+            {
+                counter++;
+                if(counter > GyroConstants.IS_CALIBRATING_TIMEOUT) //TODO: figure out if this works
+                {
+                    isDead = true;
+                    break;
+                }
+            }
+
+        }
+        else
+        {
+            float initialYaw = getYaw();
+            isDead = true;
+            for(int counter = 0; counter < 10; counter++)
+            {
+                try
+                {
+                    Thread.sleep(1);
+                }
+                catch(InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+                if(getYaw() != initialYaw)
+                {
+                    isDead = false;
+                    break;
+                }
             }
         }
-
-        counter = 0;
-        while(!isCalibrating())
+        if(getRawGyroY() > 5000 || getRawGyroY() < -5000)
         {
-            counter++;
-            if(counter > GyroConstants.IS_CALIBRATING_TIMEOUT)
-            {
-                isDead = true;
-                break;
-            }
+            isDead = true;
         }
-
-        System.out.println("Is the gyro alive? : " + isDead);
+        System.out.println("Is the gyro alive? : " + !isDead);
     }
 
     public boolean isDead()
     {
-        return isDead;
+        return false;
     }
 }

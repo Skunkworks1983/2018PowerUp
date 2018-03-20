@@ -1,28 +1,29 @@
 package frc.team1983.util.motion;
 
-import frc.team1983.settings.Constants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.number.IsCloseTo.closeTo;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 public class UT_MotionProfile
 {
     private MotionProfile profile;
 
-    private double distance = 4096;
-    private double totalTime = 5;
-    private double vel_max = 2046;
-    private double acc_max = 4096;
-
     @Before
     public void setup()
     {
-        profile = new MotionProfile(distance, totalTime, vel_max, acc_max);
+        profile = new MotionProfile(new ArrayList<MotionSegment>(Arrays.asList(
+                new MotionSegment(0, 1000, 1, 1000),
+                new MotionSegment(1, 1000, 2, 2000)
+        )));
+
+        profile.duration = 2;
     }
 
     @After
@@ -32,60 +33,25 @@ public class UT_MotionProfile
     }
 
     @Test
-    public void exceptionForUndefinedProfile()
+    public void profileCorrectlyEvaluatesPosition()
     {
-        boolean thrown = false;
+        System.out.println(profile.isContinuous());
 
-        try
-        {
-            MotionProfile profile = new MotionProfile(4096, 1, 1, 1);
-        }
-        catch (RuntimeException exception)
-        {
-            thrown = true;
-        }
-
-        if(!thrown)
-            fail();
+        assertThat(profile.evaluatePosition(0), is(0.0));
+        assertThat(profile.evaluatePosition(1), is(1000.0));
     }
 
     @Test
-    public void exceptionForNonDomainInput()
+    public void profileCorrectlyEvaluatesVelocity()
     {
-        boolean thrown = false;
-
-        try
-        {
-            profile.evaluateVelocity(-1);
-        }
-        catch (RuntimeException exception)
-        {
-            thrown = true;
-        }
-
-        if(!thrown)
-            fail();
+        assertThat(profile.evaluateVelocity(0), is(1000.0));
+        assertThat(profile.evaluateVelocity(profile.getDuration()), is(2000.0));
     }
 
     @Test
-    public void returnsZeroForBounds()
+    public void profileCorrectlyEvaluatesAcceleration()
     {
-        assertThat(profile.evaluateVelocity(0), closeTo(0.0, 0.1));
-        assertThat(profile.evaluateVelocity(totalTime), closeTo(0.0, 0.1));
-    }
-
-    @Test
-    public void returnsConstantVelocityForMiddleInput()
-    {
-        double t_a = (totalTime * Constants.Motion.DEFAULT_MOTIONPROFILE_ACCEL_TIME) / 2;
-        assertThat(profile.evaluateVelocity(totalTime / 2), is(distance / (totalTime - t_a)));
-    }
-
-    @Test
-    public void travelsCorrectDistance()
-    {
-        assertThat(profile.evaluatePosition(totalTime), closeTo(distance, 0.1));
-        assertThat(profile.evaluatePosition(totalTime / 2), closeTo(distance / 2, 0.1));
-        assertThat(profile.evaluatePosition(0), closeTo(0, 0.1));
+        assertThat(profile.evaluateAcceleration(0), closeTo(0.0, 0.1));
+        assertThat(profile.evaluateAcceleration(profile.getDuration()), is(1000.0));
     }
 }

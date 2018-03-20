@@ -1,165 +1,145 @@
 package frc.team1983.util.motion;
 
-import frc.team1983.settings.Constants;
+import java.util.List;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-/*
-all motion profiles are currently trapezoidal velocity functions of time
-profiles are generated given the assumption that half of the profile is
-dedicated to acceleration. documentation to be written later :/
-
-vel_max and acc_max are constants for each subsystem, to be determined
-by math and testing or whatever
-
-all units are in either ms, u/ms, or u/ms/ms
-
-*/
 public class MotionProfile
 {
-    private ArrayList<MotionSegment> segments;
+    protected List<MotionSegment> segments;
 
-    private int pointDuration = 100; // ms
+    protected double duration;
 
-    private double distance;
-    private double totalTime;
+    // constraints
+    protected double maxVelocity;
+    protected double maxAccel;
 
-    private double vel_max;
-    private double acc_max;
-
-    private double vel_c;
-    private double t_a;
-    private double acc;
-
-    public MotionProfile(double distance, double totalTime, double vel_max, double acc_max)
+    public MotionProfile(List<MotionSegment> segments)
     {
-        double t_a = (totalTime * Constants.Motion.DEFAULT_MOTIONPROFILE_ACCEL_TIME) / 2;
-        double vel_c = distance / (totalTime - t_a);
-        double acc = vel_c / t_a;
-
-        // profile is undefined if we need to travel/accelerate faster than is physically possible
-        if(Math.abs(vel_c) <= Math.abs(vel_max) && Math.abs(acc) <= Math.abs(acc_max))
-        {
-            this.distance = distance;
-            this.totalTime = totalTime;
-
-            this.vel_max = vel_max;
-            this.acc_max = acc_max;
-
-            this.t_a = t_a;
-            this.vel_c = vel_c;
-            this.acc = acc;
-
-            // make segments (trapezoidal)
-            segments = new ArrayList<>(Arrays.asList(
-                new MotionSegment(new MotionProfilePoint(0, 0), new MotionProfilePoint(t_a, vel_c)),
-                new MotionSegment(new MotionProfilePoint(t_a, vel_c), new MotionProfilePoint(totalTime - t_a, vel_c)),
-                new MotionSegment(new MotionProfilePoint(totalTime - t_a, vel_c), new MotionProfilePoint(totalTime, 0))
-            ));
-        }
-        else
-        {
-            throw new IllegalArgumentException("Motion Profile undefined (vel_max: " + vel_max + ", vel_c: " + vel_c + ")");
-        }
+        this.segments = segments;
     }
 
-    public MotionProfile(double distance, double totalTime)
-    {
-        double t_a = (totalTime * Constants.Motion.DEFAULT_MOTIONPROFILE_ACCEL_TIME) / 2;
-        double vel_c = distance / (totalTime - t_a);
-        double acc = vel_c / t_a;
-
-        this.distance = distance;
-        this.totalTime = totalTime;
-
-        this.vel_max = vel_max;
-        this.acc_max = acc_max;
-
-        this.t_a = t_a;
-        this.vel_c = vel_c;
-        this.acc = acc;
-
-        // make segments (trapezoidal)
-        segments = new ArrayList<>(Arrays.asList(
-                new MotionSegment(new MotionProfilePoint(0, 0), new MotionProfilePoint(t_a, vel_c)),
-                new MotionSegment(new MotionProfilePoint(t_a, vel_c), new MotionProfilePoint(totalTime - t_a, vel_c)),
-                new MotionSegment(new MotionProfilePoint(totalTime - t_a, vel_c), new MotionProfilePoint(totalTime, 0))
-        ));
-    }
-
-    // evaluates the desired velocity of the profile at a time
-    public double evaluateVelocity(double time)
-    {
-        if(0 <= time && time <= totalTime)
-        {
-            // can probably do some fancy math here to find which segment we need to access but i'll keep it simple
-            for(MotionSegment segment : segments)
-            {
-                // segments overlap at one point so we can use bounds of domain
-                if(segment.getStart().getTime() <= time && time <= segment.getEnd().getTime())
-                    return segment.evaluate(time);
-            }
-
-            // guaranteed that code above returns a point but java sucks so we need this
-            return 0;
-        }
-        else
-        {
-            throw new IllegalArgumentException("Time " + time + " is not in the domain of motion profile");
-        }
-    }
-
-    // evaluates the riemann sum up to a time
     public double evaluatePosition(double time)
     {
-        if(0 <= time && time <= totalTime)
+        // check if time is in domain of profile
+        if(0 <= time && time <= getDuration())
         {
-            double A = 0;
+            double area = 0;
 
+            // trapezoidal sum of all segments to find area
             for(MotionSegment segment : segments)
             {
-                double a = segment.getStart().getVelocity(), b = 0, dt = 0;
+                double vel_1 = segment.getStart().getVelocity();
+                double vel_2 = 0, dt = 0;
 
-                if(segment.getEnd().getTime() <= time)
+                // check if we are trying to evaluate a portion of a segment or a whole segment
+                if(segment.getEnd().getTime() < time)
                 {
-                    b = segment.getEnd().getVelocity();
-                    dt = segment.getEnd().getTime() - segment.getStart().getTime();
+                    // evaluate the whole segment
+                    vel_2 = segment.getEnd().getVelocity();
+                    dt = (segment.getEnd().getTime() - segment.getStart().getTime());
                 }
-                else if(segment.getStart().getTime() < time && time < segment.getEnd().getTime())
+                else if(segment.getStart().getTime() <= time)
                 {
-                    b = segment.evaluate(time);
+                    // evaluate a portion of the segment, [start, time]
+                    vel_2 = segment.evaluateVelocity(time);
                     dt = time - segment.getStart().getTime();
                 }
 
-                A += ((a + b) / 2) * dt;
+                // area of a trapezoid
+                area += ((vel_1 + vel_2) / 2) * dt;
             }
 
-            return A;
+            return area;
         }
         else
         {
-            throw new IllegalArgumentException("Time " + time + " is not in the domain of motion profile");
+            throw new IllegalArgumentException("time " + time + " is not in domain of profile");
         }
     }
 
-    public ArrayList<MotionSegment> getSegments()
+    public double evaluateVelocity(double time)
     {
-        return segments;
+        return getSegment(time).evaluateVelocity(time);
     }
 
-    public double getTotalTime()
+    public double evaluateAcceleration(double time)
     {
-        return totalTime;
+        return time >= duration ? 0 : getSegment(time).evaluateAcceleration();
     }
 
-    public int getPointDuration()
+    protected MotionSegment getSegment(double time)
     {
-        return pointDuration;
+        if(0 <= time && time <= getDuration())
+        {
+            for(MotionSegment segment : segments)
+            {
+                if(segment.getStart().getTime() <= time && time <= segment.getEnd().getTime())
+                {
+                    return segment;
+                }
+            }
+
+            return null;
+        }
+        else
+        {
+            throw new IllegalArgumentException("segment " + time + " is not in domain of profile");
+        }
     }
 
-    public double getCruiseVelocity()
+    public boolean isContinuous()
     {
-        return vel_c;
+        boolean continuous = true;
+
+        for(int i = 0; i < segments.size(); i++)
+        {
+            if(i > 1)
+            {
+                if(segments.get(i).getStart().getVelocity() != segments.get(i - 1).getEnd().getVelocity() ||
+                        segments.get(i).getStart().getTime() != segments.get(i - 1).getEnd().getTime())
+                    continuous = false;
+            }
+        }
+
+        return continuous;
+    }
+
+    public double getDuration()
+    {
+        return duration;
+    }
+
+    public double getDistance()
+    {
+        return evaluatePosition(getDuration());
+    }
+
+    public double getInitialVelocity()
+    {
+        return evaluateVelocity(0);
+    }
+
+    protected void setInitialVelocity(double velocity)
+    {
+        getSegment(0).getStart().setVelocity(velocity);
+    }
+
+    public double getFinalVelocity()
+    {
+        return evaluateVelocity(duration);
+    }
+
+    protected void setFinalVelocity(double velocity)
+    {
+        getSegment(duration).getEnd().setVelocity(velocity);
+    }
+
+    public double getMaxVelocity()
+    {
+        return maxVelocity;
+    }
+
+    public double getMaxAcceleration()
+    {
+        return maxAccel;
     }
 }

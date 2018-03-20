@@ -9,26 +9,25 @@ import javax.naming.ldap.Control;
 
 public class SetRotateSpeed extends CommandBase
 {
-    private OI oi;
     private Collector collector;
 
     private double speed;
 
-    public SetRotateSpeed(OI oi, Collector collector, double speed)
+    public SetRotateSpeed(Collector collector, double speed)
     {
-        this.oi = oi;
         this.collector = collector;
         this.speed = speed;
     }
 
     @Override
     public void initialize()
-    {}
+    {
+        collector.setRotate(ControlMode.PercentOutput, speed);
+    }
 
     @Override
     public void execute()
     {
-        collector.setRotate(ControlMode.PercentOutput, speed);
     }
 
     @Override

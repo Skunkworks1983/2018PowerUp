@@ -1,78 +1,174 @@
 package frc.team1983.subsystems.utilities;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.Robot;
+import frc.team1983.util.control.ClosedLoopGains;
 import frc.team1983.util.control.ProfileController;
+import frc.team1983.util.control.ProfileSignal;
 import frc.team1983.util.motion.MotionProfile;
-import org.apache.logging.log4j.core.Logger;
+
+import java.util.HashMap;
 
 //Wrapper class around the WpiLib TalonSRX. Allows us to modify the functionality, and for future extendability.
 public class Motor extends TalonSRX
 {
-    private boolean hasEncoder;
-    private ProfileController manager;
-    private Logger logger;
+    protected HashMap<Integer, ClosedLoopGains> gains;
+    public ProfileController manager;
+
+    private double auxiliaryOutput;
 
     public Motor(int port, boolean reversed)
     {
         super(port);
-
-        logger = LoggerFactory.createNewLogger(this.getClass());
-
         setInverted(reversed);
 
-        //manager = new ProfileController(this);
-        //setProfileRunState(false);
+        gains = new HashMap<>();
     }
 
     public Motor(int port, boolean reversed, boolean hasEncoder)
     {
-        super(port);
-
-        logger = LoggerFactory.createNewLogger(this.getClass());
-
-        setInverted(reversed);
+        this(port, reversed);
 
         if(hasEncoder)
         {
             configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+            setSelectedSensorPosition(0, 0, 0);
         }
-
-        //manager = new ProfileController(this);
-        //setProfileRunState(false);
     }
 
-    // don't need this method but it makes things look more readable
-    public void follow(Motor leader)
+    // bad
+    public ClosedLoopGains getGains(int slot)
     {
-        set(ControlMode.Follower, leader.getDeviceID());
+        if(!gains.containsKey(slot))
+        {
+            ClosedLoopGains newGains = new ClosedLoopGains();
+            gains.put(slot, newGains);
+        }
+
+        return gains.get(slot);
+    }
+
+    public void configPIDF(int slot, double p, double i, double d, double f)
+    {
+        config_kP(slot, p, 0);
+        config_kI(slot, i, 0);
+        config_kD(slot, d, 0);
+        config_kF(slot, f, 0);
+    }
+
+    public void setGains(int slot, ClosedLoopGains gains)
+    {
+        this.gains.put(slot, gains);
+        updateTalonGains();
+    }
+
+    private void updateTalonGains()
+    {
+        for(Integer i : gains.keySet())
+        {
+            super.config_kP(i, gains.get(i).get_kP(), 0);
+            super.config_kI(i, gains.get(i).get_kI(), 0);
+            super.config_kD(i, gains.get(i).get_kD(), 0);
+            super.config_kF(i, gains.get(i).get_kF(), 0);
+        }
     }
 
     public void setProfile(MotionProfile profile)
     {
+        if(manager == null)
+            manager = new ProfileController(this, Robot.getInstance());
+
         manager.setProfile(profile);
     }
 
-    public void runLoadedProfile()
+    public void linkSignal(ProfileSignal signal)
+    {
+        if(manager == null)
+            manager = new ProfileController(this, Robot.getInstance());
+
+        manager.linkSignal(signal);
+    }
+
+    public void unlinkSignal()
+    {
+        if(manager == null)
+            manager = new ProfileController(this, Robot.getInstance());
+
+        manager.unlinkSignal();
+    }
+
+    public void runProfile()
     {
         setProfileRunState(true);
     }
 
-    public void stopLoadedProfile()
+    public void stopProfile()
     {
         setProfileRunState(false);
+        auxiliaryOutput = 0;
     }
 
     public void setProfileRunState(boolean run)
     {
+        if(manager == null)
+            manager = new ProfileController(this, Robot.getInstance());
+
         manager.setEnabled(run);
     }
 
-    @Override
-    public void set(ControlMode mode, double value)
+    public boolean isProfileFinished()
     {
-        super.set(mode, value);
+        return manager != null && manager.isProfileFinished();
+    }
+
+    public synchronized void setAuxiliaryOutput(double auxiliaryOutput)
+    {
+        this.auxiliaryOutput = auxiliaryOutput;
+    }
+
+    public synchronized double getAuxiliaryOutput()
+    {
+        return auxiliaryOutput;
+    }
+
+    @Override
+    public void setInverted(boolean inverted)
+    {
+        super.setInverted(inverted);
+    }
+
+    @Override
+    public ErrorCode config_kP(int slot, double value, int timeout)
+    {
+        getGains(slot).config_kP(value);
+        updateTalonGains();
+        return ErrorCode.OK;
+    }
+
+    @Override
+    public ErrorCode config_kI(int slot, double value, int timeout)
+    {
+        getGains(slot).config_kI(value);
+        updateTalonGains();
+        return ErrorCode.OK;
+    }
+
+    @Override
+    public ErrorCode config_kD(int slot, double value, int timeout)
+    {
+        getGains(slot).config_kD(value);
+        updateTalonGains();
+        return ErrorCode.OK;
+    }
+
+    @Override
+    public ErrorCode config_kF(int slot, double value, int timeout)
+    {
+        getGains(slot).config_kF(value);
+        updateTalonGains();
+        return ErrorCode.OK;
     }
 }
