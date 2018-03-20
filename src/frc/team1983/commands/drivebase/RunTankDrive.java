@@ -34,8 +34,44 @@ public class RunTankDrive extends CommandBase
     @Override
     public void execute()
     {
-        drivebase.setLeft(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.LEFT, Constants.OIMap.Axis.Y));
-        drivebase.setRight(ControlMode.PercentOutput, oi.getAxis(Constants.OIMap.Joystick.RIGHT, Constants.OIMap.Axis.Y));
+        double left = oi.getAxis(Constants.OIMap.Joystick.LEFT, Constants.OIMap.Axis.Y);
+        double right = oi.getAxis(Constants.OIMap.Joystick.RIGHT, Constants.OIMap.Axis.Y);
+
+        double adj_left = left;
+        double adj_right = right;
+
+        if((Math.abs(left) < 0.03))
+        {
+            adj_left = 0;
+        }
+
+        if((Math.abs(right) < 0.03))
+        {
+            adj_right = 0;
+        }
+
+        if(left < 0)
+        {
+            adj_left = -Math.pow(adj_left, 2);
+        }
+        else
+        {
+            adj_left = Math.pow(adj_left, 2);
+        }
+
+        if(right < 0)
+        {
+            adj_right = -Math.pow(adj_right, 2);
+        }
+        else
+        {
+            adj_right = Math.pow(adj_right, 2);
+        }
+
+        drivebase.setLeft(ControlMode.PercentOutput, adj_left);
+        drivebase.setRight(ControlMode.PercentOutput, adj_right);
+
+        //logger.info("Left: {}\tRight: {}", adj_left, adj_right);
     }
 
     @Override

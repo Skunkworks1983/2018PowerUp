@@ -41,7 +41,7 @@ public class SwitchFarScaleFar extends CommandGroup
 
         //SWITCH APPROACH & CUBE COLLECT
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 180));
-        super.addParallel(new CollectorIntake(collector, false));
+        super.addParallel(new CollectorIntake(collector, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3.0, .35));
 
         //TWO KEWB AUTO BB

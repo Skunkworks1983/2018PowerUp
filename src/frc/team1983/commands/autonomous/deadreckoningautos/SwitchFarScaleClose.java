@@ -45,7 +45,7 @@ public class SwitchFarScaleClose extends CommandGroup
         //CUBE PICKUP
         super.addSequential(new DriveStraight(drivebase, dashboard, -3));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
-        super.addParallel(new CollectorIntake(collector, true));
+        super.addParallel(new CollectorIntake(collector, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3));
 
         //WE GO FOR THE SCALE BUT WE RUN OUT OF TIME

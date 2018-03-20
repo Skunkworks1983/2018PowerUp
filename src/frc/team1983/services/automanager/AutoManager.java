@@ -33,23 +33,28 @@ public class AutoManager
         gameDataAlreadyPolled = false;
         logger = LoggerFactory.createNewLogger(this.getClass());
 
-        dashboard.addAutoChooserAutoDefault(AutoSelection.EXCHANGE_ZONE);
+        AutoSelection defaultSelection = AutoSelection.MP_AUTO_PICKER;
+        dashboard.addAutoChooserAutoDefault(defaultSelection);
+
         for(AutoSelection selection : AutoSelection.values())
         {
-            dashboard.addAutoChooserAutoChoice(selection);
+            if(selection != defaultSelection)
+            {
+                dashboard.addAutoChooserAutoChoice(selection);
+            }
         }
-
-        robotPositionSelector = new SendableChooser<>();
-        robotPositionSelector.addDefault("Left", OwnedSide.LEFT);
-        robotPositionSelector.addObject("Middle", OwnedSide.UNKNOWN); //A little confusing, but easier on our logic
-        robotPositionSelector.addObject("Right", OwnedSide.RIGHT);
-        SmartDashboard.putData("Robot Position Selector", robotPositionSelector); //TODO implement in dashboard wrapper
 
         ownedSideOverride = new SendableChooser<>();
         ownedSideOverride.addDefault("Use game data", OwnedSide.UNKNOWN);
-        ownedSideOverride.addObject("Left", OwnedSide.LEFT);
-        ownedSideOverride.addObject("Right", OwnedSide.RIGHT);
+        /*ownedSideOverride.addObject("Left", OwnedSide.LEFT);
+        ownedSideOverride.addObject("Right", OwnedSide.RIGHT);*/
         SmartDashboard.putData("Owned Side Override", ownedSideOverride); //TODO implement in dashboard wrapper
+
+        robotPositionSelector = new SendableChooser<>();
+        robotPositionSelector.addDefault("Middle", OwnedSide.UNKNOWN);
+        robotPositionSelector.addObject("Right", OwnedSide.RIGHT);
+        robotPositionSelector.addObject("LEFT", OwnedSide.LEFT);
+        SmartDashboard.putData("Robot Position Selector", robotPositionSelector);
     }
 
     public enum GameFeature
@@ -143,8 +148,6 @@ public class AutoManager
             if(gsm.length() == 3 || ownedSideOverride.getSelected() != OwnedSide.UNKNOWN)
             {
                 gameDataAlreadyPolled = true;
-
-                logger.info("Got game data");
 
                 Scheduler.getInstance().add(dashboard.getSelectedAutoChoice().getSelectableAuto().createCommand(
                         Robot.getInstance().getDrivebase(), Robot.getInstance().getCollector(),

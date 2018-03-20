@@ -20,7 +20,7 @@ public class EncoderTurnAnglePidInput extends PidInputWrapper
 
     public double pidGet()
     {
-        distance = (drivebase.getLeftDist()-drivebase.getRightDist()) / 2;
+        distance = (drivebase.getLeftDistance()-drivebase.getRightDistance()) / 2;
         distance = distance / (Constants.AutoValues.WHEELBASE_RADIUS);
         distance = distance * (360/(2*Math.PI));
 

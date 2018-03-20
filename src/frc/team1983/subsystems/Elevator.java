@@ -57,31 +57,24 @@ public class Elevator extends Subsystem
 
     }
 
-    // calculates ticks given vertical change in position of the carriage
-    public double feetToEncoderTicks(double feet)
+    public static double getFeet(double ticks)
     {
-        double resolution = Constants.MotorMap.Elevator.ENCODER_RESOLUTION;
-        double circumference = Constants.MotorMap.Elevator.SPROCKET_CIRCUMFERENCE;
-        double ticks = (feet / circumference) * resolution;
-
-        return ticks;
+        return 0;
     }
 
-    // calculates vertical change in position of the carriage given ticks
-    public double encoderTicksToFeet(double ticks)
+    public static double getTicks(double feet)
     {
-        double resolution = Constants.MotorMap.Elevator.ENCODER_RESOLUTION;
-        double circumference = Constants.MotorMap.Elevator.SPROCKET_CIRCUMFERENCE;
-        double feet = (ticks / resolution) * circumference;
-
-        return feet;
+        return 0;
     }
 
     public void set(ControlMode mode, double value)
     {
         right1.set(mode, value);
-        //logger.debug("Set elevator to: {}", value);
-        //logger.debug("Mode: {}", mode.toString());
+    }
+
+    public double getError()
+    {
+        return right1.getClosedLoopError(0);
     }
 
     public double getEncoderValue()
@@ -134,7 +127,6 @@ public class Elevator extends Subsystem
         this.setpoint = setpoint;
         right1.set(ControlMode.Position, setpoint);
     }
-
     @Override
     public void periodic()
     {

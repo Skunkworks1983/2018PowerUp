@@ -21,9 +21,15 @@ public class CollectorIntake extends CommandBase
         logger = LoggerFactory.createNewLogger(CollectorIntake.class);
         requires(collector);
         this.collector = collector;
-
+        this.stop = stop;
         leftCounter = Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME;
         rightCounter = Constants.MotorSetpoints.COLLECTOR_SWITCH_DEBOUNCE_TIME;
+    }
+
+    public CollectorIntake(Collector collector, double timeout)
+    {
+        this(collector, false);
+        setTimeout(timeout);
     }
 
     @Override
@@ -34,44 +40,25 @@ public class CollectorIntake extends CommandBase
     @Override
     public void execute()
     {
-        if(stop == true)
+        if(!stop)
+        {
+
+            collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+            collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
+        }
+        else
         {
             collector.setLeft(ControlMode.PercentOutput, 0.0);
             collector.setRight(ControlMode.PercentOutput, 0.0);
         }
-        if(isLeftSwitchDown())
-        {
-            if(isRightSwitchDown())
-            {
-                collector.setLeft(ControlMode.PercentOutput, 0.0);
-                collector.setRight(ControlMode.PercentOutput, 0.0);
-            }
-            else
-            {
-                collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
-                collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
-            }
-        }
-        else
-        {
-            if(isRightSwitchDown())
-            {
-                collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
-                collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_ROTATE_SPEED);
-            }
-            else
-            {
-                collector.setLeft(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
-                collector.setRight(ControlMode.PercentOutput, Constants.MotorSetpoints.COLLECTOR_INTAKE_SPEED);
-            }
 
-        }
+
     }
 
     @Override
     public boolean isFinished() //isFinished when expel starts
     {
-        return false;
+        return isTimedOut();
     }
 
     @Override
