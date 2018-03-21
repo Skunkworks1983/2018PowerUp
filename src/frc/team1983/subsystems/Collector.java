@@ -44,7 +44,7 @@ public class Collector extends Subsystem
         rotate.setSelectedSensorPosition(0, 0, 0);
         rotate.configPeakOutputReverse(-.6, 0);
         rotate.selectProfileSlot(0, 0);
-        rotate.setSensorPhase(false);
+        rotate.setSensorPhase(true);
         logger = LoggerFactory.createNewLogger(Collector.class);
 
 

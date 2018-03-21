@@ -137,10 +137,11 @@ public class Constants
     public static class MotorSetpoints
     {
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
+        public static final double COLLECTOR_ROTATE_SPEED = -0.5;
         public static final double COLLECTOR_INTAKE_SPEED = -0.75;
         public static final double COLLECTOR_EXPEL_SPEED = 0.75;
-        public static final double COLLECTOR_SLOW_EXPEL_SPEED = 0.2;
-        public static final double COLLECTOR_ROTATE_SPEED = -0.5;
+        public static final double COLLECTOR_SLOW_EXPEL_SPEED = -0.2;
+
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
         //is activated that it will always return true (for debouncing)
@@ -166,12 +167,12 @@ public class Constants
             public static class Left
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.65,
-                        0,
                         0.75,
                         0,
+                        0.45,
                         0,
-                        1500 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
+                        0,
+                        1750 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
                         0 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75)
                 );
             }
@@ -179,19 +180,15 @@ public class Constants
             public static class Right
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.65,
-                        0,
                         0.75,
                         0,
+                        0.45,
                         0,
-                        1500 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
+                        0,
+                        1750 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
                         0 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75)
                 );
             }
-
-            public static ClosedLoopGains HEADINGCORRECTION = new ClosedLoopGains(
-                    0.09, 0, 0.03, 0
-            );
 
             public static ClosedLoopGains AUX_STRAIGHT = new ClosedLoopGains(
                     0.04, 0, 0, 0

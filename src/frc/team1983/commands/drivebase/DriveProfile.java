@@ -82,10 +82,7 @@ public class DriveProfile extends CommandBase
         if(runHeadingCorrection)
         {
             headingLoop = new PIDController(
-                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kP(),
-                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kI(),
-                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kD(),
-                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kF(),
+                    0, 0, 0, 0,
                     pidInput, pidOutput
             );
         }
