@@ -2,7 +2,7 @@ package frc.team1983;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
@@ -91,16 +91,13 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
 
-        drivebase.setLeftProfile(new TrapezoidalProfile(6000, 3));
-        drivebase.setRightProfile(new TrapezoidalProfile(6000, 3));
+        //Scheduler.getInstance().add(new DriveArc(drivebase, -6, -90, 2));
     }
 
     @Override
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
-
-        drivebase.runProfiles();
 
         //autoManager.execute();
     }

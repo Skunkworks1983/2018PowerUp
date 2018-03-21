@@ -195,7 +195,7 @@ public class Constants
             );
 
             public static ClosedLoopGains AUX_ARC = new ClosedLoopGains(
-                    0, 0, 0, 0
+                    0.04, 0, 0, 0
             );
         }
 

@@ -31,7 +31,7 @@ public class DriveProfile extends CommandBase
     protected CruiseProfile leftProfile, rightProfile;
 
     private PIDController headingLoop;
-    private boolean runHeadingCorrection = false;
+    private boolean runHeadingCorrection = true;
     private double startHeading;
     private double endHeading;
     private double deltaHeading;
@@ -57,7 +57,6 @@ public class DriveProfile extends CommandBase
         logger = LoggerFactory.createNewLogger(this.getClass());
 
         requires(drivebase);
-        setTimeout(duration + 0.75);
 
         this.actions = new ArrayList<>();
 
@@ -140,8 +139,6 @@ public class DriveProfile extends CommandBase
 
         if(!stitched)
         {
-            //logger.info(onTargetTime);
-
             if(onTarget() && lastOnTargetTimestamp != 0)
             {
                 onTargetTime += (System.currentTimeMillis() - lastOnTargetTimestamp) * 0.001;
