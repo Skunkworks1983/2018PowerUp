@@ -2,6 +2,8 @@ package frc.team1983;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
@@ -13,6 +15,7 @@ import frc.team1983.subsystems.Climber;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
+import frc.team1983.util.motion.profiles.TrapezoidalProfile;
 import org.apache.logging.log4j.core.Logger;
 
 public class Robot extends IterativeRobot
@@ -43,7 +46,6 @@ public class Robot extends IterativeRobot
         robotLogger = LoggerFactory.createNewLogger(Robot.class);
         dashboardWrapper = new DashboardWrapper();
         dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
-        dashboard.populate();
         autoManager = new AutoManager(dashboardWrapper);
 
         oi = new OI();
@@ -67,6 +69,9 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
 
+        dashboard.populate();
+        dashboard.removeAll();
+
         drivebase.stopProfiles();
         elevator.stopProfile();
 
@@ -85,6 +90,9 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
+
+        drivebase.setLeftProfile(new TrapezoidalProfile(6000, 3));
+        drivebase.setRightProfile(new TrapezoidalProfile(6000, 3));
     }
 
     @Override
@@ -92,7 +100,9 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
 
-        autoManager.execute();
+        drivebase.runProfiles();
+
+        //autoManager.execute();
     }
 
     @Override
@@ -100,7 +110,7 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
 
-        drivebase.setBrakeMode(true);
+        drivebase.setBrakeMode(false);
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
     }
@@ -144,8 +154,7 @@ public class Robot extends IterativeRobot
         return collector;
     }
 
-    public Climber getClimber()
-    {
+    public Climber getClimber() {
         return climber;
     }
 

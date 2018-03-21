@@ -71,13 +71,15 @@ public class ProfileController
 
         ClosedLoopGains gains = parent.getGains(0);
 
+        double startPos = parent.getSelectedSensorPosition(0);
+
         for(int i = 0; i <= resolution; i++)
         {
             double t = i * duration;
 
             TrajectoryPoint point = new TrajectoryPoint();
 
-            point.position = profile.evaluatePosition(t);
+            point.position = startPos + profile.evaluatePosition(t);
             // velocity is actually percent output
             point.velocity = gains.get_kS() + (gains.get_kV() * profile.evaluateVelocity(t)) + (gains.get_kA() * profile.evaluateAcceleration(t));
 
@@ -88,8 +90,8 @@ public class ProfileController
 
             point.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_0ms;
 
-            point.zeroPos = i == 0;
-            point.isLastPoint = i == (resolution - 1);
+            point.zeroPos = false;
+            //point.isLastPoint = i == (resolution - 1);
 
             parent.pushMotionProfileTrajectory(point);
         }
@@ -109,8 +111,7 @@ public class ProfileController
     public boolean isProfileFinished()
     {
         MotionProfileStatus status = getProfileStatus();
-
-        return runnable.hasProcessed() && (status.isUnderrun || (status.btmBufferCnt == 1 || status.btmBufferCnt == 0));
+        return runnable.hasProcessed() && (status.isUnderrun || status.btmBufferCnt == 0);
     }
 
     public void setEnabled(boolean enabled)

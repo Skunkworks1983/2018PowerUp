@@ -167,35 +167,35 @@ public class Constants
             public static class Left
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.75,
+                        0,//0.75,
                         0,
-                        0.45,
+                        0,//0.45,
                         0,
                         0,
-                        1750 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
-                        0 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75)
+                        1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
+                        1023 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
                 );
             }
 
             public static class Right
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.75,
+                        0,//0.75,
                         0,
-                        0.45,
+                        0,//0.45,
                         0,
                         0,
-                        1750 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
-                        0 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75)
+                        1023 / Motion.DRIVEBASE_RIGHT_MAX_VELOCITY,
+                        1023 / Motion.DRIVEBASE_RIGHT_MAX_ACCELERATION
                 );
             }
 
             public static ClosedLoopGains AUX_STRAIGHT = new ClosedLoopGains(
-                    0.04, 0, 0, 0
+                    0, 0, 0, 0
             );
 
             public static ClosedLoopGains AUX_ARC = new ClosedLoopGains(
-                    0.09, 0, 0.04, 0
+                    0, 0, 0, 0
             );
         }
 
@@ -446,10 +446,13 @@ public class Constants
         public static final double DEFAULT_MOTIONPROFILE_ACCEL_TIME = 0.5; // [0-1]
         public static final int MIN_POINTS_IN_TALON = 3;
 
-        public static final double DRIVEBASE_LEFT_MAX_TICKS_PER_SEC = 14000.0;
-        public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14600.0;
+        public static final double DRIVEBASE_LEFT_MAX_VELOCITY = 14000.0; // sensor units per second
+        public static final double DRIVEBASE_LEFT_MAX_ACCELERATION = DRIVEBASE_LEFT_MAX_VELOCITY / 0.75; // sensor units per second per second
+        public static final double DRIVEBASE_RIGHT_MAX_VELOCITY = 14600.0; // sensor units per second
+        public static final double DRIVEBASE_RIGHT_MAX_ACCELERATION = DRIVEBASE_RIGHT_MAX_VELOCITY / 0.75; // sensor units per second per second
 
-        public static final double ELEVATOR_MAX_TICKS_PER_SEC = 0;
+        public static final double ELEVATOR_MAX_VELOCITY = 0.01; // sensor units per second
+        public static final double ELEVATOR_MAX_ACCELERATION = 0.01; // sensor units per second per second
 
         public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(3/12);
         public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.75;

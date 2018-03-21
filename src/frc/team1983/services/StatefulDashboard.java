@@ -1,5 +1,6 @@
 package frc.team1983.services;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import org.apache.logging.log4j.core.Logger;
@@ -92,6 +93,14 @@ public class StatefulDashboard
         key = constructKey(object, key);
         keySet.add(key);
         dashboardWrapper.putString(key, value);
+    }
+
+    public void removeAll()
+    {
+        for(String key : keySet)
+        {
+            remove(key);
+        }
     }
 
     //The get functions get the value from Smartdashboard, and if it does not exist returns a default value
@@ -200,9 +209,8 @@ public class StatefulDashboard
     }
 
     //Removes a value from the keyset and smartdashboard
-    public void remove(Object object, String key)
+    public void remove(String key)
     {
-        key = constructKey(object, key);
         dashboardWrapper.delete(key);
         keySet.remove(key);
     }

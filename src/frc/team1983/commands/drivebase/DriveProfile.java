@@ -31,7 +31,7 @@ public class DriveProfile extends CommandBase
     protected CruiseProfile leftProfile, rightProfile;
 
     private PIDController headingLoop;
-    private boolean runHeadingCorrection = true;
+    private boolean runHeadingCorrection = false;
     private double startHeading;
     private double endHeading;
     private double deltaHeading;
@@ -122,8 +122,6 @@ public class DriveProfile extends CommandBase
     {
         if(runHeadingCorrection)
         {
-            //double desiredHeading = startHeading + (deltaHeading * ((Math.min(timeSinceInitialized(), duration) / duration)));
-
             double dL = drivebase.getLeftDistance();
             double dR = drivebase.getRightDistance();
 
