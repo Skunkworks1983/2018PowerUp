@@ -186,7 +186,7 @@ public class Constants
                         0,
                         0,//Motion.DRIVEBASE_LEFT_KS,
                         1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
-                    1023 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
+                        1023 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
                 );
             }
 

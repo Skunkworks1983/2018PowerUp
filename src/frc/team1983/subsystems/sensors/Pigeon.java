@@ -29,6 +29,13 @@ public class Pigeon extends PigeonIMU
     {
         double[] xyz = new double[3];
         getAccumGyro(xyz);
+
+        ErrorCode code = getAccumGyro(xyz);
+
+        if(code != ErrorCode.OK)
+        {
+            logger.error("getAngle error: {}", code);
+        }
         return xyz[2];
     }
 }

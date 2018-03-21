@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.drivebase.TurnDegree;
@@ -119,6 +120,8 @@ public class Robot extends IterativeRobot
 
         drivebase.getGyro().setYaw(0, 0);
         drivebase.setBrakeMode(true);
+
+        Scheduler.getInstance().add(new DriveArc(drivebase, 5, 90, 2));
     }
 
     @Override

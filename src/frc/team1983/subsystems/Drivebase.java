@@ -45,7 +45,7 @@ public class Drivebase extends Subsystem
         right3.follow(right1);
 
         left1.setSensorPhase(true);
-        right1.setSensorPhase(true);
+        right1.setSensorPhase(false);
 
         left1.setGains(0, Constants.PidConstants.Drivebase.Left.MAIN);
         right1.setGains(0, Constants.PidConstants.Drivebase.Right.MAIN);
@@ -213,13 +213,15 @@ public class Drivebase extends Subsystem
 
     public void setBrakeMode(boolean brake)
     {
-        left1.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
-        left2.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
-        left3.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        NeutralMode mode = brake ? NeutralMode.Brake : NeutralMode.Coast;
 
-        right1.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
-        right2.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
-        right3.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        left1.setNeutralMode(mode);
+        left2.setNeutralMode(mode);
+        left3.setNeutralMode(mode);
+
+        right1.setNeutralMode(mode);
+        right2.setNeutralMode(mode);
+        right3.setNeutralMode(mode);
     }
 }
 
