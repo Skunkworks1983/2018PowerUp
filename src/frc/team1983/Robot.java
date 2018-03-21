@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
+import frc.team1983.commands.drivebase.TurnDegree;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
@@ -91,7 +92,7 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
 
-        //Scheduler.getInstance().add(new DriveArc(drivebase, -6, -90, 2));
+        Scheduler.getInstance().add(new DriveFeet(drivebase, 12, 2));
     }
 
     @Override
@@ -116,7 +117,6 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-
     }
 
     @Override

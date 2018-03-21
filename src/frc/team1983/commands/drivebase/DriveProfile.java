@@ -107,7 +107,6 @@ public class DriveProfile extends CommandBase
             totalDistance = (leftDistance + rightDistance) / 2;
 
             headingLoop.enable();
-            headingLoop.setOutputRange(-0.6, 0.6);
         }
 
         drivebase.setLeftProfile(leftProfile);
@@ -128,7 +127,9 @@ public class DriveProfile extends CommandBase
             percent = Math.min(1, Math.max(percent, 0));
             double desiredHeading = startHeading + (percent * deltaHeading);
 
+            //double desiredHeading = startHeading + (deltaHeading * (Math.min(timeSinceInitialized(), duration) / duration));
             headingLoop.setSetpoint(desiredHeading);
+            logger.info(desiredHeading);
         }
     }
 
@@ -193,6 +194,9 @@ public class DriveProfile extends CommandBase
                                    " , gyro error: " + (endHeading - drivebase.getGyro().getAngle()));
 
         drivebase.stopProfiles();
+
+        drivebase.setRightAuxiliaryOutput(0);
+        drivebase.setLeftAuxiliaryOutput(0);
 
         if(runHeadingCorrection)
         {

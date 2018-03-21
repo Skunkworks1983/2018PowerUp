@@ -24,6 +24,6 @@ public class Pigeon extends PigeonIMU
     {
         double[] xyz = new double[3];
         getAccumGyro(xyz);
-        return xyz[1];
+        return xyz[2];
     }
 }

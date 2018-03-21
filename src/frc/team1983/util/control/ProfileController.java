@@ -79,7 +79,7 @@ public class ProfileController
 
             TrajectoryPoint point = new TrajectoryPoint();
 
-            point.position = startPos + profile.evaluatePosition(t);
+            point.position = profile.evaluatePosition(t);
             // velocity is actually percent output
             point.velocity = gains.get_kS() + (gains.get_kV() * profile.evaluateVelocity(t)) + (gains.get_kA() * profile.evaluateAcceleration(t));
 
@@ -90,7 +90,7 @@ public class ProfileController
 
             point.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_0ms;
 
-            point.zeroPos = false;
+            point.zeroPos = i == 0;
             //point.isLastPoint = i == (resolution - 1);
 
             parent.pushMotionProfileTrajectory(point);
