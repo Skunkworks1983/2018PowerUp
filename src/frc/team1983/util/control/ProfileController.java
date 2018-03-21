@@ -36,7 +36,6 @@ public class ProfileController
         thread = new Thread(runnable);
 
         reset();
-        robot.addProfileController(this);
     }
 
     private void reset()
@@ -152,7 +151,6 @@ public class ProfileController
     public void updateRobotState(Constants.MotorMap.Mode mode)
     {
         setEnabled(false);
-        parent.set(ControlMode.PercentOutput, 0);
 
         reset();
     }
