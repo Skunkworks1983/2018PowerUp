@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.sensors.Gyro;
+import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.control.ProfileSignal;
 import frc.team1983.util.motion.MotionProfile;
@@ -18,7 +19,7 @@ public class Drivebase extends Subsystem
     public Motor left1, left2, left3;
     public Motor right1, right2, right3;
     private ProfileSignal signal;
-    private Gyro gyro;
+    private Pigeon gyro;
 
     private Logger logger;
 
@@ -34,7 +35,7 @@ public class Drivebase extends Subsystem
         right2 = new Motor(Constants.MotorMap.Drivebase.RIGHT_2, Constants.MotorMap.Drivebase.RIGHT2_REVERSED);
         //right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED);
 
-        gyro = new Gyro(I2C.Port.kOnboard);
+        gyro = new Pigeon(left3);
         signal = new ProfileSignal();
 
         //left2.follow(left1);
@@ -205,7 +206,7 @@ public class Drivebase extends Subsystem
         right1.setAuxiliaryOutput(auxiliaryOutput);
     }
 
-    public Gyro getGyro()
+    public Pigeon getGyro()
     {
         return this.gyro;
     }

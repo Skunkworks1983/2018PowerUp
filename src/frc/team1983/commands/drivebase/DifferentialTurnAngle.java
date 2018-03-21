@@ -10,6 +10,7 @@ import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
+import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.inputwrappers.DifferentialTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
@@ -27,7 +28,7 @@ public class DifferentialTurnAngle extends CommandBase
     private PIDOutput adjustmentPidOut;
     private PIDController pivotPid;
     private PIDController adjustmentPid;
-    private Gyro gyro;
+    private Pigeon gyro;
     //private EncoderTurnAnglePidInput encoderTurnAnglePidInput;
     private GyroPidInput gyroPidInput;
     private double initialAngle;
@@ -72,7 +73,7 @@ public class DifferentialTurnAngle extends CommandBase
     public void initialize()
     {
         //initialAngle = encoderTurnAnglePidInput.pidGet();
-        gyro.initialize();
+        //gyro.initialize();
         initialAngle = gyroPidInput.pidGet();
         pivotPidSource = new DifferentialTurnAnglePidInput(drivebase);
         if(targetAngle < 0)
