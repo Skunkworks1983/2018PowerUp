@@ -28,18 +28,7 @@ public class Pigeon extends PigeonIMU
     public double getAngle()
     {
         double[] xyz = new double[3];
-<<<<<<< refs/remotes/origin/auto-debugging
         getAccumGyro(xyz);
         return xyz[2];
-=======
-        ErrorCode code = getAccumGyro(xyz);
-
-        if(code != ErrorCode.OK)
-        {
-            logger.error("getAngle error: {}", code);
-        }
-
-        return xyz[1];
->>>>>>> Writing middle forward auto
     }
 }

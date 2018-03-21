@@ -5,6 +5,7 @@ import frc.team1983.commands.autonomous.profiled.SwitchCloseScaleClose;
 import frc.team1983.commands.autonomous.profiled.SwitchCloseScaleFar;
 import frc.team1983.commands.autonomous.profiled.SwitchFarScaleClose;
 import frc.team1983.commands.autonomous.profiled.SwitchFarScaleFar;
+import frc.team1983.commands.autonomous.profiled.pointturns.MidSwitchRight;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.automanager.AutoManager;
@@ -31,6 +32,14 @@ public class OneCubeMPPicker extends CommandGroup
         switch(autoManager.getRobotPosition())
         {
             case UNKNOWN:
+                if(switchPosition == AutoManager.OwnedSide.LEFT)
+                {
+
+                }
+                else if(switchPosition == AutoManager.OwnedSide.RIGHT)
+                {
+                    addSequential(new MidSwitchRight(drivebase));
+                }
                 break;
             case RIGHT:
             case LEFT:

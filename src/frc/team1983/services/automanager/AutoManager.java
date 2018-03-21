@@ -44,6 +44,10 @@ public class AutoManager
             }
         }
 
+        ownedSideOverride = new SendableChooser<>();
+        ownedSideOverride.addDefault("Use game data", OwnedSide.UNKNOWN);
+        SmartDashboard.putData("Owned Side Override", ownedSideOverride);
+
         robotPositionSelector = new SendableChooser<>();
         robotPositionSelector.addDefault("Middle", OwnedSide.UNKNOWN);
         robotPositionSelector.addObject("Right", OwnedSide.RIGHT);
