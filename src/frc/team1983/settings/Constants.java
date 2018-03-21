@@ -175,6 +175,16 @@ public class Constants
                         1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
                         1023 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
                 );
+
+                public static final ClosedLoopGains ARC = new ClosedLoopGains(
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                );
             }
 
             public static class Right
@@ -188,18 +198,28 @@ public class Constants
                         1023 / Motion.DRIVEBASE_RIGHT_MAX_VELOCITY,
                         1023 / Motion.DRIVEBASE_RIGHT_MAX_ACCELERATION
                 );
+
+                public static final ClosedLoopGains ARC = new ClosedLoopGains(
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                );
             }
 
             public static ClosedLoopGains AUX_STRAIGHT = new ClosedLoopGains(
-                    0, 0, 0, 0
+                    0.05, 0, 0, 0
             );
 
             public static ClosedLoopGains AUX_TURN = new ClosedLoopGains(
-                    0, 0, 0, 0
+                    0.02, 0, 0.025, 0
             );
 
             public static ClosedLoopGains AUX_ARC = new ClosedLoopGains(
-                    0.15, 0, 0.01, 0
+                    0.03, 0, 0, 0
             );
         }
 
@@ -458,8 +478,8 @@ public class Constants
         public static final double ELEVATOR_MAX_VELOCITY = 0.01; // sensor units per second
         public static final double ELEVATOR_MAX_ACCELERATION = 0.01; // sensor units per second per second
 
-        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(3/12);
+        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks((12 * 100)/12);
         public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.75;
-        public static final double DRIVEBASE_HEADING_END_RANGE = 2;
+        public static final double DRIVEBASE_HEADING_END_RANGE = 3;
     }
 }
