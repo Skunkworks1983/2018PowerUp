@@ -14,6 +14,7 @@ public class SwitchFarScaleClose extends Path
     public SwitchFarScaleClose(Drivebase drivebase)
     {
         super(new ArrayList<>(Arrays.asList(
-                )));
+                new DriveFeet(drivebase, -6, 1)
+                                           )));
     }
 }

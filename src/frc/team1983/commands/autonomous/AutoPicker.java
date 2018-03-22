@@ -1,12 +1,10 @@
 package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.team1983.commands.autonomous.profiled.LeftScaleLeft;
-import frc.team1983.commands.autonomous.profiled.LeftScaleRight;
-import frc.team1983.commands.autonomous.profiled.MidSwitchLeft;
-import frc.team1983.commands.autonomous.profiled.MidSwitchRight;
-import frc.team1983.commands.autonomous.profiled.RightScaleLeft;
-import frc.team1983.commands.autonomous.profiled.RightScaleRight;
+import frc.team1983.commands.autonomous.profiled.SwitchCloseScaleClose;
+import frc.team1983.commands.autonomous.profiled.SwitchCloseScaleFar;
+import frc.team1983.commands.autonomous.profiled.SwitchFarScaleClose;
+import frc.team1983.commands.autonomous.profiled.SwitchFarScaleFar;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.automanager.AutoManager;
@@ -25,41 +23,34 @@ public class AutoPicker extends CommandGroup
         switchPosition = autoManager.getOwnedSide(AutoManager.GameFeature.SWITCH_NEAR);
         scalePosition = autoManager.getOwnedSide(AutoManager.GameFeature.SCALE);
 
+        boolean switchSame, scaleSame;
+
+        switchSame = switchPosition == autoManager.getRobotPosition();
+        scaleSame = scalePosition == autoManager.getRobotPosition();
+
+        System.out.println(autoManager.getRobotPosition());
+
         switch(autoManager.getRobotPosition())
         {
             case UNKNOWN:
-                if(switchPosition == AutoManager.OwnedSide.LEFT)
-                {
-                    addSequential(new MidSwitchLeft(drivebase));
-                }
-                else
-                {
-                    // run right side auto if unknown also
-                    addSequential(new MidSwitchRight(drivebase));
-                }
-
-                break;
-            case LEFT:
-                if(switchPosition == AutoManager.OwnedSide.LEFT)
-                {
-                    addSequential(new LeftScaleLeft(drivebase));
-                }
-                else
-                {
-                    addSequential(new LeftScaleRight(drivebase));
-                    // run right side auto if unknown also
-                }
-
                 break;
             case RIGHT:
-                if(switchPosition == AutoManager.OwnedSide.RIGHT)
+            case LEFT:
+                if(switchSame && scaleSame)
                 {
-                    addSequential(new RightScaleRight(drivebase));
+                    addSequential(new SwitchCloseScaleClose(drivebase));
+                }
+                else if(switchSame && !scaleSame)
+                {
+                    addSequential(new SwitchCloseScaleFar(drivebase));
+                }
+                else if(!switchSame && scaleSame)
+                {
+                    addSequential(new SwitchFarScaleClose(drivebase));
                 }
                 else
                 {
-                    addSequential(new RightScaleLeft(drivebase));
-                    // run right side auto if unknown also
+                    addSequential(new SwitchFarScaleFar(drivebase));
                 }
 
                 break;

@@ -127,12 +127,11 @@ public class DriveProfile extends CommandBase
             percentDist = Math.min(1, Math.max(percentDist, 0));
             double percentTime = Math.min(timeSinceInitialized(), duration) / duration;
 
-            double percent = Math.max(percentDist, percentTime);
+            double percent = percentDist;
 
             double desiredHeading = startHeading + (percent * deltaHeading);
 
             headingLoop.setSetpoint(desiredHeading);
-            logger.info(percentDist);
         }
     }
 
@@ -141,26 +140,19 @@ public class DriveProfile extends CommandBase
     {
         boolean finished = drivebase.profilesAreFinished();
 
-        if(!stitched)
+        if(onTarget() && lastOnTargetTimestamp != 0)
         {
-            if(onTarget() && lastOnTargetTimestamp != 0)
-            {
-                onTargetTime += (System.currentTimeMillis() - lastOnTargetTimestamp) * 0.001;
-                lastOnTargetTimestamp = System.currentTimeMillis();
-            }
-            else
-            {
-                onTargetTime = 0;
-            }
-
+            onTargetTime += (System.currentTimeMillis() - lastOnTargetTimestamp) * 0.001;
             lastOnTargetTimestamp = System.currentTimeMillis();
-
-            finished &= (onTargetTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME);
         }
         else
         {
-            finished &= onTarget();
+            onTargetTime = 0;
         }
+
+        lastOnTargetTimestamp = System.currentTimeMillis();
+
+        finished &= (onTargetTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME);
 
         finished |= isTimedOut();
         if(isTimedOut())
@@ -172,12 +164,17 @@ public class DriveProfile extends CommandBase
 
     private boolean onTarget()
     {
-        boolean isOnTarget = (drivebase.getLeftError() <= Constants.Motion.DRIVEBASE_TICKS_END_RANGE) &&
-                             (drivebase.getRightError() <= Constants.Motion.DRIVEBASE_TICKS_END_RANGE);
+        boolean isOnTarget = true;
+
+        if(!stitched)
+        {
+            isOnTarget = (Math.abs(drivebase.getLeftError()) <= Constants.Motion.DRIVEBASE_TICKS_END_RANGE) &&
+                    (Math.abs(drivebase.getRightError()) <= Constants.Motion.DRIVEBASE_TICKS_END_RANGE);
+        }
 
         if(runHeadingCorrection)
         {
-            isOnTarget &= (endHeading - drivebase.getGyro().getAngle()) <= Constants.Motion.DRIVEBASE_HEADING_END_RANGE;
+            isOnTarget &= (Math.abs(endHeading - drivebase.getGyro().getAngle())) <= Constants.Motion.DRIVEBASE_HEADING_END_RANGE;
         }
 
         return isOnTarget;
@@ -198,13 +195,13 @@ public class DriveProfile extends CommandBase
 
         drivebase.stopProfiles();
 
-        drivebase.setRightAuxiliaryOutput(0);
-        drivebase.setLeftAuxiliaryOutput(0);
-
         if(runHeadingCorrection)
         {
             headingLoop.disable();
         }
+
+        drivebase.setRightAuxiliaryOutput(0);
+        drivebase.setLeftAuxiliaryOutput(0);
     }
 
     // ohhhhh my god please

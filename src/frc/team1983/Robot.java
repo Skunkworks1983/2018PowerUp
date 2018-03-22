@@ -2,10 +2,7 @@ package frc.team1983;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.commands.autonomous.profiled.LeftScaleLeft;
-import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
-import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.drivebase.TurnDegree;
 import frc.team1983.services.DashboardWrapper;
@@ -18,12 +15,7 @@ import frc.team1983.subsystems.Climber;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
-import frc.team1983.util.motion.profiles.TrapezoidalProfile;
-import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
@@ -99,10 +91,6 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
 
         drivebase.getGyro().setYaw(0, 0);
-
-        Scheduler.getInstance().add(new Path(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, 6, 2)//new DriveArc(drivebase, -5, -90, 1)
-                                                                          ))));
     }
 
     @Override
@@ -110,7 +98,7 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
 
-        //autoManager.execute();
+        autoManager.execute();
     }
 
     @Override

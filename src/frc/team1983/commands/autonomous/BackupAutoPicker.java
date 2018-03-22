@@ -1,12 +1,8 @@
 package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.team1983.commands.autonomous.profiled.LeftScaleLeft;
-import frc.team1983.commands.autonomous.profiled.LeftScaleRight;
 import frc.team1983.commands.autonomous.profiled.MidSwitchLeft;
 import frc.team1983.commands.autonomous.profiled.MidSwitchRight;
-import frc.team1983.commands.autonomous.profiled.RightScaleLeft;
-import frc.team1983.commands.autonomous.profiled.RightScaleRight;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;

@@ -53,7 +53,7 @@ public class AutoManager
         robotPositionSelector = new SendableChooser<>();
         robotPositionSelector.addDefault("Middle", OwnedSide.UNKNOWN);
         robotPositionSelector.addObject("Right", OwnedSide.RIGHT);
-        robotPositionSelector.addObject("LEFT", OwnedSide.LEFT);
+        robotPositionSelector.addObject("Left", OwnedSide.LEFT);
         SmartDashboard.putData("Robot Position Selector", robotPositionSelector);
     }
 
