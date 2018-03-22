@@ -92,7 +92,7 @@ public class Robot extends IterativeRobot
         drivebase.getGyro().setYaw(0, 0);
 
         CommandGroup group = new CommandGroup();
-        
+
         /*
         Scheduler.getInstance().add(new Path(new ArrayList<>(Arrays.asList(
             new DriveArc(drivebase, -6, -90, 2),

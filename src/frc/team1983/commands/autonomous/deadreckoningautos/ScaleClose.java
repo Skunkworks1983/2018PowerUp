@@ -23,7 +23,7 @@ public class ScaleClose extends CommandGroup
         else { reflectionVariable = -1; }
 
         super.addSequential(new DriveStraight(drivebase, dashboard, 15));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 45 * reflectionVariable));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3, 0.25));
         super.addSequential(new CollectorExpel(collector, 1));

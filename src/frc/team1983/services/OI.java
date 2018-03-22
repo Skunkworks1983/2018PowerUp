@@ -1,6 +1,5 @@
 package frc.team1983.services;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
@@ -10,7 +9,6 @@ import frc.team1983.commands.climber.CreateTension;
 import frc.team1983.commands.climber.DropForks;
 import frc.team1983.commands.climber.EngageDogGears;
 import frc.team1983.commands.climber.Hook;
-import frc.team1983.commands.climber.StopTensioning;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.commands.collector.CollectorRotate;
@@ -103,17 +101,17 @@ public class OI
         //TODO tune this pid
         //Elevator setpoints
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator(), this));
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.SWITCH,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator(), this));
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.LOW,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.LOW, robot.getElevator(), this));
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.LOW, robot.getElevator()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.MID,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.MID, robot.getElevator(), this));
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.MID, robot.getElevator()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.TOP,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, robot.getElevator(), this));
+                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, robot.getElevator()));
         bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
-                       new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, robot.getElevator(), this));
+                       new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, robot.getElevator()));
 
         //Climber switches
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.HOOK,

@@ -28,17 +28,17 @@ public class SwitchFarScaleFar extends CommandGroup
         super.addParallel(new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS));
         super.addSequential(new DriveStraight(drivebase, dashboard, 21.0));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0 * reflectionVariable));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator));
         super.addSequential(new DriveStraight(drivebase, dashboard, 16.75));
 
         //SCALE LINEUP
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90.0 * reflectionVariable));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator));
         super.addSequential(new DriveStraight(drivebase, dashboard, 4.0, .35));
 
         //SHOOT N' SCOOT
         super.addSequential(new CollectorExpel(collector, 1, 1));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator));
         super.addSequential(new DriveStraight(drivebase, dashboard, -4.0, .35));
 
         //SWITCH APPROACH & CUBE COLLECT
@@ -47,7 +47,7 @@ public class SwitchFarScaleFar extends CommandGroup
         super.addSequential(new DriveStraight(drivebase, dashboard, 3.0, .35));
 
         //TWO KEWB AUTO BB
-        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
+        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator));
         super.addParallel(new CollectorExpel(collector, 1, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, 1, .35));
 
