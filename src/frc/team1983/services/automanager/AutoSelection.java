@@ -1,15 +1,8 @@
 package frc.team1983.services.automanager;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.team1983.commands.DoNothing;
-import frc.team1983.commands.autonomous.AutoPicker;
+import frc.team1983.commands.autonomous.OneCubeMPPicker;
+import frc.team1983.commands.autonomous.TwoCubeMPPicker;
 import frc.team1983.commands.autonomous.BackupAutoPicker;
-import frc.team1983.services.DashboardWrapper;
-import frc.team1983.services.StatefulDashboard;
-import frc.team1983.subsystems.Collector;
-import frc.team1983.subsystems.Drivebase;
-import frc.team1983.subsystems.Elevator;
 
 public enum AutoSelection
 {
@@ -49,7 +42,8 @@ public enum AutoSelection
         return new PlaceCubeInSwitch(drivebase, statefulDashboard, elevator, collector);
     }),
     */
-    MP_AUTO_PICKER("GAMEDATA MP AUTO PICKER", AutoPicker::new),
+    MP_TWOCUBE_AUTO_PICKER("GAMEDATA MP TWOCUBE AUTO PICKER", TwoCubeMPPicker::new),
+    MP_ONECUBE_AUTO_PICKER("GAMEDATA MP ONECUBE AUTO PICKER", OneCubeMPPicker::new),
     BACKUP_AUTO_PICKER("GAMEDATA BACKUP AUTO PICKER", BackupAutoPicker::new);
 
     private String readableName;

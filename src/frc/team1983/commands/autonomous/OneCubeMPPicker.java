@@ -13,11 +13,11 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 
 
-public class AutoPicker extends CommandGroup
+public class OneCubeMPPicker extends CommandGroup
 {
-    public AutoPicker(Drivebase drivebase, Collector collector, Elevator elevator,
-                      DashboardWrapper dashboardWrapper, StatefulDashboard statefulDashboard,
-                      AutoManager autoManager)
+    public OneCubeMPPicker(Drivebase drivebase, Collector collector, Elevator elevator,
+                           DashboardWrapper dashboardWrapper, StatefulDashboard statefulDashboard,
+                           AutoManager autoManager)
     {
         AutoManager.OwnedSide switchPosition, scalePosition;
         switchPosition = autoManager.getOwnedSide(AutoManager.GameFeature.SWITCH_NEAR);
@@ -28,8 +28,6 @@ public class AutoPicker extends CommandGroup
         switchSame = switchPosition == autoManager.getRobotPosition();
         scaleSame = scalePosition == autoManager.getRobotPosition();
 
-        System.out.println(autoManager.getRobotPosition());
-
         switch(autoManager.getRobotPosition())
         {
             case UNKNOWN:
@@ -38,19 +36,19 @@ public class AutoPicker extends CommandGroup
             case LEFT:
                 if(switchSame && scaleSame)
                 {
-                    addSequential(new SwitchCloseScaleClose(drivebase));
+
                 }
                 else if(switchSame && !scaleSame)
                 {
-                    addSequential(new SwitchCloseScaleFar(drivebase));
+
                 }
                 else if(!switchSame && scaleSame)
                 {
-                    addSequential(new SwitchFarScaleClose(drivebase));
+
                 }
                 else
                 {
-                    addSequential(new SwitchFarScaleFar(drivebase));
+
                 }
 
                 break;
