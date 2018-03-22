@@ -127,22 +127,31 @@ public class Elevator extends Subsystem
         this.setpoint = setpoint;
     }
 
+    public void setSensorPhase(boolean bool)
+    {
+        right1.setSensorPhase(bool);
+    }
+
     @Override
     public void periodic()
     {
         //logger.debug("Error1: {}\tSetpoint: {}", right1.getClosedLoopError(0), right1.getClosedLoopTarget(0));
 
-        if(!(setpoint != Constants.ElevatorSetpoints.BOTTOM && setpoint != Constants.ElevatorSetpoints.TRAVEL
+        System.out.println("periodic");
+        System.out.println("Setpoint: " + getSetpoint() + " collector: " + Robot.getInstance().isCollectorUp());
+        if(!(getSetpoint() != Constants.ElevatorSetpoints.BOTTOM && setpoint != Constants.ElevatorSetpoints.TRAVEL
             && Robot.getInstance().isCollectorUp()))
         {
-            right1.setSensorPhase(true);
-            right1.set(ControlMode.Position, setpoint.getEncoderTicks());
+            System.out.println("going");
+            setSensorPhase(true);
+            set(ControlMode.Position, getSetpoint().getEncoderTicks());
         }
         else
         {
-            logger.debug("Elevator setpoint was high and collector was up, going to travel");
-            right1.setSensorPhase(true);
-            right1.set(ControlMode.Position, Constants.ElevatorSetpoints.TRAVEL.getEncoderTicks());
+            System.out.println("not going");
+            //logger.debug("Elevator setpoint was high and collector was up, going to travel");
+            setSensorPhase(true);
+            set(ControlMode.Position, Constants.ElevatorSetpoints.TRAVEL.getEncoderTicks());
         }
     }
 

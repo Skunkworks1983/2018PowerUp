@@ -86,7 +86,7 @@ public class Collector extends Subsystem
 
     public boolean isUp()
     {
-        return getPosition() < 0; //Top is -300, so allow for some error
+        return getPosition() < 100; //Top is -300, so allow for some error
     }
 
     @Override
