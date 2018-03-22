@@ -1,12 +1,9 @@
 package frc.team1983;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.commands.drivebase.DriveArc;
-import frc.team1983.commands.drivebase.DriveFeet;
-import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.commands.drivebase.RunTankDrive;
-import frc.team1983.commands.drivebase.TurnDegree;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
@@ -17,12 +14,7 @@ import frc.team1983.subsystems.Climber;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
-import frc.team1983.util.motion.profiles.TrapezoidalProfile;
-import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
@@ -76,7 +68,7 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
 
         dashboard.populate();
-        dashboard.removeAll();
+        //dashboard.removeAll();
 
         drivebase.stopProfiles();
         elevator.stopProfile();
@@ -99,11 +91,15 @@ public class Robot extends IterativeRobot
 
         drivebase.getGyro().setYaw(0, 0);
 
+        CommandGroup group = new CommandGroup();
+        
+        /*
         Scheduler.getInstance().add(new Path(new ArrayList<>(Arrays.asList(
             new DriveArc(drivebase, -6, -90, 2),
             new DriveFeet(drivebase, 6, 1),
             new DriveFeet(drivebase, -6, 1)
-                                                                          ))));
+          ))));
+        */
     }
 
     @Override
@@ -111,6 +107,7 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
 
+        robotLogger.info("Pigeon output is {}", drivebase.getGyro().getAngle());
         //autoManager.execute();
     }
 
@@ -128,6 +125,7 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+        robotLogger.info("Pigeon output is {}", drivebase.getGyro().getAngle());
     }
 
     @Override
@@ -185,4 +183,6 @@ public class Robot extends IterativeRobot
 
         return instance;
     }
+
+
 }

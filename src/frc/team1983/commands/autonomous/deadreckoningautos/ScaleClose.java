@@ -22,7 +22,6 @@ public class ScaleClose extends CommandGroup
         if (robotPosition == AutoManager.OwnedSide.LEFT) { reflectionVariable = 1; }
         else { reflectionVariable = -1; }
 
-        //THE WHOLE AUTO IS IN ONE BLOCK
         super.addSequential(new DriveStraight(drivebase, dashboard, 15));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 45 * reflectionVariable));

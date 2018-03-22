@@ -22,17 +22,17 @@ public class MidToSwitch extends CommandGroup
     private int reflectionVariable;
     public MidToSwitch(Drivebase drivebase, StatefulDashboard dashboard, OI oi, Elevator elevator, Collector collector, AutoManager.OwnedSide robotPosition)
     {
-        if (robotPosition == AutoManager.OwnedSide.LEFT) { reflectionVariable = 1; }
+        if (robotPosition == AutoManager.OwnedSide.RIGHT) { reflectionVariable = 1; }
         else { reflectionVariable = -1; }
 
         //EVERYTHING
         super.addParallel(new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS));
-        super.addSequential(new DriveStraight(drivebase, dashboard, -5.));
-        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90. * reflectionVariable));
-        super.addSequential(new DriveStraight(drivebase, dashboard, -5.));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
-        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90. * reflectionVariable));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3.));
-        super.addSequential(new CollectorExpel(collector, -0.5));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90 * reflectionVariable));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 4.));
+        super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90 * reflectionVariable));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 5.5, 0.25));
+        super.addSequential(new CollectorExpel(collector, 0.5));
     }
 }
