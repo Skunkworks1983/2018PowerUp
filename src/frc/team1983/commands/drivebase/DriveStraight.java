@@ -59,10 +59,10 @@ public class DriveStraight extends CommandBase
 
         gyro = drivebase.getGyro();
 
-        dashboard.add(this, "kP", 0.0);
-        dashboard.add(this, "kI", 0.0);
-        dashboard.add(this, "kD", 0.0);
-        dashboard.add(this, "kF", 0.0);
+        dashboard.add(this, "kP", Constants.PidConstants.DriveStraightPid.P);
+        dashboard.add(this, "kI", Constants.PidConstants.DriveStraightPid.I);
+        dashboard.add(this, "kD", Constants.PidConstants.DriveStraightPid.D);
+        dashboard.add(this, "kF", Constants.PidConstants.DriveStraightPid.F);
 
         logger.info("Drivestraight constructed");
         logger.info("distance{}", distance);

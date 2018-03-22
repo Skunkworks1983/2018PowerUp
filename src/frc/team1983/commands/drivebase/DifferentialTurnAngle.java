@@ -55,15 +55,15 @@ public class DifferentialTurnAngle extends CommandBase
         counter = 0;
         //logger.info("targetAngle{}", targetAngle);
 
-        dashboard.add(this, "kP", 0.0);
-        dashboard.add(this, "kI", 0.0);
-        dashboard.add(this, "kD", 0.0);
-        dashboard.add(this, "kF", 0.0);
+        dashboard.add(this, "kP", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.P);
+        dashboard.add(this, "kI", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.I);
+        dashboard.add(this, "kD", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.D);
+        dashboard.add(this, "kF", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.F);
 
-        dashboard.add(this, "adjustmentP", 0.0);
-        dashboard.add(this, "adjustmentI", 0.0);
-        dashboard.add(this, "adjustmentD", 0.0);
-        dashboard.add(this, "adjustmentF", 0.0);
+        dashboard.add(this, "adjustmentP", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.P);
+        dashboard.add(this, "adjustmentI", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.I);
+        dashboard.add(this, "adjustmentD", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.D);
+        dashboard.add(this, "adjustmentF", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.F);
 
 
     }
