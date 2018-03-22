@@ -2,6 +2,7 @@ package frc.team1983;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.autonomous.profiled.LeftScaleLeft;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.DriveProfile;
@@ -100,9 +101,7 @@ public class Robot extends IterativeRobot
         drivebase.getGyro().setYaw(0, 0);
 
         Scheduler.getInstance().add(new Path(new ArrayList<>(Arrays.asList(
-            new DriveArc(drivebase, -6, -90, 2),
-            new DriveFeet(drivebase, 6, 1),
-            new DriveFeet(drivebase, -6, 1)
+                new DriveFeet(drivebase, 6, 2)//new DriveArc(drivebase, -5, -90, 1)
                                                                           ))));
     }
 

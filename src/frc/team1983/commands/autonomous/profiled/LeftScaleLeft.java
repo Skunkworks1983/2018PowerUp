@@ -15,7 +15,7 @@ public class LeftScaleLeft extends Path
     {
         super(new ArrayList<>(Arrays.asList(
                 new DriveFeet(drivebase, -22, 2.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_TRAVEL}),
-                new DriveArc(drivebase, 3, -90, 2.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE}),
+                new DriveArc(drivebase, -3, 90, 2.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE}),
                 new DriveFeet(drivebase, 3, 2),
                 new DriveFeet(drivebase, 0, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}),
                 new DriveFeet(drivebase, -3, 1.5),

@@ -120,10 +120,10 @@ public class DriveProfile extends CommandBase
     {
         if(runHeadingCorrection)
         {
-            double dL = drivebase.getLeftDistance();
-            double dR = drivebase.getRightDistance();
+            double dL = Math.abs(drivebase.getLeftDistance());
+            double dR = Math.abs(drivebase.getRightDistance());
 
-            double percentDist = ((dL + dR) / 2) / totalDistance;
+            double percentDist = ((dL + dR) / 2) / Math.abs(totalDistance);
             percentDist = Math.min(1, Math.max(percentDist, 0));
             double percentTime = Math.min(timeSinceInitialized(), duration) / duration;
 
@@ -132,9 +132,8 @@ public class DriveProfile extends CommandBase
             double desiredHeading = startHeading + (percent * deltaHeading);
 
             headingLoop.setSetpoint(desiredHeading);
+            logger.info(percentDist);
         }
-
-        logger.info(drivebase.getLeftError() + ", " + drivebase.getRightError());
     }
 
     @Override

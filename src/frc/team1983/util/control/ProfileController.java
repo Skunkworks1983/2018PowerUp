@@ -81,12 +81,14 @@ public class ProfileController
 
             point.position = profile.evaluatePosition(t);
             // velocity is actually percent output
-            point.velocity = gains.get_kS() + (gains.get_kV() * profile.evaluateVelocity(t)) + (gains.get_kA() * profile.evaluateAcceleration(t));
+
+            double output = (gains.get_kV() * profile.evaluateVelocity(t)) + (gains.get_kA() * profile.evaluateAcceleration(t));
+            double ks = gains.get_kV() * (output / Math.abs(output));
+            point.velocity = ks + output;
 
             point.auxiliaryPos = 0;
 
             point.profileSlotSelect0 = 0;
-            point.profileSlotSelect1 = 1;
 
             point.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_0ms;
 
