@@ -4,9 +4,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.commands.collector.SetRotateSpeed;
 import frc.team1983.services.OI;
+import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Elevator;
+import org.apache.logging.log4j.core.Logger;
 
 
 public class Manual extends Command
@@ -14,6 +16,7 @@ public class Manual extends Command
     private OI oi;
     private Collector collector;
     private Elevator elevator;
+    private Logger logger;
 
     public Manual(OI oi, Collector collector, Elevator elevator)
     {
@@ -21,6 +24,8 @@ public class Manual extends Command
         this.oi = oi;
         this.collector = collector;
         this.elevator = elevator;
+
+        this.logger = LoggerFactory.createNewLogger(this.getClass());
 
         requires(collector);
         requires(elevator);
@@ -35,15 +40,15 @@ public class Manual extends Command
     @Override
     protected void execute()
     {
-        if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_INTAKE))
-        {
-            collector.setLeft(ControlMode.PercentOutput, 0.5);
-            collector.setRight(ControlMode.PercentOutput, 0.5);
-        }
-        if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_EXPEL))
+        if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_INTAKE)) //TODO: stopping intake doesn't work
         {
             collector.setLeft(ControlMode.PercentOutput, -0.5);
             collector.setRight(ControlMode.PercentOutput, -0.5);
+        }
+        if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_EXPEL))
+        {
+            collector.setLeft(ControlMode.PercentOutput, 0.5);
+            collector.setRight(ControlMode.PercentOutput, 0.5);
         }
         if(!oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_INTAKE) &&
                 !oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_EXPEL))
@@ -68,11 +73,11 @@ public class Manual extends Command
 
         if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.M_UP))
         {
-            elevator.set(ControlMode.PercentOutput, 0.6);
+            elevator.set(ControlMode.PercentOutput, 0.4);
         }
         if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.M_DOWN))
         {
-            elevator.set(ControlMode.PercentOutput, -0.4);
+            elevator.set(ControlMode.PercentOutput, -0.25);
         }
         if(!oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.M_UP) &&
                 !oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.M_DOWN))
@@ -84,7 +89,7 @@ public class Manual extends Command
     @Override
     protected boolean isFinished()
     {
-        return false;
+        return !oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH);
     }
 
     @Override

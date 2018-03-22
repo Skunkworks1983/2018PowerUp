@@ -1,66 +1,33 @@
 package frc.team1983.commands.drivebase;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.team1983.services.logger.LoggerFactory;
+import com.fasterxml.jackson.annotation.JacksonInject;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import frc.team1983.commands.autonomous.actions.ActionsEnum;
+import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
-import frc.team1983.util.motion.MotionProfile;
+import frc.team1983.util.motion.profiles.CruiseProfile;
 import frc.team1983.util.motion.profiles.TrapezoidalProfile;
-import org.apache.logging.log4j.core.Logger;
 
-public class DriveFeet extends Command
+@JsonDeserialize(as = DriveFeet.class)
+public class DriveFeet extends DriveProfile
 {
-    private Drivebase drivebase;
-    private double feet;
-    private double time;
-
-    private MotionProfile leftProfile;
-    private MotionProfile rightProfile;
-
-    private Logger logger;
-
-    public DriveFeet(Drivebase drivebase, double feet, double time)
+    @JsonCreator
+    public DriveFeet(@JacksonInject @JsonProperty("drivebase") Drivebase drivebase, @JsonProperty("distance") double distance,
+                     @JsonProperty("time") double time, @JsonProperty("action") ActionsEnum[] actions)
     {
-        logger = LoggerFactory.createNewLogger(this.getClass());
-
-        this.drivebase = drivebase;
-        this.feet = feet;
-        this.time = time;
-
-        // will become three-segment based on paths (todo)
-        leftProfile = new TrapezoidalProfile(drivebase.getTicks(feet), time);
-        rightProfile = new TrapezoidalProfile(drivebase.getTicks(feet), time);
+        super(drivebase, generateProfile(distance, time), generateProfile(distance, time), time, 0, actions);
+        setHeadingLoopGains(Constants.PidConstants.Drivebase.AUX_STRAIGHT);
     }
 
-    @Override
-    protected void initialize()
+    public DriveFeet(Drivebase drivebase, double distance, double time)
     {
-        drivebase.setRightProfile(rightProfile);
-        drivebase.setLeftProfile(leftProfile);
-
-        drivebase.runProfiles();
+        this(drivebase, distance, time, new ActionsEnum[]{ActionsEnum.NONE});
     }
 
-    @Override
-    protected void execute()
+    private static CruiseProfile generateProfile(double distance, double time)
     {
-
-    }
-
-    @Override
-    protected boolean isFinished()
-    {
-        return drivebase.profilesAreFinished();
-    }
-
-    @Override
-    protected void interrupted()
-    {
-        end();
-    }
-
-    @Override
-    public void end()
-    {
-        drivebase.stopProfiles();
+        return new TrapezoidalProfile(Drivebase.getTicks(distance), time);
     }
 }

@@ -7,16 +7,19 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.sensors.Gyro;
+import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.Motor;
+import frc.team1983.util.control.ProfileSignal;
 import frc.team1983.util.motion.MotionProfile;
 import org.apache.logging.log4j.core.Logger;
 
 //The base of the robot. Consists of the drive train motors, slaved to each other.
 public class Drivebase extends Subsystem
 {
-    private Motor left1, left2, left3;
-    private Motor right1, right2, right3;
-    private Gyro gyro;
+    public Motor left1, left2, left3;
+    public Motor right1, right2, right3;
+    private ProfileSignal signal;
+    private Pigeon gyro;
 
     private Logger logger;
 
@@ -25,34 +28,38 @@ public class Drivebase extends Subsystem
         logger = LoggerFactory.createNewLogger(Drivebase.class);
 
         left1 = new Motor(Constants.MotorMap.Drivebase.LEFT_1, Constants.MotorMap.Drivebase.LEFT1_REVERSED, true);
-        left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED);
+        //left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED);
         left3 = new Motor(Constants.MotorMap.Drivebase.LEFT_3, Constants.MotorMap.Drivebase.LEFT3_REVERSED);
 
         right1 = new Motor(Constants.MotorMap.Drivebase.RIGHT_1, Constants.MotorMap.Drivebase.RIGHT1_REVERSED, true);
         right2 = new Motor(Constants.MotorMap.Drivebase.RIGHT_2, Constants.MotorMap.Drivebase.RIGHT2_REVERSED);
-        right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED);
+        //right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED);
 
-        gyro = new Gyro(I2C.Port.kOnboard);
+        gyro = new Pigeon(left3);
+        signal = new ProfileSignal();
 
-        left2.follow(left1);
+        //left2.follow(left1);
         left3.follow(left1);
 
         right2.follow(right1);
-        right3.follow(right1);
+        //right3.follow(right1);
 
         left1.setSensorPhase(true);
         right1.setSensorPhase(true);
 
-        left1.configPIDF(0, 0.3, 0, 0, 0.2);
-        right1.configPIDF(0, 0.3, 0, 0, 0.2);
+        left1.setGains(0, Constants.PidConstants.Drivebase.Left.MAIN);
+        right1.setGains(0, Constants.PidConstants.Drivebase.Right.MAIN);
+
+        left1.linkSignal(signal);
+        right1.linkSignal(signal);
     }
 
     public void initDefaultCommand()
     {
-        //setDefaultCommand(new TankDrive(this, MotorMap.getInstance().getOI()));
+
     }
 
-    public double getFeet(double ticks)
+    public static double getFeet(double ticks)
     {
         double resolution = Constants.MotorMap.Drivebase.ENCODER_RESOLUTION;
         double circumference = Constants.MotorMap.Drivebase.WHEEL_CIRCUMFERENCE;
@@ -62,7 +69,7 @@ public class Drivebase extends Subsystem
         return feet;
     }
 
-    public double getTicks(double feet)
+    public static double getTicks(double feet)
     {
         double resolution = Constants.MotorMap.Drivebase.ENCODER_RESOLUTION;
         double circumference = Constants.MotorMap.Drivebase.WHEEL_CIRCUMFERENCE;
@@ -82,24 +89,64 @@ public class Drivebase extends Subsystem
         right1.set(mode, value);
     }
 
+    // u
     public double getLeftEncoderValue()
     {
         return left1.getSelectedSensorPosition(0);
     }
 
+    // u
     public double getRightEncoderValue()
     {
         return right1.getSelectedSensorPosition(0);
     }
 
+    // u
+    public double getLeftError()
+    {
+        return left1.getClosedLoopError(0);
+    }
+
+    // u
+    public double getRightError()
+    {
+        return right1.getClosedLoopError(0);
+    }
+
+    // u/100ms
     public double getLeftEncoderVelocity()
     {
         return left1.getSelectedSensorVelocity(0);
     }
 
+    // u/100ms
     public double getRightEncoderVelocity()
     {
         return right1.getSelectedSensorVelocity(0);
+    }
+
+    // feet
+    public double getLeftDistance()
+    {
+        return getFeet(getLeftEncoderValue());
+    }
+
+    // feet
+    public double getRightDistance()
+    {
+        return getFeet(getRightEncoderValue());
+    }
+
+    // feet/s
+    public double getLeftVelocity()
+    {
+        return getFeet(getLeftEncoderVelocity() * 10);
+    }
+
+    // feet/s
+    public double getRightVelocity()
+    {
+        return getFeet(getRightEncoderVelocity() * 10);
     }
 
     public void setLeftProfile(MotionProfile profile)
@@ -122,12 +169,16 @@ public class Drivebase extends Subsystem
     {
         left1.runProfile();
         right1.runProfile();
+
+        signal.setEnabled(true);
     }
 
     public void stopProfiles()
     {
         left1.stopProfile();
         right1.stopProfile();
+
+        signal.setEnabled(false);
     }
 
     public boolean leftProfileIsFinished()
@@ -145,42 +196,30 @@ public class Drivebase extends Subsystem
         return leftProfileIsFinished() && rightProfileIsFinished();
     }
 
-    public Gyro getGyro()
+    public synchronized void setLeftAuxiliaryOutput(double auxiliaryOutput)
+    {
+        left1.setAuxiliaryOutput(auxiliaryOutput);
+    }
+
+    public synchronized void setRightAuxiliaryOutput(double auxiliaryOutput)
+    {
+        right1.setAuxiliaryOutput(auxiliaryOutput);
+    }
+
+    public Pigeon getGyro()
     {
         return this.gyro;
     }
 
-    public double getLeftDist()
+    public void setBrakeMode(boolean brake)
     {
-        return (getLeftEncoderValue()/Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT)*Constants.AutoValues.DRIVEBASE_ENCODER_FUDGE_FACTOR;
-    }
-    public double getRightDist()
-    {
-        return (getRightEncoderValue()/Constants.MotorMap.DrivebaseConstants.DRIVEBASE_TICKS_PER_FOOT)*Constants.AutoValues.DRIVEBASE_ENCODER_FUDGE_FACTOR;
-    }
-    public void setBrakeMode(boolean isBrake)
-    {
-        if(isBrake)
-        {
-            left1.setNeutralMode(NeutralMode.Brake);
-            left2.setNeutralMode(NeutralMode.Brake);
-            left3.setNeutralMode(NeutralMode.Brake);
+        left1.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        //left2.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        left3.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
 
-            right1.setNeutralMode(NeutralMode.Brake);
-            right2.setNeutralMode(NeutralMode.Brake);
-            right3.setNeutralMode(NeutralMode.Brake);
-        }
-        else
-        {
-            left1.setNeutralMode(NeutralMode.Coast);
-            left2.setNeutralMode(NeutralMode.Coast);
-            left3.setNeutralMode(NeutralMode.Coast);
-
-            right1.setNeutralMode(NeutralMode.Coast);
-            right2.setNeutralMode(NeutralMode.Coast);
-            right3.setNeutralMode(NeutralMode.Coast);
-        }
-
+        right1.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        right2.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
+        //right3.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
     }
 }
 

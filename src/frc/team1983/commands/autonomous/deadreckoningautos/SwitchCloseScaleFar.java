@@ -28,7 +28,7 @@ public class SwitchCloseScaleFar extends CommandGroup
         logger = LoggerFactory.createNewLogger(SwitchCloseScaleClose.class);
 
         //SWITCH APPROACH
-        super.addParallel(new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS));
+        super.addSequential(new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS));
         super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
         super.addSequential(new DriveStraight(drivebase, dashboard, 9.0));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0 * reflectionVariable, 1));
@@ -47,7 +47,7 @@ public class SwitchCloseScaleFar extends CommandGroup
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0));
 
         //CUBE COLLECT
-        super.addParallel(new CollectorIntake(collector, false));
+        super.addParallel(new CollectorIntake(collector, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3.0, .35));
         super.addSequential(new DriveStraight(drivebase, dashboard, -3.0));
 

@@ -17,6 +17,7 @@ public class ProfileController
 
     protected MotionProfile profile;
     protected ProfileSignal signal;
+    protected ProfileSignal linkedSignal;
 
     private ProfileControllerRunnable runnable;
     private Thread thread;
@@ -35,7 +36,6 @@ public class ProfileController
         thread = new Thread(runnable);
 
         reset();
-        robot.addProfileController(this);
     }
 
     private void reset()
@@ -43,10 +43,7 @@ public class ProfileController
         parent.clearMotionProfileTrajectories();
         parent.clearMotionProfileHasUnderrun(0);
 
-        parent.configMotionProfileTrajectoryPeriod(0, 0);
-
         parent.changeMotionControlFramePeriod(5);
-        parent.clearMotionProfileTrajectories();
 
         runnable.reset();
     }
@@ -60,14 +57,21 @@ public class ProfileController
     private void streamProfile(MotionProfile profile)
     {
         boolean state = signal.isEnabled();
+
         // lock runnable
         signal.setEnabled(false);
 
         reset();
 
-        int durationMs = profile.getPointDuration();
+        int durationMs = 100;
         double duration = durationMs * 0.001;
-        int resolution = (int) (profile.getTotalTime() / duration);
+        int resolution = (int) (profile.getDuration() / duration);
+
+        parent.configMotionProfileTrajectoryPeriod(durationMs, 0);
+
+        ClosedLoopGains gains = parent.getGains(0);
+
+        double startPos = parent.getSelectedSensorPosition(0);
 
         for(int i = 0; i <= resolution; i++)
         {
@@ -76,15 +80,18 @@ public class ProfileController
             TrajectoryPoint point = new TrajectoryPoint();
 
             point.position = profile.evaluatePosition(t);
-            point.velocity = profile.evaluateVelocity(t);
+            // velocity is actually percent output
+            point.velocity = gains.get_kS() + (gains.get_kV() * profile.evaluateVelocity(t)) + (gains.get_kA() * profile.evaluateAcceleration(t));
+
+            point.auxiliaryPos = 0;
 
             point.profileSlotSelect0 = 0;
-            point.profileSlotSelect1 = 0;
+            point.profileSlotSelect1 = 1;
 
-            point.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_0ms.valueOf(profile.getPointDuration());
+            point.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_0ms;
 
             point.zeroPos = i == 0;
-            point.isLastPoint = i == (resolution - 1);
+            //point.isLastPoint = i == (resolution - 1);
 
             parent.pushMotionProfileTrajectory(point);
         }
@@ -104,13 +111,15 @@ public class ProfileController
     public boolean isProfileFinished()
     {
         MotionProfileStatus status = getProfileStatus();
-
-        return runnable.hasProcessed() && (status.isUnderrun || (status.btmBufferCnt == 1 || status.btmBufferCnt == 0));
+        return runnable.hasProcessed() && (status.isUnderrun || status.btmBufferCnt == 0);
     }
 
     public void setEnabled(boolean enabled)
     {
-        signal.setEnabled(enabled);
+        if(linkedSignal == null)
+        {
+            signal.setEnabled(enabled);
+        }
 
         if(enabled)
         {
@@ -124,6 +133,20 @@ public class ProfileController
             reset();
             parent.set(ControlMode.MotionProfile, SetValueMotionProfile.Disable.value);
         }
+
+        parent.config_kF(0, enabled ? 1 : 0, 0);
+    }
+
+    public void linkSignal(ProfileSignal signal)
+    {
+        this.linkedSignal = signal;
+        runnable.setSignal(linkedSignal);
+    }
+
+    public void unlinkSignal()
+    {
+        this.linkedSignal = null;
+        runnable.setSignal(signal);
     }
 
     public void updateRobotState(Constants.MotorMap.Mode mode)

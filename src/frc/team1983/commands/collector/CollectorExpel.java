@@ -15,7 +15,7 @@ public class CollectorExpel extends CommandBase
     private double speed;
 
     public CollectorExpel(Collector collector, double speed) {
-        this(collector, 1, 1); //timeout won't matter in teleop but can be applied if necessary
+        this(collector, speed, 10); //timeout won't matter in teleop but can be applied if necessary
     }
     public CollectorExpel(Collector collector, double speed, double timeout)
     {
@@ -26,6 +26,12 @@ public class CollectorExpel extends CommandBase
         setTimeout(timeout);
 
     }
+
+    /*public CollectorExpel(Collector collector, boolean shoot, double timeout)
+    {
+        this(collector, shoot);
+        setTimeout(timeout);
+    }*/
 
     @Override
     public void initialize()
@@ -43,7 +49,6 @@ public class CollectorExpel extends CommandBase
     @Override
     public boolean isFinished()
     {
-
         return isTimedOut();
     }
 

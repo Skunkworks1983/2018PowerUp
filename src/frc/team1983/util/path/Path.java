@@ -1,25 +1,39 @@
 package frc.team1983.util.path;
 
-import java.util.List;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.team1983.commands.CommandBase;
+import frc.team1983.commands.drivebase.DriveProfile;
+import frc.team1983.services.logger.LoggerFactory;
+import org.apache.logging.log4j.core.Logger;
 
-public class Path
+import java.util.ArrayList;
+
+public class Path extends CommandGroup
 {
-    private List<PathComponent> components;
+    private Logger logger;
 
-    public Path(List<PathComponent> components)
-    {
-        this.components = components;
-    }
+    private ArrayList<DriveProfile> drives;
 
-    public PathComponent getComponent(int index)
+    public Path(ArrayList<DriveProfile> drives)
     {
-        if(index + 1 <= components.size())
+        this.logger = LoggerFactory.createNewLogger(this.getClass());
+
+        this.drives = drives;
+
+        for(DriveProfile drive : drives)
         {
-            return components.get(index);
+            CommandGroup movement = new CommandGroup();
+            movement.addParallel(drive);
+
+            for(CommandBase action : drive.getActions())
+            {
+                movement.addParallel(action);
+            }
+
+            addSequential(movement);
         }
-        else
-        {
-            throw new IllegalArgumentException("index " + index + " is out of bounds");
-        }
+
+        DriveProfile.stitch(drives);
     }
 }
