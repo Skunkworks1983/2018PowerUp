@@ -191,15 +191,15 @@ public class Constants
             }
 
             public static ClosedLoopGains AUX_STRAIGHT = new ClosedLoopGains(
-                    0.05, 0, 0, 0
+                    0.03, 0, 0, 0
             );
 
             public static ClosedLoopGains AUX_TURN = new ClosedLoopGains(
-                    0.05, 0, 0.07, 0
+                    0.05, 0, 0.1, 0
             );
 
             public static ClosedLoopGains AUX_ARC = new ClosedLoopGains(
-                    0.05, 0, 0, 0
+                    0, 0, 0, 0
             );
         }
 
@@ -462,7 +462,7 @@ public class Constants
         public static final double ELEVATOR_MAX_ACCELERATION = 0.01; // sensor units per second per second
 
         public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks((12 * 100)/12);
-        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.5;
-        public static final double DRIVEBASE_HEADING_END_RANGE = 3;
+        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.25;
+        public static final double DRIVEBASE_HEADING_END_RANGE = 6;
     }
 }

@@ -1,9 +1,7 @@
 package frc.team1983.commands.autonomous.profiled;
 
 import frc.team1983.commands.autonomous.actions.ActionsEnum;
-import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
-import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.commands.drivebase.TurnDegree;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.util.path.Path;
@@ -16,13 +14,14 @@ public class SwitchCloseScaleClose extends Path
     public SwitchCloseScaleClose(Drivebase drivebase)
     {
         super(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, -18, 3, new ActionsEnum[]{ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
-                new TurnDegree(drivebase, 35, 1),
-                new DriveFeet(drivebase, 1, 0.5),
-                new DriveFeet(drivebase, -1, 0.5),
-                new DriveFeet(drivebase, 1, 0.5),
-                new DriveFeet(drivebase, -3, 1),
-                new TurnDegree(drivebase, 130, 1)
+                new DriveFeet(drivebase, -20, 3, new ActionsEnum[]{ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
+                new TurnDegree(drivebase, 35, 0.75, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
+                new DriveFeet(drivebase, 2.5, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}),
+                new DriveFeet(drivebase, -1, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
+                new DriveFeet(drivebase, 2, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new DriveFeet(drivebase, -2, 1),
+                new TurnDegree(drivebase, 110, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE}),
+                new DriveFeet(drivebase, 1, 0.5)
                                                     )));
     }
 }

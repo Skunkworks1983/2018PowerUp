@@ -202,6 +202,9 @@ public class DriveProfile extends CommandBase
 
         drivebase.setRightAuxiliaryOutput(0);
         drivebase.setLeftAuxiliaryOutput(0);
+
+        drivebase.left1.set(ControlMode.PercentOutput, 0);
+        drivebase.right1.set(ControlMode.PercentOutput, 0);
     }
 
     // ohhhhh my god please
