@@ -103,12 +103,17 @@ public class Robot extends IterativeRobot
         updateState(Constants.MotorMap.Mode.AUTO);
 
         drivebase.getGyro().setYaw(0, 0);
+        drivebase.setBrakeMode(true);
+
+        //Scheduler.getInstance().add(new DriveArc(drivebase, 5, 90, 2));
     }
 
     @Override
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
+        autoManager.execute();
+        //robotLogger.info("Left: {} Right: {} Gyro: {}", drivebase.getLeftDistance(), drivebase.getRightDistance(), drivebase.getGyro().getAngle());
     }
 
     @Override
