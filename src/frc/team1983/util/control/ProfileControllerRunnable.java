@@ -40,13 +40,10 @@ public class ProfileControllerRunnable implements Runnable
                 // Thread.yield();
             }
 
+            controller.parent.processMotionProfileBuffer();
+
             if(!hasProcessed && controller.getProfileStatus().btmBufferCnt > Constants.Motion.MIN_POINTS_IN_TALON)
                 hasProcessed = true;
-
-            if(!controller.isProfileFinished())
-            {
-                controller.parent.processMotionProfileBuffer();
-            }
 
             // true if the talon runs out of trajectory points (times out or finishes profile)
             SetValueMotionProfile setValue = controller.isProfileFinished() ? SetValueMotionProfile.Hold : SetValueMotionProfile.Enable;
