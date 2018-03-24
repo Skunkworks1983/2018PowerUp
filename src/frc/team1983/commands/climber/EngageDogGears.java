@@ -13,6 +13,7 @@ public class EngageDogGears extends CommandBase
 
     public EngageDogGears(Climber climber, boolean disengage)
     {
+        requires(climber);
         this.climber = climber;
         logger = LoggerFactory.createNewLogger(this.getClass());
     }

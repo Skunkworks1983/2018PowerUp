@@ -124,6 +124,7 @@ public class Robot extends IterativeRobot
         //oi.initializeBindings(this);
 
         climber.disengageDogGear();
+        climber.lockForks();
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 

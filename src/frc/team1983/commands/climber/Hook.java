@@ -9,6 +9,7 @@ public class Hook extends CommandBase
 
     public Hook(Climber climber)
     {
+        requires(climber);
         this.climber = climber;
     }
 
@@ -32,7 +33,7 @@ public class Hook extends CommandBase
     @Override
     public void end()
     {
-
+        climber.stopHooking();
     }
 
     @Override

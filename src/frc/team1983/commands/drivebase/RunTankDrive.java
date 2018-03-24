@@ -52,20 +52,20 @@ public class RunTankDrive extends CommandBase
 
         if(left < 0)
         {
-            adj_left = -Math.pow(adj_left, 2);
+            adj_left = -Math.abs(Math.pow(Math.abs(adj_left), 1.3));
         }
         else
         {
-            adj_left = Math.pow(adj_left, 2);
+            adj_left = Math.abs(Math.pow(Math.abs(adj_left), 1.3));
         }
 
         if(right < 0)
         {
-            adj_right = -Math.pow(adj_right, 2);
+            adj_right = -Math.abs(Math.pow(Math.abs(adj_right), 1.3));
         }
         else
         {
-            adj_right = Math.pow(adj_right, 2);
+            adj_right = Math.abs(Math.pow(Math.abs(adj_right), 1.3));
         }
 
         drivebase.setLeft(ControlMode.PercentOutput, adj_left);

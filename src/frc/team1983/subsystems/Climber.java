@@ -11,10 +11,12 @@ import frc.team1983.subsystems.utilities.climberexceptions.NoTensionException;
 
 public class Climber extends Subsystem
 {
-    private ServoWrapper leftForkLock, rightForkLock, hook0, hook1, camLeft, camRight;
+    private ServoWrapper leftForkLock, rightForkLock, camLeft, camRight;
     private boolean hookEngaged, haveTension, dogGearEngaged;
     private Motor tensionMotor;
     private DigitalInputWrapper leftCamSwitch, rightCamSwitch;
+
+    private Motor hook;
 
     //TODO look into alerts for limit switches
     //drop anytime
@@ -27,11 +29,10 @@ public class Climber extends Subsystem
         leftForkLock = new ServoWrapper(Constants.MotorMap.Climber.DROP_SERVO_LEFT);
         rightForkLock = new ServoWrapper(Constants.MotorMap.Climber.DROP_SERVO_RIGHT);
 
-        hook0 = new ServoWrapper(Constants.MotorMap.Climber.HOOK_SERVO_0);
-        hook1 = new ServoWrapper(Constants.MotorMap.Climber.HOOK_SERVO_1);
-
         camLeft = new ServoWrapper(Constants.MotorMap.Climber.CAM_SERVO_LEFT);
         camRight = new ServoWrapper(Constants.MotorMap.Climber.CAM_SERVO_RIGHT);
+
+        hook = new Motor(Constants.MotorMap.Climber.HOOK_MOTOR, false);
 
         leftCamSwitch = new DigitalInputWrapper(Constants.SensorMap.Collector.LEFT_CAM_SWITCH,
                                                 Constants.SensorMap.Collector.LEFT_CAM_REVERSED);
@@ -46,28 +47,31 @@ public class Climber extends Subsystem
 
     public void lockForks()
     {
-        leftForkLock.set(0);
+        leftForkLock.set(0.65);
         rightForkLock.set(1);
     }
 
     public void unlockForks()
     {
-        leftForkLock.set(1);
-        rightForkLock.set(0);
+        leftForkLock.set(0.90);
+        rightForkLock.set(0.75);
     }
 
     public void hook()
     {
         //Determined experimentally
-        hook0.set(0.5);
-        hook1.set(0.5);
+        hook.set(ControlMode.PercentOutput, 0.2);
         hookEngaged = true;
     }
 
     public void unhook()
     {
-        hook0.set(0);
-        hook1.set(1);
+        hook.set(ControlMode.PercentOutput, -0.2);
+    }
+
+    public void stopHooking()
+    {
+        hook.set(ControlMode.PercentOutput, 0);
     }
 
     public void setTensionMotor(double speed)// throws HookNotEngagedException
@@ -114,9 +118,7 @@ public class Climber extends Subsystem
         camLeft.set(1.0);
         camRight.set(0.0);
 
-        //Necessary to be able to backdrive the hook servos
-        hook0.setRaw(0);
-        hook1.setRaw(0);
+        hook.set(ControlMode.PercentOutput, 0);
     }
 
     public void disengageDogGear()
@@ -142,8 +144,8 @@ public class Climber extends Subsystem
         }
     }
 
-    public double getHookPosition()
+    /*public double getHookPosition()
     {
         return hook0.getPosition();
-    }
+    }*/
 }

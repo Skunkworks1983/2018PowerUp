@@ -39,13 +39,13 @@ public class DriveArc extends DriveProfile
     {
         double leftCircumference = 2 * (radius + Constants.AutoValues.WHEELBASE_RADIUS) * Math.PI;
         double leftDistance = (angle / 360) * leftCircumference;
-        return new TrapezoidalProfile(Drivebase.getTicks(leftDistance), time);
+        return new TrapezoidalProfile(Drivebase.getTicks(leftDistance), time, 0.8);
     }
 
     private static CruiseProfile generateRightProfile(double radius, double angle, double time)
     {
         double rightCircumference = 2 * (radius - Constants.AutoValues.WHEELBASE_RADIUS) * Math.PI;
         double rightDistance = (angle / 360) * rightCircumference;
-        return new TrapezoidalProfile(Drivebase.getTicks(rightDistance), time);
+        return new TrapezoidalProfile(Drivebase.getTicks(rightDistance), time, 0.8);
     }
 }

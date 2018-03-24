@@ -102,10 +102,9 @@ public class Constants
             public static final boolean TENSION_MOTOR_REVERSED = false;
 
             public static final int DROP_SERVO_LEFT = 0;
-            public static final int DROP_SERVO_RIGHT = 7;
+            public static final int DROP_SERVO_RIGHT = 5;
 
-            public static final int HOOK_SERVO_0 = 4;
-            public static final int HOOK_SERVO_1 = 6;
+            public static final int HOOK_MOTOR = 2;
 
             public static final int CAM_SERVO_LEFT = 2;
             public static final int CAM_SERVO_RIGHT = 3;
@@ -140,7 +139,7 @@ public class Constants
         public static final double COLLECTOR_ROTATE_SPEED = -0.5;
         public static final double COLLECTOR_INTAKE_SPEED = -0.75;
         public static final double COLLECTOR_EXPEL_SPEED = 0.75;
-        public static final double COLLECTOR_SLOW_EXPEL_SPEED = -0.2;
+        public static final double COLLECTOR_SLOW_EXPEL_SPEED = 0.2;
 
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
@@ -167,9 +166,9 @@ public class Constants
             public static class Left
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.75,
                         0,
-                        0.45,
+                        0,
+                        0.2,
                         0,
                         0,//Motion.DRIVEBASE_LEFT_KS,
                         1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
@@ -180,9 +179,9 @@ public class Constants
             public static class Right
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.75,
                         0,
-                        0.45,
+                        0,
+                        0.2,
                         0,
                         0,//Motion.DRIVEBASE_LEFT_KS,
                         1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
@@ -191,11 +190,11 @@ public class Constants
             }
 
             public static ClosedLoopGains AUX_STRAIGHT = new ClosedLoopGains(
-                    0.03, 0, 0, 0
+                    0.03, 0, 0.075, 0
             );
 
             public static ClosedLoopGains AUX_TURN = new ClosedLoopGains(
-                    0.05, 0, 0.1, 0
+                    0.05, 0, 0.075, 0
             );
 
             public static ClosedLoopGains AUX_ARC = new ClosedLoopGains(
@@ -396,8 +395,8 @@ public class Constants
 
         public static class ClimberButtons
         {
-            public static final int HOOK = 21;
-            public static final int DROP_FORKS = 20;
+            public static final int HOOK = 20;
+            public static final int DROP_FORKS = 21;
             public static final int CREATE_TENSION = 22;
             public static final int ENGAGE_DOG_GEARS = 23;
         }

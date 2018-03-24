@@ -42,7 +42,6 @@ public enum AutoSelection
         return new PlaceCubeInSwitch(drivebase, statefulDashboard, elevator, collector);
     }),
     */
-    MP_TWOCUBE_AUTO_PICKER("GAMEDATA MP TWOCUBE AUTO PICKER", TwoCubeMPPicker::new),
     MP_ONECUBE_AUTO_PICKER("GAMEDATA MP ONECUBE AUTO PICKER", OneCubeMPPicker::new),
     BACKUP_AUTO_PICKER("GAMEDATA BACKUP AUTO PICKER", BackupAutoPicker::new);
 

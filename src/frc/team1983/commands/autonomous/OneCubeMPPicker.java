@@ -1,6 +1,9 @@
 package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.team1983.commands.autonomous.profiled.pointturns.LeftScaleLeft;
+import frc.team1983.commands.autonomous.profiled.pointturns.LeftScaleRight;
+import frc.team1983.commands.autonomous.profiled.pointturns.MidSwitchLeft;
 import frc.team1983.commands.autonomous.profiled.pointturns.MidSwitchRight;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
@@ -35,7 +38,7 @@ public class OneCubeMPPicker extends CommandGroup
             case UNKNOWN:
                 if(switchPosition == AutoManager.OwnedSide.LEFT)
                 {
-
+                    addSequential(new MidSwitchLeft(drivebase));
                 }
                 else if(switchPosition == AutoManager.OwnedSide.RIGHT)
                 {
@@ -45,23 +48,14 @@ public class OneCubeMPPicker extends CommandGroup
                 break;
             case RIGHT:
             case LEFT:
-                if(switchSame && scaleSame)
+                if(scaleSame)
                 {
-
+                    addSequential(new LeftScaleLeft(drivebase));
                 }
-                else if(switchSame && !scaleSame)
+                else if(!scaleSame)
                 {
-
+                    addSequential(new LeftScaleRight(drivebase));
                 }
-                else if(!switchSame && scaleSame)
-                {
-
-                }
-                else
-                {
-
-                }
-
                 break;
         }
     }
