@@ -68,7 +68,7 @@ public class UT_DifferentialTurnAngle
         Timer.SetImplementation(timerStaticInterface);
         HLUsageReporting.SetImplementation(hlUsageReporting);
         fakeScheduler = new FakeScheduler();
-        when(drivebase.getGyro()).thenReturn(gyro);
+        //when(drivebase.getGyro()).thenReturn(gyro);
         differentialTurnAngle = new DifferentialTurnAngle(drivebase, dashboard, 0);
     }
     @After

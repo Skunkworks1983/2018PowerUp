@@ -28,7 +28,7 @@ public class DriveProfile extends CommandBase
     private Logger logger;
 
     private Drivebase drivebase;
-    protected CruiseProfile leftProfile, rightProfile;
+    public CruiseProfile leftProfile, rightProfile;
 
     private PIDController headingLoop;
     private boolean runHeadingCorrection = true;

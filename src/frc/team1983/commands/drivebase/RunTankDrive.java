@@ -40,6 +40,8 @@ public class RunTankDrive extends CommandBase
         double adj_left = left;
         double adj_right = right;
 
+        double SCALE = 1.4;
+
         if((Math.abs(left) < 0.03))
         {
             adj_left = 0;
@@ -52,20 +54,20 @@ public class RunTankDrive extends CommandBase
 
         if(left < 0)
         {
-            adj_left = -Math.abs(Math.pow(Math.abs(adj_left), 1.3));
+            adj_left = -Math.abs(Math.pow(Math.abs(adj_left), SCALE));
         }
         else
         {
-            adj_left = Math.abs(Math.pow(Math.abs(adj_left), 1.3));
+            adj_left = Math.abs(Math.pow(Math.abs(adj_left), SCALE));
         }
 
         if(right < 0)
         {
-            adj_right = -Math.abs(Math.pow(Math.abs(adj_right), 1.3));
+            adj_right = -Math.abs(Math.pow(Math.abs(adj_right), SCALE));
         }
         else
         {
-            adj_right = Math.abs(Math.pow(Math.abs(adj_right), 1.3));
+            adj_right = Math.abs(Math.pow(Math.abs(adj_right), SCALE));
         }
 
         drivebase.setLeft(ControlMode.PercentOutput, adj_left);

@@ -69,7 +69,7 @@ public class UT_DriveStraight
         Timer.SetImplementation(timerStaticInterface);
         HLUsageReporting.SetImplementation(hlUsageReporting);
         fakeScheduler = new FakeScheduler();
-        when(drivebase.getGyro()).thenReturn(gyro);
+        //when(drivebase.getGyro()).thenReturn(gyro);
         driveStraight = new DriveStraight(drivebase, dashboard, 5, .5);
     }
 

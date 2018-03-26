@@ -60,13 +60,13 @@ public class Climber extends Subsystem
     public void hook()
     {
         //Determined experimentally
-        hook.set(ControlMode.PercentOutput, 0.2);
+        hook.set(ControlMode.PercentOutput, 0.25);
         hookEngaged = true;
     }
 
     public void unhook()
     {
-        hook.set(ControlMode.PercentOutput, -0.2);
+        hook.set(ControlMode.PercentOutput, -0.25);
     }
 
     public void stopHooking()

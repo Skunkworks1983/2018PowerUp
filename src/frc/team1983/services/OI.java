@@ -115,14 +115,14 @@ public class OI
                        new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, robot.getElevator(), this));
 
         //Climber switches
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.HOOK,
+        bindToHeld(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.HOOK,
                       new Hook(robot.getClimber()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.DROP_FORKS,
                       new DropForks(robot.getClimber()));
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.CREATE_TENSION,
                       new CreateTension(robot.getClimber(), robot.getOI()));
-        /*bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.CREATE_TENSION,
-                       new StopTensioning(robot.getClimber()));*/
+        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.CREATE_TENSION,
+                       new StopTensioning(robot.getClimber()));
 
         bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ClimberButtons.ENGAGE_DOG_GEARS,
                       new EngageDogGears(robot.getClimber(), false));

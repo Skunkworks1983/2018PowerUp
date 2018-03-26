@@ -70,7 +70,7 @@ public class UT_Simple_TurnAngle
         Timer.SetImplementation(timerStaticInterface);
         HLUsageReporting.SetImplementation(hlUsageReporting);
         fakeScheduler = new FakeScheduler();
-        when(drivebase.getGyro()).thenReturn(gyro);
+        //when(drivebase.getGyro()).thenReturn(gyro);
         simpleTurnAngle = new SimpleTurnAngle(dashboard, 90, drivebase);
     }
 

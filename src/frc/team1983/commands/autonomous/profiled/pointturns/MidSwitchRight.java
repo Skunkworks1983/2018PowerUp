@@ -18,8 +18,8 @@ public class MidSwitchRight extends Path
                 new TurnDegree(drivebase, -60, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
                 new DriveFeet(drivebase, 5.5, 1),
                 new TurnDegree(drivebase, 60, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.COLLECTOR_INTAKE}),
-                new DriveFeet(drivebase, 4, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_ROTATE_MID}),
-                new DriveFeet(drivebase, 2, 2, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
+                new DriveFeet(drivebase, 2.5, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_ROTATE_MID}),
+                new DriveFeet(drivebase, 2, 4, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_SLOW})
                                            )));
     }
 }

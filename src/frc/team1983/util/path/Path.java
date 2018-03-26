@@ -13,7 +13,7 @@ public class Path extends CommandGroup
 {
     private Logger logger;
 
-    private ArrayList<DriveProfile> drives;
+    public ArrayList<DriveProfile> drives;
 
     public Path(ArrayList<DriveProfile> drives)
     {
