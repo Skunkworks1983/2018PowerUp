@@ -27,15 +27,22 @@ public class Pigeon extends PigeonIMU
 
     public double getAngle()
     {
+        /*
         double[] xyz = new double[3];
         getAccumGyro(xyz);
 
         ErrorCode code = getAccumGyro(xyz);
+
+        PigeonState state = getState();
+
+        logger.info("pigeon state: {}", state);
 
         if(code != ErrorCode.OK)
         {
             logger.error("getAngle error: {}", code);
         }
         return xyz[2];
+        */
+        return getFusedHeading();
     }
 }

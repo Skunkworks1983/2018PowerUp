@@ -31,20 +31,22 @@ public class SwitchFarScaleClose extends CommandGroup
         else { reflectionVariable = -1; }
         logger.info("Reflection variable is {}", reflectionVariable);
 
+
         //SWITCH APPROACH & DROPOFF
+        super.addParallel(new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS));
         super.addSequential(new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS));
         super.addSequential(new DriveStraight(drivebase, dashboard, 16, 0.75));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, elevator, oi));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, elevator));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90));
         super.addSequential(new DriveStraight(drivebase, dashboard, 12, 0.75)); //??
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90));
         super.addSequential(new DriveStraight(drivebase, dashboard, 1, 0.25, 0.5));
         super.addSequential(new CollectorExpel(collector, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED, 0.5));
 
         //CUBE PICKUP
         super.addSequential(new DriveStraight(drivebase, dashboard, -3));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator));
         super.addParallel(new CollectorIntake(collector, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3));
 
@@ -53,7 +55,7 @@ public class SwitchFarScaleClose extends CommandGroup
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90));
         super.addSequential(new DriveStraight(drivebase, dashboard, 11));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90));
-        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
+        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3));
         super.addSequential(new CollectorExpel(collector, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED, 0.5));
 

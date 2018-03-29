@@ -4,9 +4,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.RunTankDrive;
@@ -21,7 +20,6 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.util.control.ProfileController;
 import org.apache.logging.log4j.core.Logger;
 
@@ -85,7 +83,6 @@ public class Robot extends IterativeRobot
     public void disabledInit()
     {
         Scheduler.getInstance().removeAll();
-        updateState(Constants.MotorMap.Mode.DISABLED);
 
         autoManager.resetGameData();
     }
@@ -104,8 +101,6 @@ public class Robot extends IterativeRobot
 
         drivebase.getGyro().setYaw(0, 0);
         drivebase.setBrakeMode(true);
-
-        //Scheduler.getInstance().add(new DriveArc(drivebase, 5, 90, 2));
     }
 
     @Override
@@ -113,7 +108,6 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
         autoManager.execute();
-        //robotLogger.info("Left: {} Right: {} Gyro: {}", drivebase.getLeftDistance(), drivebase.getRightDistance(), drivebase.getGyro().getAngle());
     }
 
     @Override
@@ -142,9 +136,12 @@ public class Robot extends IterativeRobot
         SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
         SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
 
+        robotLogger.info(drivebase.getGyro().getFusedHeading());
+
         //robotLogger.info("gyro{}", drivebase.getGyro().getAngle());
         //robotLogger.info("Left drivebase encoder is {}", drivebase.getLeftEncoderValue());
         //robotLogger.info("Right drivebase encoder is {}", drivebase.getRightEncoderValue());
+        robotLogger.info("Pigeon output is {}", drivebase.getGyro().getAngle());
     }
 
     @Override
@@ -250,4 +247,6 @@ public class Robot extends IterativeRobot
 
         return instance;
     }
+
+
 }

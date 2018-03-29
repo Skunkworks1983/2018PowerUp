@@ -232,7 +232,7 @@ public class Constants
         {
             public static class DifferentialAdjustmentPid
             {
-                public static final double P = 0.0195; //TODO: tune pid
+                public static final double P = 0.017; //TODO: tune pid
                 public static final double I = 0;
                 public static final double D = 0.08;
                 public static final double F = 0;
@@ -406,7 +406,7 @@ public class Constants
         {
             BOTTOM(0),
             TRAVEL(1960), //upped from 1860
-            SWITCH(9125+400), // elevator halfway point
+            SWITCH(9125+1200), // elevator halfway point
             LOW(22700 +400),
             MID(25700 +400),
             TOP(28600); //TODO: add 400 once magnet moves

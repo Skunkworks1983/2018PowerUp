@@ -15,6 +15,11 @@ public class Path extends CommandGroup
 
     public ArrayList<DriveProfile> drives;
 
+    public Path()
+    {
+        drives = new ArrayList<>();
+    }
+
     public Path(ArrayList<DriveProfile> drives)
     {
         this.logger = LoggerFactory.createNewLogger(this.getClass());

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
+import frc.team1983.commands.collector.CollectorRotate;
 import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.commands.drivebase.DriveStraight;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
@@ -33,14 +34,14 @@ public class SwitchCloseScaleClose extends CommandGroup
 
         //SWITCH APPROACH
         super.addSequential(new DriveStraight(drivebase, dashboard, -10.0, .75));
-        //super.addParallel(new CollectorRotate(collector, false));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator, oi));
+        super.addParallel(new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90.0 * reflectionVariable, 1));
 
         //SHOOT N' SCOOT
         super.addSequential(new DriveStraight(drivebase, dashboard, 2, .4));
         super.addParallel(new CollectorExpel(collector, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED, 1));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator));
         super.addSequential(new DriveStraight(drivebase, dashboard, -1.0, .75));
 
         //CUBE LINEUP
@@ -51,7 +52,7 @@ public class SwitchCloseScaleClose extends CommandGroup
         //CUBE APPROACH/COLLECT
         super.addParallel(new CollectorIntake(collector, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, 5.0, .2));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator, oi));
+        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator));
         super.addSequential(new DriveStraight(drivebase, dashboard, -5.0, .75));
 
         //SCALE LINEUP
@@ -63,6 +64,6 @@ public class SwitchCloseScaleClose extends CommandGroup
         super.addSequential(new DriveStraight(drivebase, dashboard, 1, .5));
         super.addSequential(new CollectorExpel(collector, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED, 1));
         super.addSequential(new DriveStraight(drivebase, dashboard, -4.0, .75));
-        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator, oi));
+        super.addSequential(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator));
     }
 }
