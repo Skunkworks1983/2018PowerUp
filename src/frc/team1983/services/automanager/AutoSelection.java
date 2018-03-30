@@ -1,7 +1,6 @@
 package frc.team1983.services.automanager;
 
-import frc.team1983.commands.autonomous.OneCubeMPPicker;
-import frc.team1983.commands.autonomous.TwoCubeMPPicker;
+import frc.team1983.commands.autonomous.ProfiledAutoPicker;
 import frc.team1983.commands.autonomous.BackupAutoPicker;
 
 public enum AutoSelection
@@ -42,7 +41,7 @@ public enum AutoSelection
         return new PlaceCubeInSwitch(drivebase, statefulDashboard, elevator, collector);
     }),
     */
-    MP_ONECUBE_AUTO_PICKER("GAMEDATA MP ONECUBE AUTO PICKER", OneCubeMPPicker::new),
+    MP_ONECUBE_AUTO_PICKER("GAMEDATA MP ONECUBE AUTO PICKER", ProfiledAutoPicker::new),
     BACKUP_AUTO_PICKER("GAMEDATA BACKUP AUTO PICKER", BackupAutoPicker::new);
 
     private String readableName;

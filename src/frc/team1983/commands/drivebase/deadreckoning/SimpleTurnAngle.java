@@ -1,4 +1,4 @@
-package frc.team1983.commands.drivebase;
+package frc.team1983.commands.drivebase.deadreckoning;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.PIDController;
@@ -12,7 +12,6 @@ import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseRotationPidOutput;
-import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.utilities.outputwrappers.SimpleTurnAnglePidOutput;
 import org.apache.logging.log4j.core.Logger;

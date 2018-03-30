@@ -3,8 +3,8 @@ package frc.team1983.commands.autonomous.deadreckoningautos;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorRotate;
-import frc.team1983.commands.drivebase.DifferentialTurnAngle;
-import frc.team1983.commands.drivebase.DriveStraight;
+import frc.team1983.commands.drivebase.deadreckoning.DifferentialTurnAngle;
+import frc.team1983.commands.drivebase.deadreckoning.DriveStraight;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.automanager.AutoManager;
@@ -31,7 +31,8 @@ public class MidToSwitch extends CommandGroup
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90 * reflectionVariable));
         super.addSequential(new DriveStraight(drivebase, dashboard, 4.));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90 * reflectionVariable));
-        super.addSequential(new DriveStraight(drivebase, dashboard, 5.5, 0.25));
-        super.addSequential(new CollectorExpel(collector, 0.5));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 7));
+        super.addParallel(new CollectorExpel(collector, 0.5));
+        super.addSequential(new DriveStraight(drivebase, dashboard, 1.5, 0.25));
     }
 }

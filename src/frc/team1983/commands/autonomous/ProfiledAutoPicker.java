@@ -1,10 +1,14 @@
 package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.team1983.commands.autonomous.deadreckoningautos.MidToSwitch;
 import frc.team1983.commands.autonomous.profiled.CrossBaseline;
 import frc.team1983.commands.autonomous.profiled.pointturns.LeftScaleLeft;
+import frc.team1983.commands.autonomous.profiled.pointturns.LeftScaleRight;
 import frc.team1983.commands.autonomous.profiled.pointturns.MidSwitchLeft;
 import frc.team1983.commands.autonomous.profiled.pointturns.MidSwitchRight;
+import frc.team1983.commands.autonomous.profiled.pointturns.RightScaleLeft;
+import frc.team1983.commands.autonomous.profiled.pointturns.RightScaleRight;
 import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
@@ -18,13 +22,13 @@ import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
 
-public class OneCubeMPPicker extends CommandGroup
+public class ProfiledAutoPicker extends CommandGroup
 {
     Logger logger;
 
-    public OneCubeMPPicker(Drivebase drivebase, Collector collector, Elevator elevator,
-                           DashboardWrapper dashboardWrapper, StatefulDashboard statefulDashboard,
-                           AutoManager autoManager)
+    public ProfiledAutoPicker(Drivebase drivebase, Collector collector, Elevator elevator,
+                              DashboardWrapper dashboardWrapper, StatefulDashboard statefulDashboard,
+                              AutoManager autoManager)
     {
         logger = LoggerFactory.createNewLogger(this.getClass());
         AutoManager.OwnedSide switchPosition, scalePosition;
@@ -41,30 +45,31 @@ public class OneCubeMPPicker extends CommandGroup
             case UNKNOWN:
                 if(switchPosition == AutoManager.OwnedSide.LEFT)
                 {
-                    Path t = new MidSwitchLeft(drivebase);
-                    CruiseProfile l = t.drives.get(t.drives.size() - 2).leftProfile;
-                    CruiseProfile r = t.drives.get(t.drives.size() - 2).rightProfile;
-
-                    l.setFinalVelocity(l.getCruiseVelocity());
-                    r.setFinalVelocity(r.getCruiseVelocity());
-
-                    addSequential(t);
+                    addSequential(new MidToSwitch(drivebase, statefulDashboard, elevator, collector, AutoManager.OwnedSide.LEFT));
                 }
                 else if(switchPosition == AutoManager.OwnedSide.RIGHT)
                 {
-                    addSequential(new MidSwitchRight(drivebase));
+                    addSequential(new MidToSwitch(drivebase, statefulDashboard, elevator, collector, AutoManager.OwnedSide.RIGHT));
                 }
                 break;
             case RIGHT:
-                addSequential(new CrossBaseline(drivebase));
+                if(scaleSame)
+                {
+                    addSequential(new RightScaleRight(drivebase));
+                }
+                else
+                {
+                    addSequential(new RightScaleLeft(drivebase));
+                }
+                break;
             case LEFT:
                 if(scaleSame)
                 {
                     addSequential(new LeftScaleLeft(drivebase));
                 }
-                else if(!scaleSame)
+                else
                 {
-                    addSequential(new CrossBaseline(drivebase));
+                    addSequential(new LeftScaleRight(drivebase));
                 }
                 break;
         }

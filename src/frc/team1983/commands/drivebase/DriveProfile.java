@@ -1,10 +1,8 @@
 package frc.team1983.commands.drivebase;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.commands.autonomous.actions.ActionsEnum;
@@ -21,35 +19,32 @@ import org.apache.logging.log4j.core.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonDeserialize(using = SmellyDeserializer.class)
 public class DriveProfile extends CommandBase
 {
-    private Logger logger;
+    protected Logger logger;
 
-    private Drivebase drivebase;
+    protected Drivebase drivebase;
     public CruiseProfile leftProfile, rightProfile;
+    public double duration;
 
     private PIDController headingLoop;
-    private boolean runHeadingCorrection = true;
-    private double startHeading;
-    private double endHeading;
-    private double deltaHeading;
-    private ArrayList<CommandBase> actions;
-
     private GyroPidInput pidInput;
     private DrivebaseAuxiliaryPidOutput pidOutput;
 
-    private boolean stitched = false;
+    public boolean useAbsoluteOrientation = false;
+    public boolean runHeadingCorrection = true;
+    public double startHeading;
+    public double endHeading;
+    public double deltaHeading;
+
+    protected ArrayList<CommandBase> actions;
+
+    protected boolean stitched = false;
 
     private double onTargetTime = 0;
-    private double lastOnTargetTimestamp = 0;
+    private double lastTimeMillis = 0;
 
-    private double leftDistance, rightDistance;
-    private double leftInitDist, rightInitDist;
     private double totalDistance;
-
-    private double duration;
 
     public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration,
                         double deltaHeading, ActionsEnum[] actions)
@@ -69,8 +64,7 @@ public class DriveProfile extends CommandBase
         this.leftProfile = leftProfile;
         this.rightProfile = rightProfile;
 
-        leftDistance = Drivebase.getFeet(leftProfile.getDistance());
-        rightDistance = Drivebase.getFeet(rightProfile.getDistance());
+        totalDistance = (Drivebase.getFeet(leftProfile.getDistance()) + Drivebase.getFeet(rightProfile.getDistance())) / 2;
 
         this.duration = duration;
         this.deltaHeading = deltaHeading;
@@ -98,13 +92,11 @@ public class DriveProfile extends CommandBase
     {
         if(runHeadingCorrection)
         {
-            startHeading = drivebase.getGyro().getAngle();
-            endHeading = startHeading + deltaHeading;
-
-            leftInitDist = drivebase.getLeftDistance();
-            rightInitDist = drivebase.getRightDistance();
-
-            totalDistance = (leftDistance + rightDistance) / 2;
+            if(!useAbsoluteOrientation)
+            {
+                startHeading = drivebase.getGyro().getAngle();
+                endHeading = startHeading + deltaHeading;
+            }
 
             headingLoop.enable();
         }
@@ -120,17 +112,27 @@ public class DriveProfile extends CommandBase
     {
         if(runHeadingCorrection)
         {
-            double dL = Math.abs(drivebase.getLeftDistance());
-            double dR = Math.abs(drivebase.getRightDistance());
+            double desiredHeading = startHeading;
 
-            double percentDist = ((dL + dR) / 2) / Math.abs(totalDistance);
-            percentDist = Math.min(1, Math.max(percentDist, 0));
-            double percentTime = Math.min(timeSinceInitialized(), duration) / duration;
+            if(!useAbsoluteOrientation)
+            {
+                double dL = Math.abs(drivebase.getLeftDistance());
+                double dR = Math.abs(drivebase.getRightDistance());
 
-            double percent = percentDist;
+                double percentDist = ((dL + dR) / 2) / Math.abs(totalDistance);
+                percentDist = Math.min(1, Math.max(percentDist, 0));
+                double percentTime = Math.min(timeSinceInitialized(), duration) / duration;
 
-            double desiredHeading = startHeading + (percent * deltaHeading);
+                double percent = percentDist;
 
+                desiredHeading = startHeading + (percent * deltaHeading);
+            }
+            else
+            {
+                desiredHeading = endHeading;
+            }
+
+            logger.info(desiredHeading);
             headingLoop.setSetpoint(desiredHeading);
         }
     }
@@ -140,25 +142,26 @@ public class DriveProfile extends CommandBase
     {
         boolean finished = drivebase.profilesAreFinished();
 
-        if(onTarget() && lastOnTargetTimestamp != 0)
+        if(onTarget() && lastTimeMillis != 0)
         {
-            onTargetTime += (System.currentTimeMillis() - lastOnTargetTimestamp) * 0.001;
-            lastOnTargetTimestamp = System.currentTimeMillis();
+            onTargetTime += (System.currentTimeMillis() - lastTimeMillis) * 0.001;
         }
         else
         {
             onTargetTime = 0;
         }
 
-        lastOnTargetTimestamp = System.currentTimeMillis();
+        lastTimeMillis = System.currentTimeMillis();
 
         finished &= (onTargetTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME);
 
         finished |= isTimedOut();
+
         if(isTimedOut())
         {
-            logger.info("timed out");
+            logger.info("DriveProfile timed out");
         }
+
         return finished;
     }
 

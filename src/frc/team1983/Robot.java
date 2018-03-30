@@ -8,7 +8,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.debugging.RunOneMotor;
+import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
+import frc.team1983.commands.drivebase.TurnDegree;
+import frc.team1983.commands.drivebase.deadreckoning.DifferentialTurnAngle;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
@@ -21,9 +24,12 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.control.ProfileController;
+import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
@@ -64,11 +70,6 @@ public class Robot extends IterativeRobot
         climber = new Climber();
 
         robotLogger.info("robotInit");
-
-        //autonomousSelector = new SendableChooser();
-        //autonomousSelector.addDefault("Robot is on the left", AutoManager.OwnedSide.LEFT);
-        //autonomousSelector.addObject("Robot is on the right", AutoManager.OwnedSide.RIGHT);
-        //SmartDashboard.putData("Robot position", autonomousSelector);
 
         oi.initializeBindings(this);
     }
@@ -115,7 +116,6 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.TELEOP);
-        //oi.initializeBindings(this);
 
         climber.disengageDogGear();
         climber.lockForks();
@@ -123,25 +123,12 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 
         drivebase.setBrakeMode(false);
-        //Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
-        //Scheduler.getInstance().add(new CollectorRotate(collector, true));
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-
-        SmartDashboard.updateValues();
-        SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
-        SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
-
-        robotLogger.info(drivebase.getGyro().getFusedHeading());
-
-        //robotLogger.info("gyro{}", drivebase.getGyro().getAngle());
-        //robotLogger.info("Left drivebase encoder is {}", drivebase.getLeftEncoderValue());
-        //robotLogger.info("Right drivebase encoder is {}", drivebase.getRightEncoderValue());
-        robotLogger.info("Pigeon output is {}", drivebase.getGyro().getAngle());
     }
 
     @Override
@@ -178,12 +165,14 @@ public class Robot extends IterativeRobot
 
         runOneMotor.initialize(motors, motorUp, motorDown, manualSpeed);
 
+
+        Scheduler.getInstance().add(new DifferentialTurnAngle(drivebase, dashboard, 90));
     }
 
     @Override
     public void testPeriodic()
     {
-
+        Scheduler.getInstance().run();
     }
 
     private void updateState(Constants.MotorMap.Mode mode)

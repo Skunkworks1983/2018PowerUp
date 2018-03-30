@@ -1,4 +1,4 @@
-package frc.team1983.commands.drivebase;
+package frc.team1983.commands.drivebase.deadreckoning;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -7,7 +7,6 @@ import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
-import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.PidControllerWrapper;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
@@ -60,10 +59,10 @@ public class DriveStraight extends CommandBase
 
         gyro = drivebase.getGyro();
 
-        dashboard.add(this, "kP", 0.0);
-        dashboard.add(this, "kI", 0.0);
-        dashboard.add(this, "kD", 0.0);
-        dashboard.add(this, "kF", 0.0);
+        //dashboard.add(this, "kP", 0.0);
+        //dashboard.add(this, "kI", 0.0);
+        //dashboard.add(this, "kD", 0.0);
+        //dashboard.add(this, "kF", 0.0);
 
         logger.info("Drivestraight constructed");
         logger.info("distance{}", distance);

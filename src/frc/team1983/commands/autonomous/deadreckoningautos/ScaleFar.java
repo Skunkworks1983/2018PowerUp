@@ -1,8 +1,8 @@
 package frc.team1983.commands.autonomous.deadreckoningautos;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.team1983.commands.drivebase.DifferentialTurnAngle;
-import frc.team1983.commands.drivebase.DriveStraight;
+import frc.team1983.commands.drivebase.deadreckoning.DifferentialTurnAngle;
+import frc.team1983.commands.drivebase.deadreckoning.DriveStraight;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.automanager.AutoManager;
