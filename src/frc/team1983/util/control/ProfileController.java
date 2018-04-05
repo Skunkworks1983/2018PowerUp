@@ -92,7 +92,9 @@ public class ProfileController
             point.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_0ms;
 
             point.zeroPos = i == 0;
-            //point.isLastPoint = i == (resolution - 1);
+            point.isLastPoint = i == (resolution) || i == resolution - 1;
+
+            point.velocity = point.isLastPoint ? gains.get_kV() : point.velocity;
 
             parent.pushMotionProfileTrajectory(point);
         }

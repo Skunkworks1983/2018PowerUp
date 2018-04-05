@@ -1,15 +1,12 @@
 package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.team1983.commands.autonomous.deadreckoningautos.MidToSwitch;
-import frc.team1983.commands.autonomous.profiled.CrossBaseline;
+import frc.team1983.commands.autonomous.profiled.forwards.MidSwitchLeft;
+import frc.team1983.commands.autonomous.profiled.forwards.MidSwitchRight;
 import frc.team1983.commands.autonomous.profiled.pointturns.LeftScaleLeft;
 import frc.team1983.commands.autonomous.profiled.pointturns.LeftScaleRight;
-import frc.team1983.commands.autonomous.profiled.pointturns.MidSwitchLeft;
-import frc.team1983.commands.autonomous.profiled.pointturns.MidSwitchRight;
 import frc.team1983.commands.autonomous.profiled.pointturns.RightScaleLeft;
 import frc.team1983.commands.autonomous.profiled.pointturns.RightScaleRight;
-import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.automanager.AutoManager;
@@ -17,8 +14,6 @@ import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
-import frc.team1983.util.motion.profiles.CruiseProfile;
-import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
 
@@ -45,31 +40,32 @@ public class ProfiledAutoPicker extends CommandGroup
             case UNKNOWN:
                 if(switchPosition == AutoManager.OwnedSide.LEFT)
                 {
-                    addSequential(new MidToSwitch(drivebase, statefulDashboard, elevator, collector, AutoManager.OwnedSide.LEFT));
+                    addSequential(new MidSwitchLeft(drivebase));
                 }
                 else if(switchPosition == AutoManager.OwnedSide.RIGHT)
                 {
-                    addSequential(new MidToSwitch(drivebase, statefulDashboard, elevator, collector, AutoManager.OwnedSide.RIGHT));
+                    //addSequential(new MidToSwitch(drivebase, statefulDashboard, elevator, collector, AutoManager.OwnedSide.RIGHT));
+                    addSequential(new MidSwitchRight(drivebase));
                 }
                 break;
             case RIGHT:
                 if(scaleSame)
                 {
-                    addSequential(new RightScaleRight(drivebase));
+                    addSequential(new RightScaleRight(drivebase, true));
                 }
                 else
                 {
-                    addSequential(new RightScaleLeft(drivebase));
+                    addSequential(new RightScaleLeft(drivebase, true));
                 }
                 break;
             case LEFT:
                 if(scaleSame)
                 {
-                    addSequential(new LeftScaleLeft(drivebase));
+                    addSequential(new LeftScaleLeft(drivebase, true));
                 }
                 else
                 {
-                    addSequential(new LeftScaleRight(drivebase));
+                    addSequential(new LeftScaleRight(drivebase, true));
                 }
                 break;
         }

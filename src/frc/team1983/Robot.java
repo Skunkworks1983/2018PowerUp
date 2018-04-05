@@ -1,5 +1,6 @@
 package frc.team1983;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -24,6 +25,7 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.control.ProfileController;
+import frc.team1983.util.motion.profiles.TrapezoidalProfile;
 import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
@@ -85,6 +87,9 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
 
+        drivebase.stopProfiles();
+        elevator.stopProfile();
+
         autoManager.resetGameData();
     }
 
@@ -100,8 +105,11 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.AUTO);
 
-        drivebase.getGyro().setYaw(0, 0);
         drivebase.setBrakeMode(true);
+
+        drivebase.getGyro().reset();
+
+        //Scheduler.getInstance().add(new TurnDegree(drivebase, 40, 1));
     }
 
     @Override

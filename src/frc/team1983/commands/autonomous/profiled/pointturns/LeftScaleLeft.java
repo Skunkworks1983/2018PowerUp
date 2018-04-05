@@ -11,14 +11,19 @@ import java.util.Arrays;
 
 public class LeftScaleLeft extends Path
 {
+    public LeftScaleLeft(Drivebase drivebase, boolean isTwoCube)
+    {
+
+    }
+
     public LeftScaleLeft(Drivebase drivebase)
     {
         super(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, -27, 4, new ActionsEnum[]{ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
-                new TurnDegree(drivebase, 90, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new DriveFeet(drivebase, -25, 4, new ActionsEnum[]{ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
+                new TurnDegree(drivebase, -90, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
                 new DriveFeet(drivebase, -3.5, 0.75),
                 new DriveFeet(drivebase, 0, 1.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE}),
-                new DriveFeet(drivebase, 3.5, 2),
+                new DriveFeet(drivebase, 2, 2),
                 new DriveFeet(drivebase, 0, 2, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
                                            )));
     }

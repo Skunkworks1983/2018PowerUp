@@ -25,6 +25,7 @@ public class DriveFeet extends DriveProfile
         this(drivebase, distance, time, actions);
 
         useAbsoluteOrientation = true;
+        startHeading = heading;
         endHeading = heading;
     }
 

@@ -9,10 +9,12 @@ import org.apache.logging.log4j.core.Logger;
 public class Pigeon extends PigeonIMU
 {
     Logger logger = LoggerFactory.createNewLogger(this.getClass());
+    private double offset = 0;
 
     public Pigeon(Motor motor)
     {
         super(motor);
+        offset = getFusedHeading();
     }
 
     public Pigeon(int id)
@@ -23,6 +25,11 @@ public class Pigeon extends PigeonIMU
     public boolean isDead()
     {
         return false; //TODO Write logic
+    }
+
+    public void reset()
+    {
+        offset = getFusedHeading();
     }
 
     public double getAngle()
@@ -43,6 +50,6 @@ public class Pigeon extends PigeonIMU
         }
         return xyz[2];
         */
-        return getFusedHeading();
+        return getFusedHeading() - offset;
     }
 }

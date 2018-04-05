@@ -132,7 +132,8 @@ public class DriveProfile extends CommandBase
                 desiredHeading = endHeading;
             }
 
-            logger.info(desiredHeading);
+            logger.info(useAbsoluteOrientation);
+            logger.info(drivebase.getGyro().getAngle() + ", " + desiredHeading);
             headingLoop.setSetpoint(desiredHeading);
         }
     }
