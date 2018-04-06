@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team1983.commands.autonomous.actions.ActionsEnum;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
@@ -108,8 +109,6 @@ public class Robot extends IterativeRobot
         drivebase.setBrakeMode(true);
 
         drivebase.getGyro().reset();
-
-        //Scheduler.getInstance().add(new TurnDegree(drivebase, 40, 1));
     }
 
     @Override
@@ -118,6 +117,7 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
         autoManager.execute();
     }
+
 
     @Override
     public void teleopInit()
@@ -137,6 +137,7 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+
     }
 
     @Override

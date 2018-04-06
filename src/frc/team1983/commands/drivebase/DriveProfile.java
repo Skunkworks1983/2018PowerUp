@@ -45,19 +45,23 @@ public class DriveProfile extends CommandBase
     private double lastTimeMillis = 0;
 
     private double totalDistance;
+    public double actionDelay = 0;
 
     public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration,
-                        double deltaHeading, ActionsEnum[] actions)
+                        double deltaHeading, ActionsEnum[] actions, double actionDelay)
     {
         logger = LoggerFactory.createNewLogger(this.getClass());
 
         requires(drivebase);
+        setTimeout(duration + 1);
 
+        this.actionDelay = actionDelay;
         this.actions = new ArrayList<>();
 
         for(ActionsEnum action : actions)
         {
             this.actions.add(action.getAction().createAction(Robot.getInstance().getCollector(), Robot.getInstance().getElevator()));
+            this.actions.get(this.actions.size() - 1).configTimeout(duration + 1);
         }
 
         this.drivebase = drivebase;
@@ -81,10 +85,10 @@ public class DriveProfile extends CommandBase
         }
     }
 
-    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration, ActionsEnum[] actions)
+    public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration,
+                        double deltaHeading, ActionsEnum[] actions)
     {
-        this(drivebase, leftProfile, rightProfile, duration, 0, actions);
-        this.runHeadingCorrection = false;
+        this(drivebase, leftProfile, rightProfile, duration, deltaHeading, actions, 0);
     }
 
     @Override
@@ -123,7 +127,7 @@ public class DriveProfile extends CommandBase
                 percentDist = Math.min(1, Math.max(percentDist, 0));
                 double percentTime = Math.min(timeSinceInitialized(), duration) / duration;
 
-                double percent = percentDist;
+                double percent = percentTime;
 
                 desiredHeading = startHeading + (percent * deltaHeading);
             }
@@ -132,7 +136,7 @@ public class DriveProfile extends CommandBase
                 desiredHeading = endHeading;
             }
 
-            logger.info(useAbsoluteOrientation);
+            //logger.info(useAbsoluteOrientation);
             logger.info(drivebase.getGyro().getAngle() + ", " + desiredHeading);
             headingLoop.setSetpoint(desiredHeading);
         }

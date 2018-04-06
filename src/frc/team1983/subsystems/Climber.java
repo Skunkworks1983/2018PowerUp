@@ -47,14 +47,18 @@ public class Climber extends Subsystem
 
     public void lockForks()
     {
+        leftForkLock.set(0.3);
+        rightForkLock.set(0.5);
+        /*
         leftForkLock.set(0.65);
         rightForkLock.set(0.425);
+        */
     }
 
     public void unlockForks()
     {
-        leftForkLock.set(0.90);
-        rightForkLock.set(0.1);
+        leftForkLock.set(0);
+        rightForkLock.set(1);
     }
 
     public void hook()

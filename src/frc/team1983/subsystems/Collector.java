@@ -87,7 +87,7 @@ public class Collector extends Subsystem
     @Override
     public void periodic()
     {
-        //logger.trace("Collector pos: {}", getPosition());
+        logger.trace("Collector pos: {}", getPosition());
         //logger.trace("Collector error: {}", rotate.getClosedLoopError(0));
     }
 }

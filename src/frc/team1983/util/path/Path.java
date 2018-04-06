@@ -3,6 +3,7 @@ package frc.team1983.util.path;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.commands.CommandBase;
+import frc.team1983.commands.autonomous.Wait;
 import frc.team1983.commands.drivebase.DriveArc;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.DriveProfile;
@@ -33,13 +34,16 @@ public class Path extends CommandGroup
         for(DriveProfile drive : drives)
         {
             CommandGroup movement = new CommandGroup();
+            CommandGroup actions = new CommandGroup();
+
             movement.addParallel(drive);
 
             for(CommandBase action : drive.getActions())
             {
-                movement.addParallel(action);
+                actions.addParallel(action);
             }
 
+            movement.addParallel(actions);
             addSequential(movement);
         }
 

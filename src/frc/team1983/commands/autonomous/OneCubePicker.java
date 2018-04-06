@@ -1,8 +1,8 @@
 package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.team1983.commands.autonomous.profiled.forwards.TwoMidSwitchLeft;
-import frc.team1983.commands.autonomous.profiled.forwards.TwoMidSwitchRight;
+import frc.team1983.commands.autonomous.profiled.forwards.OneMidSwitchLeft;
+import frc.team1983.commands.autonomous.profiled.forwards.OneMidSwitchRight;
 import frc.team1983.commands.autonomous.profiled.pointturns.LeftScaleLeft;
 import frc.team1983.commands.autonomous.profiled.pointturns.LeftScaleRight;
 import frc.team1983.commands.autonomous.profiled.pointturns.RightScaleLeft;
@@ -16,12 +16,10 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import org.apache.logging.log4j.core.Logger;
 
-
-public class ProfiledAutoPicker extends CommandGroup
+public class OneCubePicker extends CommandGroup
 {
     Logger logger;
-
-    public ProfiledAutoPicker(Drivebase drivebase, Collector collector, Elevator elevator,
+    public OneCubePicker(Drivebase drivebase, Collector collector, Elevator elevator,
                               DashboardWrapper dashboardWrapper, StatefulDashboard statefulDashboard,
                               AutoManager autoManager)
     {
@@ -40,17 +38,17 @@ public class ProfiledAutoPicker extends CommandGroup
             case UNKNOWN:
                 if(switchPosition == AutoManager.OwnedSide.LEFT)
                 {
-                    addSequential(new TwoMidSwitchLeft(drivebase));
+                    addSequential(new OneMidSwitchLeft(drivebase));
                 }
                 else if(switchPosition == AutoManager.OwnedSide.RIGHT)
                 {
-                    addSequential(new TwoMidSwitchRight(drivebase));
+                    addSequential(new OneMidSwitchRight(drivebase));
                 }
                 break;
             case RIGHT:
                 if(scaleSame)
                 {
-                    addSequential(new RightScaleRight(drivebase, true));
+                    addSequential(new RightScaleRight(drivebase, false));
                 }
                 else
                 {
@@ -60,7 +58,7 @@ public class ProfiledAutoPicker extends CommandGroup
             case LEFT:
                 if(scaleSame)
                 {
-                    addSequential(new LeftScaleLeft(drivebase, true));
+                    addSequential(new LeftScaleLeft(drivebase, false));
                 }
                 else
                 {

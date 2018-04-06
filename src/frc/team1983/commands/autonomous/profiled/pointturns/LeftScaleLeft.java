@@ -13,7 +13,17 @@ public class LeftScaleLeft extends Path
 {
     public LeftScaleLeft(Drivebase drivebase, boolean isTwoCube)
     {
-
+        super(new ArrayList<>(Arrays.asList(
+                new DriveFeet(drivebase, 15, 2, new ActionsEnum[]{ActionsEnum.SET_COLLECTOR_POSITION_DOWN, ActionsEnum.SET_ELEVATOR_SETPOINT_TRAVEL}),
+                new TurnDegree(drivebase, -25, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE, ActionsEnum.COLLECTOR_ROTATE_MID}),
+                new DriveFeet(drivebase, 5, 3),
+                new DriveFeet(drivebase, 1, 1, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}),
+                new TurnDegree(drivebase, 180 + 15 + 15, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
+                new DriveFeet(drivebase, 3, 2, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new DriveFeet(drivebase, -1, 1),
+                new TurnDegree(drivebase, -180 - 15 - 25, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE}),
+                new DriveFeet(drivebase, 3, 3, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
+                                           )));
     }
 
     public LeftScaleLeft(Drivebase drivebase)

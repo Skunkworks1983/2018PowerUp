@@ -10,7 +10,7 @@ public class DriveFeet extends DriveProfile
 {
     public DriveFeet(Drivebase drivebase, double distance, double time, ActionsEnum[] actions)
     {
-        super(drivebase, generateProfile(distance, time), generateProfile(distance, time), time, 0, actions);
+        super(drivebase, generateProfile(-distance, time), generateProfile(-distance, time), time, 0, actions);
         setHeadingLoopGains(Constants.PidConstants.Drivebase.AUX_STRAIGHT);
     }
 

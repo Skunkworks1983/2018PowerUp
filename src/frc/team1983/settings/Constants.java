@@ -71,8 +71,8 @@ public class Constants
 
             public static final int ROTATE = 12;
 
-            public static final boolean LEFT_REVERSED = false;
-            public static final boolean RIGHT_REVERSED = true;
+            public static final boolean LEFT_REVERSED = true;
+            public static final boolean RIGHT_REVERSED = false;
             public static final boolean ROTATE_REVERSED = false;
 
             public static final int LEFT_SWITCH = 1;
@@ -137,9 +137,9 @@ public class Constants
     {
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
         public static final double COLLECTOR_ROTATE_SPEED = -0.5;
-        public static final double COLLECTOR_INTAKE_SPEED = -0.75;
+        public static final double COLLECTOR_INTAKE_SPEED = -1;
         public static final double COLLECTOR_EXPEL_SPEED = 0.75;
-        public static final double COLLECTOR_SLOW_EXPEL_SPEED = 0.2;
+        public static final double COLLECTOR_SLOW_EXPEL_SPEED = 0.3;
 
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
@@ -168,11 +168,11 @@ public class Constants
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
                         0,//0.45,
                         0,
-                        0.7,
+                        0,
                         0,
                         0, //Motion.DRIVEBASE_LEFT_KS,
-                        1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
-                        1023 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
+                        -1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
+                        -1023 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
                 );
             }
 
@@ -181,11 +181,11 @@ public class Constants
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
                         0,//0.45,
                         0,
-                        0.7,
+                        0,
                         0,
                         0,//Motion.DRIVEBASE_LEFT_KS,
-                        1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
-                        1023 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
+                        -1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
+                        -1023 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
                 );
             }
 
@@ -194,7 +194,7 @@ public class Constants
             );
 
             public static ClosedLoopGains AUX_TURN = new ClosedLoopGains(
-                    0.0135,0,0.04,0//0.01, 0, 0.006, 0
+                    0.0135 / 2.65,0,0.08,0//0.01, 0, 0.006, 0
             );
 
             public static ClosedLoopGains AUX_ARC = new ClosedLoopGains(
@@ -265,8 +265,8 @@ public class Constants
             public static final double F = 0;//.002;
 
             public static final double UP_TICKS = -100; //response to slop in chain
-            public static final double DOWN_TICKS = 1300;
-            public static final double MID_TICKS = 300;//response to slop in chain
+            public static final double DOWN_TICKS = 2700;
+            public static final double MID_TICKS = 700;//response to slop in chain
         }
 
         //setpoints for motors
@@ -461,6 +461,6 @@ public class Constants
 
         public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(100000 / 12);
         public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.25;
-        public static final double DRIVEBASE_HEADING_END_RANGE = 7;
+        public static final double DRIVEBASE_HEADING_END_RANGE = 10;
     }
 }
