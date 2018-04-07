@@ -26,6 +26,8 @@ public class RightScaleRight extends Path
                                            )));
     }
 
+    //Should never be run
+    /*
     public RightScaleRight(Drivebase drivebase)
     {
         super(new ArrayList<>(Arrays.asList(
@@ -36,5 +38,5 @@ public class RightScaleRight extends Path
                 new DriveFeet(drivebase, 2, 2),
                 new DriveFeet(drivebase, 0, 2, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
                                            )));
-    }
+    }*/
 }

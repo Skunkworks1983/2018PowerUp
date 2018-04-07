@@ -1,12 +1,16 @@
 package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.team1983.commands.autonomous.profiled.forwards.TwoMidSwitchLeft;
-import frc.team1983.commands.autonomous.profiled.forwards.TwoMidSwitchRight;
+import frc.team1983.commands.autonomous.profiled.twocubers.TwoLeftScaleLeft;
+import frc.team1983.commands.autonomous.profiled.twocubers.TwoLeftScaleRight;
+import frc.team1983.commands.autonomous.profiled.twocubers.TwoMidSwitchLeft;
+import frc.team1983.commands.autonomous.profiled.twocubers.TwoMidSwitchRight;
 import frc.team1983.commands.autonomous.profiled.pointturns.LeftScaleLeft;
 import frc.team1983.commands.autonomous.profiled.pointturns.LeftScaleRight;
 import frc.team1983.commands.autonomous.profiled.pointturns.RightScaleLeft;
 import frc.team1983.commands.autonomous.profiled.pointturns.RightScaleRight;
+import frc.team1983.commands.autonomous.profiled.twocubers.TwoRightScaleLeft;
+import frc.team1983.commands.autonomous.profiled.twocubers.TwoRightScaleRight;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.automanager.AutoManager;
@@ -17,13 +21,13 @@ import frc.team1983.subsystems.Elevator;
 import org.apache.logging.log4j.core.Logger;
 
 
-public class ProfiledAutoPicker extends CommandGroup
+public class TwoCubePicker extends CommandGroup
 {
     Logger logger;
 
-    public ProfiledAutoPicker(Drivebase drivebase, Collector collector, Elevator elevator,
-                              DashboardWrapper dashboardWrapper, StatefulDashboard statefulDashboard,
-                              AutoManager autoManager)
+    public TwoCubePicker(Drivebase drivebase, Collector collector, Elevator elevator,
+                         DashboardWrapper dashboardWrapper, StatefulDashboard statefulDashboard,
+                         AutoManager autoManager)
     {
         logger = LoggerFactory.createNewLogger(this.getClass());
         AutoManager.OwnedSide switchPosition, scalePosition;
@@ -50,21 +54,21 @@ public class ProfiledAutoPicker extends CommandGroup
             case RIGHT:
                 if(scaleSame)
                 {
-                    addSequential(new RightScaleRight(drivebase, true));
+                    addSequential(new TwoRightScaleRight(drivebase));
                 }
                 else
                 {
-                    addSequential(new RightScaleLeft(drivebase));
+                    addSequential(new TwoRightScaleLeft(drivebase));
                 }
                 break;
             case LEFT:
                 if(scaleSame)
                 {
-                    addSequential(new LeftScaleLeft(drivebase, true));
+                    addSequential(new TwoLeftScaleLeft(drivebase));
                 }
                 else
                 {
-                    addSequential(new LeftScaleRight(drivebase));
+                    addSequential(new TwoLeftScaleRight(drivebase));
                 }
                 break;
         }

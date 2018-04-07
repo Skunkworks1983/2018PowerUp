@@ -1,4 +1,4 @@
-package frc.team1983.commands.autonomous.profiled.pointturns;
+package frc.team1983.commands.autonomous.profiled.onecubers;
 
 import frc.team1983.commands.autonomous.actions.ActionsEnum;
 import frc.team1983.commands.drivebase.DriveFeet;
@@ -9,17 +9,10 @@ import frc.team1983.util.path.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class LeftScaleRight extends Path
+public class OneLeftScaleRight extends Path
 {
-    //Should never be run
-    /*
-    public LeftScaleRight(Drivebase drivebase, boolean isTwoCube)
-    {
 
-    }
-    */
-
-    public LeftScaleRight(Drivebase drivebase)
+    public OneLeftScaleRight(Drivebase drivebase)
     {
         super(new ArrayList<>(Arrays.asList(
                 new DriveFeet(drivebase, -21, 2, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_TRAVEL, ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
