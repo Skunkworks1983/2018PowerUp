@@ -1,16 +1,13 @@
 package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.team1983.commands.autonomous.profiled.CrossBaselineForwards;
 import frc.team1983.commands.autonomous.profiled.onecubers.OneLeftScaleLeft;
 import frc.team1983.commands.autonomous.profiled.onecubers.OneLeftScaleRight;
 import frc.team1983.commands.autonomous.profiled.onecubers.OneMidSwitchLeft;
 import frc.team1983.commands.autonomous.profiled.onecubers.OneMidSwitchRight;
 import frc.team1983.commands.autonomous.profiled.onecubers.OneRightScaleLeft;
 import frc.team1983.commands.autonomous.profiled.onecubers.OneRightScaleRight;
-import frc.team1983.commands.autonomous.profiled.pointturns.LeftScaleLeft;
-import frc.team1983.commands.autonomous.profiled.pointturns.LeftScaleRight;
-import frc.team1983.commands.autonomous.profiled.pointturns.RightScaleLeft;
-import frc.team1983.commands.autonomous.profiled.pointturns.RightScaleRight;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.automanager.AutoManager;
@@ -56,7 +53,8 @@ public class OneCubePicker extends CommandGroup
                 }
                 else
                 {
-                    addSequential(new OneRightScaleLeft(drivebase));
+                    //addSequential(new OneRightScaleLeft(drivebase));
+                    addSequential(new CrossBaselineForwards(drivebase));
                 }
                 break;
             case LEFT:
@@ -66,7 +64,8 @@ public class OneCubePicker extends CommandGroup
                 }
                 else
                 {
-                    addSequential(new OneLeftScaleRight(drivebase));
+                    //addSequential(new OneLeftScaleRight(drivebase));
+                    addSequential(new CrossBaselineForwards(drivebase));
                 }
                 break;
         }

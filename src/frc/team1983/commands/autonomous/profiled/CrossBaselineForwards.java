@@ -9,12 +9,12 @@ import frc.team1983.util.path.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CrossBaseline extends Path
+public class CrossBaselineForwards extends Path
 {
-    public CrossBaseline(Drivebase drivebase)
+    public CrossBaselineForwards(Drivebase drivebase)
     {
         super(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, -15, 3, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_TRAVEL})
+                new DriveFeet(drivebase, 15, 3, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_TRAVEL, ActionsEnum.SET_COLLECTOR_POSITION_DOWN})
                                            )));
     }
 }

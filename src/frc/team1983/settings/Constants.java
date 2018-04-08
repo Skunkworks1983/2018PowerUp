@@ -405,7 +405,7 @@ public class Constants
         public enum Setpoint
         {
             BOTTOM(0),
-            TRAVEL(1960), //upped from 1860
+            TRAVEL(2100), //upped from 1860
             SWITCH(9125+1200), // elevator halfway point
             LOW(22700 +400),
             MID(25700 +400),
