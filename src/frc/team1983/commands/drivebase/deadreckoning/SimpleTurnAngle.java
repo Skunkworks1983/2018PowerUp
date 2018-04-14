@@ -51,10 +51,12 @@ public class SimpleTurnAngle extends CommandBase
         targetAngle = degrees;
         gyro = drivebase.getGyro();
 
+        /*
         dashboard.add(this, "kP", 0.11);
         dashboard.add(this, "kI", 0.0);
         dashboard.add(this, "kD", 0.0);
         dashboard.add(this, "kF", 0.0);
+        */
     }
 
     @Override

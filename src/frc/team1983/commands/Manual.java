@@ -73,7 +73,7 @@ public class Manual extends Command
 
         if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.M_UP))
         {
-            elevator.set(ControlMode.PercentOutput, 0.4);
+            elevator.set(ControlMode.PercentOutput, 1);
         }
         if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.M_DOWN))
         {

@@ -15,6 +15,7 @@ import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
+import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
 public class OneCubePicker extends CommandGroup
@@ -39,33 +40,33 @@ public class OneCubePicker extends CommandGroup
             case UNKNOWN:
                 if(switchPosition == AutoManager.OwnedSide.LEFT)
                 {
-                    addSequential(new OneMidSwitchLeft(drivebase));
+                    addSequential(autoManager.onecube_ml);
                 }
                 else if(switchPosition == AutoManager.OwnedSide.RIGHT)
                 {
-                    addSequential(new OneMidSwitchRight(drivebase));
+                    addSequential(autoManager.onecube_mr);
                 }
                 break;
             case RIGHT:
                 if(scaleSame)
                 {
-                    addSequential(new OneRightScaleRight(drivebase));
+                    addSequential(autoManager.onecube_rr);
                 }
                 else
                 {
-                    //addSequential(new OneRightScaleLeft(drivebase));
-                    addSequential(new CrossBaselineForwards(drivebase));
+                    addSequential(autoManager.onecube_rl);
+                    //addSequential(new CrossBaselineForwards(drivebase));
                 }
                 break;
             case LEFT:
                 if(scaleSame)
                 {
-                    addSequential(new OneLeftScaleLeft(drivebase));
+                    addSequential(autoManager.onecube_ll);
                 }
                 else
                 {
-                    //addSequential(new OneLeftScaleRight(drivebase));
-                    addSequential(new CrossBaselineForwards(drivebase));
+                    addSequential(autoManager.onecube_lr);
+                    //addSequential(new CrossBaselineForwards(drivebase));
                 }
                 break;
         }

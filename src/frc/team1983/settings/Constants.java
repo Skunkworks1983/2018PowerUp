@@ -166,35 +166,35 @@ public class Constants
             public static class Left
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0,//0.45,
+                        0.25,//0.45,//-0.1,//0.45,
                         0,
-                        0,
+                        0,//0.2,//-0.35,
                         0,
                         0, //Motion.DRIVEBASE_LEFT_KS,
                         -1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
-                        -1023 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
+                        0 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
                 );
             }
 
             public static class Right
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0,//0.45,
+                        0.25,//0.45,//-0.1,//0.45,
                         0,
-                        0,
+                        0,//0.2,//-0.35,
                         0,
                         0,//Motion.DRIVEBASE_LEFT_KS,
                         -1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
-                        -1023 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
+                        0 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
                 );
             }
 
             public static ClosedLoopGains AUX_STRAIGHT = new ClosedLoopGains(
-                    0.015, 0, 0.1, 0
+                    0.01, 0, 0.02, 0
             );
 
             public static ClosedLoopGains AUX_TURN = new ClosedLoopGains(
-                    0.0135 / 2.65,0,0.08,0//0.01, 0, 0.006, 0
+                    0.0135 / 1.25,0,0.08,0//0.01, 0, 0.006, 0
             );
 
             public static ClosedLoopGains AUX_ARC = new ClosedLoopGains(
@@ -265,7 +265,7 @@ public class Constants
             public static final double F = 0;//.002;
 
             public static final double UP_TICKS = -100; //response to slop in chain
-            public static final double DOWN_TICKS = 2700;
+            public static final double DOWN_TICKS = 1500;//2700;
             public static final double MID_TICKS = 700;//response to slop in chain
         }
 
@@ -450,16 +450,16 @@ public class Constants
         public static final int MIN_POINTS_IN_TALON = 3;
 
         public static final double DRIVEBASE_LEFT_KS = 0.12;
-        public static final double DRIVEBASE_LEFT_MAX_VELOCITY = 14000.0; // sensor units per second
+        public static final double DRIVEBASE_LEFT_MAX_VELOCITY = 13000.0; // sensor units per second
         public static final double DRIVEBASE_LEFT_MAX_ACCELERATION = DRIVEBASE_LEFT_MAX_VELOCITY / 2; // sensor units per second per second
 
         public static final double DRIVEBASE_RIGHT_KS = 0.12;
-        public static final double DRIVEBASE_RIGHT_MAX_VELOCITY = 14600.0; // sensor units per second
+        public static final double DRIVEBASE_RIGHT_MAX_VELOCITY = 12600.0; // sensor units per second
         public static final double DRIVEBASE_RIGHT_MAX_ACCELERATION = DRIVEBASE_RIGHT_MAX_VELOCITY / 2; // sensor units per second per second
         public static final double ELEVATOR_MAX_VELOCITY = 4010.0;
         public static final double ELEVATOR_MAX_ACCELERATION = ELEVATOR_MAX_VELOCITY / 0.75;
 
-        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(100000 / 12);
+        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(1000 / 12);
         public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.25;
         public static final double DRIVEBASE_HEADING_END_RANGE = 10;
     }

@@ -50,8 +50,6 @@ public class DriveProfile extends CommandBase
     public DriveProfile(Drivebase drivebase, CruiseProfile leftProfile, CruiseProfile rightProfile, double duration,
                         double deltaHeading, ActionsEnum[] actions, double actionDelay)
     {
-        logger = LoggerFactory.createNewLogger(this.getClass());
-
         requires(drivebase);
         setTimeout(duration + 1);
 
@@ -136,8 +134,6 @@ public class DriveProfile extends CommandBase
                 desiredHeading = endHeading;
             }
 
-            //logger.info(useAbsoluteOrientation);
-            logger.info(drivebase.getGyro().getAngle() + ", " + desiredHeading);
             headingLoop.setSetpoint(desiredHeading);
         }
     }
@@ -161,11 +157,6 @@ public class DriveProfile extends CommandBase
         finished &= (onTargetTime >= Constants.Motion.DRIVEBASE_IN_RANGE_END_TIME);
 
         finished |= isTimedOut();
-
-        if(isTimedOut())
-        {
-            logger.info("DriveProfile timed out");
-        }
 
         return finished;
     }
@@ -197,10 +188,6 @@ public class DriveProfile extends CommandBase
     @Override
     public void end()
     {
-        logger.info("left error: " + Drivebase.getFeet(drivebase.getLeftError()) +
-                                   " , right error: " + Drivebase.getFeet(drivebase.getRightError()) +
-                                   " , gyro error: " + (endHeading - drivebase.getGyro().getAngle()));
-
         drivebase.stopProfiles();
 
         if(runHeadingCorrection)

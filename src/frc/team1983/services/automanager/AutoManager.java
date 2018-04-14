@@ -5,8 +5,21 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.Robot;
+import frc.team1983.commands.autonomous.profiled.onecubers.OneLeftScaleLeft;
+import frc.team1983.commands.autonomous.profiled.onecubers.OneLeftScaleRight;
+import frc.team1983.commands.autonomous.profiled.onecubers.OneMidSwitchLeft;
+import frc.team1983.commands.autonomous.profiled.onecubers.OneMidSwitchRight;
+import frc.team1983.commands.autonomous.profiled.onecubers.OneRightScaleLeft;
+import frc.team1983.commands.autonomous.profiled.onecubers.OneRightScaleRight;
+import frc.team1983.commands.autonomous.profiled.twocubers.TwoLeftScaleLeft;
+import frc.team1983.commands.autonomous.profiled.twocubers.TwoLeftScaleRight;
+import frc.team1983.commands.autonomous.profiled.twocubers.TwoMidSwitchLeft;
+import frc.team1983.commands.autonomous.profiled.twocubers.TwoMidSwitchRight;
+import frc.team1983.commands.autonomous.profiled.twocubers.TwoRightScaleLeft;
+import frc.team1983.commands.autonomous.profiled.twocubers.TwoRightScaleRight;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
 /**
@@ -26,6 +39,9 @@ public class AutoManager
     private SendableChooser<OwnedSide> ownedSideOverride, robotPositionSelector;
     private Logger logger;
     private DashboardWrapper dashboard;
+
+    public Path onecube_ml, onecube_mr, onecube_rr, onecube_rl, onecube_ll, onecube_lr;
+    public Path twocube_ml, twocube_mr, twocube_rr, twocube_rl, twocube_ll, twocube_lr;
 
     public AutoManager(DashboardWrapper dashboard)
     {
@@ -55,6 +71,24 @@ public class AutoManager
         robotPositionSelector.addObject("Right", OwnedSide.RIGHT);
         robotPositionSelector.addObject("Left", OwnedSide.LEFT);
         SmartDashboard.putData("Robot Position Selector", robotPositionSelector);
+    }
+
+    // barf
+    public void generatePaths()
+    {
+        onecube_ml = new OneMidSwitchLeft(Robot.getInstance().getDrivebase());
+        onecube_mr = new OneMidSwitchRight(Robot.getInstance().getDrivebase());
+        onecube_rr = new OneRightScaleRight(Robot.getInstance().getDrivebase());
+        onecube_rl = new OneRightScaleLeft(Robot.getInstance().getDrivebase());
+        onecube_ll = new OneLeftScaleLeft(Robot.getInstance().getDrivebase());
+        onecube_lr = new OneLeftScaleRight(Robot.getInstance().getDrivebase());
+
+        twocube_ml = new TwoMidSwitchLeft(Robot.getInstance().getDrivebase());
+        twocube_mr = new TwoMidSwitchRight(Robot.getInstance().getDrivebase());
+        twocube_rr = new TwoRightScaleRight(Robot.getInstance().getDrivebase());
+        twocube_rl = new TwoRightScaleLeft(Robot.getInstance().getDrivebase());
+        twocube_ll = new TwoLeftScaleLeft(Robot.getInstance().getDrivebase());
+        twocube_lr = new TwoLeftScaleRight(Robot.getInstance().getDrivebase());
     }
 
     public enum GameFeature

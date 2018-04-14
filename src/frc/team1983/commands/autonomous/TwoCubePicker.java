@@ -44,31 +44,31 @@ public class TwoCubePicker extends CommandGroup
             case UNKNOWN:
                 if(switchPosition == AutoManager.OwnedSide.LEFT)
                 {
-                    addSequential(new TwoMidSwitchLeft(drivebase));
+                    addSequential(autoManager.twocube_ml);
                 }
                 else if(switchPosition == AutoManager.OwnedSide.RIGHT)
                 {
-                    addSequential(new TwoMidSwitchRight(drivebase));
+                    addSequential(autoManager.twocube_mr);
                 }
                 break;
             case RIGHT:
                 if(scaleSame)
                 {
-                    addSequential(new TwoRightScaleRight(drivebase));
+                    addSequential(autoManager.twocube_rr);
                 }
                 else
                 {
-                    addSequential(new TwoRightScaleLeft(drivebase));
+                    addSequential(autoManager.twocube_rl);
                 }
                 break;
             case LEFT:
                 if(scaleSame)
                 {
-                    addSequential(new TwoLeftScaleLeft(drivebase));
+                    addSequential(autoManager.twocube_ll);
                 }
                 else
                 {
-                    addSequential(new TwoLeftScaleRight(drivebase));
+                    addSequential(autoManager.twocube_lr);
                 }
                 break;
         }

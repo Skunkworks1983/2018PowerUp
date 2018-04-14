@@ -2,6 +2,7 @@ package frc.team1983;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -11,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.commands.autonomous.actions.ActionsEnum;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.DriveFeet;
+import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.drivebase.TurnDegree;
 import frc.team1983.commands.drivebase.deadreckoning.DifferentialTurnAngle;
@@ -51,6 +53,8 @@ public class Robot extends IterativeRobot
 
     private static Robot instance;
 
+    private boolean autoRan = false;
+
     public Robot()
     {
         instance = this;
@@ -63,7 +67,6 @@ public class Robot extends IterativeRobot
         dashboardWrapper = new DashboardWrapper();
         dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
         dashboard.populate();
-        autoManager = new AutoManager(dashboardWrapper);
 
         oi = new OI();
 
@@ -72,9 +75,14 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
         climber = new Climber();
 
+        // god damn it this has to come after everything else do not touch
+        autoManager = new AutoManager(dashboardWrapper);
+
         robotLogger.info("robotInit");
 
         oi.initializeBindings(this);
+
+        autoManager.generatePaths();
     }
 
     @Override
@@ -109,6 +117,8 @@ public class Robot extends IterativeRobot
         drivebase.setBrakeMode(true);
 
         drivebase.getGyro().reset();
+
+        autoRan = true; // blargh
     }
 
     @Override
@@ -137,7 +147,6 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-
     }
 
     @Override
@@ -158,7 +167,6 @@ public class Robot extends IterativeRobot
         motorUp = new DigitalInput(5);
         motorDown = new DigitalInput(4);
         manualSpeed = new AnalogInput(2);
-
 
         if(runOneMotor == null)
         {
