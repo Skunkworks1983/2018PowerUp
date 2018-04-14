@@ -40,7 +40,7 @@ public class Path extends CommandGroup
 
             for(CommandBase action : drive.getActions())
             {
-                //actions.addParallel(action);
+                actions.addParallel(action);
             }
 
             movement.addParallel(actions);
