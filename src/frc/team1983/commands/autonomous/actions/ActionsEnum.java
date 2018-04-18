@@ -39,7 +39,7 @@ public enum ActionsEnum
 
     public Action getAction()
     {
-        System.out.println("got action " + action.toString());
+        //System.out.println("got action " + action.toString());
         return action;
     }
 }

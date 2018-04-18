@@ -78,7 +78,7 @@ public class ProfileController
 
             TrajectoryPoint point = new TrajectoryPoint();
 
-            point.position = -profile.evaluatePosition(t);
+            point.position = profile.evaluatePosition(t);
             // velocity is actually percent output
 
             double output = (gains.get_kV() * profile.evaluateVelocity(t)) + (gains.get_kA() * profile.evaluateAcceleration(t));

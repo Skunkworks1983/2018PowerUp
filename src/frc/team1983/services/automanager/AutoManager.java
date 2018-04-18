@@ -27,9 +27,8 @@ import org.apache.logging.log4j.core.Logger;
  * sent by the FMS and DS to indicate the configuration of the SWITCH
  * and SCALE.
  *
- * @author Jaci Brunning
- * <p>
- * Stolen from Open-RIO, with modifications to fit into Skunkworks robot scheme
+ * @author Jaci Brunning and Erik Pratt
+ * Stolen from Open-RIO (Jaci Brunning), with modifications to fit into Skunkworks robot scheme
  */
 public class AutoManager
 {
