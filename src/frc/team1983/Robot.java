@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.debugging.RunOneMotor;
+import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.drivebase.deadreckoning.DifferentialTurnAngle;
 import frc.team1983.services.DashboardWrapper;
@@ -105,6 +106,8 @@ public class Robot extends IterativeRobot
         drivebase.setBrakeMode(true);
 
         drivebase.getGyro().reset();
+
+        //Scheduler.getInstance().add(new DriveFeet(drivebase, 5, 1, 0));
 
         autoRan = true; // blargh
     }

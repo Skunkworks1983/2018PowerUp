@@ -168,7 +168,7 @@ public class Constants
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
                         0.25,//0.45,//-0.1,//0.45,
                         0,
-                        0,//0.2,//-0.35,
+                        0.1,//0.2,//-0.35,
                         0,
                         0, //Motion.DRIVEBASE_LEFT_KS,
                         -1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
@@ -181,7 +181,7 @@ public class Constants
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
                         0.2,//0.45,//-0.1,//0.45,
                         0,
-                        0,//0.2,//-0.35,
+                        0.1,//0.2,//-0.35,
                         0,
                         0,//Motion.DRIVEBASE_LEFT_KS,
                         -1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
@@ -190,11 +190,11 @@ public class Constants
             }
 
             public static ClosedLoopGains AUX_STRAIGHT = new ClosedLoopGains(
-                    0.015, 0, 0.1, 0
+                    0.04, 0, 0.075, 0
             );
 
             public static ClosedLoopGains AUX_TURN = new ClosedLoopGains(
-                    0.0135 / 2.65,0,0.08,0//0.01, 0, 0.006, 0
+                    0.04 / 2.65,0,0.07,0//0.01, 0, 0.006, 0
             );
 
             public static ClosedLoopGains AUX_ARC = new ClosedLoopGains(
