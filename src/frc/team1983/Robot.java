@@ -1,6 +1,7 @@
 package frc.team1983;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.sun.org.apache.bcel.internal.classfile.ConstantDouble;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -20,6 +21,7 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.utilities.Motor;
+import frc.team1983.util.control.ClosedLoopGains;
 import frc.team1983.util.control.ProfileController;
 import org.apache.logging.log4j.core.Logger;
 
@@ -39,6 +41,12 @@ public class Robot extends IterativeRobot
     private StatefulDashboard dashboard;
     private AutoManager autoManager;
     private RunOneMotor runOneMotor;
+
+    private ClosedLoopGains leftGains;
+    private ClosedLoopGains rightGains;
+
+    private ClosedLoopGains straightGains;
+    private ClosedLoopGains turnGains;
 
     private static Robot instance;
 
@@ -69,6 +77,27 @@ public class Robot extends IterativeRobot
 
         robotLogger.info("robotInit");
 
+        //lemme channel my inner Nathan: vomits
+        dashboard.add(this, "LEFT_P", Constants.PidConstants.Drivebase.Left.MAIN.get_kP());
+        dashboard.add(this, "LEFT_I", Constants.PidConstants.Drivebase.Left.MAIN.get_kI());
+        dashboard.add(this, "LEFT_D", Constants.PidConstants.Drivebase.Left.MAIN.get_kD());
+        dashboard.add(this, "LEFT_F", Constants.PidConstants.Drivebase.Left.MAIN.get_kF());
+
+        dashboard.add(this, "RIGHT_P", Constants.PidConstants.Drivebase.Right.MAIN.get_kP());
+        dashboard.add(this, "RIGHT_I", Constants.PidConstants.Drivebase.Right.MAIN.get_kI());
+        dashboard.add(this, "RIGHT_D", Constants.PidConstants.Drivebase.Right.MAIN.get_kD());
+        dashboard.add(this, "RIGHT_F", Constants.PidConstants.Drivebase.Right.MAIN.get_kF());
+
+        dashboard.add(this, "STRAIGHT_P", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kP());
+        dashboard.add(this, "STRAIGHT_I", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kI());
+        dashboard.add(this, "STRAIGHT_D", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kD());
+        dashboard.add(this, "STRAIGHT_F", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kF());
+
+        dashboard.add(this, "TURN_P", Constants.PidConstants.Drivebase.AUX_TURN.get_kP());
+        dashboard.add(this, "TURN_I", Constants.PidConstants.Drivebase.AUX_TURN.get_kI());
+        dashboard.add(this, "TURN_D", Constants.PidConstants.Drivebase.AUX_TURN.get_kD());
+        dashboard.add(this, "TURN_F", Constants.PidConstants.Drivebase.AUX_TURN.get_kF());
+
         oi.initializeBindings(this);
 
         autoManager.generatePaths();
@@ -87,6 +116,8 @@ public class Robot extends IterativeRobot
 
         drivebase.stopProfiles();
         elevator.stopProfile();
+
+        dashboard.store();
 
         autoManager.resetGameData();
     }
@@ -245,5 +276,23 @@ public class Robot extends IterativeRobot
         return instance;
     }
 
+    public ClosedLoopGains getLeftGains()
+    {
+        return new ClosedLoopGains(dashboard.getDouble(this, "LEFT_P"), dashboard.getDouble(this, "LEFT_I"), dashboard.getDouble(this, "LEFT_D"), dashboard.getDouble(this, "LEFT_F"));
+    }
 
+    public ClosedLoopGains getRightGains()
+    {
+        return new ClosedLoopGains(dashboard.getDouble(this, "RIGHT_P"), dashboard.getDouble(this, "RIGHT_I"), dashboard.getDouble(this, "RIGHT_D"), dashboard.getDouble(this, "RIGHT_F"));
+    }
+
+    public ClosedLoopGains getStraightGains()
+    {
+        return new ClosedLoopGains(dashboard.getDouble(this, "TURN_P"), dashboard.getDouble(this, "TURN_I"), dashboard.getDouble(this, "TURN_D"), dashboard.getDouble(this, "TURN_F"));
+    }
+
+    public ClosedLoopGains getTurnGains()
+    {
+        return new ClosedLoopGains(dashboard.getDouble(this, "STRAIGHT_P"), dashboard.getDouble(this, "STRAIGHT_I"), dashboard.getDouble(this, "STRAIGHT_D"), dashboard.getDouble(this, "STRAIGHT_F"));
+    }
 }

@@ -1,5 +1,6 @@
 package frc.team1983.commands.drivebase;
 
+import frc.team1983.Robot;
 import frc.team1983.commands.autonomous.actions.ActionsEnum;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
@@ -11,7 +12,7 @@ public class DriveFeet extends DriveProfile
     public DriveFeet(Drivebase drivebase, double distance, double time, ActionsEnum[] actions)
     {
         super(drivebase, generateProfile(-distance, time), generateProfile(-distance, time), time, 0, actions);
-        setHeadingLoopGains(Constants.PidConstants.Drivebase.AUX_STRAIGHT);
+        setHeadingLoopGains(Robot.getInstance().getStraightGains());
     }
 
     public DriveFeet(Drivebase drivebase, double distance, double time)

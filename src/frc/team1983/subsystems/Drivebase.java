@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1983.Robot;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.sensors.Gyro;
@@ -54,8 +55,8 @@ public class Drivebase extends Subsystem
         left1.setSensorPhase(true);
         right1.setSensorPhase(true);
 
-        left1.setGains(0, Constants.PidConstants.Drivebase.Left.MAIN);
-        right1.setGains(0, Constants.PidConstants.Drivebase.Right.MAIN);
+        left1.setGains(0, Robot.getInstance().getLeftGains());
+        right1.setGains(0, Robot.getInstance().getRightGains());
 
         left1.linkSignal(signal);
         right1.linkSignal(signal);

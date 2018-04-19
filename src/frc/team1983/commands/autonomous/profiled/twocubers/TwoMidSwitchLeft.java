@@ -37,9 +37,9 @@ public class TwoMidSwitchLeft extends Path
         */
 
         super(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, 8.5, 2, 45, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
-                new TurnDegree(drivebase, -50, 1),
-                new DriveFeet(drivebase, 2, 1, 0),
+                new DriveFeet(drivebase, 8.5, 1.75, 45, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
+                new TurnDegree(drivebase, -50, 0.75),
+                new DriveFeet(drivebase, 2, 0.75, 0),
                 new DriveFeet(drivebase, 0.5, 0.5, 0, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}),
                 new DriveFeet(drivebase, -2, 1, 0),
                 new TurnDegree(drivebase, -60, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
