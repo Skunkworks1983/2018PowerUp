@@ -12,20 +12,32 @@ import java.util.Arrays;
 
 public class TwoMidSwitchRight extends Path
 {
+    private static double turn = 45;
+    private static double turn2 = 45;
+
     public TwoMidSwitchRight(Drivebase drivebase)
     {
         super(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, 8, 2, -40, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
-                new TurnDegree(drivebase, 40, 1),
-                new DriveFeet(drivebase, 1.75, 1, 0),
-                new DriveFeet(drivebase, 0.5, 0.25, 0, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}),
-                new DriveFeet(drivebase, -3, 1, 0),
-                new TurnDegree(drivebase, 60, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
-                new DriveFeet(drivebase, 5, 1.5, 60, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
-                new DriveFeet(drivebase, -2, 1, 60, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
-                new TurnDegree(drivebase, -40, 1, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
+                new DriveFeet(drivebase, 7, 1.5, -35, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
+                //new TurnDegree(drivebase, 40, 0.5),
+                new DriveFeet(drivebase, 2.5, 0.75, 0),
+                new DriveFeet(drivebase, 0, 0.4, 0, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}),
+                new DriveFeet(drivebase, -3, 0.8, 0),
+
+                new TurnDegree(drivebase, turn, 0.75, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
+                new DriveFeet(drivebase, 5, 2, turn, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}).setProfileTimeout(2),
+                new DriveFeet(drivebase, -3, 1, turn, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new TurnDegree(drivebase, -turn, 0.75, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
                 new DriveFeet(drivebase, 5, 1, 0),
-                new DriveFeet(drivebase, 0, 0.01, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
-                                           )));
+                new DriveFeet(drivebase, 0, 0.4, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}),
+                new DriveFeet(drivebase, -3, 0.8, 0),
+
+                new TurnDegree(drivebase, turn2, 0.75, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BARF}),
+                new DriveFeet(drivebase, 5, 2, turn2, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new DriveFeet(drivebase, -3, 1, turn2, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new TurnDegree(drivebase, -turn2, 0.75, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
+                new DriveFeet(drivebase, 5, 1, 0),
+                new DriveFeet(drivebase, 0, 0.4, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
+        )));
     }
 }

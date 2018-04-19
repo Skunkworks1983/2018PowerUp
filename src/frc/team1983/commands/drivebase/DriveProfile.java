@@ -51,7 +51,7 @@ public class DriveProfile extends CommandBase
                         double deltaHeading, ActionsEnum[] actions, double actionDelay)
     {
         requires(drivebase);
-        setTimeout(duration + 0.5);
+        setTimeout(duration + 2);
 
         this.actionDelay = actionDelay;
         this.actions = new ArrayList<>();
@@ -243,5 +243,11 @@ public class DriveProfile extends CommandBase
             headingLoop.setD(gains.get_kD());
             headingLoop.setF(gains.get_kF());
         }
+    }
+
+    public DriveProfile setProfileTimeout(double timeout)
+    {
+        setTimeout(timeout);
+        return this;
     }
 }

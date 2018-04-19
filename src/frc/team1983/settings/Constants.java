@@ -166,12 +166,12 @@ public class Constants
             public static class Left
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.25,//0.45,//-0.1,//0.45,
+                        0.2,//0.45,//-0.1,//0.45,
                         0,
-                        0.1,//0.2,//-0.35,
+                        0.165,//0.2,//-0.35,
                         0,
                         0, //Motion.DRIVEBASE_LEFT_KS,
-                        -1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
+                        -1300 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
                         0 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
                 );
             }
@@ -181,10 +181,10 @@ public class Constants
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
                         0.2,//0.45,//-0.1,//0.45,
                         0,
-                        0.1,//0.2,//-0.35,
+                        0.165,//0.2,//-0.35,
                         0,
                         0,//Motion.DRIVEBASE_LEFT_KS,
-                        -1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
+                        -1300 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
                         0 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
                 );
             }
@@ -194,7 +194,7 @@ public class Constants
             );
 
             public static ClosedLoopGains AUX_TURN = new ClosedLoopGains(
-                    0.04 / 2.65,0,0.07,0//0.01, 0, 0.006, 0
+                    0.08 / 2.65,0,0.1,0//0.01, 0, 0.006, 0
             );
 
             public static ClosedLoopGains AUX_ARC = new ClosedLoopGains(
@@ -406,6 +406,7 @@ public class Constants
         {
             BOTTOM(0),
             TRAVEL(2100), //upped from 1860
+            BARF(6000),
             SWITCH(9125+1200), // elevator halfway point
             LOW(22700 +400),
             MID(25700 +400),

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
+import frc.team1983.commands.drivebase.TurnDegree;
 import frc.team1983.commands.drivebase.deadreckoning.DifferentialTurnAngle;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
@@ -23,9 +24,11 @@ import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.control.ClosedLoopGains;
 import frc.team1983.util.control.ProfileController;
+import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
@@ -63,7 +66,30 @@ public class Robot extends IterativeRobot
         robotLogger = LoggerFactory.createNewLogger(Robot.class);
         dashboardWrapper = new DashboardWrapper();
         dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
-        dashboard.populate();
+        //dashboard.populate();
+
+        //lemme channel my inner Nathan: vomits
+        /*dashboard.add(this, "LEFT_P", Constants.PidConstants.Drivebase.Left.MAIN.get_kP());
+        dashboard.add(this, "LEFT_I", Constants.PidConstants.Drivebase.Left.MAIN.get_kI());
+        dashboard.add(this, "LEFT_D", Constants.PidConstants.Drivebase.Left.MAIN.get_kD());
+        dashboard.add(this, "LEFT_F", Constants.PidConstants.Drivebase.Left.MAIN.get_kF());
+        dashboard.add(this, "LEFT_KV", Constants.PidConstants.Drivebase.Left.MAIN.get_kV());
+
+        dashboard.add(this, "RIGHT_P", Constants.PidConstants.Drivebase.Right.MAIN.get_kP());
+        dashboard.add(this, "RIGHT_I", Constants.PidConstants.Drivebase.Right.MAIN.get_kI());
+        dashboard.add(this, "RIGHT_D", Constants.PidConstants.Drivebase.Right.MAIN.get_kD());
+        dashboard.add(this, "RIGHT_F", Constants.PidConstants.Drivebase.Right.MAIN.get_kF());
+        dashboard.add(this, "LEFT_KV", Constants.PidConstants.Drivebase.Right.MAIN.get_kV());
+
+        dashboard.add(this, "STRAIGHT_P", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kP());
+        dashboard.add(this, "STRAIGHT_I", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kI());
+        dashboard.add(this, "STRAIGHT_D", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kD());
+        dashboard.add(this, "STRAIGHT_F", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kF());
+
+        dashboard.add(this, "TURN_P", Constants.PidConstants.Drivebase.AUX_TURN.get_kP());
+        dashboard.add(this, "TURN_I", Constants.PidConstants.Drivebase.AUX_TURN.get_kI());
+        dashboard.add(this, "TURN_D", Constants.PidConstants.Drivebase.AUX_TURN.get_kD());
+        dashboard.add(this, "TURN_F", Constants.PidConstants.Drivebase.AUX_TURN.get_kF());*/
 
         oi = new OI();
 
@@ -76,27 +102,6 @@ public class Robot extends IterativeRobot
         autoManager = new AutoManager(dashboardWrapper);
 
         robotLogger.info("robotInit");
-
-        //lemme channel my inner Nathan: vomits
-        dashboard.add(this, "LEFT_P", Constants.PidConstants.Drivebase.Left.MAIN.get_kP());
-        dashboard.add(this, "LEFT_I", Constants.PidConstants.Drivebase.Left.MAIN.get_kI());
-        dashboard.add(this, "LEFT_D", Constants.PidConstants.Drivebase.Left.MAIN.get_kD());
-        dashboard.add(this, "LEFT_F", Constants.PidConstants.Drivebase.Left.MAIN.get_kF());
-
-        dashboard.add(this, "RIGHT_P", Constants.PidConstants.Drivebase.Right.MAIN.get_kP());
-        dashboard.add(this, "RIGHT_I", Constants.PidConstants.Drivebase.Right.MAIN.get_kI());
-        dashboard.add(this, "RIGHT_D", Constants.PidConstants.Drivebase.Right.MAIN.get_kD());
-        dashboard.add(this, "RIGHT_F", Constants.PidConstants.Drivebase.Right.MAIN.get_kF());
-
-        dashboard.add(this, "STRAIGHT_P", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kP());
-        dashboard.add(this, "STRAIGHT_I", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kI());
-        dashboard.add(this, "STRAIGHT_D", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kD());
-        dashboard.add(this, "STRAIGHT_F", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kF());
-
-        dashboard.add(this, "TURN_P", Constants.PidConstants.Drivebase.AUX_TURN.get_kP());
-        dashboard.add(this, "TURN_I", Constants.PidConstants.Drivebase.AUX_TURN.get_kI());
-        dashboard.add(this, "TURN_D", Constants.PidConstants.Drivebase.AUX_TURN.get_kD());
-        dashboard.add(this, "TURN_F", Constants.PidConstants.Drivebase.AUX_TURN.get_kF());
 
         oi.initializeBindings(this);
 
@@ -117,7 +122,7 @@ public class Robot extends IterativeRobot
         drivebase.stopProfiles();
         elevator.stopProfile();
 
-        dashboard.store();
+        //dashboard.store();
 
         autoManager.resetGameData();
     }
@@ -138,7 +143,16 @@ public class Robot extends IterativeRobot
 
         drivebase.getGyro().reset();
 
-        //Scheduler.getInstance().add(new DriveFeet(drivebase, 5, 1, 0));
+        //Scheduler.getInstance().add(new DriveFeet(drivebase, 4, 0.75, 0));
+        //Scheduler.getInstance().add(new TurnDegree(drivebase, 45, 0.75));
+
+        /*Scheduler.getInstance().add(new Path(new ArrayList<>(Arrays.asList(
+                new DriveFeet(drivebase, 4, 1, 0),
+                new DriveFeet(drivebase, -4, 1, 0),
+                new DriveFeet(drivebase, 4, 1, 0)
+                new TurnDegree(drivebase, 15, 1),
+                new DriveFeet(drivebase, 3, 1, 0)
+        ))));*/
 
         autoRan = true; // blargh
     }
@@ -266,7 +280,8 @@ public class Robot extends IterativeRobot
         return autoManager;
     }
 
-    public static Robot getInstance()
+    //Synchronized so that we hopefully don't end up with more than one instance
+    public synchronized static Robot getInstance()
     {
         if(instance == null)
         {
@@ -278,21 +293,36 @@ public class Robot extends IterativeRobot
 
     public ClosedLoopGains getLeftGains()
     {
-        return new ClosedLoopGains(dashboard.getDouble(this, "LEFT_P"), dashboard.getDouble(this, "LEFT_I"), dashboard.getDouble(this, "LEFT_D"), dashboard.getDouble(this, "LEFT_F"));
+        //return new ClosedLoopGains(dashboard.getDouble(this, "LEFT_P"), dashboard.getDouble(this, "LEFT_I"), dashboard.getDouble(this, "LEFT_D"), dashboard.getDouble(this, "LEFT_F"));
+        return Constants.PidConstants.Drivebase.Left.MAIN;
     }
 
     public ClosedLoopGains getRightGains()
     {
-        return new ClosedLoopGains(dashboard.getDouble(this, "RIGHT_P"), dashboard.getDouble(this, "RIGHT_I"), dashboard.getDouble(this, "RIGHT_D"), dashboard.getDouble(this, "RIGHT_F"));
+        //return new ClosedLoopGains(dashboard.getDouble(this, "RIGHT_P"), dashboard.getDouble(this, "RIGHT_I"), dashboard.getDouble(this, "RIGHT_D"), dashboard.getDouble(this, "RIGHT_F"));
+        return Constants.PidConstants.Drivebase.Left.MAIN;
+
     }
 
     public ClosedLoopGains getStraightGains()
     {
-        return new ClosedLoopGains(dashboard.getDouble(this, "TURN_P"), dashboard.getDouble(this, "TURN_I"), dashboard.getDouble(this, "TURN_D"), dashboard.getDouble(this, "TURN_F"));
+        //return new ClosedLoopGains(dashboard.getDouble(this, "TURN_P"), dashboard.getDouble(this, "TURN_I"), dashboard.getDouble(this, "TURN_D"), dashboard.getDouble(this, "TURN_F"));
+        return Constants.PidConstants.Drivebase.AUX_STRAIGHT;
     }
 
     public ClosedLoopGains getTurnGains()
     {
-        return new ClosedLoopGains(dashboard.getDouble(this, "STRAIGHT_P"), dashboard.getDouble(this, "STRAIGHT_I"), dashboard.getDouble(this, "STRAIGHT_D"), dashboard.getDouble(this, "STRAIGHT_F"));
+        //return new ClosedLoopGains(dashboard.getDouble(this, "STRAIGHT_P"), dashboard.getDouble(this, "STRAIGHT_I"), dashboard.getDouble(this, "STRAIGHT_D"), dashboard.getDouble(this, "STRAIGHT_F"));
+        return Constants.PidConstants.Drivebase.AUX_TURN;
+    }
+
+    public double getLeftKs()
+    {
+        return dashboard.getDouble(this,"LEFT_KS");
+    }
+
+    public double getRightKs()
+    {
+        return dashboard.getDouble(this, "RIGHT_KS");
     }
 }

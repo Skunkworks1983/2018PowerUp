@@ -37,7 +37,7 @@ public class BackupAutoPicker extends CommandGroup
                 break;
             case LEFT:
             case RIGHT:
-                addSequential(new DriveFeet(drivebase, -10, 2));
+                addSequential(new DriveFeet(drivebase, 10, 2));
 
                 break;
         }
