@@ -52,6 +52,14 @@ public class SetElevatorSetpoint extends CommandBase
                 newSetpoint = Constants.OIMap.Setpoint.TOP.getEncoderTicks();
                 break;
 
+            case BARF:
+                newSetpoint = Constants.OIMap.Setpoint.BARF.getEncoderTicks();
+                break;
+
+            case NEW_AGE_BARF:
+                newSetpoint = Constants.OIMap.Setpoint.NEW_AGE_BARF.getEncoderTicks();
+                break;
+
             default:
                 newSetpoint = 0;
                 break;

@@ -59,7 +59,7 @@ public class DriveProfile extends CommandBase
         for(ActionsEnum action : actions)
         {
             this.actions.add(action.getAction().createAction(Robot.getInstance().getCollector(), Robot.getInstance().getElevator()));
-            this.actions.get(this.actions.size() - 1).configTimeout(duration + 1);
+            this.actions.get(this.actions.size() - 1).configTimeout(duration);
         }
 
         this.drivebase = drivebase;

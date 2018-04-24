@@ -406,7 +406,8 @@ public class Constants
         {
             BOTTOM(0),
             TRAVEL(2100), //upped from 1860
-            BARF(6000),
+            BARF(4500),
+            NEW_AGE_BARF(9125+1200+1000),
             SWITCH(9125+1200), // elevator halfway point
             LOW(22700 +400),
             MID(25700 +400),
