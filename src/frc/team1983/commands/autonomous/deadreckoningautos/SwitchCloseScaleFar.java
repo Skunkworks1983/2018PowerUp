@@ -29,14 +29,14 @@ public class SwitchCloseScaleFar extends CommandGroup
 
         //SWITCH APPROACH
         super.addSequential(new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator));
+        //super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator));
         super.addSequential(new DriveStraight(drivebase, dashboard, 9.0));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90.0 * reflectionVariable, 1));
 
         //SHOOT N' SCOOT
         super.addSequential(new DriveStraight(drivebase, dashboard, 1.5));
         super.addParallel(new CollectorExpel(collector, 1, 1));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator));
+        //super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator));
         super.addSequential(new DriveStraight(drivebase, dashboard, -.50));
 
         //JOURNEY TO THE MIDDLE
@@ -54,7 +54,7 @@ public class SwitchCloseScaleFar extends CommandGroup
         //SCALE APPROACH
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 180));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator));
+        //super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator));
         super.addSequential(new CollectorExpel(collector, Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED, 0.5));
 
     }

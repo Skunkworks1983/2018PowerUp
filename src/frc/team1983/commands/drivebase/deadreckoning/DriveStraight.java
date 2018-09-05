@@ -59,10 +59,10 @@ public class DriveStraight extends CommandBase
 
         gyro = drivebase.getGyro();
 
-        //dashboard.add(this, "kP", 0.0);
-        //dashboard.add(this, "kI", 0.0);
-        //dashboard.add(this, "kD", 0.0);
-        //dashboard.add(this, "kF", 0.0);
+        dashboard.add(this, "kP", 0.0);
+        dashboard.add(this, "kI", 0.0);
+        dashboard.add(this, "kD", 0.0);
+        dashboard.add(this, "kF", 0.0);
 
         logger.info("Drivestraight constructed");
         logger.info("distance{}", distance);
@@ -105,7 +105,7 @@ public class DriveStraight extends CommandBase
     @Override
     public void execute()
     {
-        //logger.info("angle{}", driveStraightPid.getError());
+        logger.info("angle{}", driveStraightPid.getError());
         if (abs(drivebase.getLeftDistance() - leftEncoderStart) > abs(distance) * 0.25)
         {
             baseSpeed = Math.max(Math.min(initialBaseSpeed * ((4./3) * ((abs(distance) - abs(drivebase.getLeftDistance() - leftEncoderStart)) / abs(distance))), abs(initialBaseSpeed)), -abs(initialBaseSpeed));

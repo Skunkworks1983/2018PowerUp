@@ -290,7 +290,7 @@ public class Constants
 
             public static class Slot0
             {
-                public static final double P = 0.13;
+                public static final double P = 0.15;
                 public static final double I = 0.000155;
                 public static final double D = 0.8;
                 public static final double F = 0;

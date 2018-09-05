@@ -55,7 +55,7 @@ public class DifferentialTurnAngle extends CommandBase
         counter = 0;
         //logger.info("targetAngle{}", targetAngle);
 
-        /*
+
         dashboard.add(this, "kP", Constants.PidConstants.TurnAnglePid.DifferentialPivotPid.P);
         dashboard.add(this, "kI", Constants.PidConstants.TurnAnglePid.DifferentialPivotPid.I);
         dashboard.add(this, "kD", Constants.PidConstants.TurnAnglePid.DifferentialPivotPid.D);
@@ -65,7 +65,7 @@ public class DifferentialTurnAngle extends CommandBase
         dashboard.add(this, "adjustmentI", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.I);
         dashboard.add(this, "adjustmentD", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.D);
         dashboard.add(this, "adjustmentF", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.F);
-        */
+
     }
 
     @Override
@@ -73,6 +73,7 @@ public class DifferentialTurnAngle extends CommandBase
     {
         //initialAngle = encoderTurnAnglePidInput.pidGet();
         //gyro.initialize();
+        logger.info("auto is happening");
         initialAngle = gyroPidInput.pidGet();
         pivotPidSource = new DifferentialTurnAnglePidInput(drivebase);
         if(targetAngle < 0)

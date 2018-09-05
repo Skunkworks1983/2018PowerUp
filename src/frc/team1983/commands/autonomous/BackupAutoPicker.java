@@ -2,6 +2,7 @@ package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team1983.commands.autonomous.deadreckoningautos.MidToSwitch;
+import frc.team1983.commands.autonomous.deadreckoningautos.ScaleClose;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
@@ -37,7 +38,8 @@ public class BackupAutoPicker extends CommandGroup
                 break;
             case LEFT:
             case RIGHT:
-                addSequential(new DriveFeet(drivebase, 10, 2));
+               // addSequential(new DriveFeet(drivebase, 10, 2));
+                addSequential(new ScaleClose(drivebase, statefulDashboard, elevator, collector, autoManager.getRobotPosition()));
 
                 break;
         }

@@ -3,6 +3,7 @@ package frc.team1983.services.automanager;
 import frc.team1983.commands.autonomous.OneCubePicker;
 import frc.team1983.commands.autonomous.TwoCubePicker;
 import frc.team1983.commands.autonomous.BackupAutoPicker;
+import frc.team1983.commands.autonomous.deadreckoningautos.ScaleClose;
 
 public enum AutoSelection
 {
@@ -42,6 +43,9 @@ public enum AutoSelection
         return new PlaceCubeInSwitch(drivebase, statefulDashboard, elevator, collector);
     }),
     */
+
+//    SCALE_CLOSE_AUTO_PICKER("GAMEDATA SCALE CLOSE", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
+//        return new ScaleClose(drivebase, statefulDashboard, , collector)});
 
     //Two cube selection (2 cube switch/scale), motionprofiled
     MP_TWOCUBE_AUTO_PICKER("GAMEDATA TWO CUBE MP AUTO PICKER", TwoCubePicker::new),

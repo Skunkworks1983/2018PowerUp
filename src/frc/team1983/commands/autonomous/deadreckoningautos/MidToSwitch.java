@@ -27,7 +27,7 @@ public class MidToSwitch extends CommandGroup
         //EVERYTHING
         super.addParallel(new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS));
         super.addSequential(new DriveStraight(drivebase, dashboard, 3.));
-        super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator));
+        //super.addParallel(new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, elevator));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, 90 * reflectionVariable));
         super.addSequential(new DriveStraight(drivebase, dashboard, 4.));
         super.addSequential(new DifferentialTurnAngle(drivebase, dashboard, -90 * reflectionVariable));
