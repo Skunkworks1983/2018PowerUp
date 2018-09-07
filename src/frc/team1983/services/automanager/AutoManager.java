@@ -48,7 +48,7 @@ public class AutoManager
         gameDataAlreadyPolled = false;
         logger = LoggerFactory.createNewLogger(this.getClass());
 
-        AutoSelection defaultSelection = AutoSelection.MP_TWOCUBE_AUTO_PICKER;
+        AutoSelection defaultSelection = AutoSelection.MP_ONECUBE_AUTO_PICKER;
         dashboard.addAutoChooserAutoDefault(defaultSelection);
 
         for(AutoSelection selection : AutoSelection.values())

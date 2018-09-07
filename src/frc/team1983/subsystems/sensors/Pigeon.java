@@ -50,6 +50,6 @@ public class Pigeon extends PigeonIMU
         }
         return xyz[2];
         */
-        return -(getFusedHeading() - offset);
+        return (getFusedHeading() - offset);
     }
 }

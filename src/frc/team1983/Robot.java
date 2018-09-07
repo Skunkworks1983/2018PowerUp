@@ -163,6 +163,7 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
         autoManager.execute();
+        robotLogger.info("gyro: " + drivebase.getGyro().getAngle());
     }
 
 
@@ -184,6 +185,8 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+        robotLogger.info("leftPos: " + drivebase.getLeftEncoderValue());
+        robotLogger.info("rightPos: " + drivebase.getRightEncoderValue());
     }
 
     @Override

@@ -20,7 +20,7 @@ public class TwoMidSwitchLeft extends Path
         super(new ArrayList<>(Arrays.asList(
                 new DriveFeet(drivebase, 7, 1.5, 35, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
                 //new TurnDegree(drivebase, 40, 0.5),
-                new DriveFeet(drivebase, 2.5, 0.75, 0),
+                new DriveFeet(drivebase, 3.5, 0.75, 0),
                 new DriveFeet(drivebase, 0, 0.4, 0, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}).setProfileTimeout(0.5),
                 new DriveFeet(drivebase, -3, 0.8, 0),
 
@@ -30,10 +30,12 @@ public class TwoMidSwitchLeft extends Path
                 new TurnDegree(drivebase, -turn, 0.75, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
                 new DriveFeet(drivebase, 3.75, 1, 0),
                 new DriveFeet(drivebase, 0, 0.4, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}).setProfileTimeout(0.5),
-                new DriveFeet(drivebase, -3.5, 0.8, 0),
+                new DriveFeet(drivebase, -3.5, 0.8, 0)
 
+                /*
                 new TurnDegree(drivebase, turn2-8, 0.75, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BARF}),
                 new DriveFeet(drivebase, 4.5, 1.5, turn2, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE})
+                */
                 ////new DriveFeet(drivebase, -2, 0.75, turn3, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
                 ////new DriveFeet(drivebase, 2.5, 0.75, turn3, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE, ActionsEnum.SET_ELEVATOR_SETPOINT_NEW_AGE_BARF}),
                 ////new DriveFeet(drivebase, 0, 0.4, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})

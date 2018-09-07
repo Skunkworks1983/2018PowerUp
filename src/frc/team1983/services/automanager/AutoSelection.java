@@ -47,11 +47,11 @@ public enum AutoSelection
 //    SCALE_CLOSE_AUTO_PICKER("GAMEDATA SCALE CLOSE", (drivebase, collector, elevator, dashboardWrapper, statefulDashboard, autoManager) -> {
 //        return new ScaleClose(drivebase, statefulDashboard, , collector)});
 
-    //Two cube selection (2 cube switch/scale), motionprofiled
-    MP_TWOCUBE_AUTO_PICKER("GAMEDATA TWO CUBE MP AUTO PICKER", TwoCubePicker::new),
-
     //One cube selection (1 cube switch/scale), motionprofiled
     MP_ONECUBE_AUTO_PICKER("GAMEDATA ONE CUBE MP AUTO PICKER", OneCubePicker::new),
+
+    //Two cube selection (2 cube switch/scale), motionprofiled
+    MP_TWOCUBE_AUTO_PICKER("GAMEDATA TWO CUBE MP AUTO PICKER", TwoCubePicker::new),
 
     //Backup selection (1 cube switch, cross baseline), dead reckoned
     BACKUP_AUTO_PICKER("GAMEDATA BACKUP AUTO PICKER", BackupAutoPicker::new);

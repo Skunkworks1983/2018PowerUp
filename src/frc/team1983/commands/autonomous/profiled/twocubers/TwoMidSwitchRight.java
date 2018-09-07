@@ -31,10 +31,12 @@ public class TwoMidSwitchRight extends Path
                 new TurnDegree(drivebase, -turn, 0.75, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
                 new DriveFeet(drivebase, 3.75, 1, 0),
                 new DriveFeet(drivebase, 0, 0.4, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}).setProfileTimeout(0.5),
-                new DriveFeet(drivebase, -3.5, 0.8, 0),
+                new DriveFeet(drivebase, -3.5, 0.8, 0)
 
+                /*
                 new TurnDegree(drivebase, turn2, 0.75, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BARF}),
                 new DriveFeet(drivebase, 4.5, 1.5, turn2, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE})
+                */
                 ////new DriveFeet(drivebase, -2, 0.75, turn3, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
                 ////new DriveFeet(drivebase, 2.5, 0.75, turn3, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_NEW_AGE_BARF, ActionsEnum.COLLECTOR_INTAKE}),
                 ////new DriveFeet(drivebase, 2, 0.4, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
