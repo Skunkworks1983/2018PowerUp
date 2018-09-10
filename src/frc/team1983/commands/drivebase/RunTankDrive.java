@@ -70,8 +70,14 @@ public class RunTankDrive extends CommandBase
             adj_right = Math.abs(Math.pow(Math.abs(adj_right), SCALE));
         }
 
+        drivebase.left1.set(ControlMode.PercentOutput, adj_left);
+
+        drivebase.right1.set(ControlMode.PercentOutput, adj_right);
+
         drivebase.setLeft(ControlMode.PercentOutput, adj_left);
         drivebase.setRight(ControlMode.PercentOutput, adj_right);
+
+        drivebase.right3.set(ControlMode.PercentOutput, adj_right);
 
         //logger.info("Left: {}\tRight: {}", adj_left, adj_right);
     }

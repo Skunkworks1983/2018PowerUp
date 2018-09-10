@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class TwoMidSwitchLeft extends Path
 {
-    private static double turn = -35;
+    private static double turn = -42;
     private static double turn2 = -35;
     private static double turn3 = 32;
 

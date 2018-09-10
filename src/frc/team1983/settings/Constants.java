@@ -139,7 +139,7 @@ public class Constants
         public static final double COLLECTOR_ROTATE_SPEED = -0.5;
         public static final double COLLECTOR_INTAKE_SPEED = -1;
         public static final double COLLECTOR_EXPEL_SPEED = 0.75;
-        public static final double COLLECTOR_SLOW_EXPEL_SPEED = 0.3;
+        public static final double COLLECTOR_SLOW_EXPEL_SPEED = 0.55;
 
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
