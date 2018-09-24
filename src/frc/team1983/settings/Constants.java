@@ -69,11 +69,13 @@ public class Constants
             public static final int LEFT = 10;
             public static final int RIGHT = 11;
 
-            public static final int ROTATE = 12;
+            public static final int ROTATE_LEFT = 3;
+            public static final int ROTATE_RIGHT = 12;
 
             public static final boolean LEFT_REVERSED = true;
             public static final boolean RIGHT_REVERSED = false;
-            public static final boolean ROTATE_REVERSED = false;
+            public static final boolean ROTATE_LEFT_REVERSED = true;
+            public static final boolean ROTATE_RIGHT_REVERSED = false;
 
             public static final int LEFT_SWITCH = 1;
             public static final int RIGHT_SWITCH = 0;
@@ -139,7 +141,7 @@ public class Constants
         public static final double COLLECTOR_ROTATE_SPEED = -0.5;
         public static final double COLLECTOR_INTAKE_SPEED = -1;
         public static final double COLLECTOR_EXPEL_SPEED = 0.75;
-        public static final double COLLECTOR_SLOW_EXPEL_SPEED = 0.55;
+        public static final double COLLECTOR_SLOW_EXPEL_SPEED = 0.25;
 
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
@@ -190,7 +192,7 @@ public class Constants
             }
 
             public static ClosedLoopGains AUX_STRAIGHT = new ClosedLoopGains(
-                    0.04, 0, 0.075, 0
+                    0.03, 0, 0.075, 0
             );
 
             public static ClosedLoopGains AUX_TURN = new ClosedLoopGains(
@@ -259,14 +261,15 @@ public class Constants
 
         public static class CollectorRotate
         {
-            public static final double P = 1.8;//.01;
+            public static final double P = 1.5;//.01;
             public static final double I = 0;
-            public static final double D = 0;
+            public static final double D = 2;
             public static final double F = 0;//.002;
 
-            public static final double UP_TICKS = -100; //response to slop in chain
-            public static final double DOWN_TICKS = 2700;
-            public static final double MID_TICKS = 700;//response to slop in chain
+            public static final double BACK_TICKS = -700;
+            public static final double UP_TICKS = 0; //response to slop in chai
+            public static final double MID_TICKS = 500;//response to slop in chain
+            public static final double DOWN_TICKS = 1200;
         }
 
         //setpoints for motors
@@ -282,7 +285,7 @@ public class Constants
         {
             public static final int ELEVATOR_BOTTOM = 0;
             //Actually negative, but ya know,
-            public static final int ELEVATOR_TOP = 29000 - 300; //Addition is to keep it from hitting the max position
+            public static final int ELEVATOR_TOP = 29000 - 150; //Addition is to keep it from hitting the max position
             public static final double ELEVATOR_MID_PERCENT = 0.979; //constant chosen to reproduce trial and error values
             public static final double ELEVATOR_LOW_PERCENT = 0.96;
             public static final double ELEVATOR_TRAVEL_PERCENT = 0.03; //taking thomas' 800 number, actual percent is 2.8
@@ -290,9 +293,9 @@ public class Constants
 
             public static class Slot0
             {
-                public static final double P = 0.15;
-                public static final double I = 0.000155;
-                public static final double D = 0.8;
+                public static final double P = 0.17;
+                public static final double I = 0.002;
+                public static final double D = 23;
                 public static final double F = 0;
                 public static final int I_ZONE = 1000;
 
@@ -401,6 +404,11 @@ public class Constants
             public static final int ENGAGE_DOG_GEARS = 23;
         }
 
+        // number of encoder ticks to allow for collector to fold over top of elevator, sorry for bad name
+        public static final int ALLOWABLE_ERROR_FOLDOVER = 300;
+        // number of encoder ticks on wrist to allow the elevator to drop
+        public static final int ALLOWABLE_FOLDOVER_DROP = -200;
+
         //Enums for presets
         public enum Setpoint
         {
@@ -410,8 +418,8 @@ public class Constants
             NEW_AGE_BARF(9125+1200+1000),
             SWITCH(9125+1200), // elevator halfway point
             LOW(22700 +400),
-            MID(25700 +400),
-            TOP(28600); //TODO: add 400 once magnet moves
+            MID(27000),
+            TOP(28700); //TODO: add 400 once magnet moves
 
             private final double encoderTicks;
 

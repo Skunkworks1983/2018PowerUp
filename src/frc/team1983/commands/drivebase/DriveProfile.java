@@ -51,7 +51,7 @@ public class DriveProfile extends CommandBase
                         double deltaHeading, ActionsEnum[] actions, double actionDelay)
     {
         requires(drivebase);
-        setTimeout(duration + 2);
+        setTimeout(duration + 0.5);
 
         this.actionDelay = actionDelay;
         this.actions = new ArrayList<>();
@@ -103,10 +103,13 @@ public class DriveProfile extends CommandBase
             headingLoop.enable();
         }
 
-        drivebase.setLeftProfile(leftProfile);
-        drivebase.setRightProfile(rightProfile);
+        if(leftProfile.getCruiseVelocity() != 0 && rightProfile.getCruiseVelocity() != 0)
+        {
+            drivebase.setLeftProfile(leftProfile);
+            drivebase.setRightProfile(rightProfile);
 
-        drivebase.runProfiles();
+            drivebase.runProfiles();
+        }
     }
 
     @Override

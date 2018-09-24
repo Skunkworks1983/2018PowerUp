@@ -63,7 +63,7 @@ public class Manual extends Command
         }
         if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_DOWN))
         {
-            collector.setRotate(ControlMode.PercentOutput, .2);
+            collector.setRotate(ControlMode.PercentOutput, 0.6);
         }
         if(!oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_DOWN) &&
                         !oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.M_UP))
@@ -73,7 +73,7 @@ public class Manual extends Command
 
         if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.M_UP))
         {
-            elevator.set(ControlMode.PercentOutput, 1);
+            elevator.set(ControlMode.PercentOutput, 0.6);
         }
         if(oi.isDown(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.M_DOWN))
         {
