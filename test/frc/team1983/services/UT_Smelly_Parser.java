@@ -71,7 +71,7 @@ public class UT_Smelly_Parser
 
         initMocks(this);
 
-        parser = new SmellyParser(dashboard, Constants.SmellyParser.SMELLY_UT_FOLDER);
+        //parser = new SmellyParser(dashboard, Constants.SmellyParser.SMELLY_UT_FOLDER);
     }
 
     @After
@@ -101,7 +101,7 @@ public class UT_Smelly_Parser
 
             FilenameFilter filter = (file, name) -> name.toLowerCase().endsWith(".json");
 
-            File[] files = Constants.SmellyParser.SMELLY_UT_FOLDER.listFiles(filter);
+            /*File[] files = Constants.SmellyParser.SMELLY_UT_FOLDER.listFiles(filter);
 
             for(int i = 0; i < files.length; i++)
             {
@@ -109,6 +109,7 @@ public class UT_Smelly_Parser
 
                 parser.constructPath(files[i]);
             }
+            */
         }
         catch(Exception e)
         {

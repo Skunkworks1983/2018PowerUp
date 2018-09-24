@@ -46,7 +46,7 @@ public class ProfileControllerRunnable implements Runnable
                 hasProcessed = true;
 
             // true if the talon runs out of trajectory points (times out or finishes profile)
-            SetValueMotionProfile setValue = controller.isProfileFinished() ? SetValueMotionProfile.Hold : SetValueMotionProfile.Enable;
+            SetValueMotionProfile setValue = controller.isProfileFinished() ? SetValueMotionProfile.Disable : SetValueMotionProfile.Enable;
             double auxiliaryOutput = controller.parent.getAuxiliaryOutput();
 
             controller.parent.set(ControlMode.MotionProfile, setValue.value, DemandType.ArbitraryFeedForward, auxiliaryOutput);

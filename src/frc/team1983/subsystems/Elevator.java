@@ -2,21 +2,27 @@ package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team1983.Robot;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.motion.MotionProfile;
 import org.apache.logging.log4j.core.Logger;
 
+import static frc.team1983.settings.Constants.OIMap.ALLOWABLE_ERROR_FOLDOVER;
+import static frc.team1983.settings.Constants.OIMap.ALLOWABLE_FOLDOVER_DROP;
+import static frc.team1983.settings.Constants.OIMap.ElevatorButtons.TOP;
+import static frc.team1983.settings.Constants.PidConstants.CollectorRotate.UP_TICKS;
+
 //The elevator subsystem
 public class Elevator extends Subsystem
 {
-    private Motor right1, right2;
-    private Motor left1, left2;
+    public Motor right1, right2;
+    public Motor left1, left2;
 
     private Logger logger;
 
-    private double setpoint;
+    public double setpoint;
 
     public Elevator()
     {
@@ -35,6 +41,7 @@ public class Elevator extends Subsystem
         right1.configPIDF(1, Constants.PidConstants.ElevatorControlPid.Slot1.P, Constants.PidConstants.ElevatorControlPid.Slot1.I, Constants.PidConstants.ElevatorControlPid.Slot1.D, Constants.PidConstants.ElevatorControlPid.Slot1.F);
         right1.config_IntegralZone(1, Constants.PidConstants.ElevatorControlPid.Slot1.I_ZONE, 0);
         right1.configAllowableClosedloopError(1, Constants.PidConstants.ElevatorControlPid.Slot1.ALLOWABLE_CLOSED_LOOP_ERROR, 1);
+        //right1.setGains(0, Constants.PidConstants.Elevator.MAIN);
 
         right1.configPeakOutputForward(1, 0);
         right1.configPeakOutputReverse(-1, 0);
@@ -82,6 +89,11 @@ public class Elevator extends Subsystem
         return right1.getSelectedSensorPosition(0);
     }
 
+    public double getEncoderVelocity()
+    {
+        return right1.getSelectedSensorVelocity(0);
+    }
+
     public void setProfile(MotionProfile profile)
     {
         right1.setProfile(profile);
@@ -125,12 +137,16 @@ public class Elevator extends Subsystem
     {
         right1.setSensorPhase(true);
         this.setpoint = setpoint;
-        right1.set(ControlMode.Position, setpoint);
+        right1.set(ControlMode.Position, getEncoderValue());
     }
     @Override
     public void periodic()
     {
-        //logger.debug("Error1: {}\tSetpoint: {}", right1.getClosedLoopError(0), right1.getClosedLoopTarget(0));
+        if(right1.getControlMode() == ControlMode.Position)
+        {
+            if(Robot.getInstance().getCollector().getPosition() >= ALLOWABLE_FOLDOVER_DROP)
+                right1.set(ControlMode.Position, setpoint);
+        }
     }
 
     public double getCurrentDraw()

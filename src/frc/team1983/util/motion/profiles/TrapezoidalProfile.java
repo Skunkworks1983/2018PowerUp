@@ -11,4 +11,9 @@ public class TrapezoidalProfile extends CruiseProfile
     {
         super(distance, duration, 0, 0, duration * 0.25, duration * 0.25);
     }
+
+    public TrapezoidalProfile(double distance, double duration, double accelPercent)
+    {
+        super(distance, duration, 0, 0, (duration * accelPercent) / 2, (duration * accelPercent) / 2);
+    }
 }

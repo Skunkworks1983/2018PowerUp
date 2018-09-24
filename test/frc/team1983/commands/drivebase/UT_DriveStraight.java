@@ -2,6 +2,7 @@ package frc.team1983.commands.drivebase;
 
 import edu.wpi.first.wpilibj.HLUsageReporting;
 import edu.wpi.first.wpilibj.Timer;
+import frc.team1983.commands.drivebase.deadreckoning.DriveStraight;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
@@ -69,7 +70,7 @@ public class UT_DriveStraight
         Timer.SetImplementation(timerStaticInterface);
         HLUsageReporting.SetImplementation(hlUsageReporting);
         fakeScheduler = new FakeScheduler();
-        when(drivebase.getGyro()).thenReturn(gyro);
+        //when(drivebase.getGyro()).thenReturn(gyro);
         driveStraight = new DriveStraight(drivebase, dashboard, 5, .5);
     }
 
@@ -103,7 +104,7 @@ public class UT_DriveStraight
     public void driveStraightGoesCorrectDistanceWhenStartingPositionIsNegative()
     {
         AtomicReference<Integer> counter = new AtomicReference<>(-2);
-        when(drivebase.getLeftDist()).then(new Answer<Double>()
+        when(drivebase.getLeftDistance()).then(new Answer<Double>()
         {
             @Override
             public Double answer(InvocationOnMock invocationOnMock) throws Throwable
@@ -125,7 +126,7 @@ public class UT_DriveStraight
             }
         });
         AtomicReference<Integer> counter2 = new AtomicReference<>(-2);
-        when(drivebase.getRightDist()).then(new Answer<Double>()
+        when(drivebase.getRightDistance()).then(new Answer<Double>()
         {
             @Override
             public Double answer(InvocationOnMock invocationOnMock) throws Throwable
