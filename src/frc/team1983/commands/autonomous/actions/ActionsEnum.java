@@ -32,7 +32,7 @@ public enum ActionsEnum
     COLLECTOR_INTAKE(((collector, elevator) -> new CollectorIntake(collector, 1.5))), //TODO find timeout
     COLLECTOR_EXPEL_FAST(((collector, elevator) -> new CollectorExpel(collector, COLLECTOR_EXPEL_SPEED, 0.25))), //TODO find timeout
     COLLECTOR_EXPEL_SLOW(((collector, elevator) -> new CollectorExpel(collector, COLLECTOR_SLOW_EXPEL_SPEED, 1.5))),
-    COLLECTOR_EXPEL_MEDIUM(((collector, elevator) -> new CollectorExpel(collector, 0.5, 1.5))),
+    COLLECTOR_EXPEL_MEDIUM(((collector, elevator) -> new CollectorExpel(collector, 1, 1.5))),
     COLLECTOR_ROTATE_MID(((collector, elevator) -> new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.MID_TICKS)));
 
     // ugly please don't get mad at me im lazy

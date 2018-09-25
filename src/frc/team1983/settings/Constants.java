@@ -407,7 +407,7 @@ public class Constants
         // number of encoder ticks to allow for collector to fold over top of elevator, sorry for bad name
         public static final int ALLOWABLE_ERROR_FOLDOVER = 300;
         // number of encoder ticks on wrist to allow the elevator to drop
-        public static final int ALLOWABLE_FOLDOVER_DROP = -200;
+        public static final int ALLOWABLE_FOLDOVER_DROP = -300;
 
         //Enums for presets
         public enum Setpoint

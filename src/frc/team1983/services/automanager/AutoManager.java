@@ -12,6 +12,7 @@ import frc.team1983.commands.autonomous.routines.left.OneLeftScaleLeft;
 import frc.team1983.commands.autonomous.routines.left.OneLeftSwitchLeft;
 import frc.team1983.commands.autonomous.routines.left.TwoLeftSwitchLeft;
 import frc.team1983.commands.autonomous.routines.middle.MultiMiddleSwitchLeft;
+import frc.team1983.commands.autonomous.routines.middle.MultiMiddleSwitchRight;
 import frc.team1983.commands.autonomous.routines.right.MultiRightScaleLeft;
 import frc.team1983.commands.autonomous.routines.right.MultiRightScaleRight;
 import frc.team1983.commands.autonomous.routines.right.OneRightScaleRight;
@@ -106,7 +107,7 @@ public class AutoManager
 
 
         multiMiddleSwitchLeft = new MultiMiddleSwitchLeft(Robot.getInstance().getDrivebase());
-        multiMiddleSwitchRight = new MultiMiddleSwitchLeft(Robot.getInstance().getDrivebase());
+        multiMiddleSwitchRight = new MultiMiddleSwitchRight(Robot.getInstance().getDrivebase());
     }
 
     public enum GameFeature

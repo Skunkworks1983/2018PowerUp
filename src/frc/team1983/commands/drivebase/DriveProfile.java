@@ -51,7 +51,7 @@ public class DriveProfile extends CommandBase
                         double deltaHeading, ActionsEnum[] actions, double actionDelay)
     {
         requires(drivebase);
-        setTimeout(duration + 0.5);
+        setTimeout(duration + 1.5);
 
         this.actionDelay = actionDelay;
         this.actions = new ArrayList<>();

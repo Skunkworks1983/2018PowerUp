@@ -12,34 +12,38 @@ import java.util.Arrays;
 
 public class MultiMiddleSwitchRight extends Path
 {
-    private static double turn = 35;
-    private static double turn2 = 45;
-    private static double turn3 = -32;
+    private static double fromSwitchBackup = -5;
+
+    private static double turn1 = 41;
+    private static double turn2 = 29;
 
     public MultiMiddleSwitchRight(Drivebase drivebase)
     {
         super(new ArrayList<>(Arrays.asList(
-                new DriveFeet(drivebase, 7, 1.5, -35, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
-                //new TurnDegree(drivebase, 40, 0.5),
-                new DriveFeet(drivebase, 2.5, 0.75, 0),
-                new DriveFeet(drivebase, 0, 0.4, 0, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}).setProfileTimeout(0.5),
-                new DriveFeet(drivebase, -3, 0.8, 0),
+// 1st cube
+                new DriveFeet(drivebase, 7.5, 1.25, -29, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
+                new DriveFeet(drivebase, 3.5, 0.75, 0),
+                new DriveFeet(drivebase, 0, 0.1, 0, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}).setProfileTimeout(0.2),
+                new DriveFeet(drivebase, fromSwitchBackup, 0.9, 0),
 
-                new TurnDegree(drivebase, turn, 0.75, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
-                new DriveFeet(drivebase, 4.5, 1.75, turn, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}).setProfileTimeout(1.75),
-                new DriveFeet(drivebase, -3, 0.75, turn, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
-                new TurnDegree(drivebase, -turn, 0.75, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH}),
-                new DriveFeet(drivebase, 3.75, 1, 0),
-                new DriveFeet(drivebase, 0, 0.4, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}).setProfileTimeout(0.5),
-                new DriveFeet(drivebase, -3.5, 0.8, 0)
+// 2nd cube
+                new TurnDegree(drivebase, turn1, 0.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
+                new DriveFeet(drivebase, 5.5, 1.6, turn1, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new DriveFeet(drivebase, -3, 1.2, turn1 + 15, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new TurnDegree(drivebase, -turn1, 0.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.COLLECTOR_INTAKE}),
 
-                /*
-                new TurnDegree(drivebase, turn2, 0.75, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BARF}),
-                new DriveFeet(drivebase, 4.5, 1.5, turn2, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE})
-                */
-                ////new DriveFeet(drivebase, -2, 0.75, turn3, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
-                ////new DriveFeet(drivebase, 2.5, 0.75, turn3, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_NEW_AGE_BARF, ActionsEnum.COLLECTOR_INTAKE}),
-                ////new DriveFeet(drivebase, 2, 0.4, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST})
-        )));
+                // drive, deposit and backup
+                new DriveFeet(drivebase, -fromSwitchBackup - 1, 0.9, 0),
+                new DriveFeet(drivebase, 0, 0.1, 0, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}).setProfileTimeout(0.2),
+                new DriveFeet(drivebase, fromSwitchBackup, 0.9, 0),
+// 3rd cube
+                new TurnDegree(drivebase, turn2, 0.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
+                new DriveFeet(drivebase, 4.5, 1.2, turn2, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new DriveFeet(drivebase, -4.5, 1.2, turn2 + 15, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new TurnDegree(drivebase, -turn2, 0.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.COLLECTOR_INTAKE}),
+
+                new DriveFeet(drivebase, -fromSwitchBackup, 1, 0),
+                new DriveFeet(drivebase, 0, 0.1, 0, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}).setProfileTimeout(0.2)
+                                           )));
     }
 }
