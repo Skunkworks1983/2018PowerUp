@@ -22,6 +22,7 @@ public enum ActionsEnum
     NONE((((collector, elevator) -> new DoNothing()))),
     SET_COLLECTOR_POSITION_UP(((collector, elevator) -> new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.UP_TICKS))),
     SET_COLLECTOR_POSITION_DOWN(((collector, elevator) -> new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.DOWN_TICKS))),
+    SET_COLLECTOR_POSITION_MID(((collector, elevator) -> new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.MID_TICKS))),
     SET_COLLECTOR_POSITION_BACK(((collector, elevator)-> new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.BACK_TICKS))),
     SET_ELEVATOR_SETPOINT_BOTTOM(((collector, elevator) -> new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, elevator))),
     SET_ELEVATOR_SETPOINT_TRAVEL(((collector, elevator) -> new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, elevator))),
@@ -30,9 +31,9 @@ public enum ActionsEnum
     SET_ELEVATOR_SETPOINT_NEW_AGE_BARF(((collector, elevator) -> new SetElevatorSetpoint(Constants.OIMap.Setpoint.NEW_AGE_BARF, elevator))),
     SET_ELEVATOR_SETPOINT_SCALE(((collector, elevator) -> new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, elevator))),
     COLLECTOR_INTAKE(((collector, elevator) -> new CollectorIntake(collector, 1.5))), //TODO find timeout
-    COLLECTOR_EXPEL_FAST(((collector, elevator) -> new CollectorExpel(collector, COLLECTOR_EXPEL_SPEED, 0.25))), //TODO find timeout
+    COLLECTOR_EXPEL_FAST(((collector, elevator) -> new CollectorExpel(collector, 1, 0.25))), //TODO find timeout
     COLLECTOR_EXPEL_SLOW(((collector, elevator) -> new CollectorExpel(collector, COLLECTOR_SLOW_EXPEL_SPEED, 1.5))),
-    COLLECTOR_EXPEL_MEDIUM(((collector, elevator) -> new CollectorExpel(collector, 1, 1.5))),
+    COLLECTOR_EXPEL_MEDIUM(((collector, elevator) -> new CollectorExpel(collector, 0.5, 1.5))),
     COLLECTOR_ROTATE_MID(((collector, elevator) -> new CollectorRotate(collector, Constants.PidConstants.CollectorRotate.MID_TICKS)));
 
     // ugly please don't get mad at me im lazy

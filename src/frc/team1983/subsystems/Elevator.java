@@ -43,10 +43,10 @@ public class Elevator extends Subsystem
         right1.configAllowableClosedloopError(1, Constants.PidConstants.ElevatorControlPid.Slot1.ALLOWABLE_CLOSED_LOOP_ERROR, 1);
         //right1.setGains(0, Constants.PidConstants.Elevator.MAIN);
 
-        right1.configPeakOutputForward(1, 0);
-        right1.configPeakOutputReverse(-1, 0);
+        right1.configPeakOutputForward(1, 10);
+        right1.configPeakOutputReverse(-1, 10);
 
-        right1.configClosedloopRamp(.5, 0);
+        right1.configClosedloopRamp(2.5, 10);
 
         right2.follow(right1);
         left1.follow(right1);

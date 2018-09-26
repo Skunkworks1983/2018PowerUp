@@ -405,7 +405,7 @@ public class Constants
         }
 
         // number of encoder ticks to allow for collector to fold over top of elevator, sorry for bad name
-        public static final int ALLOWABLE_ERROR_FOLDOVER = 300;
+        public static final int ALLOWABLE_ERROR_FOLDOVER = 600;
         // number of encoder ticks on wrist to allow the elevator to drop
         public static final int ALLOWABLE_FOLDOVER_DROP = -300;
 
@@ -416,10 +416,10 @@ public class Constants
             TRAVEL(2100), //upped from 1860
             BARF(4500),
             NEW_AGE_BARF(9125+1200+1000),
-            SWITCH(9125+1200), // elevator halfway point
+            SWITCH(9125+2200), // elevator halfway point
             LOW(22700 +400),
             MID(27000),
-            TOP(28700); //TODO: add 400 once magnet moves
+            TOP(29500); //TODO: add 400 once magnet moves
 
             private final double encoderTicks;
 

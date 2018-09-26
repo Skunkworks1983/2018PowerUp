@@ -23,7 +23,7 @@ public class MultiMiddleSwitchLeft extends Path
                 new DriveFeet(drivebase, 7.5, 1.25, 37, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
                 new DriveFeet(drivebase, 3.5, 0.75, 0),
                 new DriveFeet(drivebase, 0, 0.1, 0, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}).setProfileTimeout(0.2),
-                new DriveFeet(drivebase, fromSwitchBackup, 0.9, 0),
+                new DriveFeet(drivebase, fromSwitchBackup - 2, 0.9, 0),
 
 // 2nd cube
                 new TurnDegree(drivebase, turn1, 0.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
@@ -32,12 +32,12 @@ public class MultiMiddleSwitchLeft extends Path
                 new TurnDegree(drivebase, -turn1, 0.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.COLLECTOR_INTAKE}),
 
                 // drive, deposit and backup
-                new DriveFeet(drivebase, -fromSwitchBackup, 0.9, 0),
+                new DriveFeet(drivebase, -fromSwitchBackup + 1, 0.9, 0),
                 new DriveFeet(drivebase, 0, 0.1, 0, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_FAST}).setProfileTimeout(0.2),
                 new DriveFeet(drivebase, fromSwitchBackup, 0.9, 0),
 // 3rd cube
                 new TurnDegree(drivebase, turn2, 0.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM}),
-                new DriveFeet(drivebase, 4.5, 1.2, turn2, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
+                new DriveFeet(drivebase, 5, 1.3, turn2, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
                 new DriveFeet(drivebase, -4.5, 1.2, turn2 - 15, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
                 new TurnDegree(drivebase, -turn2, 0.5, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SWITCH, ActionsEnum.COLLECTOR_INTAKE}),
 
