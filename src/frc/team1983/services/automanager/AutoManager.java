@@ -91,6 +91,7 @@ public class AutoManager
         multiLeftScaleRight = new MultiLeftScaleRight(Robot.getInstance().getDrivebase());
         multiRightScaleLeft = new MultiRightScaleLeft(Robot.getInstance().getDrivebase());
 
+        /*
         oneLeftScaleLeft = new OneLeftScaleLeft(Robot.getInstance().getDrivebase());
         oneRightScaleRight = new OneRightScaleRight(Robot.getInstance().getDrivebase());
 
@@ -108,6 +109,7 @@ public class AutoManager
 
         multiMiddleSwitchLeft = new MultiMiddleSwitchLeft(Robot.getInstance().getDrivebase());
         multiMiddleSwitchRight = new MultiMiddleSwitchRight(Robot.getInstance().getDrivebase());
+        */
     }
 
     public enum GameFeature

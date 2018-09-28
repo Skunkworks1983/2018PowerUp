@@ -305,7 +305,7 @@ public class Constants
             {
                 public static final double P = 0.08;
                 public static final double I = 0.00005;
-                public static final double D = 0.5;
+                public static final double D = 23;
                 public static final double F = 0;
                 public static final int I_ZONE = 800;
 

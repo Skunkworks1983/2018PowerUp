@@ -40,7 +40,7 @@ public class RunTankDrive extends CommandBase
         double adj_left = left;
         double adj_right = right;
 
-        double SCALE = 1.4;
+        double SCALE = 2; //todo: was 1.4
 
         if((Math.abs(left) < 0.03))
         {
