@@ -20,6 +20,9 @@ public class CollectorExpel extends CommandBase
     public CollectorExpel(Collector collector, double speed, double timeout)
     {
         logger = LoggerFactory.createNewLogger(CollectorExpel.class);
+
+        logger.info("Collector speed: {}", speed);
+
         requires(collector);
         this.collector = collector;
         this.speed = speed;

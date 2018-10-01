@@ -44,7 +44,7 @@ public class Collector extends Subsystem
         rotate.setSelectedSensorPosition(0, 0, 0);
         rotate.configPeakOutputReverse(-.6, 0);
         rotate.selectProfileSlot(0, 0);
-        rotate.setSensorPhase(false);
+        rotate.setSensorPhase(true);
         logger = LoggerFactory.createNewLogger(Collector.class);
 
 
@@ -87,7 +87,6 @@ public class Collector extends Subsystem
     @Override
     public void periodic()
     {
-        //logger.trace("Collector pos: {}", getPosition());
         //logger.trace("Collector error: {}", rotate.getClosedLoopError(0));
     }
 }

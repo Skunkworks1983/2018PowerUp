@@ -71,8 +71,8 @@ public class Constants
 
             public static final int ROTATE = 12;
 
-            public static final boolean LEFT_REVERSED = false;
-            public static final boolean RIGHT_REVERSED = true;
+            public static final boolean LEFT_REVERSED = true;
+            public static final boolean RIGHT_REVERSED = false;
             public static final boolean ROTATE_REVERSED = false;
 
             public static final int LEFT_SWITCH = 1;
@@ -102,10 +102,9 @@ public class Constants
             public static final boolean TENSION_MOTOR_REVERSED = false;
 
             public static final int DROP_SERVO_LEFT = 0;
-            public static final int DROP_SERVO_RIGHT = 7;
+            public static final int DROP_SERVO_RIGHT = 5;
 
-            public static final int HOOK_SERVO_0 = 4;
-            public static final int HOOK_SERVO_1 = 6;
+            public static final int HOOK_MOTOR = 2;
 
             public static final int CAM_SERVO_LEFT = 2;
             public static final int CAM_SERVO_RIGHT = 3;
@@ -137,10 +136,11 @@ public class Constants
     public static class MotorSetpoints
     {
         //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
-        public static final double COLLECTOR_INTAKE_SPEED = -0.75;
-        public static final double COLLECTOR_EXPEL_SPEED = 0.75;
-        public static final double COLLECTOR_SLOW_EXPEL_SPEED = 0.2;
         public static final double COLLECTOR_ROTATE_SPEED = -0.5;
+        public static final double COLLECTOR_INTAKE_SPEED = -1;
+        public static final double COLLECTOR_EXPEL_SPEED = 0.75;
+        public static final double COLLECTOR_SLOW_EXPEL_SPEED = 0.3;
+
 
         //The number of command cycles (runs at 50 Hertz) after a limit switch
         //is activated that it will always return true (for debouncing)
@@ -166,40 +166,39 @@ public class Constants
             public static class Left
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.65,
+                        0.25,//0.45,//-0.1,//0.45,
                         0,
-                        0.75,
+                        0,//0.2,//-0.35,
                         0,
-                        0,
-                        1500 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
-                        0 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75)
+                        0, //Motion.DRIVEBASE_LEFT_KS,
+                        -1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
+                        0 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
                 );
-
             }
 
             public static class Right
             {
                 public static final ClosedLoopGains MAIN = new ClosedLoopGains(
-                        0.65,
+                        0.25,//0.45,//-0.1,//0.45,
                         0,
-                        0.75,
+                        0,//0.2,//-0.35,
                         0,
-                        0,
-                        1500 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
-                        0 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75)
+                        0,//Motion.DRIVEBASE_LEFT_KS,
+                        -1023 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
+                        0 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
                 );
             }
 
-            public static ClosedLoopGains HEADINGCORRECTION = new ClosedLoopGains(
-                    0.09, 0, 0.03, 0
+            public static ClosedLoopGains AUX_STRAIGHT = new ClosedLoopGains(
+                    0.01, 0, 0.02, 0
             );
 
-            public static ClosedLoopGains AUX_STRAIGHT = new ClosedLoopGains(
-                    0.04, 0, 0, 0
+            public static ClosedLoopGains AUX_TURN = new ClosedLoopGains(
+                    0.0135 / 1.25,0,0.08,0//0.01, 0, 0.006, 0
             );
 
             public static ClosedLoopGains AUX_ARC = new ClosedLoopGains(
-                    0.09, 0, 0.04, 0
+                    0, 0, 0, 0
             );
         }
 
@@ -210,9 +209,9 @@ public class Constants
                     0,
                     0,
                     0,
-                    0,
-                    0,
-                    0
+                    0,//0.1,
+                    0,//1023 / Motion.ELEVATOR_MAX_VELOCITY,
+                    0//1023 / Motion.ELEVATOR_MAX_ACCELERATION
             );
         }
 
@@ -233,7 +232,7 @@ public class Constants
         {
             public static class DifferentialAdjustmentPid
             {
-                public static final double P = 0.0195; //TODO: tune pid
+                public static final double P = 0.017; //TODO: tune pid
                 public static final double I = 0;
                 public static final double D = 0.08;
                 public static final double F = 0;
@@ -266,8 +265,8 @@ public class Constants
             public static final double F = 0;//.002;
 
             public static final double UP_TICKS = -100; //response to slop in chain
-            public static final double DOWN_TICKS = 1300;
-            public static final double MID_TICKS = 300;//response to slop in chain
+            public static final double DOWN_TICKS = 1500;//2700;
+            public static final double MID_TICKS = 700;//response to slop in chain
         }
 
         //setpoints for motors
@@ -396,8 +395,8 @@ public class Constants
 
         public static class ClimberButtons
         {
-            public static final int HOOK = 21;
-            public static final int DROP_FORKS = 20;
+            public static final int HOOK = 20;
+            public static final int DROP_FORKS = 21;
             public static final int CREATE_TENSION = 22;
             public static final int ENGAGE_DOG_GEARS = 23;
         }
@@ -406,8 +405,8 @@ public class Constants
         public enum Setpoint
         {
             BOTTOM(0),
-            TRAVEL(1960), //upped from 1860
-            SWITCH(9125+400), // elevator halfway point
+            TRAVEL(2100), //upped from 1860
+            SWITCH(9125+1200), // elevator halfway point
             LOW(22700 +400),
             MID(25700 +400),
             TOP(28600); //TODO: add 400 once magnet moves
@@ -450,13 +449,18 @@ public class Constants
         public static final double DEFAULT_MOTIONPROFILE_ACCEL_TIME = 0.5; // [0-1]
         public static final int MIN_POINTS_IN_TALON = 3;
 
-        public static final double DRIVEBASE_LEFT_MAX_TICKS_PER_SEC = 14000.0;
-        public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14600.0;
+        public static final double DRIVEBASE_LEFT_KS = 0.12;
+        public static final double DRIVEBASE_LEFT_MAX_VELOCITY = 13000.0; // sensor units per second
+        public static final double DRIVEBASE_LEFT_MAX_ACCELERATION = DRIVEBASE_LEFT_MAX_VELOCITY / 2; // sensor units per second per second
 
-        public static final double ELEVATOR_MAX_TICKS_PER_SEC = 0;
+        public static final double DRIVEBASE_RIGHT_KS = 0.12;
+        public static final double DRIVEBASE_RIGHT_MAX_VELOCITY = 12600.0; // sensor units per second
+        public static final double DRIVEBASE_RIGHT_MAX_ACCELERATION = DRIVEBASE_RIGHT_MAX_VELOCITY / 2; // sensor units per second per second
+        public static final double ELEVATOR_MAX_VELOCITY = 4010.0;
+        public static final double ELEVATOR_MAX_ACCELERATION = ELEVATOR_MAX_VELOCITY / 0.75;
 
-        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(3/12);
-        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.75;
-        public static final double DRIVEBASE_HEADING_END_RANGE = 2;
+        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(1000 / 12);
+        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.25;
+        public static final double DRIVEBASE_HEADING_END_RANGE = 10;
     }
 }

@@ -1,4 +1,4 @@
-package frc.team1983.commands.drivebase;
+package frc.team1983.commands.drivebase.deadreckoning;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.PIDController;
@@ -8,10 +8,10 @@ import frc.team1983.commands.CommandBase;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
+import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseRotationPidOutput;
-import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.utilities.outputwrappers.SimpleTurnAnglePidOutput;
 import org.apache.logging.log4j.core.Logger;
@@ -25,7 +25,7 @@ public class SimpleTurnAngle extends CommandBase
     private PIDSource pidSource;
     private PIDOutput pidOut;
     private PIDController turnPid;
-    private Gyro gyro;
+    private Pigeon gyro;
     private int counter;
 
     private Logger logger;
@@ -51,10 +51,12 @@ public class SimpleTurnAngle extends CommandBase
         targetAngle = degrees;
         gyro = drivebase.getGyro();
 
+        /*
         dashboard.add(this, "kP", 0.11);
         dashboard.add(this, "kI", 0.0);
         dashboard.add(this, "kD", 0.0);
         dashboard.add(this, "kF", 0.0);
+        */
     }
 
     @Override

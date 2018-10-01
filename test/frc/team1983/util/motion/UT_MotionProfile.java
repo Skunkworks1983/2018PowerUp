@@ -52,6 +52,6 @@ public class UT_MotionProfile
     public void profileCorrectlyEvaluatesAcceleration()
     {
         assertThat(profile.evaluateAcceleration(0), closeTo(0.0, 0.1));
-        assertThat(profile.evaluateAcceleration(profile.getDuration()), is(1000.0));
+        assertThat(profile.evaluateAcceleration(profile.getDuration()), is(0.0));
     }
 }
