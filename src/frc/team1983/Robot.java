@@ -5,7 +5,9 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.team1983.commands.autonomous.actions.ActionsEnum;
 import frc.team1983.commands.debugging.RunOneMotor;
+import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.drivebase.deadreckoning.DifferentialTurnAngle;
 import frc.team1983.services.DashboardWrapper;
@@ -18,12 +20,15 @@ import frc.team1983.subsystems.Climber;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
+import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.control.ClosedLoopGains;
 import frc.team1983.util.control.ProfileController;
+import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
@@ -157,7 +162,6 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
         autoManager.execute();
-        robotLogger.info("gyro: " + drivebase.getGyro().getAngle());
     }
 
 
@@ -178,11 +182,7 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic()
     {
-        robotLogger.info(elevator.getEncoderValue() + " +/- " + elevator.getError() + ", " + collector.getPosition());
         Scheduler.getInstance().run();
-        //robotLogger.info("leftPos: " + drivebase.getLeftEncoderValue());
-        //robotLogger.info("rightPos: " + drivebase.getRightEncoderValue());
-        //robotLogger.info("elevator error: " + 290000 - elevator.getEncoderValue());
     }
 
     @Override

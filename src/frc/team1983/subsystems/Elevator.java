@@ -46,7 +46,7 @@ public class Elevator extends Subsystem
         right1.configPeakOutputForward(1, 10);
         right1.configPeakOutputReverse(-1, 10);
 
-        right1.configClosedloopRamp(2.5, 10);
+        right1.configClosedloopRamp(0.5, 10);
 
         right2.follow(right1);
         left1.follow(right1);
@@ -146,6 +146,8 @@ public class Elevator extends Subsystem
         {
             if(Robot.getInstance().getCollector().getPosition() >= ALLOWABLE_FOLDOVER_DROP)
                 right1.set(ControlMode.Position, setpoint);
+
+            System.out.println("CAN FOLD: "+ (Robot.getInstance().getCollector().getPosition() >= ALLOWABLE_FOLDOVER_DROP));
         }
     }
 

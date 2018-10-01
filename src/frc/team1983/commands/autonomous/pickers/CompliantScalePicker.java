@@ -7,6 +7,7 @@ import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
+import frc.team1983.subsystems.sensors.Pigeon;
 
 public class CompliantScalePicker extends CommandGroup
 {
@@ -28,16 +29,15 @@ public class CompliantScalePicker extends CommandGroup
                     addSequential(autoManager.multiMiddleSwitchLeft);
                 else
                     addSequential(autoManager.multiMiddleSwitchRight);
+                break;
             case RIGHT:
-                if(scaleSame)
-                    addSequential(autoManager.oneRightScaleRight);
-                else
-                    addSequential(autoManager.rightCross);
+                Pigeon.reversed = -1;
             case LEFT:
                 if(scaleSame)
                     addSequential(autoManager.oneLeftScaleLeft);
                 else
                     addSequential(autoManager.leftCross);
+                break;
         }
     }
 }

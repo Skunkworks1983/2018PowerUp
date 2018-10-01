@@ -32,6 +32,7 @@ public class Pigeon extends PigeonIMU
         offset = getFusedHeading();
     }
 
+    public static int reversed = 1;
     public double getAngle()
     {
         /*
@@ -50,6 +51,6 @@ public class Pigeon extends PigeonIMU
         }
         return xyz[2];
         */
-        return (getFusedHeading() - offset);
+        return (getFusedHeading() - offset) * reversed;
     }
 }

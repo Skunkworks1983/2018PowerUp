@@ -407,7 +407,7 @@ public class Constants
         // number of encoder ticks to allow for collector to fold over top of elevator, sorry for bad name
         public static final int ALLOWABLE_ERROR_FOLDOVER = 600;
         // number of encoder ticks on wrist to allow the elevator to drop
-        public static final int ALLOWABLE_FOLDOVER_DROP = -300;
+        public static final int ALLOWABLE_FOLDOVER_DROP = -100;
 
         //Enums for presets
         public enum Setpoint
@@ -419,7 +419,7 @@ public class Constants
             SWITCH(9125+2200), // elevator halfway point
             LOW(22700 +400),
             MID(27000),
-            TOP(29500); //TODO: add 400 once magnet moves
+            TOP(29000); //TODO: add 400 once magnet moves
 
             private final double encoderTicks;
 

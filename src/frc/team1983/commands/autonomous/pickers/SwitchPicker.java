@@ -1,12 +1,18 @@
 package frc.team1983.commands.autonomous.pickers;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
+import frc.team1983.subsystems.sensors.Pigeon;
+import frc.team1983.util.path.Path;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SwitchPicker extends CommandGroup
 {
@@ -28,16 +34,17 @@ public class SwitchPicker extends CommandGroup
                     addSequential(autoManager.multiMiddleSwitchLeft);
                 else
                     addSequential(autoManager.multiMiddleSwitchRight);
+                break;
             case RIGHT:
-                if(switchSame)
-                    addSequential(autoManager.twoRightSwitchRight);
-                else
-                    addSequential(autoManager.rightCross);
+                Pigeon.reversed = -1;
             case LEFT:
-                if(switchSame)
+                if(switchSame && !scaleSame)
                     addSequential(autoManager.twoLeftSwitchLeft);
-                else
+                else if(!scaleSame)
                     addSequential(autoManager.leftCross);
+                else
+                    addSequential(new Path(new ArrayList<>(Arrays.asList(new DriveFeet(drivebase, -8, 2)))));
+                break;
         }
     }
 }

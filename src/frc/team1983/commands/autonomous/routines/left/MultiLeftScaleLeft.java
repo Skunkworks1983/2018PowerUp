@@ -16,14 +16,14 @@ public class MultiLeftScaleLeft extends Path
         super(new ArrayList<>(Arrays.asList(
 // 1st cube
                 new DriveFeet(drivebase, -16, 2, 0),
-                new DriveFeet(drivebase, -3.5, 2.5, -35, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE, ActionsEnum.SET_COLLECTOR_POSITION_BACK}),
+                new DriveFeet(drivebase, -5, 2, -35, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE, ActionsEnum.SET_COLLECTOR_POSITION_BACK}).setProfileTimeout(4),
                 new DriveFeet(drivebase, 0, 0.2, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_MEDIUM}).setProfileTimeout(0.15),
 //2nd cube
                 new DriveFeet(drivebase, 0, 0.2, -25, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM, ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),
                 new TurnDegree(drivebase, 50, 0.5),
                 new DriveFeet(drivebase, 5.5, 1.25, 20, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE}),
                 new DriveFeet(drivebase, 0, 1).setProfileTimeout(1),
-                new DriveFeet(drivebase, -5.5, 2.5,-15, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE, ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE, ActionsEnum.SET_COLLECTOR_POSITION_BACK}),
+                new DriveFeet(drivebase, -5.5, 2.5,-15, new ActionsEnum[]{ActionsEnum.COLLECTOR_INTAKE, ActionsEnum.SET_ELEVATOR_SETPOINT_SCALE, ActionsEnum.SET_COLLECTOR_POSITION_BACK}).setProfileTimeout(4),
                 new DriveFeet(drivebase, 0, 0.2, new ActionsEnum[]{ActionsEnum.COLLECTOR_EXPEL_MEDIUM}),
 //3rd cube
                 new DriveFeet(drivebase, 0, 2, new ActionsEnum[]{ActionsEnum.SET_ELEVATOR_SETPOINT_BOTTOM, ActionsEnum.SET_COLLECTOR_POSITION_DOWN}),

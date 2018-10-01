@@ -1,6 +1,7 @@
 package frc.team1983.services.automanager;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -64,8 +65,8 @@ public class AutoManager
 
         robotPositionSelector = new SendableChooser<>();
         robotPositionSelector.addDefault("Middle", OwnedSide.UNKNOWN);
-        robotPositionSelector.addObject("Right", OwnedSide.RIGHT);
         robotPositionSelector.addObject("Left", OwnedSide.LEFT);
+        robotPositionSelector.addObject("Right", OwnedSide.RIGHT);
         SmartDashboard.putData("Robot Position Selector", robotPositionSelector);
     }
 
@@ -86,30 +87,28 @@ public class AutoManager
     public void generatePaths()
     {
         multiLeftScaleLeft = new MultiLeftScaleLeft(Robot.getInstance().getDrivebase());
-        multiRightScaleRight = new MultiRightScaleRight(Robot.getInstance().getDrivebase());
+        //multiRightScaleRight = new MultiRightScaleRight(Robot.getInstance().getDrivebase());
 
         multiLeftScaleRight = new MultiLeftScaleRight(Robot.getInstance().getDrivebase());
-        multiRightScaleLeft = new MultiRightScaleLeft(Robot.getInstance().getDrivebase());
+        //multiRightScaleLeft = new MultiRightScaleLeft(Robot.getInstance().getDrivebase());
 
-        /*
         oneLeftScaleLeft = new OneLeftScaleLeft(Robot.getInstance().getDrivebase());
-        oneRightScaleRight = new OneRightScaleRight(Robot.getInstance().getDrivebase());
+        //oneRightScaleRight = new OneRightScaleRight(Robot.getInstance().getDrivebase());
 
 
         oneLeftSwitchLeft = new OneLeftSwitchLeft(Robot.getInstance().getDrivebase());
-        oneRightSwitchRight = new OneRightSwitchRight(Robot.getInstance().getDrivebase());
+        //oneRightSwitchRight = new OneRightSwitchRight(Robot.getInstance().getDrivebase());
 
         twoLeftSwitchLeft = new TwoLeftSwitchLeft(Robot.getInstance().getDrivebase());
-        twoRightSwitchRight = new TwoRightSwitchRight(Robot.getInstance().getDrivebase());
+        //twoRightSwitchRight = new TwoRightSwitchRight(Robot.getInstance().getDrivebase());
 
 
         leftCross = new LeftCross(Robot.getInstance().getDrivebase());
-        rightCross = new RightCross(Robot.getInstance().getDrivebase());
+        //rightCross = new RightCross(Robot.getInstance().getDrivebase());
 
 
         multiMiddleSwitchLeft = new MultiMiddleSwitchLeft(Robot.getInstance().getDrivebase());
         multiMiddleSwitchRight = new MultiMiddleSwitchRight(Robot.getInstance().getDrivebase());
-        */
     }
 
     public enum GameFeature
@@ -204,10 +203,16 @@ public class AutoManager
             {
                 gameDataAlreadyPolled = true;
 
-                Scheduler.getInstance().add(dashboard.getSelectedAutoChoice().getSelectableAuto().createCommand(
+                Command auto = dashboard.getSelectedAutoChoice().getSelectableAuto().createCommand(
                         Robot.getInstance().getDrivebase(), Robot.getInstance().getCollector(),
                         Robot.getInstance().getElevator(), Robot.getInstance().getDashboardWrapper(),
-                        Robot.getInstance().getStatefulDashboard(), this));
+                        Robot.getInstance().getStatefulDashboard(), this);
+
+                System.out.println("---------- RUNNING " + auto.getClass().getName() + " ----------");
+
+                Scheduler.getInstance().add(auto);
+
+
             }
         }
     }

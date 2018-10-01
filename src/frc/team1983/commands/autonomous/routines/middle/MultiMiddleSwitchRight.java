@@ -15,7 +15,7 @@ public class MultiMiddleSwitchRight extends Path
     private static double fromSwitchBackup = -5;
 
     private static double turn1 = 43;
-    private static double turn2 = 45;
+    private static double turn2 = 37;
 
     public MultiMiddleSwitchRight(Drivebase drivebase)
     {
