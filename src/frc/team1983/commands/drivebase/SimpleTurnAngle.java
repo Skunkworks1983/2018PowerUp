@@ -8,6 +8,7 @@ import frc.team1983.commands.CommandBase;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
+import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseRotationPidOutput;
@@ -25,7 +26,7 @@ public class SimpleTurnAngle extends CommandBase
     private PIDSource pidSource;
     private PIDOutput pidOut;
     private PIDController turnPid;
-    private Gyro gyro;
+    private Pigeon gyro;
     private int counter;
 
     private Logger logger;

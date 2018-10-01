@@ -33,5 +33,7 @@ public class Path extends CommandGroup
 
             addSequential(movement);
         }
+
+        DriveProfile.stitch(drives);
     }
 }

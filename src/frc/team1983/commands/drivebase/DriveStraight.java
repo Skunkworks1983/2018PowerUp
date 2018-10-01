@@ -8,6 +8,7 @@ import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
+import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.PidControllerWrapper;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
@@ -28,7 +29,7 @@ public class DriveStraight extends CommandBase
     private PIDSource pidSource;
     private DriveStraightPidOutput pidOut;
     private PidControllerWrapper driveStraightPid;
-    private Gyro gyro;
+    private Pigeon gyro;
     private double baseSpeed;
     private StatefulDashboard dashboard;
     double initialBaseSpeed;
@@ -72,7 +73,7 @@ public class DriveStraight extends CommandBase
     @Override
     public void initialize()
     {
-        gyro.checkGyroStatus();
+        //gyro.initialize();
         logger.info("gyro status{}", gyro.isDead());
         leftEncoderStart = drivebase.getLeftDistance();
         rightEncoderStart = drivebase.getRightDistance();

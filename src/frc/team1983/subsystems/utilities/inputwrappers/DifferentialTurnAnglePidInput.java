@@ -13,8 +13,6 @@ public class DifferentialTurnAnglePidInput extends PidInputWrapper
     private double leftEncoderStart;
     private double rightEncoderStart;
     private Drivebase drivebase;
-    private Gyro gyro;
-    private Logger logger;
 
     public DifferentialTurnAnglePidInput(Drivebase drivebase)
     {
@@ -28,8 +26,5 @@ public class DifferentialTurnAnglePidInput extends PidInputWrapper
     {
         return (((drivebase.getLeftDistance() - leftEncoderStart) -
                 (drivebase.getRightDistance() - rightEncoderStart)));
-
     }
-
-
 }

@@ -17,7 +17,7 @@ public class TurnDegree extends DriveArc
                       @JsonProperty("action") ActionsEnum[] actions)
     {
         super(drivebase, 0, angle, time, actions);
-        setHeadingLoopGains(Constants.PidConstants.Drivebase.AUX_ARC);
+        setHeadingLoopGains(Constants.PidConstants.Drivebase.AUX_TURN);
     }
 
     public TurnDegree(Drivebase drivebase, double angle, double time)

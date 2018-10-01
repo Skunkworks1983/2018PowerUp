@@ -57,7 +57,6 @@ public class DriveProfile extends CommandBase
         logger = LoggerFactory.createNewLogger(this.getClass());
 
         requires(drivebase);
-        setTimeout(duration + 0.75);
 
         this.actions = new ArrayList<>();
 
@@ -82,10 +81,7 @@ public class DriveProfile extends CommandBase
         if(runHeadingCorrection)
         {
             headingLoop = new PIDController(
-                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kP(),
-                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kI(),
-                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kD(),
-                    Constants.PidConstants.Drivebase.HEADINGCORRECTION.get_kF(),
+                    0, 0, 0, 0,
                     pidInput, pidOutput
             );
         }
@@ -111,7 +107,6 @@ public class DriveProfile extends CommandBase
             totalDistance = (leftDistance + rightDistance) / 2;
 
             headingLoop.enable();
-            headingLoop.setOutputRange(-0.6, 0.6);
         }
 
         drivebase.setLeftProfile(leftProfile);
@@ -125,17 +120,21 @@ public class DriveProfile extends CommandBase
     {
         if(runHeadingCorrection)
         {
-            //double desiredHeading = startHeading + (deltaHeading * ((Math.min(timeSinceInitialized(), duration) / duration)));
-
             double dL = drivebase.getLeftDistance();
             double dR = drivebase.getRightDistance();
 
-            double percent = ((dL + dR) / 2) / totalDistance;
-            percent = Math.min(1, Math.max(percent, 0));
+            double percentDist = ((dL + dR) / 2) / totalDistance;
+            percentDist = Math.min(1, Math.max(percentDist, 0));
+            double percentTime = Math.min(timeSinceInitialized(), duration) / duration;
+
+            double percent = Math.max(percentDist, percentTime);
+
             double desiredHeading = startHeading + (percent * deltaHeading);
 
             headingLoop.setSetpoint(desiredHeading);
         }
+
+        logger.info(drivebase.getLeftError() + ", " + drivebase.getRightError());
     }
 
     @Override
@@ -145,8 +144,6 @@ public class DriveProfile extends CommandBase
 
         if(!stitched)
         {
-            //logger.info(onTargetTime);
-
             if(onTarget() && lastOnTargetTimestamp != 0)
             {
                 onTargetTime += (System.currentTimeMillis() - lastOnTargetTimestamp) * 0.001;
@@ -201,6 +198,9 @@ public class DriveProfile extends CommandBase
                                    " , gyro error: " + (endHeading - drivebase.getGyro().getAngle()));
 
         drivebase.stopProfiles();
+
+        drivebase.setRightAuxiliaryOutput(0);
+        drivebase.setLeftAuxiliaryOutput(0);
 
         if(runHeadingCorrection)
         {

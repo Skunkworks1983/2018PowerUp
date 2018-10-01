@@ -36,7 +36,6 @@ public class ProfileController
         thread = new Thread(runnable);
 
         reset();
-        robot.addProfileController(this);
     }
 
     private void reset()
@@ -72,6 +71,8 @@ public class ProfileController
 
         ClosedLoopGains gains = parent.getGains(0);
 
+        double startPos = parent.getSelectedSensorPosition(0);
+
         for(int i = 0; i <= resolution; i++)
         {
             double t = i * duration;
@@ -90,7 +91,7 @@ public class ProfileController
             point.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_0ms;
 
             point.zeroPos = i == 0;
-            point.isLastPoint = i == (resolution - 1);
+            //point.isLastPoint = i == (resolution - 1);
 
             parent.pushMotionProfileTrajectory(point);
         }
@@ -110,8 +111,7 @@ public class ProfileController
     public boolean isProfileFinished()
     {
         MotionProfileStatus status = getProfileStatus();
-
-        return runnable.hasProcessed() && (status.isUnderrun || (status.btmBufferCnt == 1 || status.btmBufferCnt == 0));
+        return runnable.hasProcessed() && (status.isUnderrun || status.btmBufferCnt == 0);
     }
 
     public void setEnabled(boolean enabled)
@@ -152,7 +152,6 @@ public class ProfileController
     public void updateRobotState(Constants.MotorMap.Mode mode)
     {
         setEnabled(false);
-        parent.set(ControlMode.PercentOutput, 0);
 
         reset();
     }
