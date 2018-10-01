@@ -1,10 +1,7 @@
 package frc.team1983.commands.elevator;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.OI;
-import frc.team1983.Robot;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Collector;
@@ -18,12 +15,12 @@ public class SetElevatorSetpoint extends CommandBase
     private Collector collector;
     private double newSetpoint;
     private double initialLocation;
-    private Constants.OIMap.Setpoint setpoint;
+    private Constants.ElevatorSetpoints setpoint;
 
     private Logger logger;
 
     //A command for setting the setpoint of the elevator pid.
-    public SetElevatorSetpoint(Constants.OIMap.Setpoint setpoint, Elevator elevator, OI oi)
+    public SetElevatorSetpoint(Constants.ElevatorSetpoints setpoint, Elevator elevator, OI oi)
     {
         requires(elevator);
         logger = LoggerFactory.createNewLogger(this.getClass());
@@ -36,38 +33,8 @@ public class SetElevatorSetpoint extends CommandBase
     @Override
     public void initialize()
     {
-        switch(setpoint)
-        {
-            case BOTTOM:
-                newSetpoint = Constants.OIMap.Setpoint.BOTTOM.getEncoderTicks();
-                break;
-
-            case TRAVEL:
-                newSetpoint = Constants.OIMap.Setpoint.TRAVEL.getEncoderTicks();
-                break;
-
-            case SWITCH:
-                newSetpoint = Constants.OIMap.Setpoint.SWITCH.getEncoderTicks();
-                break;
-
-            case LOW:
-                newSetpoint = Constants.OIMap.Setpoint.LOW.getEncoderTicks();
-                break;
-
-            case MID:
-                newSetpoint = Constants.OIMap.Setpoint.MID.getEncoderTicks();
-                break;
-
-            case TOP:
-                newSetpoint = Constants.OIMap.Setpoint.TOP.getEncoderTicks();
-                break;
-
-            default:
-                newSetpoint = 0;
-                break;
-        }
-        setElevatorSlot(newSetpoint, elevator.getEncoderValue());
-        elevator.setSetpoint(newSetpoint);
+        setElevatorSlot(setpoint, elevator.getEncoderValue());
+        elevator.setWantedState(setpoint);
         logger.info("Setting elevator to {}", elevator.getSetpoint());
     }
 
@@ -94,9 +61,9 @@ public class SetElevatorSetpoint extends CommandBase
         this.end();
     }
 
-    public void setElevatorSlot(double newSetpoint, double initialLocation)
+    public void setElevatorSlot(Constants.ElevatorSetpoints newSetpoint, double initialLocation)
     {
-        if(newSetpoint < initialLocation)
+        if(newSetpoint.getEncoderTicks() < initialLocation)
         {
             elevator.switchSlots(false);
         }

@@ -232,6 +232,19 @@ public class Robot extends IterativeRobot
         return collector;
     }
 
+    public boolean isCollectorUp()
+    {
+        if(collector != null)
+        {
+            return collector.isUp();
+        }
+        else
+        {
+            robotLogger.info("Elevator asked for collector position, but collector has not been created");
+            return true; //If it hasn't been created, assume collector is up
+        }
+    }
+
     public Climber getClimber() {
         return climber;
     }
