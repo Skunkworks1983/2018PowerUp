@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.number.IsCloseTo.closeTo;
 import static org.junit.Assert.assertThat;
 
 public class UT_MotionProfile
@@ -52,6 +51,6 @@ public class UT_MotionProfile
     public void profileCorrectlyEvaluatesAcceleration()
     {
         assertThat(profile.evaluateAcceleration(0), closeTo(0.0, 0.1));
-        assertThat(profile.evaluateAcceleration(profile.getDuration()), is(1000.0));
+        assertThat(profile.evaluateAcceleration(profile.getDuration()), is(0.0));
     }
 }

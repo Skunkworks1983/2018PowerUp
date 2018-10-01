@@ -1,7 +1,6 @@
 package frc.team1983.subsystems.utilities.outputwrappers;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import frc.team1983.commands.drivebase.DifferentialTurnAngle;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.Drivebase;
 import org.apache.logging.log4j.core.Logger;
@@ -28,8 +27,8 @@ public class DifferentialTurnAnglePidOutput extends PidOutputWrapper
     public void writeHelper(double out)
 
     {
-            drivebase.setLeft(ControlMode.PercentOutput, (baseSpeed + adjustmentSpeed) + out);
-            drivebase.setRight(ControlMode.PercentOutput, (-baseSpeed - adjustmentSpeed) + out);
+            drivebase.setLeft(ControlMode.PercentOutput, (-baseSpeed - adjustmentSpeed) + out);
+            drivebase.setRight(ControlMode.PercentOutput, (baseSpeed + adjustmentSpeed) + out);
             logger.info("adjustmentSpeed{} \t total speed left{} \t total speed right{}", adjustmentSpeed,(baseSpeed + adjustmentSpeed) + out, (-baseSpeed - adjustmentSpeed) + out);
 
     }

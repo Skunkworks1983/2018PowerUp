@@ -1,12 +1,7 @@
 package frc.team1983.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.team1983.commands.autonomous.profiled.LeftScaleLeft;
-import frc.team1983.commands.autonomous.profiled.LeftScaleRight;
-import frc.team1983.commands.autonomous.profiled.MidSwitchLeft;
-import frc.team1983.commands.autonomous.profiled.MidSwitchRight;
-import frc.team1983.commands.autonomous.profiled.RightScaleLeft;
-import frc.team1983.commands.autonomous.profiled.RightScaleRight;
+import frc.team1983.commands.autonomous.deadreckoningautos.MidToSwitch;
 import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.StatefulDashboard;
@@ -19,8 +14,8 @@ import frc.team1983.subsystems.Elevator;
 public class BackupAutoPicker extends CommandGroup
 {
     public BackupAutoPicker(Drivebase drivebase, Collector collector, Elevator elevator,
-                      DashboardWrapper dashboardWrapper, StatefulDashboard statefulDashboard,
-                      AutoManager autoManager)
+                            DashboardWrapper dashboardWrapper, StatefulDashboard statefulDashboard,
+                            AutoManager autoManager)
     {
         AutoManager.OwnedSide switchPosition, scalePosition;
         switchPosition = autoManager.getOwnedSide(AutoManager.GameFeature.SWITCH_NEAR);
@@ -31,18 +26,18 @@ public class BackupAutoPicker extends CommandGroup
             case UNKNOWN:
                 if(switchPosition == AutoManager.OwnedSide.LEFT)
                 {
-                    addSequential(new MidSwitchLeft(drivebase));
+                    addSequential(new MidToSwitch(drivebase, statefulDashboard, elevator, collector, AutoManager.OwnedSide.LEFT));
                 }
                 else
                 {
                     // run right side auto if unknown also
-                    addSequential(new MidSwitchRight(drivebase));
+                    addSequential(new MidToSwitch(drivebase, statefulDashboard, elevator, collector, AutoManager.OwnedSide.RIGHT));
                 }
 
                 break;
             case LEFT:
             case RIGHT:
-                addSequential(new DriveFeet(drivebase, -10, 2));
+                addSequential(new DriveFeet(drivebase, 10, 2));
 
                 break;
         }

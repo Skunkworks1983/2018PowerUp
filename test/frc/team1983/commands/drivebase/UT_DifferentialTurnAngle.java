@@ -3,6 +3,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.HLUsageReporting;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
+import frc.team1983.commands.drivebase.deadreckoning.DifferentialTurnAngle;
 import frc.team1983.services.StatefulDashboard;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
@@ -68,7 +69,7 @@ public class UT_DifferentialTurnAngle
         Timer.SetImplementation(timerStaticInterface);
         HLUsageReporting.SetImplementation(hlUsageReporting);
         fakeScheduler = new FakeScheduler();
-        when(drivebase.getGyro()).thenReturn(gyro);
+        //when(drivebase.getGyro()).thenReturn(gyro);
         differentialTurnAngle = new DifferentialTurnAngle(drivebase, dashboard, 0);
     }
     @After
@@ -114,8 +115,8 @@ public class UT_DifferentialTurnAngle
     @Test
     public void pivotPidOutputZeroWhenBothSidesHaveGoneSameDistance()
     {
-        when(drivebase.getRightDist()).thenReturn(5.);
-        when(drivebase.getLeftDist()).thenReturn(5.);
+        when(drivebase.getRightDistance()).thenReturn(5.);
+        when(drivebase.getLeftDistance()).thenReturn(5.);
         fakeScheduler.add(differentialTurnAngle);
         fakeScheduler.run();
         verify(drivebase).setLeft(ControlMode.PercentOutput, Constants.AutoValues.DIFFERENTIAL_TURN_ANGLE_BASESPEED);

@@ -9,6 +9,7 @@ public class DropForks extends CommandBase
 
     public DropForks(Climber climber)
     {
+        requires(climber);
         this.climber = climber;
     }
 

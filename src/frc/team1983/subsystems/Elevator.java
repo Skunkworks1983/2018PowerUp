@@ -11,8 +11,8 @@ import org.apache.logging.log4j.core.Logger;
 //The elevator subsystem
 public class Elevator extends Subsystem
 {
-    private Motor right1, right2;
-    private Motor left1, left2;
+    public Motor right1, right2;
+    public Motor left1, left2;
 
     private Logger logger;
 
@@ -35,6 +35,7 @@ public class Elevator extends Subsystem
         right1.configPIDF(1, Constants.PidConstants.ElevatorControlPid.Slot1.P, Constants.PidConstants.ElevatorControlPid.Slot1.I, Constants.PidConstants.ElevatorControlPid.Slot1.D, Constants.PidConstants.ElevatorControlPid.Slot1.F);
         right1.config_IntegralZone(1, Constants.PidConstants.ElevatorControlPid.Slot1.I_ZONE, 0);
         right1.configAllowableClosedloopError(1, Constants.PidConstants.ElevatorControlPid.Slot1.ALLOWABLE_CLOSED_LOOP_ERROR, 1);
+        //right1.setGains(0, Constants.PidConstants.Elevator.MAIN);
 
         right1.configPeakOutputForward(1, 0);
         right1.configPeakOutputReverse(-1, 0);
@@ -80,6 +81,11 @@ public class Elevator extends Subsystem
     public double getEncoderValue()
     {
         return right1.getSelectedSensorPosition(0);
+    }
+
+    public double getEncoderVelocity()
+    {
+        return right1.getSelectedSensorVelocity(0);
     }
 
     public void setProfile(MotionProfile profile)

@@ -27,7 +27,7 @@ public class Gyro extends AHRS
     }
 
     //Iterates to ensure that the gyro is initializing correctly, otherwise let other commands know that the gyro doesn't work.
-    public void checkGyroStatus()
+    public void initialize()
     {
         if(isBigGyro)
         {

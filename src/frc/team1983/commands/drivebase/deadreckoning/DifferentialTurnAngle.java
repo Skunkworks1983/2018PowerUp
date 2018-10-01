@@ -1,4 +1,4 @@
-package frc.team1983.commands.drivebase;
+package frc.team1983.commands.drivebase.deadreckoning;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.PIDController;
@@ -9,7 +9,7 @@ import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
-import frc.team1983.subsystems.sensors.Gyro;
+import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.inputwrappers.DifferentialTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
@@ -27,7 +27,7 @@ public class DifferentialTurnAngle extends CommandBase
     private PIDOutput adjustmentPidOut;
     private PIDController pivotPid;
     private PIDController adjustmentPid;
-    private Gyro gyro;
+    private Pigeon gyro;
     //private EncoderTurnAnglePidInput encoderTurnAnglePidInput;
     private GyroPidInput gyroPidInput;
     private double initialAngle;
@@ -55,24 +55,24 @@ public class DifferentialTurnAngle extends CommandBase
         counter = 0;
         //logger.info("targetAngle{}", targetAngle);
 
-        dashboard.add(this, "kP", 0.0);
-        dashboard.add(this, "kI", 0.0);
-        dashboard.add(this, "kD", 0.0);
-        dashboard.add(this, "kF", 0.0);
+        /*
+        dashboard.add(this, "kP", Constants.PidConstants.TurnAnglePid.DifferentialPivotPid.P);
+        dashboard.add(this, "kI", Constants.PidConstants.TurnAnglePid.DifferentialPivotPid.I);
+        dashboard.add(this, "kD", Constants.PidConstants.TurnAnglePid.DifferentialPivotPid.D);
+        dashboard.add(this, "kF", Constants.PidConstants.TurnAnglePid.DifferentialPivotPid.F);
 
-        dashboard.add(this, "adjustmentP", 0.0);
-        dashboard.add(this, "adjustmentI", 0.0);
-        dashboard.add(this, "adjustmentD", 0.0);
-        dashboard.add(this, "adjustmentF", 0.0);
-
-
+        dashboard.add(this, "adjustmentP", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.P);
+        dashboard.add(this, "adjustmentI", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.I);
+        dashboard.add(this, "adjustmentD", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.D);
+        dashboard.add(this, "adjustmentF", Constants.PidConstants.TurnAnglePid.DifferentialAdjustmentPid.F);
+        */
     }
 
     @Override
     public void initialize()
     {
         //initialAngle = encoderTurnAnglePidInput.pidGet();
-        gyro.checkGyroStatus();
+        //gyro.initialize();
         initialAngle = gyroPidInput.pidGet();
         pivotPidSource = new DifferentialTurnAnglePidInput(drivebase);
         if(targetAngle < 0)
@@ -119,7 +119,7 @@ public class DifferentialTurnAngle extends CommandBase
 
         //logger.debug("DifferentialTurnAngle executed");
         error = Math.abs(targetAngle - (gyroPidInput.pidGet() - initialAngle));
-        logger.info("error{}", adjustmentPid.getError());
+        logger.info("DifferentialTurnAngle error is {}", adjustmentPid.getError());
         //pidOut.setAdjustmentSpeed(error/(targetAngle) * .4);
         //logger.info("adjustmentSpeed {}", (error/targetAngle) * .4);
 

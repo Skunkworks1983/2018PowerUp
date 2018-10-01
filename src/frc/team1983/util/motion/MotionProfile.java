@@ -128,7 +128,7 @@ public class MotionProfile
         return evaluateVelocity(duration);
     }
 
-    protected void setFinalVelocity(double velocity)
+    public void setFinalVelocity(double velocity)
     {
         getSegment(duration).getEnd().setVelocity(velocity);
     }

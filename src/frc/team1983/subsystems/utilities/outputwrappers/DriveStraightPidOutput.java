@@ -1,11 +1,7 @@
 package frc.team1983.subsystems.utilities.outputwrappers;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import frc.team1983.commands.drivebase.DriveStraight;
-import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.Drivebase;
-
-import javax.naming.ldap.Control;
 
 public class DriveStraightPidOutput extends PidOutputWrapper
 {

@@ -7,11 +7,10 @@ public class TurnTo extends TurnDegree
 {
     public TurnTo(Drivebase drivebase, double heading, double time, ActionsEnum[] actions)
     {
-        super(drivebase, heading - drivebase.getGyro().getAngle(), time, actions);
-    }
+        super(drivebase, heading, time, actions);
 
-    public TurnTo(Drivebase drivebase, double heading, double time)
-    {
-        super(drivebase, heading - drivebase.getGyro().getAngle(), time, new ActionsEnum[]{});
+        useAbsoluteOrientation = true;
+        startHeading = heading;
+        endHeading = heading;
     }
 }
