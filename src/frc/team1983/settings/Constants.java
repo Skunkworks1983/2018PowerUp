@@ -2,7 +2,8 @@ package frc.team1983.settings;
 
 
 import frc.team1983.subsystems.Drivebase;
-import frc.team1983.util.control.ClosedLoopGains;
+import frc.team1983.util.control.PIDFGains;
+import frc.team1983.util.control.PIDFSVAGains;
 
 import java.io.File;
 
@@ -82,15 +83,6 @@ public class Constants
             public static final boolean RIGHT_SWITCH_REVERSED = true;
         }
 
-        public static class Ramps
-        {
-            public static final int LEFT_RAMPLOCK = 0;
-            public static final int RIGHT_RAMPLOCK = 2;
-
-            public static final int LEFT_LEG = 1;
-            public static final int RIGHT_LEG = 3;
-        }
-
         public static class Climber // magic numbers
         {
             //two drop
@@ -116,21 +108,6 @@ public class Constants
             //free current 1.8 amps
             //stall current 41 amps
             public static final double UPPER_TENSION_MOTOR_CURRENT = 30;
-        }
-
-
-        //Random and hard to classify drivebase constants
-        public static class DrivebaseConstants
-        {
-            public static final double DRIVEBASE_TICKS_PER_FOOT = 1000 / AutoValues.EFFECTIVE_REDUCTION_DRIVEBASE
-                    / AutoValues.WHEEL_CIRCUMFERENCE;
-            public static final int RIGHT1 = 0;
-            public static final int RIGHT2 = 0;
-
-            public static final boolean LEFT1_REVERSED = true;
-            public static final boolean LEFT2_REVERSED = false;
-            public static final boolean RIGHT1_REVERSED = true;
-            public static final boolean RIGHT2_REVERSED = false;
         }
     }
 
@@ -165,54 +142,50 @@ public class Constants
         {
             public static class Left
             {
-                public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+                public static final PIDFSVAGains MAIN = new PIDFSVAGains(
                         0.65,
                         0,
                         0.75,
                         0,
                         0,
-                        1500 / Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC,
-                        0 / (Motion.DRIVEBASE_LEFT_MAX_TICKS_PER_SEC / 0.75)
+                        1024 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
+                        0 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
                 );
 
             }
 
             public static class Right
             {
-                public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+                public static final PIDFSVAGains MAIN = new PIDFSVAGains(
                         0.65,
                         0,
                         0.75,
                         0,
                         0,
-                        1500 / Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC,
-                        0 / (Motion.DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC / 0.75)
+                        1024 / Motion.DRIVEBASE_RIGHT_MAX_VELOCITY,
+                        0 / Motion.DRIVEBASE_RIGHT_MAX_ACCELERATION
                 );
             }
 
-            public static ClosedLoopGains HEADINGCORRECTION = new ClosedLoopGains(
-                    0.09, 0, 0.03, 0
-            );
-
-            public static ClosedLoopGains AUX_STRAIGHT = new ClosedLoopGains(
+            public static PIDFSVAGains AUX_STRAIGHT = new PIDFGains(
                     0.04, 0, 0, 0
             );
 
-            public static ClosedLoopGains AUX_ARC = new ClosedLoopGains(
+            public static PIDFSVAGains AUX_ARC = new PIDFGains(
                     0.09, 0, 0.04, 0
             );
         }
 
         public static class Elevator
         {
-            public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+            public static final PIDFSVAGains MAIN = new PIDFSVAGains(
                     0,
                     0,
                     0,
                     0,
-                    0,
-                    0,
-                    0
+                    Motion.ELEVATOR_MAINTAIN_FEEDFORWARD,
+                    1024 / Motion.ELEVATOR_MAX_VELOCITY,
+                    1024 / Motion.ELEVATOR_MAX_ACCELERATION
             );
         }
 
@@ -269,62 +242,14 @@ public class Constants
             public static final double DOWN_TICKS = 1300;
             public static final double MID_TICKS = 300;//response to slop in chain
         }
-
-        //setpoints for motors
-        //TODO: Refactor out of this scope
-        public static class MotorSetpoints
-        {
-            //the position to which the ramp servos rotate.
-            public static final double RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
-            public static final double RAMP_PROP_SERVO_GOAL = 1;
-        }
-
-        public static class ElevatorControlPid
-        {
-            public static final int ELEVATOR_BOTTOM = 0;
-            //Actually negative, but ya know,
-            public static final int ELEVATOR_TOP = 29000 - 300; //Addition is to keep it from hitting the max position
-            public static final double ELEVATOR_MID_PERCENT = 0.979; //constant chosen to reproduce trial and error values
-            public static final double ELEVATOR_LOW_PERCENT = 0.96;
-            public static final double ELEVATOR_TRAVEL_PERCENT = 0.03; //taking thomas' 800 number, actual percent is 2.8
-            public static final double ELEVATOR_TOP_PERCENT = 0.99;
-
-            public static class Slot0
-            {
-                public static final double P = 0.13;
-                public static final double I = 0.000155;
-                public static final double D = 0.8;
-                public static final double F = 0;
-                public static final int I_ZONE = 1000;
-
-                public static final int ALLOWABLE_CLOSED_LOOP_ERROR = 50;
-            }
-            public static class Slot1
-            {
-                public static final double P = 0.08;
-                public static final double I = 0.00005;
-                public static final double D = 0.5;
-                public static final double F = 0;
-                public static final int I_ZONE = 800;
-
-                public static final int ALLOWABLE_CLOSED_LOOP_ERROR = 50;
-            }
-
-        }
     }
 
     public static class AutoValues
     {
         public static final double WHEELBASE_RADIUS = 25.625 / 2 / 12; //T fix magic number
-        public static final double WHEELBASE_CIRCUMFERENCE = 2 * Math.PI * WHEELBASE_RADIUS;
-        public static final double WHEELBASE_DEGREES = WHEELBASE_CIRCUMFERENCE / 360.;
-        public static final double EFFECTIVE_REDUCTION_DRIVEBASE = 18 / 24.;
-        public static final double WHEEL_CIRCUMFERENCE = 6 * Math.PI / 12.;
         public static final double DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT = 1.4;
-        public static final double DRIVEBASE_ENCODER_FUDGE_FACTOR = 6 / 6.3;
 
         public static final double MAX_OUTPUT = 0.5;
-        public static final double DISTANCE_SCALAR = 1000;
 
         public static final double DIFFERENTIAL_TURN_ANGLE_BASESPEED = .26;
     }
@@ -352,78 +277,12 @@ public class Constants
             public static final int Z = 2;
         }
 
-        //Agglomeration of constants relating to the joysticks
-        public static class OIConstants
-        {
-            //Joystick constants
-            public static final double JOYSTICK_TOLERANCE = 0.5;
-
-            //Scalar coefficient of the slider on the OIMap
-            public static final double SLIDER_SCALAR = 0.618726;
-        }
-
-        public static class SliderConstants
-        {
-            public static final int SLIDER_PRESETS_TOGGLE = 0;
-            public static final int BOTTOM_PRESET = 1;
-            public static final int SWITCH_PRESET = 2;
-            public static final int SCALE_PRESET = 3;
-        }
-
-        public static class CollectorButtons
-        {
-            public static final int INTAKE = 17;
-            public static final int EXPEL = 19;
-            public static final int BOOP = 13;
-            public static final int M_INTAKE = 1;
-            public static final int M_EXPEL = 0;
-            public static final int UP = 18;
-            public static final int DOWN = 16;
-            public static final int M_UP = 2;
-            public static final int M_DOWN = 3;
-        }
-
-        public static class ElevatorButtons
-        {
-            public static final int TOP = 8;
-            public static final int MID = 9;
-            public static final int LOW = 10;
-            public static final int SWITCH = 11;
-            public static final int BOTTOM = 12;
-            public static final int M_UP = 6;
-            public static final int M_DOWN = 5;
-        }
-
         public static class ClimberButtons
         {
             public static final int HOOK = 21;
             public static final int DROP_FORKS = 20;
             public static final int CREATE_TENSION = 22;
             public static final int ENGAGE_DOG_GEARS = 23;
-        }
-
-        //Enums for presets
-        public enum Setpoint
-        {
-            BOTTOM(0),
-            TRAVEL(1960), //upped from 1860
-            SWITCH(9125+400), // elevator halfway point
-            LOW(22700 +400),
-            MID(25700 +400),
-            TOP(28600); //TODO: add 400 once magnet moves
-
-            private final double encoderTicks;
-
-            Setpoint(double encoderTicks)
-            {
-                this.encoderTicks = encoderTicks;
-            }
-
-            public double getEncoderTicks()
-            {
-                return encoderTicks;
-            }
-
         }
     }
 
@@ -450,10 +309,15 @@ public class Constants
         public static final double DEFAULT_MOTIONPROFILE_ACCEL_TIME = 0.5; // [0-1]
         public static final int MIN_POINTS_IN_TALON = 3;
 
-        public static final double DRIVEBASE_LEFT_MAX_TICKS_PER_SEC = 14000.0;
-        public static final double DRIVEBASE_RIGHT_MAX_TICKS_PER_SEC = 14600.0;
+        public static final double DRIVEBASE_LEFT_MAX_VELOCITY = 14000.0; // sensor units per second
+        public static final double DRIVEBASE_LEFT_MAX_ACCELERATION = 0.01; // sensor units per second per second
 
-        public static final double ELEVATOR_MAX_TICKS_PER_SEC = 0;
+        public static final double DRIVEBASE_RIGHT_MAX_VELOCITY = 14600.0; // sensor units per second
+        public static final double DRIVEBASE_RIGHT_MAX_ACCELERATION = 0.01; // sensor units per second per second
+
+        public static final double ELEVATOR_MAINTAIN_FEEDFORWARD = 0.01; // percent output
+        public static final double ELEVATOR_MAX_VELOCITY = 0.01; // sensor units per second
+        public static final double ELEVATOR_MAX_ACCELERATION = 0.01; // sensor units per second per second
 
         public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(3/12);
         public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.75;

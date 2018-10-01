@@ -1,11 +1,10 @@
 package frc.team1983.subsystems.utilities;
 
 import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team1983.Robot;
-import frc.team1983.util.control.ClosedLoopGains;
+import frc.team1983.util.control.PIDFSVAGains;
 import frc.team1983.util.control.ProfileController;
 import frc.team1983.util.control.ProfileSignal;
 import frc.team1983.util.motion.MotionProfile;
@@ -15,7 +14,7 @@ import java.util.HashMap;
 //Wrapper class around the WpiLib TalonSRX. Allows us to modify the functionality, and for future extendability.
 public class Motor extends TalonSRX
 {
-    protected HashMap<Integer, ClosedLoopGains> gains;
+    protected HashMap<Integer, PIDFSVAGains> gains;
     public ProfileController manager;
 
     private double auxiliaryOutput;
@@ -40,11 +39,11 @@ public class Motor extends TalonSRX
     }
 
     // bad
-    public ClosedLoopGains getGains(int slot)
+    public PIDFSVAGains getGains(int slot)
     {
         if(!gains.containsKey(slot))
         {
-            ClosedLoopGains newGains = new ClosedLoopGains();
+            PIDFSVAGains newGains = new PIDFSVAGains();
             gains.put(slot, newGains);
         }
 
@@ -59,7 +58,7 @@ public class Motor extends TalonSRX
         config_kF(slot, f, 0);
     }
 
-    public void setGains(int slot, ClosedLoopGains gains)
+    public void setGains(int slot, PIDFSVAGains gains)
     {
         this.gains.put(slot, gains);
         updateTalonGains();

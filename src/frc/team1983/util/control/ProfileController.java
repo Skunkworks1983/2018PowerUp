@@ -6,7 +6,6 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.Robot;
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.settings.Constants;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.motion.MotionProfile;
 import org.apache.logging.log4j.core.Logger;
@@ -70,7 +69,7 @@ public class ProfileController
 
         parent.configMotionProfileTrajectoryPeriod(durationMs, 0);
 
-        ClosedLoopGains gains = parent.getGains(0);
+        PIDFSVAGains gains = parent.getGains(0);
 
         for(int i = 0; i <= resolution; i++)
         {
@@ -149,13 +148,6 @@ public class ProfileController
         runnable.setSignal(signal);
     }
 
-    public void updateRobotState(Constants.MotorMap.Mode mode)
-    {
-        setEnabled(false);
-        parent.set(ControlMode.PercentOutput, 0);
-
-        reset();
-    }
     protected Motor getParent()
     {
         return parent;

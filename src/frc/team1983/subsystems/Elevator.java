@@ -16,8 +16,6 @@ public class Elevator extends Subsystem
 
     private Logger logger;
 
-    private double setpoint;
-
     public Elevator()
     {
         logger = LoggerFactory.createNewLogger(Elevator.class);
@@ -28,27 +26,12 @@ public class Elevator extends Subsystem
         right1 = new Motor(Constants.MotorMap.Elevator.RIGHT1, Constants.MotorMap.Elevator.RIGHT1_REVERSED, true);
         right2 = new Motor(Constants.MotorMap.Elevator.RIGHT2, Constants.MotorMap.Elevator.RIGHT2_REVERSED);
 
-        right1.configPIDF(0, Constants.PidConstants.ElevatorControlPid.Slot0.P, Constants.PidConstants.ElevatorControlPid.Slot0.I, Constants.PidConstants.ElevatorControlPid.Slot0.D, Constants.PidConstants.ElevatorControlPid.Slot0.F);
-        right1.config_IntegralZone(0, Constants.PidConstants.ElevatorControlPid.Slot0.I_ZONE, 0);
-        right1.configAllowableClosedloopError(0, Constants.PidConstants.ElevatorControlPid.Slot0.ALLOWABLE_CLOSED_LOOP_ERROR, 1);
-
-        right1.configPIDF(1, Constants.PidConstants.ElevatorControlPid.Slot1.P, Constants.PidConstants.ElevatorControlPid.Slot1.I, Constants.PidConstants.ElevatorControlPid.Slot1.D, Constants.PidConstants.ElevatorControlPid.Slot1.F);
-        right1.config_IntegralZone(1, Constants.PidConstants.ElevatorControlPid.Slot1.I_ZONE, 0);
-        right1.configAllowableClosedloopError(1, Constants.PidConstants.ElevatorControlPid.Slot1.ALLOWABLE_CLOSED_LOOP_ERROR, 1);
-
-        right1.configPeakOutputForward(1, 0);
-        right1.configPeakOutputReverse(-1, 0);
-
-        right1.configClosedloopRamp(.5, 0);
-
         right2.follow(right1);
-        left1.follow(right1);
-        left2.follow(right1);
 
-        right1.configClosedloopRamp(.5, 0);
+        left1.follow(right2);
+        left2.follow(left1);
 
         right1.setSensorPhase(true);
-
         right1.setSelectedSensorPosition(0, 0, 100);
     }
 
@@ -100,41 +83,5 @@ public class Elevator extends Subsystem
     public boolean isProfileFinished()
     {
         return left1.isProfileFinished();
-    }
-
-    public double getSetpoint()
-    {
-        return setpoint;
-    }
-
-    public void switchSlots(boolean goingUp)
-    {
-        if(goingUp == true)
-        {
-            right1.selectProfileSlot(0, 0);
-            logger.info("slot 0");
-        }
-        else
-        {
-            right1.selectProfileSlot(1, 0);
-            logger.info("slot 1");
-        }
-    }
-
-    public void setSetpoint(double setpoint)
-    {
-        right1.setSensorPhase(true);
-        this.setpoint = setpoint;
-        right1.set(ControlMode.Position, setpoint);
-    }
-    @Override
-    public void periodic()
-    {
-        //logger.debug("Error1: {}\tSetpoint: {}", right1.getClosedLoopError(0), right1.getClosedLoopTarget(0));
-    }
-
-    public double getCurrentDraw()
-    {
-        return (right1.getOutputCurrent() + right2.getOutputCurrent())/2;
     }
 }
