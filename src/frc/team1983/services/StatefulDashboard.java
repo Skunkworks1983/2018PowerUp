@@ -274,6 +274,6 @@ public class StatefulDashboard
     //Construct the key that smartdashboard will use
     private String constructKey(Object object, String key)
     {
-        return object + Constants.DashboardConstants.KEY_SEPARATOR + key;
+        return object.getClass().getCanonicalName() + Constants.DashboardConstants.KEY_SEPARATOR + key;
     }
 }

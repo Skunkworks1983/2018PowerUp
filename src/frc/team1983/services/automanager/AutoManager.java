@@ -5,8 +5,23 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1983.Robot;
+import frc.team1983.commands.autonomous.routines.left.LeftCross;
+import frc.team1983.commands.autonomous.routines.left.MultiLeftScaleLeft;
+import frc.team1983.commands.autonomous.routines.left.MultiLeftScaleRight;
+import frc.team1983.commands.autonomous.routines.left.OneLeftScaleLeft;
+import frc.team1983.commands.autonomous.routines.left.OneLeftSwitchLeft;
+import frc.team1983.commands.autonomous.routines.left.TwoLeftSwitchLeft;
+import frc.team1983.commands.autonomous.routines.middle.MultiMiddleSwitchLeft;
+import frc.team1983.commands.autonomous.routines.middle.MultiMiddleSwitchRight;
+import frc.team1983.commands.autonomous.routines.right.MultiRightScaleLeft;
+import frc.team1983.commands.autonomous.routines.right.MultiRightScaleRight;
+import frc.team1983.commands.autonomous.routines.right.OneRightScaleRight;
+import frc.team1983.commands.autonomous.routines.right.OneRightSwitchRight;
+import frc.team1983.commands.autonomous.routines.right.RightCross;
+import frc.team1983.commands.autonomous.routines.right.TwoRightSwitchRight;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
 /**
@@ -14,9 +29,8 @@ import org.apache.logging.log4j.core.Logger;
  * sent by the FMS and DS to indicate the configuration of the SWITCH
  * and SCALE.
  *
- * @author Jaci Brunning
- * <p>
- * Stolen from Open-RIO, with modifications to fit into Skunkworks robot scheme
+ * @author Jaci Brunning and Erik Pratt
+ * Stolen from Open-RIO (Jaci Brunning), with modifications to fit into Skunkworks robot scheme
  */
 public class AutoManager
 {
@@ -33,15 +47,13 @@ public class AutoManager
         gameDataAlreadyPolled = false;
         logger = LoggerFactory.createNewLogger(this.getClass());
 
-        AutoSelection defaultSelection = AutoSelection.MP_AUTO_PICKER;
+        AutoSelection defaultSelection = AutoSelection.NON_COMPLIANT_SCALE_PICKER;
         dashboard.addAutoChooserAutoDefault(defaultSelection);
 
         for(AutoSelection selection : AutoSelection.values())
         {
             if(selection != defaultSelection)
-            {
                 dashboard.addAutoChooserAutoChoice(selection);
-            }
         }
 
         ownedSideOverride = new SendableChooser<>();
@@ -53,8 +65,49 @@ public class AutoManager
         robotPositionSelector = new SendableChooser<>();
         robotPositionSelector.addDefault("Middle", OwnedSide.UNKNOWN);
         robotPositionSelector.addObject("Right", OwnedSide.RIGHT);
-        robotPositionSelector.addObject("LEFT", OwnedSide.LEFT);
+        robotPositionSelector.addObject("Left", OwnedSide.LEFT);
         SmartDashboard.putData("Robot Position Selector", robotPositionSelector);
+    }
+
+    // AUTOS
+    // side
+    public Path multiLeftScaleLeft, multiRightScaleRight;
+    public Path multiLeftScaleRight, multiRightScaleLeft;
+    public Path oneLeftScaleLeft, oneRightScaleRight;
+
+    public Path oneLeftSwitchLeft, oneRightSwitchRight;
+    public Path twoLeftSwitchLeft, twoRightSwitchRight;
+
+    public Path leftCross, rightCross;
+
+    // middle
+    public Path multiMiddleSwitchLeft, multiMiddleSwitchRight;
+
+    public void generatePaths()
+    {
+        multiLeftScaleLeft = new MultiLeftScaleLeft(Robot.getInstance().getDrivebase());
+        multiRightScaleRight = new MultiRightScaleRight(Robot.getInstance().getDrivebase());
+
+        multiLeftScaleRight = new MultiLeftScaleRight(Robot.getInstance().getDrivebase());
+        multiRightScaleLeft = new MultiRightScaleLeft(Robot.getInstance().getDrivebase());
+
+        oneLeftScaleLeft = new OneLeftScaleLeft(Robot.getInstance().getDrivebase());
+        oneRightScaleRight = new OneRightScaleRight(Robot.getInstance().getDrivebase());
+
+
+        oneLeftSwitchLeft = new OneLeftSwitchLeft(Robot.getInstance().getDrivebase());
+        oneRightSwitchRight = new OneRightSwitchRight(Robot.getInstance().getDrivebase());
+
+        twoLeftSwitchLeft = new TwoLeftSwitchLeft(Robot.getInstance().getDrivebase());
+        twoRightSwitchRight = new TwoRightSwitchRight(Robot.getInstance().getDrivebase());
+
+
+        leftCross = new LeftCross(Robot.getInstance().getDrivebase());
+        rightCross = new RightCross(Robot.getInstance().getDrivebase());
+
+
+        multiMiddleSwitchLeft = new MultiMiddleSwitchLeft(Robot.getInstance().getDrivebase());
+        multiMiddleSwitchRight = new MultiMiddleSwitchRight(Robot.getInstance().getDrivebase());
     }
 
     public enum GameFeature
