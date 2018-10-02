@@ -4,19 +4,12 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team1983.commands.autonomous.deadreckoningautos.SwitchCloseScaleClose;
-import frc.team1983.commands.climber.MonitorCams;
+import frc.team1983.commands.autonomous.actions.ActionsEnum;
 import frc.team1983.commands.debugging.RunOneMotor;
-import frc.team1983.commands.drivebase.DriveStraight;
+import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
-import frc.team1983.commands.elevator.SetElevatorSetpoint;
+import frc.team1983.commands.drivebase.deadreckoning.DifferentialTurnAngle;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
 import frc.team1983.services.StatefulDashboard;
@@ -27,12 +20,15 @@ import frc.team1983.subsystems.Climber;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
+import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
+import frc.team1983.util.control.ClosedLoopGains;
 import frc.team1983.util.control.ProfileController;
+import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
@@ -46,15 +42,18 @@ public class Robot extends IterativeRobot
     private Climber climber;
     private DashboardWrapper dashboardWrapper;
     private StatefulDashboard dashboard;
-    private Subsystem subsystem;
-    private GyroPidInput pidSource;
     private AutoManager autoManager;
-    private SendableChooser autonomousSelector;
-    private AutoManager.OwnedSide robotPosition;
-
     private RunOneMotor runOneMotor;
 
+    private ClosedLoopGains leftGains;
+    private ClosedLoopGains rightGains;
+
+    private ClosedLoopGains straightGains;
+    private ClosedLoopGains turnGains;
+
     private static Robot instance;
+
+    private boolean autoRan = false;
 
     public Robot()
     {
@@ -67,8 +66,30 @@ public class Robot extends IterativeRobot
         robotLogger = LoggerFactory.createNewLogger(Robot.class);
         dashboardWrapper = new DashboardWrapper();
         dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
-        dashboard.populate();
-        autoManager = new AutoManager(dashboardWrapper);
+        //dashboard.populate();
+
+        //lemme channel my inner Nathan: vomits
+        /*dashboard.add(this, "LEFT_P", Constants.PidConstants.Drivebase.Left.MAIN.get_kP());
+        dashboard.add(this, "LEFT_I", Constants.PidConstants.Drivebase.Left.MAIN.get_kI());
+        dashboard.add(this, "LEFT_D", Constants.PidConstants.Drivebase.Left.MAIN.get_kD());
+        dashboard.add(this, "LEFT_F", Constants.PidConstants.Drivebase.Left.MAIN.get_kF());
+        dashboard.add(this, "LEFT_KV", Constants.PidConstants.Drivebase.Left.MAIN.get_kV());
+
+        dashboard.add(this, "RIGHT_P", Constants.PidConstants.Drivebase.Right.MAIN.get_kP());
+        dashboard.add(this, "RIGHT_I", Constants.PidConstants.Drivebase.Right.MAIN.get_kI());
+        dashboard.add(this, "RIGHT_D", Constants.PidConstants.Drivebase.Right.MAIN.get_kD());
+        dashboard.add(this, "RIGHT_F", Constants.PidConstants.Drivebase.Right.MAIN.get_kF());
+        dashboard.add(this, "LEFT_KV", Constants.PidConstants.Drivebase.Right.MAIN.get_kV());
+
+        dashboard.add(this, "STRAIGHT_P", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kP());
+        dashboard.add(this, "STRAIGHT_I", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kI());
+        dashboard.add(this, "STRAIGHT_D", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kD());
+        dashboard.add(this, "STRAIGHT_F", Constants.PidConstants.Drivebase.AUX_STRAIGHT.get_kF());
+
+        dashboard.add(this, "TURN_P", Constants.PidConstants.Drivebase.AUX_TURN.get_kP());
+        dashboard.add(this, "TURN_I", Constants.PidConstants.Drivebase.AUX_TURN.get_kI());
+        dashboard.add(this, "TURN_D", Constants.PidConstants.Drivebase.AUX_TURN.get_kD());
+        dashboard.add(this, "TURN_F", Constants.PidConstants.Drivebase.AUX_TURN.get_kF());*/
 
         oi = new OI();
 
@@ -77,14 +98,14 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
         climber = new Climber();
 
+        // god damn it this has to come after everything else do not touch
+        autoManager = new AutoManager(dashboardWrapper);
+
         robotLogger.info("robotInit");
 
-        //autonomousSelector = new SendableChooser();
-        //autonomousSelector.addDefault("Robot is on the left", AutoManager.OwnedSide.LEFT);
-        //autonomousSelector.addObject("Robot is on the right", AutoManager.OwnedSide.RIGHT);
-        //SmartDashboard.putData("Robot position", autonomousSelector);
-
         oi.initializeBindings(this);
+
+        autoManager.generatePaths();
     }
 
     @Override
@@ -97,7 +118,11 @@ public class Robot extends IterativeRobot
     public void disabledInit()
     {
         Scheduler.getInstance().removeAll();
-        updateState(Constants.MotorMap.Mode.DISABLED);
+
+        drivebase.stopProfiles();
+        elevator.stopProfile();
+
+        //dashboard.store();
 
         autoManager.resetGameData();
     }
@@ -115,6 +140,21 @@ public class Robot extends IterativeRobot
         updateState(Constants.MotorMap.Mode.AUTO);
 
         drivebase.setBrakeMode(true);
+
+        drivebase.getGyro().reset();
+
+        //Scheduler.getInstance().add(new DriveFeet(drivebase, 4, 0.75, 0));
+        //Scheduler.getInstance().add(new TurnDegree(drivebase, 45, 0.75));
+
+        /*Scheduler.getInstance().add(new Path(new ArrayList<>(Arrays.asList(
+                new DriveFeet(drivebase, 4, 1, 0),
+                new DriveFeet(drivebase, -4, 1, 0),
+                new DriveFeet(drivebase, 4, 1, 0)
+                new TurnDegree(drivebase, 15, 1),
+                new DriveFeet(drivebase, 3, 1, 0)
+        ))));*/
+
+        autoRan = true; // blargh
     }
 
     @Override
@@ -122,39 +162,27 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
         autoManager.execute();
-
-        robotLogger.info("Left: {} Right: {} Gyro: {}", drivebase.getLeftDistance(), drivebase.getRightDistance(), drivebase.getGyro().getAngle());
     }
+
 
     @Override
     public void teleopInit()
     {
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.TELEOP);
-        //oi.initializeBindings(this);
 
         climber.disengageDogGear();
+        climber.lockForks();
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 
         drivebase.setBrakeMode(false);
-        //Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
-        //Scheduler.getInstance().add(new CollectorRotate(collector, true));
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-
-        SmartDashboard.updateValues();
-        SmartDashboard.putBoolean("Left collector limit switch", collector.isLeftSwitchDown());
-        SmartDashboard.putBoolean("Right collector limit switch", collector.isRightSwitchDown());
-
-        //robotLogger.info("gyro{}", drivebase.getGyro().getAngle());
-        //robotLogger.info("Left drivebase encoder is {}", drivebase.getLeftEncoderValue());
-        //robotLogger.info("Right drivebase encoder is {}", drivebase.getRightEncoderValue());
-
     }
 
     @Override
@@ -176,7 +204,6 @@ public class Robot extends IterativeRobot
         motorDown = new DigitalInput(4);
         manualSpeed = new AnalogInput(2);
 
-
         if(runOneMotor == null)
         {
             runOneMotor = new RunOneMotor();
@@ -191,12 +218,14 @@ public class Robot extends IterativeRobot
 
         runOneMotor.initialize(motors, motorUp, motorDown, manualSpeed);
 
+
+        Scheduler.getInstance().add(new DifferentialTurnAngle(drivebase, dashboard, 90));
     }
 
     @Override
     public void testPeriodic()
     {
-
+        Scheduler.getInstance().run();
     }
 
     private void updateState(Constants.MotorMap.Mode mode)
@@ -251,7 +280,8 @@ public class Robot extends IterativeRobot
         return autoManager;
     }
 
-    public static Robot getInstance()
+    //Synchronized so that we hopefully don't end up with more than one instance
+    public synchronized static Robot getInstance()
     {
         if(instance == null)
         {
@@ -259,5 +289,40 @@ public class Robot extends IterativeRobot
         }
 
         return instance;
+    }
+
+    public ClosedLoopGains getLeftGains()
+    {
+        //return new ClosedLoopGains(dashboard.getDouble(this, "LEFT_P"), dashboard.getDouble(this, "LEFT_I"), dashboard.getDouble(this, "LEFT_D"), dashboard.getDouble(this, "LEFT_F"));
+        return Constants.PidConstants.Drivebase.Left.MAIN;
+    }
+
+    public ClosedLoopGains getRightGains()
+    {
+        //return new ClosedLoopGains(dashboard.getDouble(this, "RIGHT_P"), dashboard.getDouble(this, "RIGHT_I"), dashboard.getDouble(this, "RIGHT_D"), dashboard.getDouble(this, "RIGHT_F"));
+        return Constants.PidConstants.Drivebase.Left.MAIN;
+
+    }
+
+    public ClosedLoopGains getStraightGains()
+    {
+        //return new ClosedLoopGains(dashboard.getDouble(this, "TURN_P"), dashboard.getDouble(this, "TURN_I"), dashboard.getDouble(this, "TURN_D"), dashboard.getDouble(this, "TURN_F"));
+        return Constants.PidConstants.Drivebase.AUX_STRAIGHT;
+    }
+
+    public ClosedLoopGains getTurnGains()
+    {
+        //return new ClosedLoopGains(dashboard.getDouble(this, "STRAIGHT_P"), dashboard.getDouble(this, "STRAIGHT_I"), dashboard.getDouble(this, "STRAIGHT_D"), dashboard.getDouble(this, "STRAIGHT_F"));
+        return Constants.PidConstants.Drivebase.AUX_TURN;
+    }
+
+    public double getLeftKs()
+    {
+        return dashboard.getDouble(this,"LEFT_KS");
+    }
+
+    public double getRightKs()
+    {
+        return dashboard.getDouble(this, "RIGHT_KS");
     }
 }

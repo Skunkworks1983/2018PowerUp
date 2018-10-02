@@ -8,3 +8,4 @@ dist/*
 2018powerup.properties
 2018powerup.xml
 output/*
+.gradle/*
