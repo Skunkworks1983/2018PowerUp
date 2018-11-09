@@ -5,9 +5,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.commands.autonomous.actions.ActionsEnum;
 import frc.team1983.commands.debugging.RunOneMotor;
-import frc.team1983.commands.drivebase.DriveFeet;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.commands.drivebase.deadreckoning.DifferentialTurnAngle;
 import frc.team1983.services.DashboardWrapper;
@@ -16,15 +14,12 @@ import frc.team1983.services.StatefulDashboard;
 import frc.team1983.services.automanager.AutoManager;
 import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.settings.Constants;
-import frc.team1983.subsystems.Climber;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
-import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.util.control.ClosedLoopGains;
 import frc.team1983.util.control.ProfileController;
-import frc.team1983.util.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
@@ -39,7 +34,6 @@ public class Robot extends IterativeRobot
     private Drivebase drivebase;
     private Elevator elevator;
     private Collector collector;
-    private Climber climber;
     private DashboardWrapper dashboardWrapper;
     private StatefulDashboard dashboard;
     private AutoManager autoManager;
@@ -96,7 +90,6 @@ public class Robot extends IterativeRobot
         drivebase = new Drivebase();
         collector = new Collector();
         elevator = new Elevator();
-        climber = new Climber();
 
         // god damn it this has to come after everything else do not touch
         autoManager = new AutoManager(dashboardWrapper);
@@ -170,9 +163,6 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
         updateState(Constants.MotorMap.Mode.TELEOP);
-
-        climber.disengageDogGear();
-        climber.lockForks();
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
 
@@ -259,10 +249,6 @@ public class Robot extends IterativeRobot
     public Collector getCollector()
     {
         return collector;
-    }
-
-    public Climber getClimber() {
-        return climber;
     }
 
     public StatefulDashboard getStatefulDashboard()

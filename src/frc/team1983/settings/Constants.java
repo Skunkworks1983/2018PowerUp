@@ -84,42 +84,6 @@ public class Constants
             public static final boolean RIGHT_SWITCH_REVERSED = true;
         }
 
-        public static class Ramps
-        {
-            public static final int LEFT_RAMPLOCK = 0;
-            public static final int RIGHT_RAMPLOCK = 2;
-
-            public static final int LEFT_LEG = 1;
-            public static final int RIGHT_LEG = 3;
-        }
-
-        public static class Climber // magic numbers
-        {
-            //two drop
-            //two hook
-            //two cam servos
-            //two limit switches on cam servos
-
-            public static final int TENSION_MOTOR = 3;
-            public static final boolean TENSION_MOTOR_REVERSED = false;
-
-            public static final int DROP_SERVO_LEFT = 0;
-            public static final int DROP_SERVO_RIGHT = 5;
-
-            public static final int HOOK_MOTOR = 2;
-
-            public static final int CAM_SERVO_LEFT = 2;
-            public static final int CAM_SERVO_RIGHT = 3;
-
-            public static final int CAM_SWITCH_LEFT = 8;
-            public static final int CAME_SWTICH_RIGHT = 5;
-
-            //free current 1.8 amps
-            //stall current 41 amps
-            public static final double UPPER_TENSION_MOTOR_CURRENT = 30;
-        }
-
-
         //Random and hard to classify drivebase constants
         public static class DrivebaseConstants
         {
@@ -273,13 +237,6 @@ public class Constants
         }
 
         //setpoints for motors
-        //TODO: Refactor out of this scope
-        public static class MotorSetpoints
-        {
-            //the position to which the ramp servos rotate.
-            public static final double RAMP_DROP_SERVO_GOAL = 1; //TODO: find actual goal
-            public static final double RAMP_PROP_SERVO_GOAL = 1;
-        }
 
         public static class ElevatorControlPid
         {
@@ -394,14 +351,6 @@ public class Constants
             public static final int BOTTOM = 12;
             public static final int M_UP = 6;
             public static final int M_DOWN = 5;
-        }
-
-        public static class ClimberButtons
-        {
-            public static final int HOOK = 20;
-            public static final int DROP_FORKS = 21;
-            public static final int CREATE_TENSION = 22;
-            public static final int ENGAGE_DOG_GEARS = 23;
         }
 
         // number of encoder ticks to allow for collector to fold over top of elevator, sorry for bad name

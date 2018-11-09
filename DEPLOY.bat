@@ -1,1 +1,0 @@
-C:\Users\s-2508657\Desktop\Repos\2018PowerDown\gradlew.bat deploy --offline
