@@ -18,17 +18,16 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.util.control.ClosedLoopGains;
-import frc.team1983.util.control.ProfileController;
+import frc.team1983.utility.control.ClosedLoopGains;
+import frc.team1983.utility.control.Profiler;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Robot extends IterativeRobot
 {
     private static Logger robotLogger;
-    private ArrayList<ProfileController> profileControllers = new ArrayList<>();
+    private ArrayList<Profiler> profileControllers = new ArrayList<>();
 
     private OI oi;
     private Drivebase drivebase;
@@ -220,13 +219,13 @@ public class Robot extends IterativeRobot
 
     private void updateState(Constants.MotorMap.Mode mode)
     {
-        for(ProfileController controller : profileControllers)
+        for(Profiler controller : profileControllers)
         {
             controller.updateRobotState(mode);
         }
     }
 
-    public void addProfileController(ProfileController controller)
+    public void addProfileController(Profiler controller)
     {
         profileControllers.add(controller);
     }

@@ -1,8 +1,6 @@
 package frc.team1983.commands.drivebase;
 
 import frc.team1983.subsystems.Drivebase;
-import frc.team1983.util.motion.profiles.CruiseProfile;
-import frc.team1983.util.motion.profiles.TrapezoidalProfile;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

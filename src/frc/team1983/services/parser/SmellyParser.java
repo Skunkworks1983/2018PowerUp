@@ -2,13 +2,10 @@ package frc.team1983.services.parser;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.wpi.first.wpilibj.command.Command;
-import frc.team1983.Robot;
 import frc.team1983.commands.drivebase.DriveProfile;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.settings.Constants;
-import frc.team1983.util.path.Path;
+import frc.team1983.utility.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
 import java.io.File;
@@ -16,7 +13,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class SmellyParser
 {

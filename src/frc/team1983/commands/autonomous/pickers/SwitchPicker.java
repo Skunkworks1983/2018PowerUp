@@ -9,7 +9,7 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.sensors.Pigeon;
-import frc.team1983.util.path.Path;
+import frc.team1983.utility.path.Path;
 
 import java.util.ArrayList;
 import java.util.Arrays;

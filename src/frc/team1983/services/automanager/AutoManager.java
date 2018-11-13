@@ -14,15 +14,9 @@ import frc.team1983.commands.autonomous.routines.left.OneLeftSwitchLeft;
 import frc.team1983.commands.autonomous.routines.left.TwoLeftSwitchLeft;
 import frc.team1983.commands.autonomous.routines.middle.MultiMiddleSwitchLeft;
 import frc.team1983.commands.autonomous.routines.middle.MultiMiddleSwitchRight;
-import frc.team1983.commands.autonomous.routines.right.MultiRightScaleLeft;
-import frc.team1983.commands.autonomous.routines.right.MultiRightScaleRight;
-import frc.team1983.commands.autonomous.routines.right.OneRightScaleRight;
-import frc.team1983.commands.autonomous.routines.right.OneRightSwitchRight;
-import frc.team1983.commands.autonomous.routines.right.RightCross;
-import frc.team1983.commands.autonomous.routines.right.TwoRightSwitchRight;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.util.path.Path;
+import frc.team1983.utility.path.Path;
 import org.apache.logging.log4j.core.Logger;
 
 /**

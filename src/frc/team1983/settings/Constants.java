@@ -2,7 +2,7 @@ package frc.team1983.settings;
 
 
 import frc.team1983.subsystems.Drivebase;
-import frc.team1983.util.control.ClosedLoopGains;
+import frc.team1983.utility.control.ClosedLoopGains;
 
 import java.io.File;
 
