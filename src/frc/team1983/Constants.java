@@ -1,4 +1,4 @@
-package frc.team1983.settings;
+package frc.team1983;
 
 
 import frc.team1983.subsystems.Drivebase;

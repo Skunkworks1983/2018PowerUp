@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.hal.HAL;
-import frc.team1983.settings.Constants;
+import frc.team1983.Constants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

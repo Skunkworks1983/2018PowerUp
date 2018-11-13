@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.commands.autonomous.actions.ActionsEnum;
-import frc.team1983.settings.Constants;
+import frc.team1983.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseAuxiliaryPidOutput;

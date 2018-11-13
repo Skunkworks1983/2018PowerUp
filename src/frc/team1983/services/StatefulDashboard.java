@@ -1,7 +1,7 @@
 package frc.team1983.services;
 
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.settings.Constants;
+import frc.team1983.Constants;
 import org.apache.logging.log4j.core.Logger;
 
 import java.io.BufferedReader;

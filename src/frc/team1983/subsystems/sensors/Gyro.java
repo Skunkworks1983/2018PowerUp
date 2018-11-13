@@ -3,7 +3,7 @@ package frc.team1983.subsystems.sensors;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SPI;
-import frc.team1983.settings.Constants.SensorMap.GyroConstants;
+import frc.team1983.Constants.SensorMap.GyroConstants;
 
 //Class designed for the NavX-MXP that we use on the robot. We only ever need to get the Y axis ("yaw" of the robot),
 //so that's the only exposed method.

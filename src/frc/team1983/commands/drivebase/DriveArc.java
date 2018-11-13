@@ -5,7 +5,7 @@ package frc.team1983.commands.drivebase;
 //import com.fasterxml.jackson.annotation.JsonProperty;
 //import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import frc.team1983.commands.autonomous.actions.ActionsEnum;
-import frc.team1983.settings.Constants;
+import frc.team1983.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.utility.motion.profiles.CruiseProfile;
 import frc.team1983.utility.motion.profiles.TrapezoidalProfile;

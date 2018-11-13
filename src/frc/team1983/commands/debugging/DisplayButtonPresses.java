@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.services.OI;
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.settings.Constants;
+import frc.team1983.Constants;
 import org.apache.logging.log4j.core.Logger;
 
 
