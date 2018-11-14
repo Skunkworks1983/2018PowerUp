@@ -53,8 +53,8 @@ public class Drivebase extends Subsystem
         left1.setSensorPhase(true);
         right1.setSensorPhase(true);
 
-        left1.setGains(0, Robot.getInstance().getLeftGains());
-        right1.setGains(0, Robot.getInstance().getRightGains());
+        left1.setGains(0, Constants.PidConstants.Drivebase.Left.MAIN);
+        right1.setGains(0, Constants.PidConstants.Drivebase.Right.MAIN);
 
         left1.linkSignal(signal);
         right1.linkSignal(signal);
