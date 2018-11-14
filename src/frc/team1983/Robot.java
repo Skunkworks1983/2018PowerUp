@@ -1,11 +1,7 @@
 package frc.team1983;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.team1983.commands.debugging.RunOneMotor;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.DashboardWrapper;
 import frc.team1983.services.OI;
@@ -16,11 +12,8 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.sensors.PSoC;
-import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.utility.control.ClosedLoopGains;
 import org.apache.logging.log4j.core.Logger;
-
-import java.util.ArrayList;
 
 public class Robot extends IterativeRobot
 {
@@ -33,8 +26,6 @@ public class Robot extends IterativeRobot
     private DashboardWrapper dashboardWrapper;
     private StatefulDashboard dashboard;
     private AutoManager autoManager;
-
-    private RunOneMotor runOneMotor;
 
     private PSoC psoc;
 
@@ -124,41 +115,12 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-
-        byte[] in = new byte[8];
-        byte[] out = new byte[8];
-        psoc.getSensorValue(out, in);
     }
 
     @Override
     public void testInit()
     {
         Scheduler.getInstance().removeAll();
-
-        ArrayList<Motor> motors;
-        motors = new ArrayList<>();
-
-        DigitalInput motorUp;
-        DigitalInput motorDown;
-        AnalogInput manualSpeed;
-
-        motorUp = new DigitalInput(5);
-        motorDown = new DigitalInput(4);
-        manualSpeed = new AnalogInput(2);
-
-        if(runOneMotor == null)
-        {
-            runOneMotor = new RunOneMotor();
-        }
-
-        for(int i = 0; i < 16; i++)
-        {
-            motors.add(new Motor(i, false));
-            motors.get(i).setNeutralMode(NeutralMode.Coast);
-            //robotLogger.info("Initialized motor " + i);
-        }
-
-        runOneMotor.initialize(motors, motorUp, motorDown, manualSpeed);
     }
 
     @Override
