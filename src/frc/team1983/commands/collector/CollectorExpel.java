@@ -2,7 +2,7 @@ package frc.team1983.commands.collector;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.commands.CommandBase;
-import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.services.LoggerFactory;
 import frc.team1983.subsystems.Collector;
 import org.apache.logging.log4j.core.Logger;
 

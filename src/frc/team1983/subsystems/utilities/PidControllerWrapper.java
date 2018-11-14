@@ -3,9 +3,7 @@ package frc.team1983.subsystems.utilities;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
-import frc.team1983.services.logger.LoggerFactory;
-
-import java.util.logging.Logger;
+import frc.team1983.services.LoggerFactory;
 
 /*Class that wraps the PIDController class provided by WpiLib. Not used for any extra functionality yet, but should be
   the default implementation in our codebase.

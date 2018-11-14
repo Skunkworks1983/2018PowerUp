@@ -1,7 +1,7 @@
 package frc.team1983.subsystems.utilities.outputwrappers;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.services.LoggerFactory;
 import frc.team1983.subsystems.Drivebase;
 import org.apache.logging.log4j.core.Logger;
 

@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.OI;
-import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.services.LoggerFactory;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
-import frc.team1983.subsystems.sensors.PSoC;
+import frc.team1983.utility.sensors.PSoC;
 import org.apache.logging.log4j.core.Logger;
 
 public class Robot extends IterativeRobot

@@ -1,9 +1,8 @@
-package frc.team1983.subsystems.sensors;
+package frc.team1983.utility.sensors;
 
-import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.sensors.PigeonIMU;
-import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.subsystems.utilities.Motor;
+import frc.team1983.services.LoggerFactory;
+import frc.team1983.utility.control.Motor;
 import org.apache.logging.log4j.core.Logger;
 
 public class Pigeon extends PigeonIMU

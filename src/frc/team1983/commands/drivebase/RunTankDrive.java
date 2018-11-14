@@ -3,7 +3,7 @@ package frc.team1983.commands.drivebase;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.OI;
-import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.services.LoggerFactory;
 import frc.team1983.Constants;
 import frc.team1983.subsystems.Drivebase;
 import org.apache.logging.log4j.core.Logger;

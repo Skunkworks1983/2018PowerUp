@@ -1,4 +1,4 @@
-package frc.team1983.subsystems.utilities;
+package frc.team1983.utility.control;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;

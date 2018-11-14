@@ -3,9 +3,9 @@ package frc.team1983.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.Robot;
-import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.services.LoggerFactory;
 import frc.team1983.Constants;
-import frc.team1983.subsystems.utilities.Motor;
+import frc.team1983.utility.control.Motor;
 import frc.team1983.utility.motion.MotionProfile;
 import org.apache.logging.log4j.core.Logger;
 

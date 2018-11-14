@@ -1,6 +1,6 @@
 package frc.team1983.subsystems.utilities.outputwrappers;
 
-import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.services.LoggerFactory;
 import org.apache.logging.log4j.core.Logger;
 
 public class DifferentialAdjustmentPidOutput extends PidOutputWrapper

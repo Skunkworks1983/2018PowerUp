@@ -1,4 +1,4 @@
-package frc.team1983.subsystems.sensors;
+package frc.team1983.utility.sensors;
 
 import edu.wpi.first.wpilibj.SPI;
 

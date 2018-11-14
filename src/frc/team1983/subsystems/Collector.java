@@ -4,10 +4,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.Robot;
-import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.services.LoggerFactory;
 import frc.team1983.Constants;
 import frc.team1983.subsystems.sensors.DigitalInputWrapper;
-import frc.team1983.subsystems.utilities.Motor;
+import frc.team1983.utility.control.Motor;
 import org.apache.logging.log4j.core.Logger;
 
 import static frc.team1983.Constants.OIMap.ALLOWABLE_FOLDOVER_DROP;

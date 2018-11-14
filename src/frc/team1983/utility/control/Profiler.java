@@ -5,9 +5,8 @@ import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.Robot;
-import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.services.LoggerFactory;
 import frc.team1983.Constants;
-import frc.team1983.subsystems.utilities.Motor;
 import frc.team1983.utility.motion.MotionProfile;
 import org.apache.logging.log4j.core.Logger;
 
