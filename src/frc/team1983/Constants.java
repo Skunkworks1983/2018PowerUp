@@ -1,0 +1,425 @@
+package frc.team1983;
+
+
+import frc.team1983.subsystems.Drivebase;
+import frc.team1983.utility.control.ClosedLoopGains;
+
+import java.io.File;
+
+//This file contains all constants used across the entire robot, stored within subclasses.
+public class Constants
+{
+    //MotorMap contains all constants that motors require (ports, reversed values, etc)
+    public static class MotorMap
+    {
+        public enum Mode
+        {
+            DISABLED, AUTO, TELEOP, TEST
+        }
+
+        //Ports for the drivebase motors
+        public static class Drivebase
+        {
+            public static final int LEFT_1 = 14;
+            public static final int LEFT_2 = 13;
+            public static final int LEFT_3 = 15;
+
+            public static final int RIGHT_1 = 1;
+            public static final int RIGHT_2 = 0;
+            public static final int RIGHT_3 = 2;
+
+            public static final boolean LEFT1_REVERSED = true;
+            public static final boolean LEFT2_REVERSED = true;
+            public static final boolean LEFT3_REVERSED = true;
+
+            public static final boolean RIGHT1_REVERSED = false;
+            public static final boolean RIGHT2_REVERSED = false;
+            public static final boolean RIGHT3_REVERSED = false;
+
+            public static final double WHEELBASE_WIDTH = 28.0 / 12.0;
+
+            public static final double WHEEL_CIRCUMFERENCE = (6.0 / 12.0) * Math.PI;
+            public static final double ENCODER_REDUCTION = 18.0 / 24.0;
+            public static final double ENCODER_RESOLUTION = 1000;
+
+            public static final double DRIVEBASE_TICKS_PER_FOOT = 1;
+        }
+
+        public static class Elevator
+        {
+            public static final int RIGHT1 = 5;
+            public static final int RIGHT2 = 6;
+
+            public static final int LEFT1 = 9;
+            public static final int LEFT2 = 4;
+
+            public static final boolean LEFT1_REVERSED = true;
+            public static final boolean LEFT2_REVERSED = true;
+
+            public static final boolean RIGHT1_REVERSED = false;
+            public static final boolean RIGHT2_REVERSED = false;
+
+            public static final double SPROCKET_CIRCUMFERENCE = (1.888 / 12.0) * Math.PI;
+            public static final double TRAVEL_LENGTH = 38.0 / 12.0;
+            public static final double ENCODER_RESOLUTION = 4500;
+        }
+
+        public static class Collector
+        {
+            public static final int LEFT = 10;
+            public static final int RIGHT = 11;
+
+            public static final int ROTATE_LEFT = 3;
+            public static final int ROTATE_RIGHT = 12;
+
+            public static final boolean LEFT_REVERSED = true;
+            public static final boolean RIGHT_REVERSED = false;
+            public static final boolean ROTATE_LEFT_REVERSED = true;
+            public static final boolean ROTATE_RIGHT_REVERSED = false;
+
+            public static final int LEFT_SWITCH = 1;
+            public static final int RIGHT_SWITCH = 0;
+
+            public static final boolean LEFT_SWITCH_REVERSED = true;
+            public static final boolean RIGHT_SWITCH_REVERSED = true;
+        }
+
+        //Random and hard to classify drivebase constants
+        public static class DrivebaseConstants
+        {
+            public static final double DRIVEBASE_TICKS_PER_FOOT = 1000 / AutoValues.EFFECTIVE_REDUCTION_DRIVEBASE
+                    / AutoValues.WHEEL_CIRCUMFERENCE;
+            public static final int RIGHT1 = 0;
+            public static final int RIGHT2 = 0;
+
+            public static final boolean LEFT1_REVERSED = true;
+            public static final boolean LEFT2_REVERSED = false;
+            public static final boolean RIGHT1_REVERSED = true;
+            public static final boolean RIGHT2_REVERSED = false;
+        }
+    }
+
+    public static class MotorSetpoints
+    {
+        //The speed at which to run the collector when intaking or expelling. I'm assuming we want it at full.
+        public static final double COLLECTOR_ROTATE_SPEED = -0.5;
+        public static final double COLLECTOR_INTAKE_SPEED = -1;
+        public static final double COLLECTOR_EXPEL_SPEED = 0.75;
+        public static final double COLLECTOR_SLOW_EXPEL_SPEED = 0.25;
+
+
+        //The number of command cycles (runs at 50 Hertz) after a limit switch
+        //is activated that it will always return true (for debouncing)
+        public static final int COLLECTOR_SWITCH_DEBOUNCE_TIME = 10;
+    }
+
+    public static class DashboardConstants
+    {
+        public static final File FILE = new File("/home/lvuser/DashboardValues.txt");
+        public static final Double DEFAULT_DOUBLE = 0.0;
+        public static final Boolean DEFAULT_BOOLEAN = false;
+        public static final String DEFAULT_STRING = "You're a dum-dum for not initializing this correctly";
+        public static final String KEY_SEPARATOR = "-";
+        public static final String VALUE_SEPARATOR = ":";
+        public static final String ELEVATOR_CONTROL_NAME = "elevator";
+    }
+
+    //this class contains subclasses that contain PIDF values used in commands.
+    public static class PidConstants
+    {
+        public static class Drivebase
+        {
+            public static class Left
+            {
+                public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+                        0.2,//0.45,//-0.1,//0.45,
+                        0,
+                        0.165,//0.2,//-0.35,
+                        0,
+                        0, //Motion.DRIVEBASE_LEFT_KS,
+                        -1300 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
+                        0 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
+                );
+            }
+
+            public static class Right
+            {
+                public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+                        0.2,//0.45,//-0.1,//0.45,
+                        0,
+                        0.165,//0.2,//-0.35,
+                        0,
+                        0,//Motion.DRIVEBASE_LEFT_KS,
+                        -1300 / Motion.DRIVEBASE_LEFT_MAX_VELOCITY,
+                        0 / Motion.DRIVEBASE_LEFT_MAX_ACCELERATION
+                );
+            }
+
+            public static ClosedLoopGains AUX_STRAIGHT = new ClosedLoopGains(
+                    0.03, 0, 0.075, 0
+            );
+
+            public static ClosedLoopGains AUX_TURN = new ClosedLoopGains(
+                    0.08 / 2.65,0,0.1,0//0.01, 0, 0.006, 0
+            );
+
+            public static ClosedLoopGains AUX_ARC = new ClosedLoopGains(
+                    0, 0, 0, 0
+            );
+        }
+
+        public static class Elevator
+        {
+            public static final ClosedLoopGains MAIN = new ClosedLoopGains(
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,//0.1,
+                    0,//1023 / Motion.ELEVATOR_MAX_VELOCITY,
+                    0//1023 / Motion.ELEVATOR_MAX_ACCELERATION
+            );
+        }
+
+        //PIDF values for the DriveStraight command
+        public static class DriveStraightPid
+        {
+            public static final double P = 0.11;
+            public static final double I = 0;
+            public static final double D = 0;
+            public static final double F = 0;
+
+            public static final double DEFAULT_BASE_SPEED = 0.5;
+            public static final double DEFAULT_TIMEOUT = 3;
+        }
+
+        //PIDF values for the SimpleTurnAngle command
+        public static class TurnAnglePid
+        {
+            public static class DifferentialAdjustmentPid
+            {
+                public static final double P = 0.017; //TODO: tune pid
+                public static final double I = 0;
+                public static final double D = 0.08;
+                public static final double F = 0;
+            }
+            public static class DifferentialPivotPid
+            {
+                public static final double P = 0.00001;
+                public static final double I = 0;
+                public static final double D = 0;
+                public static final double F = 0;
+            }
+            public static class SimpleTurnPid
+            {
+                public static final double P = 0;
+                public static final double I = 0;
+                public static final double D = 0;
+                public static final double F = 0;
+            }
+
+            public static final double ABSOLUTE_TOLERANCE = 3;
+
+            public static final double DEFAULT_TIMEOUT = 2.;
+        }
+
+        public static class CollectorRotate
+        {
+            public static final double P = 1.5;//.01;
+            public static final double I = 0;
+            public static final double D = 2;
+            public static final double F = 0;//.002;
+
+            public static final double BACK_TICKS = -700;
+            public static final double UP_TICKS = 0; //response to slop in chai
+            public static final double MID_TICKS = 500;//response to slop in chain
+            public static final double DOWN_TICKS = 1200;
+        }
+
+        //setpoints for motors
+
+        public static class ElevatorControlPid
+        {
+            public static final int ELEVATOR_BOTTOM = 0;
+            //Actually negative, but ya know,
+            public static final int ELEVATOR_TOP = 29000 - 150; //Addition is to keep it from hitting the max position
+            public static final double ELEVATOR_MID_PERCENT = 0.979; //constant chosen to reproduce trial and error values
+            public static final double ELEVATOR_LOW_PERCENT = 0.96;
+            public static final double ELEVATOR_TRAVEL_PERCENT = 0.03; //taking thomas' 800 number, actual percent is 2.8
+            public static final double ELEVATOR_TOP_PERCENT = 0.99;
+
+            public static class Slot0
+            {
+                public static final double P = 0.17;
+                public static final double I = 0.002;
+                public static final double D = 23;
+                public static final double F = 0;
+                public static final int I_ZONE = 1000;
+
+                public static final int ALLOWABLE_CLOSED_LOOP_ERROR = 50;
+            }
+            public static class Slot1
+            {
+                public static final double P = 0.08;
+                public static final double I = 0.00005;
+                public static final double D = 23;
+                public static final double F = 0;
+                public static final int I_ZONE = 800;
+
+                public static final int ALLOWABLE_CLOSED_LOOP_ERROR = 50;
+            }
+
+        }
+    }
+
+    public static class AutoValues
+    {
+        public static final double WHEELBASE_RADIUS = 25.625 / 2 / 12; //T fix magic number
+        public static final double WHEELBASE_CIRCUMFERENCE = 2 * Math.PI * WHEELBASE_RADIUS;
+        public static final double WHEELBASE_DEGREES = WHEELBASE_CIRCUMFERENCE / 360.;
+        public static final double EFFECTIVE_REDUCTION_DRIVEBASE = 18 / 24.;
+        public static final double WHEEL_CIRCUMFERENCE = 6 * Math.PI / 12.;
+        public static final double DISTANCE_FROM_ENCODER_TO_END_OF_ROBOT = 1.4;
+        public static final double DRIVEBASE_ENCODER_FUDGE_FACTOR = 6 / 6.3;
+
+        public static final double MAX_OUTPUT = 0.5;
+        public static final double DISTANCE_SCALAR = 1000;
+
+        public static final double DIFFERENTIAL_TURN_ANGLE_BASESPEED = .26;
+    }
+
+    //this contains all values relevant to the OIMap.
+    public static class OIMap
+    {
+        public static final int MANUAL_SWITCH = 4; //button 9 on the 2016 oi
+
+        public static final double JOYSTICK_DEADZONE = 0.15;
+        public static final double JOYSTICK_RAMP_EXPONENT = 2;
+
+        public static final int JOY_BUTTON_COUNT = 5; //TODO TODO TODO: CHANGE
+        public static final int OI_BUTTON_COUNT = 24; //TODO TODO TODO: CHANGE
+
+        public enum Joystick
+        {
+            LEFT, RIGHT, PANEL
+        }
+
+        public class Axis
+        {
+            public static final int X = 0;
+            public static final int Y = 1;
+            public static final int Z = 2;
+        }
+
+        //Agglomeration of constants relating to the joysticks
+        public static class OIConstants
+        {
+            //Joystick constants
+            public static final double JOYSTICK_TOLERANCE = 0.5;
+
+            //Scalar coefficient of the slider on the OIMap
+            public static final double SLIDER_SCALAR = 0.618726;
+        }
+
+        public static class SliderConstants
+        {
+            public static final int SLIDER_PRESETS_TOGGLE = 0;
+            public static final int BOTTOM_PRESET = 1;
+            public static final int SWITCH_PRESET = 2;
+            public static final int SCALE_PRESET = 3;
+        }
+
+        public static class CollectorButtons
+        {
+            public static final int INTAKE = 17;
+            public static final int EXPEL = 19;
+            public static final int BOOP = 13;
+            public static final int M_INTAKE = 1;
+            public static final int M_EXPEL = 0;
+            public static final int UP = 18;
+            public static final int DOWN = 16;
+            public static final int M_UP = 2;
+            public static final int M_DOWN = 3;
+        }
+
+        public static class ElevatorButtons
+        {
+            public static final int TOP = 8;
+            public static final int MID = 9;
+            public static final int LOW = 10;
+            public static final int SWITCH = 11;
+            public static final int BOTTOM = 12;
+            public static final int M_UP = 6;
+            public static final int M_DOWN = 5;
+        }
+
+        // number of encoder ticks to allow for collector to fold over top of elevator, sorry for bad name
+        public static final int ALLOWABLE_ERROR_FOLDOVER = 600;
+        // number of encoder ticks on wrist to allow the elevator to drop
+        public static final int ALLOWABLE_FOLDOVER_DROP = -100;
+
+        //Enums for presets
+        public enum Setpoint
+        {
+            BOTTOM(0),
+            TRAVEL(2100), //upped from 1860
+            BARF(4500),
+            NEW_AGE_BARF(9125+1200+1000),
+            SWITCH(9125+2200), // elevator halfway point
+            LOW(22700 +400),
+            MID(27000),
+            TOP(29000); //TODO: add 400 once magnet moves
+
+            private final double encoderTicks;
+
+            Setpoint(double encoderTicks)
+            {
+                this.encoderTicks = encoderTicks;
+            }
+
+            public double getEncoderTicks()
+            {
+                return encoderTicks;
+            }
+
+        }
+    }
+
+
+    public static class SensorMap
+    {
+        public static class GyroConstants
+        {
+            public static final int IS_CONNECTED_TIMEOUT = 500;
+            public static final int IS_CALIBRATING_TIMEOUT = 500;
+        }
+
+        public static class Collector
+        {
+            public static final int LEFT_CAM_SWITCH = 4;
+            public static final int RIGHT_CAM_SWITCH = 5;
+            public static final boolean LEFT_CAM_REVERSED = false;
+            public static final boolean RIGHT_CAM_REVERSED = false;
+        }
+    }
+
+    public static class Motion
+    {
+        public static final double DEFAULT_MOTIONPROFILE_ACCEL_TIME = 0.5; // [0-1]
+        public static final int MIN_POINTS_IN_TALON = 3;
+
+        public static final double DRIVEBASE_LEFT_KS = 0.12;
+        public static final double DRIVEBASE_LEFT_MAX_VELOCITY = 14000.0; // sensor units per second
+        public static final double DRIVEBASE_LEFT_MAX_ACCELERATION = DRIVEBASE_LEFT_MAX_VELOCITY / 2; // sensor units per second per second
+
+        public static final double DRIVEBASE_RIGHT_KS = 0.12;
+        public static final double DRIVEBASE_RIGHT_MAX_VELOCITY = 14600.0; // sensor units per second
+        public static final double DRIVEBASE_RIGHT_MAX_ACCELERATION = DRIVEBASE_RIGHT_MAX_VELOCITY / 2; // sensor units per second per second
+        public static final double ELEVATOR_MAX_VELOCITY = 4010.0;
+        public static final double ELEVATOR_MAX_ACCELERATION = ELEVATOR_MAX_VELOCITY / 0.75;
+
+        public static final double DRIVEBASE_TICKS_END_RANGE = Drivebase.getTicks(1000 / 12);
+        public static final double DRIVEBASE_IN_RANGE_END_TIME = 0.25;
+        public static final double DRIVEBASE_HEADING_END_RANGE = 10;
+    }
+}

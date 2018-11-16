@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.HLUsageReporting;
 import edu.wpi.first.wpilibj.Timer;
 import frc.team1983.commands.drivebase.deadreckoning.SimpleTurnAngle;
 import frc.team1983.services.StatefulDashboard;
-import frc.team1983.settings.Constants;
+import frc.team1983.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;

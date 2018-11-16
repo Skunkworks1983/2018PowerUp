@@ -1,9 +1,6 @@
 package frc.team1983.subsystems.utilities.inputwrappers;
 
-import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.subsystems.Drivebase;
-import frc.team1983.subsystems.sensors.Gyro;
-import org.apache.logging.log4j.core.Logger;
 
 //time-sensitive initialization
 //Implementation of PidInputWrapper, specifically for DifferentialTurnAngle command.

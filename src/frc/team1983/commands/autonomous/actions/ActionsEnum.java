@@ -1,19 +1,14 @@
 package frc.team1983.commands.autonomous.actions;
 
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
-import frc.team1983.Robot;
-import frc.team1983.commands.CommandBase;
 import frc.team1983.commands.DoNothing;
 import frc.team1983.commands.collector.CollectorExpel;
 import frc.team1983.commands.collector.CollectorIntake;
 import frc.team1983.commands.collector.CollectorRotate;
 import frc.team1983.commands.elevator.SetElevatorSetpoint;
-import frc.team1983.settings.Constants;
+import frc.team1983.Constants;
 
-import static frc.team1983.settings.Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED;
-import static frc.team1983.settings.Constants.MotorSetpoints.COLLECTOR_SLOW_EXPEL_SPEED;
+import static frc.team1983.Constants.MotorSetpoints.COLLECTOR_SLOW_EXPEL_SPEED;
 
 
 public enum ActionsEnum

@@ -1,7 +1,6 @@
 package frc.team1983.subsystems.utilities.inputwrappers;
 
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.subsystems.sensors.Gyro;
 import frc.team1983.subsystems.sensors.Pigeon;
 import org.apache.logging.log4j.core.Logger;
 

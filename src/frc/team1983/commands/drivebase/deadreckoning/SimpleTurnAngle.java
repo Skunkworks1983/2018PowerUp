@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.StatefulDashboard;
-import frc.team1983.settings.Constants;
+import frc.team1983.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.inputwrappers.EncoderTurnAnglePidInput;

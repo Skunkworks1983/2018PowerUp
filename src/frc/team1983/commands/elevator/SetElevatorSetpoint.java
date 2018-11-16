@@ -2,7 +2,7 @@ package frc.team1983.commands.elevator;
 
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.settings.Constants;
+import frc.team1983.Constants;
 import frc.team1983.subsystems.Elevator;
 import org.apache.logging.log4j.core.Logger;
 

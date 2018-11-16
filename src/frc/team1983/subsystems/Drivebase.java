@@ -3,16 +3,14 @@ package frc.team1983.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.Robot;
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.settings.Constants;
-import frc.team1983.subsystems.sensors.Gyro;
+import frc.team1983.Constants;
 import frc.team1983.subsystems.sensors.Pigeon;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.util.control.ProfileSignal;
-import frc.team1983.util.motion.MotionProfile;
+import frc.team1983.utility.control.ProfilerSignal;
+import frc.team1983.utility.motion.MotionProfile;
 import org.apache.logging.log4j.core.Logger;
 
 //The base of the robot. Consists of the drive train motors, slaved to each other.
@@ -20,7 +18,7 @@ public class Drivebase extends Subsystem
 {
     public Motor left1, left2, left3;
     public Motor right1, right2, right3;
-    private ProfileSignal signal;
+    private ProfilerSignal signal;
     private Pigeon gyro;
 
     private Logger logger;
@@ -41,7 +39,7 @@ public class Drivebase extends Subsystem
         right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 
         gyro = new Pigeon(left3);
-        signal = new ProfileSignal();
+        signal = new ProfilerSignal();
 
         left1.configClosedLoopPeakOutput(0, 1, 0);
         right1.configClosedLoopPeakOutput(0, 1, 0);

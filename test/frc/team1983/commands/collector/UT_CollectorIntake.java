@@ -2,8 +2,7 @@ package frc.team1983.commands.collector;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.hal.HAL;
-import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.settings.Constants;
+import frc.team1983.Constants;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.testutility.FakeScheduler;
 import org.junit.After;

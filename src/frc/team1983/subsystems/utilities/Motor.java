@@ -1,14 +1,13 @@
 package frc.team1983.subsystems.utilities;
 
 import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team1983.Robot;
-import frc.team1983.util.control.ClosedLoopGains;
-import frc.team1983.util.control.ProfileController;
-import frc.team1983.util.control.ProfileSignal;
-import frc.team1983.util.motion.MotionProfile;
+import frc.team1983.utility.control.ClosedLoopGains;
+import frc.team1983.utility.control.Profiler;
+import frc.team1983.utility.control.ProfilerSignal;
+import frc.team1983.utility.motion.MotionProfile;
 
 import java.util.HashMap;
 
@@ -16,7 +15,7 @@ import java.util.HashMap;
 public class Motor extends TalonSRX
 {
     protected HashMap<Integer, ClosedLoopGains> gains;
-    public ProfileController manager;
+    public Profiler manager;
 
     private double auxiliaryOutput;
 
@@ -79,15 +78,15 @@ public class Motor extends TalonSRX
     public void setProfile(MotionProfile profile)
     {
         if(manager == null)
-            manager = new ProfileController(this, Robot.getInstance());
+            manager = new Profiler(this, Robot.getInstance());
 
         manager.setProfile(profile);
     }
 
-    public void linkSignal(ProfileSignal signal)
+    public void linkSignal(ProfilerSignal signal)
     {
         if(manager == null)
-            manager = new ProfileController(this, Robot.getInstance());
+            manager = new Profiler(this, Robot.getInstance());
 
         manager.linkSignal(signal);
     }
@@ -95,7 +94,7 @@ public class Motor extends TalonSRX
     public void unlinkSignal()
     {
         if(manager == null)
-            manager = new ProfileController(this, Robot.getInstance());
+            manager = new Profiler(this, Robot.getInstance());
 
         manager.unlinkSignal();
     }
@@ -114,7 +113,7 @@ public class Motor extends TalonSRX
     public void setProfileRunState(boolean run)
     {
         if(manager == null)
-            manager = new ProfileController(this, Robot.getInstance());
+            manager = new Profiler(this, Robot.getInstance());
 
         manager.setEnabled(run);
     }

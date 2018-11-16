@@ -4,15 +4,12 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.Robot;
 import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.settings.Constants;
+import frc.team1983.Constants;
 import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.util.motion.MotionProfile;
+import frc.team1983.utility.motion.MotionProfile;
 import org.apache.logging.log4j.core.Logger;
 
-import static frc.team1983.settings.Constants.OIMap.ALLOWABLE_ERROR_FOLDOVER;
-import static frc.team1983.settings.Constants.OIMap.ALLOWABLE_FOLDOVER_DROP;
-import static frc.team1983.settings.Constants.OIMap.ElevatorButtons.TOP;
-import static frc.team1983.settings.Constants.PidConstants.CollectorRotate.UP_TICKS;
+import static frc.team1983.Constants.OIMap.ALLOWABLE_FOLDOVER_DROP;
 
 //The elevator subsystem
 public class Elevator extends Subsystem

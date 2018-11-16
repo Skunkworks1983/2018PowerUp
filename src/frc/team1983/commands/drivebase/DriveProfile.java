@@ -1,19 +1,15 @@
 package frc.team1983.commands.drivebase;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import edu.wpi.first.wpilibj.PIDController;
 import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.commands.autonomous.actions.ActionsEnum;
-import frc.team1983.services.logger.LoggerFactory;
-import frc.team1983.services.parser.SmellyDeserializer;
-import frc.team1983.settings.Constants;
+import frc.team1983.Constants;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.utilities.inputwrappers.GyroPidInput;
 import frc.team1983.subsystems.utilities.outputwrappers.DrivebaseAuxiliaryPidOutput;
-import frc.team1983.util.control.ClosedLoopGains;
-import frc.team1983.util.motion.profiles.CruiseProfile;
+import frc.team1983.utility.control.ClosedLoopGains;
+import frc.team1983.utility.motion.profiles.CruiseProfile;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.ArrayList;
