@@ -41,10 +41,10 @@ public class Constants
             public static final int INTAKE_RIGHT = 11;
             public static final boolean INTAKE_RIGHT_REVERSED = false;
 
-            public static final int ROTATE_LEFT = 3;
-            public static final boolean ROTATE_LEFT_REVERSED = true;
-            public static final int ROTATE_RIGHT = 12;
-            public static final boolean ROTATE_RIGHT_REVERSED = false;
+            public static final int WRIST_LEFT = 3;
+            public static final boolean WRIST_LEFT_REVERSED = true;
+            public static final int WRIST_RIGHT = 12;
+            public static final boolean WRIST_RIGHT_REVERSED = false;
         }
     }
 
@@ -93,25 +93,14 @@ public class Constants
 
     public static class OIMap
     {
+        public static final int LEFT_JOYSTICK = 0;
+        public static final int RIGHT_JOYSTICK = 1;
+        public static final int PANEL = 2;
+
         public static final int MANUAL_SWITCH = 4;
 
         public static final double JOYSTICK_DEADZONE = 0.15;
         public static final double JOYSTICK_EXPONENT = 2;
-
-        public static final int JOY_BUTTON_COUNT = 5; //TODO TODO TODO: CHANGE
-        public static final int OI_BUTTON_COUNT = 24; //TODO TODO TODO: CHANGE
-
-        public enum Joystick
-        {
-            LEFT, RIGHT, PANEL
-        }
-
-        public class Axis
-        {
-            public static final int X = 0;
-            public static final int Y = 1;
-            public static final int Z = 2;
-        }
 
         public static class CollectorButtons
         {

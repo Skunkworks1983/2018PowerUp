@@ -9,33 +9,27 @@ import frc.team1983.utility.control.Motor;
 public class Collector extends Subsystem
 {
     private Motor intakeLeft, intakeRight;
-    private Motor rotateLeft, rotateRight;
+    private Motor wristLeft, wristRight;
 
     public Collector()
     {
         intakeLeft = new Motor(Constants.MotorMap.Collector.INTAKE_LEFT, Constants.MotorMap.Collector.INTAKE_LEFT_REVERSED);
         intakeRight = new Motor(Constants.MotorMap.Collector.INTAKE_RIGHT, Constants.MotorMap.Collector.INTAKE_RIGHT_REVERSED);
 
-        rotateRight = new Motor(Constants.MotorMap.Collector.ROTATE_RIGHT, Constants.MotorMap.Collector.ROTATE_RIGHT_REVERSED, true);
-        rotateLeft = new Motor(Constants.MotorMap.Collector.ROTATE_LEFT, Constants.MotorMap.Collector.ROTATE_LEFT_REVERSED);
+        wristRight = new Motor(Constants.MotorMap.Collector.WRIST_RIGHT, Constants.MotorMap.Collector.WRIST_RIGHT_REVERSED, true);
+        wristLeft = new Motor(Constants.MotorMap.Collector.WRIST_LEFT, Constants.MotorMap.Collector.WRIST_LEFT_REVERSED);
 
-        intakeLeft.setNeutralMode(NeutralMode.Brake);
-        intakeRight.setNeutralMode(NeutralMode.Brake);
+        wristRight.setSensorPhase(false);
+        wristRight.configClosedloopRamp(0.25, 0);
+        wristRight.setSelectedSensorPosition(0, 0, 0);
 
-        rotateRight.setNeutralMode(NeutralMode.Brake);
+        wristRight.config_kP(0, Constants.PidConstants.CollectorRotate.P, 0);
+        wristRight.config_kI(0, Constants.PidConstants.CollectorRotate.I, 0);
+        wristRight.config_kD(0, Constants.PidConstants.CollectorRotate.D, 0);
+        wristRight.config_kF(0, Constants.PidConstants.CollectorRotate.F, 0);
 
-        rotateRight.config_kP(0, Constants.PidConstants.CollectorRotate.P, 0);
-        rotateRight.config_kI(0, Constants.PidConstants.CollectorRotate.I, 0);
-        rotateRight.config_kD(0, Constants.PidConstants.CollectorRotate.D, 0);
-        rotateRight.config_kF(0, Constants.PidConstants.CollectorRotate.F, 0);
-
-        rotateRight.configClosedloopRamp(0.25, 0);
-        rotateRight.configPeakOutputForward(0.3, 0);
-
-        rotateRight.setSelectedSensorPosition(0, 0, 0);
-        rotateRight.configPeakOutputReverse(-.6, 0);
-        rotateRight.selectProfileSlot(0, 0);
-        rotateRight.setSensorPhase(false);
+        setIntakeNeutralMode(true);
+        setWristNeutralMode(true);
     }
 
     @Override
@@ -50,24 +44,31 @@ public class Collector extends Subsystem
 
     }
 
-    public void setLeft(ControlMode mode, double value)
+    public void setIntakeLeft(ControlMode mode, double value)
     {
         intakeLeft.set(mode, value);
     }
 
-    public void setRight(ControlMode mode, double value)
+    public void setIntakeRight(ControlMode mode, double value)
     {
         intakeRight.set(mode, value);
     }
 
-    public double getPosition()
+    public void setWrist(ControlMode mode, double value)
     {
-        return rotateRight.getSelectedSensorPosition(0);
+        wristRight.set(mode, value);
+        wristLeft.set(ControlMode.Follower, Constants.MotorMap.Collector.WRIST_LEFT);
     }
 
-    public void setRotate(ControlMode mode, double value)
+    public void setIntakeNeutralMode(boolean coast)
     {
-        rotateRight.set(mode, value);
-        rotateLeft.set(ControlMode.Follower, Constants.MotorMap.Collector.ROTATE_RIGHT);
+        intakeLeft.setNeutralMode(coast ? NeutralMode.Coast : NeutralMode.Brake);
+        intakeRight.setNeutralMode(coast ? NeutralMode.Coast : NeutralMode.Brake);
+    }
+
+    public void setWristNeutralMode(boolean coast)
+    {
+        wristLeft.setNeutralMode(coast ? NeutralMode.Coast : NeutralMode.Brake);
+        wristRight.setNeutralMode(coast ? NeutralMode.Coast : NeutralMode.Brake);
     }
 }

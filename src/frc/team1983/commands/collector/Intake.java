@@ -44,8 +44,8 @@ public class Intake extends CommandBase
     @Override
     public void execute()
     {
-        collector.setLeft(ControlMode.PercentOutput, throttle);
-        collector.setRight(ControlMode.PercentOutput, throttle);
+        collector.setIntakeLeft(ControlMode.PercentOutput, throttle);
+        collector.setIntakeRight(ControlMode.PercentOutput, throttle);
     }
 
     @Override
@@ -57,8 +57,8 @@ public class Intake extends CommandBase
     @Override
     public void end()
     {
-        collector.setLeft(ControlMode.PercentOutput, 0.0);
-        collector.setRight(ControlMode.PercentOutput, 0.0);
+        collector.setIntakeLeft(ControlMode.PercentOutput, 0.0);
+        collector.setIntakeRight(ControlMode.PercentOutput, 0.0);
     }
 
     @Override

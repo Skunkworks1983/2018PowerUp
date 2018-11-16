@@ -28,15 +28,13 @@ public class Elevator extends Subsystem
         right1.config_IntegralZone(1, Constants.PidConstants.ElevatorControlPid.Slot1.I_ZONE, 0);
         right1.configAllowableClosedloopError(1, Constants.PidConstants.ElevatorControlPid.Slot1.ALLOWABLE_CLOSED_LOOP_ERROR, 1);
 
+        right1.setSensorPhase(true);
         right1.configClosedloopRamp(0.5, 10);
+        right1.setSelectedSensorPosition(0, 0, 100);
 
         right2.follow(right1);
         left1.follow(right1);
         left2.follow(right1);
-
-        right1.setSensorPhase(true);
-
-        right1.setSelectedSensorPosition(0, 0, 100);
     }
 
     @Override
@@ -54,32 +52,5 @@ public class Elevator extends Subsystem
     public void set(ControlMode mode, double value)
     {
         right1.set(mode, value);
-    }
-
-    public double getError()
-    {
-        return right1.getClosedLoopError(0);
-    }
-
-    public double getEncoderValue()
-    {
-        return right1.getSelectedSensorPosition(0);
-    }
-
-    public double getSetpoint()
-    {
-        return setpoint;
-    }
-
-    public void switchSlots(boolean goingUp)
-    {
-        right1.selectProfileSlot(goingUp ? 1 : 0, 10);
-    }
-
-    public void setSetpoint(double setpoint)
-    {
-        right1.setSensorPhase(true);
-        this.setpoint = setpoint;
-        right1.set(ControlMode.Position, getEncoderValue());
     }
 }

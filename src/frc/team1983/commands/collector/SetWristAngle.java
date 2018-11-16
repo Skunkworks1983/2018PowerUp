@@ -18,7 +18,7 @@ public class SetWristAngle extends CommandBase
     @Override
     public void initialize()
     {
-        Robot.getInstance().getCollector().setRotate(ControlMode.Position, setpoint);
+        Robot.getInstance().getCollector().setWrist(ControlMode.Position, setpoint);
     }
 
     @Override

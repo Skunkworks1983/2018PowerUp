@@ -34,12 +34,12 @@ public class RunTankDrive extends CommandBase
     @Override
     public void execute()
     {
-        double leftStick = oi.getAxis(Constants.OIMap.Joystick.LEFT, Constants.OIMap.Axis.Y);
-        double leftThrottle = Math.pow(Math.max(Math.abs(leftStick), Constants.OIMap.JOYSTICK_DEADZONE) * Math.signum(leftStick), Constants.OIMap.JOYSTICK_EXPONENT);
+        double leftStick = Math.abs(oi.getLeftY()) > Constants.OIMap.JOYSTICK_DEADZONE ? oi.getLeftY() : 0;
+        double leftThrottle = Math.pow(leftStick * Math.signum(leftStick), Constants.OIMap.JOYSTICK_EXPONENT);
         drivebase.setLeft(ControlMode.PercentOutput, leftThrottle);
 
-        double rightStick = oi.getAxis(Constants.OIMap.Joystick.RIGHT, Constants.OIMap.Axis.Y);
-        double rightThrottle = Math.pow(Math.max(Math.abs(rightStick), Constants.OIMap.JOYSTICK_DEADZONE) * Math.signum(rightStick), Constants.OIMap.JOYSTICK_EXPONENT);
+        double rightStick = Math.abs(oi.getRightY()) > Constants.OIMap.JOYSTICK_DEADZONE ? oi.getRightY() : 0;
+        double rightThrottle = Math.pow(rightStick * Math.signum(oi.getRightY()), Constants.OIMap.JOYSTICK_EXPONENT);
         drivebase.setRight(ControlMode.PercentOutput, rightThrottle);
     }
 

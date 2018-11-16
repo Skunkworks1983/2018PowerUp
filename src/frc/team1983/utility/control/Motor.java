@@ -3,9 +3,11 @@ package frc.team1983.utility.control;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import java.util.HashMap;
+
 public class Motor extends TalonSRX
 {
-    private static Motor[] motors = new Motor[16];
+    private static HashMap<Integer, Motor> motors = new HashMap<>();
 
     private Profiler profiler;
 
@@ -20,7 +22,11 @@ public class Motor extends TalonSRX
             setSelectedSensorPosition(0, 0, 0);
         }
 
-        motors[port] = this;
+        if(!motors.containsKey(port))
+            motors.put(port, this);
+        else
+            throw new IllegalArgumentException("Motor already exists on port " + port);
+
         profiler = new Profiler(this);
     }
 
@@ -31,8 +37,8 @@ public class Motor extends TalonSRX
 
     public static Motor getByID(int id)
     {
-        if(motors[id] != null)
-            return motors[id];
+        if(motors.containsKey(id))
+            return motors.get(id);
         else
             throw new IllegalArgumentException("Motor " + id + " does not exist");
     }

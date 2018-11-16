@@ -28,9 +28,9 @@ public class Robot extends IterativeRobot
 
     private static Robot instance;
 
-    private Robot()
+    public Robot()
     {
-
+        instance = this;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class Robot extends IterativeRobot
 
         pigeon = new Pigeon(Motor.getByID(Constants.MotorMap.Drivebase.LEFT_3));
 
-        oi.initializeBindings(this);
+        oi.initializeBindings();
     }
 
     @Override
@@ -75,7 +75,6 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
 
-        drivebase.setBrakeMode(true);
         pigeon.reset();
     }
 
@@ -90,8 +89,6 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().removeAll();
         Scheduler.getInstance().add(new RunTankDrive());
-
-        drivebase.setBrakeMode(false);
     }
 
     @Override
@@ -135,7 +132,7 @@ public class Robot extends IterativeRobot
     public synchronized static Robot getInstance()
     {
         if(instance == null)
-            instance = new Robot();
+            new Robot();
 
         return instance;
     }
