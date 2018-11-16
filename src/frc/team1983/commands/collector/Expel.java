@@ -4,13 +4,13 @@ import frc.team1983.Constants;
 
 public class Expel extends Intake
 {
-    public Expel(double seconds)
+    public Expel(double throttle)
     {
-        super(Constants.MotorSetpoints.COLLECTOR_EXPEL_THROTTLE, seconds);
+        super(throttle);
     }
 
     public Expel()
     {
-        this(60);
+        this(Constants.COLLECTOR_EXPEL_THROTTLE);
     }
 }

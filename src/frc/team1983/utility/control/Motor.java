@@ -42,9 +42,4 @@ public class Motor extends TalonSRX
         else
             throw new IllegalArgumentException("Motor " + id + " does not exist");
     }
-
-    public void configPIDF(int slot, double P, double I, double D, double F)
-    {
-
-    }
 }

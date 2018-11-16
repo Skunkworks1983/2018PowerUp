@@ -6,14 +6,13 @@ public class AutoManager
 
     private AutoManager()
     {
-
+        instance = this;
     }
 
     public synchronized static AutoManager getInstance()
     {
         if(instance == null)
-            instance = new AutoManager();
-
+            new AutoManager();
         return instance;
     }
 }

@@ -3,6 +3,8 @@ package frc.team1983.services;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team1983.Constants;
+import frc.team1983.commands.collector.Expel;
+import frc.team1983.commands.collector.Intake;
 
 import java.util.HashMap;
 
@@ -66,6 +68,8 @@ public class OI
 
     public void initializeBindings()
     {
-
+        getButton(Constants.OIMap.LEFT_JOYSTICK, Constants.OIMap.INTAKE).whileHeld(new Intake());
+        getButton(Constants.OIMap.LEFT_JOYSTICK, Constants.OIMap.EXPEL).whileHeld(new Expel());
+        getButton(Constants.OIMap.LEFT_JOYSTICK, Constants.OIMap.EXPEL_SLOW).whileHeld(new Expel(Constants.COLLECTOR_EXPEL_SLOW_THROTTLE));
     }
 }

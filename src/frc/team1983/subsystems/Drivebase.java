@@ -47,6 +47,16 @@ public class Drivebase extends Subsystem
 
     }
 
+    public static double toInches(double ticks)
+    {
+        return 0;
+    }
+
+    public static double toTicks(double inches)
+    {
+        return 0;
+    }
+
     public void setLeft(ControlMode mode, double value)
     {
         left1.set(mode, value);
@@ -60,7 +70,6 @@ public class Drivebase extends Subsystem
     public void setNeutralMode(boolean coast)
     {
         Motor[] motors = {left1, left2, left3, right1, right2, right3};
-
         for(Motor motor : motors)
             motor.setNeutralMode(coast ? NeutralMode.Coast : NeutralMode.Brake);
     }

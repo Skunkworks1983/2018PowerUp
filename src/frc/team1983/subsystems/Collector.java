@@ -23,10 +23,10 @@ public class Collector extends Subsystem
         wristRight.configClosedloopRamp(0.25, 0);
         wristRight.setSelectedSensorPosition(0, 0, 0);
 
-        wristRight.config_kP(0, Constants.PidConstants.CollectorRotate.P, 0);
-        wristRight.config_kI(0, Constants.PidConstants.CollectorRotate.I, 0);
-        wristRight.config_kD(0, Constants.PidConstants.CollectorRotate.D, 0);
-        wristRight.config_kF(0, Constants.PidConstants.CollectorRotate.F, 0);
+        wristRight.config_kP(0, Constants.Gains.Wrist.P, 0);
+        wristRight.config_kI(0, Constants.Gains.Wrist.I, 0);
+        wristRight.config_kD(0, Constants.Gains.Wrist.D, 0);
+        wristRight.config_kF(0, Constants.Gains.Wrist.F, 0);
 
         setIntakeNeutralMode(true);
         setWristNeutralMode(true);
@@ -42,6 +42,16 @@ public class Collector extends Subsystem
     public void periodic()
     {
 
+    }
+
+    public static double toDegrees(double ticks)
+    {
+        return 0;
+    }
+
+    public static double toTicks(double degrees)
+    {
+        return 0;
     }
 
     public void setIntakeLeft(ControlMode mode, double value)

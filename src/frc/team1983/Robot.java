@@ -4,19 +4,16 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.OI;
-import frc.team1983.services.LoggerFactory;
+import frc.team1983.services.StateEstimator;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.utility.control.Motor;
 import frc.team1983.utility.sensors.PSoC;
 import frc.team1983.utility.sensors.Pigeon;
-import org.apache.logging.log4j.core.Logger;
 
 public class Robot extends IterativeRobot
 {
-    private static Logger robotLogger;
-
     private OI oi;
 
     private Drivebase drivebase;
@@ -25,6 +22,8 @@ public class Robot extends IterativeRobot
 
     private PSoC psoc;
     private Pigeon pigeon;
+
+    private StateEstimator estimator;
 
     private static Robot instance;
 
@@ -36,8 +35,6 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
-        robotLogger = LoggerFactory.createNewLogger(Robot.class);
-
         oi = new OI();
 
         drivebase = new Drivebase();
@@ -45,10 +42,11 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
 
         psoc = new PSoC();
-        PSoC.initSPISensor(PSoC.SensorDaq);
-
         pigeon = new Pigeon(Motor.getByID(Constants.MotorMap.Drivebase.LEFT_3));
 
+        estimator = new StateEstimator();
+
+        PSoC.initSPISensor(PSoC.SensorDaq);
         oi.initializeBindings();
     }
 
@@ -133,7 +131,6 @@ public class Robot extends IterativeRobot
     {
         if(instance == null)
             new Robot();
-
         return instance;
     }
 }

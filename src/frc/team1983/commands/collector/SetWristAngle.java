@@ -3,22 +3,30 @@ package frc.team1983.commands.collector;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
+import frc.team1983.subsystems.Collector;
 
 public class SetWristAngle extends CommandBase
 {
-    private double setpoint;
+    private Collector collector;
+    private double degrees;
 
-    public SetWristAngle(double setpoint)
+    public SetWristAngle(Collector collector, double degrees)
     {
-        requires(Robot.getInstance().getCollector());
+        requires(collector);
 
-        this.setpoint = setpoint;
+        this.collector = collector;
+        this.degrees = degrees;
+    }
+
+    public SetWristAngle(double degrees)
+    {
+        this(Robot.getInstance().getCollector(), degrees);
     }
 
     @Override
     public void initialize()
     {
-        Robot.getInstance().getCollector().setWrist(ControlMode.Position, setpoint);
+        collector.setWrist(ControlMode.Position, Collector.toTicks(degrees));
     }
 
     @Override

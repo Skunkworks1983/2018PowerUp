@@ -11,28 +11,22 @@ public class Intake extends CommandBase
     private Collector collector;
     private double throttle;
 
-    public Intake(Collector collector, double throttle, double seconds)
+    public Intake(Collector collector, double throttle)
     {
         requires(collector);
-        setTimeout(seconds);
 
         this.collector = collector;
         this.throttle = throttle;
     }
 
-    public Intake(double throttle, double seconds)
+    public Intake(double throttle)
     {
-        this(Robot.getInstance().getCollector(), throttle, seconds);
-    }
-
-    public Intake(double seconds)
-    {
-        this(Constants.MotorSetpoints.COLLECTOR_INTAKE_THROTTLE, seconds);
+        this(Robot.getInstance().getCollector(), throttle);
     }
 
     public Intake()
     {
-        this(60);
+        this(Constants.COLLECTOR_INTAKE_THROTTLE);
     }
 
     @Override
