@@ -8,7 +8,9 @@ import frc.team1983.services.LoggerFactory;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
+import frc.team1983.utility.control.Motor;
 import frc.team1983.utility.sensors.PSoC;
+import frc.team1983.utility.sensors.Pigeon;
 import org.apache.logging.log4j.core.Logger;
 
 public class Robot extends IterativeRobot
@@ -16,20 +18,20 @@ public class Robot extends IterativeRobot
     private static Logger robotLogger;
 
     private OI oi;
+
     private Drivebase drivebase;
     private Elevator elevator;
     private Collector collector;
 
     private PSoC psoc;
+    private Pigeon pigeon;
 
     private static Robot instance;
 
-
     private Robot()
     {
-        instance = this;
-    }
 
+    }
 
     @Override
     public void robotInit()
@@ -45,6 +47,8 @@ public class Robot extends IterativeRobot
         psoc = new PSoC();
         PSoC.initSPISensor(PSoC.SensorDaq);
 
+        pigeon = new Pigeon(Motor.getByID(Constants.MotorMap.Drivebase.LEFT_3));
+
         oi.initializeBindings(this);
     }
 
@@ -53,7 +57,6 @@ public class Robot extends IterativeRobot
     {
 
     }
-
 
     @Override
     public void disabledInit()
@@ -67,14 +70,13 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
     }
 
-
     @Override
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
 
         drivebase.setBrakeMode(true);
-        drivebase.getGyro().reset();
+        pigeon.reset();
     }
 
     @Override
@@ -83,13 +85,12 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
     }
 
-
     @Override
     public void teleopInit()
     {
         Scheduler.getInstance().removeAll();
+        Scheduler.getInstance().add(new RunTankDrive());
 
-        Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
         drivebase.setBrakeMode(false);
     }
 
@@ -98,7 +99,6 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
     }
-
 
     @Override
     public void testInit()
@@ -111,10 +111,6 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
     }
-
-
-
-
 
     public Drivebase getDrivebase()
     {

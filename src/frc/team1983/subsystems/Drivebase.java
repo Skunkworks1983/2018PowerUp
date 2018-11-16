@@ -4,28 +4,18 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1983.services.LoggerFactory;
 import frc.team1983.Constants;
 import frc.team1983.utility.sensors.Pigeon;
 import frc.team1983.utility.control.Motor;
 import frc.team1983.utility.control.ProfilerSignal;
-import frc.team1983.utility.motion.MotionProfile;
-import org.apache.logging.log4j.core.Logger;
 
-//The base of the robot. Consists of the drive train motors, slaved to each other.
 public class Drivebase extends Subsystem
 {
-    public Motor left1, left2, left3;
-    public Motor right1, right2, right3;
-    private ProfilerSignal signal;
-    private Pigeon gyro;
-
-    private Logger logger;
+    private Motor left1, left2, left3;
+    private Motor right1, right2, right3;
 
     public Drivebase()
     {
-        logger = LoggerFactory.createNewLogger(Drivebase.class);
-
         left1 = new Motor(Constants.MotorMap.Drivebase.LEFT_1, Constants.MotorMap.Drivebase.LEFT1_REVERSED, true);
         left2 = new Motor(Constants.MotorMap.Drivebase.LEFT_2, Constants.MotorMap.Drivebase.LEFT2_REVERSED);
         left3 = new Motor(Constants.MotorMap.Drivebase.LEFT_3, Constants.MotorMap.Drivebase.LEFT3_REVERSED);
@@ -36,9 +26,6 @@ public class Drivebase extends Subsystem
 
         left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-
-        gyro = new Pigeon(left3);
-        signal = new ProfilerSignal();
 
         left1.configClosedLoopPeakOutput(0, 1, 0);
         right1.configClosedLoopPeakOutput(0, 1, 0);
@@ -51,37 +38,18 @@ public class Drivebase extends Subsystem
 
         left1.setSensorPhase(true);
         right1.setSensorPhase(true);
-
-        left1.setGains(0, Constants.PidConstants.Drivebase.Left.MAIN);
-        right1.setGains(0, Constants.PidConstants.Drivebase.Right.MAIN);
-
-        left1.linkSignal(signal);
-        right1.linkSignal(signal);
     }
 
+    @Override
     public void initDefaultCommand()
     {
 
     }
 
-    public static double getFeet(double ticks)
+    @Override
+    public void periodic()
     {
-        double resolution = Constants.MotorMap.Drivebase.ENCODER_RESOLUTION;
-        double circumference = Constants.MotorMap.Drivebase.WHEEL_CIRCUMFERENCE;
-        double reduction = Constants.MotorMap.Drivebase.ENCODER_REDUCTION;
 
-        double feet = (ticks / resolution) * (circumference * reduction);
-        return feet;
-    }
-
-    public static double getTicks(double feet)
-    {
-        double resolution = Constants.MotorMap.Drivebase.ENCODER_RESOLUTION;
-        double circumference = Constants.MotorMap.Drivebase.WHEEL_CIRCUMFERENCE;
-        double reduction = Constants.MotorMap.Drivebase.ENCODER_REDUCTION;
-
-        double ticks = (feet / (circumference * reduction)) * resolution;
-        return ticks;
     }
 
     public void setLeft(ControlMode mode, double value)
@@ -94,139 +62,17 @@ public class Drivebase extends Subsystem
         right1.set(mode, value);
     }
 
-    // u
-    public double getLeftEncoderValue()
-    {
-        return left1.getSelectedSensorPosition(0);
-    }
-
-    // u
-    public double getRightEncoderValue()
-    {
-        return right1.getSelectedSensorPosition(0);
-    }
-
-    // u
-    public double getLeftError()
-    {
-        return left1.getClosedLoopError(0);
-    }
-
-    // u
-    public double getRightError()
-    {
-        return right1.getClosedLoopError(0);
-    }
-
-    // u/100ms
-    public double getLeftEncoderVelocity()
-    {
-        return left1.getSelectedSensorVelocity(0);
-    }
-
-    // u/100ms
-    public double getRightEncoderVelocity()
-    {
-        return right1.getSelectedSensorVelocity(0);
-    }
-
-    // feet
-    public double getLeftDistance()
-    {
-        return getFeet(getLeftEncoderValue());
-    }
-
-    // feet
-    public double getRightDistance()
-    {
-        return getFeet(getRightEncoderValue());
-    }
-
-    // feet/s
-    public double getLeftVelocity()
-    {
-        return getFeet(getLeftEncoderVelocity() * 10);
-    }
-
-    // feet/s
-    public double getRightVelocity()
-    {
-        return getFeet(getRightEncoderVelocity() * 10);
-    }
-
-    public void setLeftProfile(MotionProfile profile)
-    {
-        left1.setProfile(profile);
-    }
-
-    public void setRightProfile(MotionProfile profile)
-    {
-        right1.setProfile(profile);
-    }
-
-    public void resetEncoders()
-    {
-        right1.setSelectedSensorPosition(0, 0, 0);
-        left1.setSelectedSensorPosition(0, 0, 0);
-    }
-
-    public void runProfiles()
-    {
-        left1.runProfile();
-        right1.runProfile();
-
-        signal.setEnabled(true);
-    }
-
-    public void stopProfiles()
-    {
-        left1.stopProfile();
-        right1.stopProfile();
-
-        signal.setEnabled(false);
-    }
-
-    public boolean leftProfileIsFinished()
-    {
-        return left1.isProfileFinished();
-    }
-
-    public boolean rightProfileIsFinished()
-    {
-        return right1.isProfileFinished();
-    }
-
-    public boolean profilesAreFinished()
-    {
-        return leftProfileIsFinished() && rightProfileIsFinished();
-    }
-
-    public synchronized void setLeftAuxiliaryOutput(double auxiliaryOutput)
-    {
-        left1.setAuxiliaryOutput(auxiliaryOutput);
-    }
-
-    public synchronized void setRightAuxiliaryOutput(double auxiliaryOutput)
-    {
-        right1.setAuxiliaryOutput(auxiliaryOutput);
-    }
-
-    public Pigeon getGyro()
-    {
-        return this.gyro;
-    }
-
     public void setBrakeMode(boolean brake)
     {
         NeutralMode mode = brake ? NeutralMode.Brake : NeutralMode.Coast;
 
         left1.setNeutralMode(mode);
-        //left2.setNeutralMode(mode);
+        left2.setNeutralMode(mode);
         left3.setNeutralMode(mode);
 
         right1.setNeutralMode(mode);
         right2.setNeutralMode(mode);
-        //right3.setNeutralMode(mode);
+        right3.setNeutralMode(mode);
     }
 }
 

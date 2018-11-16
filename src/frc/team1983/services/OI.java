@@ -4,20 +4,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team1983.Robot;
-import frc.team1983.commands.Manual;
-import frc.team1983.commands.collector.CollectorExpel;
-import frc.team1983.commands.collector.CollectorIntake;
-import frc.team1983.commands.collector.CollectorRotate;
-import frc.team1983.commands.elevator.SetElevatorSetpoint;
 import frc.team1983.Constants;
 import org.apache.logging.log4j.core.Logger;
 
 import java.util.HashMap;
 
-/*
-    notes:
-    both joysticks and buttons are 0-indexed
-*/
 public class OI
 {
     private Logger logger;
@@ -41,92 +32,11 @@ public class OI
         this.logger = LoggerFactory.createNewLogger(this.getClass());
     }
 
-    // put your command bindings in here :)
     public void initializeBindings(Robot robot)
     {
         initializeButtons(Constants.OIMap.Joystick.LEFT);
         initializeButtons(Constants.OIMap.Joystick.RIGHT);
         initializeButtons(Constants.OIMap.Joystick.PANEL);
-
-        logger.info("Initializing Bindings");
-
-        //Collector intake/expel
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
-                      new CollectorIntake(robot.getCollector(), false));
-
-
-        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.INTAKE,
-                       new CollectorIntake(robot.getCollector(), true));
-
-
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.EXPEL,
-                      new CollectorExpel(robot.getCollector(), Constants.MotorSetpoints.COLLECTOR_EXPEL_SPEED));
-
-
-        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.EXPEL,
-                       new CollectorExpel(robot.getCollector(), 0));
-
-
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.BOOP,
-                      new CollectorExpel(robot.getCollector(), Constants.MotorSetpoints.COLLECTOR_SLOW_EXPEL_SPEED));
-
-
-        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.BOOP,
-                       new CollectorExpel(robot.getCollector(), 0));
-
-        //TODO tune this pid
-        //Collector rotate
-        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.UP,
-                       new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.UP_TICKS));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.CollectorButtons.UP,
-                      new CollectorRotate(robot.getCollector(), Constants.PidConstants.CollectorRotate.BACK_TICKS));
-
-
-        bindToReleased(Constants.OIMap.Joystick.PANEL,
-                       Constants.OIMap.CollectorButtons.DOWN,
-                       new CollectorRotate(robot.getCollector(),
-                                           Constants.PidConstants.CollectorRotate.DOWN_TICKS));
-
-        bindToPressed(Constants.OIMap.Joystick.PANEL,
-                      Constants.OIMap.CollectorButtons.DOWN,
-                      new CollectorRotate(robot.getCollector(),
-                                          Constants.PidConstants.CollectorRotate.MID_TICKS));
-
-        //TODO tune this pid
-        //Elevator setpoints
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.BOTTOM, robot.getElevator()));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.SWITCH,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.SWITCH, robot.getElevator()));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.LOW,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.LOW, robot.getElevator()));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.MID,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.MID, robot.getElevator()));
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.TOP,
-                      new SetElevatorSetpoint(Constants.OIMap.Setpoint.TOP, robot.getElevator()));
-        bindToReleased(Constants.OIMap.Joystick.PANEL, Constants.OIMap.ElevatorButtons.BOTTOM,
-                       new SetElevatorSetpoint(Constants.OIMap.Setpoint.TRAVEL, robot.getElevator()));
-
-        bindToPressed(Constants.OIMap.Joystick.PANEL, Constants.OIMap.MANUAL_SWITCH,
-                   new Manual(this, robot.getCollector(), robot.getElevator()));
-    }
-
-    public double getElevatorSliderPos()
-    {
-        //The 2017 slider on the OIMap was a joystick axis. All code taken from 2017
-        double x = getAxis(Constants.OIMap.Joystick.PANEL, 0);
-        x = Math.pow(x, 10);
-        x = x / Constants.OIMap.OIConstants.SLIDER_SCALAR;
-        x = 1 - x;
-        return x;
-    }
-
-    public double getFixedAxis(Constants.OIMap.Joystick joystick, int axis)
-    {
-        double raw = getAxis(joystick, axis);
-        double sign = raw < 0 ? -1 : 1;
-        double deadzoned = (Math.abs(raw) > Constants.OIMap.JOYSTICK_DEADZONE ? raw : 0);
-        return Math.pow(deadzoned, Constants.OIMap.JOYSTICK_RAMP_EXPONENT) * sign;
     }
 
     public void initializeButtons(Constants.OIMap.Joystick joystick)
@@ -240,25 +150,16 @@ public class OI
 
     public void bindToPressed(Constants.OIMap.Joystick joystick, int button, Command command)
     {
-        //if(buttonExists(joystick, button))
-        //{
-            getJoystickButtons(joystick)[button].whenPressed(command);
-        //}
+        getJoystickButtons(joystick)[button].whenPressed(command);
     }
 
     public void bindToHeld(Constants.OIMap.Joystick joystick, int button, Command command)
     {
-        //if(buttonExists(joystick, button))
-        //{
-            getJoystickButtons(joystick)[button].whileHeld(command);
-        //}
+        getJoystickButtons(joystick)[button].whileHeld(command);
     }
 
     public void bindToReleased(Constants.OIMap.Joystick joystick, int button, Command command)
     {
-        //if(buttonExists(joystick, button))
-        //{
-            getJoystickButtons(joystick)[button].whenReleased(command);
-        //}
+        getJoystickButtons(joystick)[button].whenReleased(command);
     }
 }
