@@ -22,8 +22,6 @@ public class Profiler
     private ProfilerRunnable runnable;
     private Thread thread;
 
-    private static Profiler[] profilers = new Profiler[16];
-
     private Logger logger;
 
     public Profiler(Motor parent, Robot robot)
@@ -38,8 +36,6 @@ public class Profiler
         thread = new Thread(runnable);
 
         reset();
-
-        profilers[parent.getBaseID()] = this;
     }
 
     private void reset()
