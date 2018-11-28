@@ -8,6 +8,8 @@ public class PSoC
 {
     public static SPI SensorDaq;
 
+
+
     public PSoC()
     {
         SensorDaq = new SPI(SPI.Port.kOnboardCS0);
@@ -34,8 +36,14 @@ public class PSoC
         int keyBit2=0;
         int index, sum1=0, sum2=0;
 
-        Scheduler.getInstance().run();
-        PSoC.SensorDaq.transaction(DaqOutputBuffer, DaqInputBuffer, 12);
+        try
+        {
+            PSoC.SensorDaq.transaction(DaqOutputBuffer, DaqInputBuffer, 12);
+        }
+        catch(Exception e)
+        {
+            System.out.println("ERROR IN SPI TRANSACTION: " + e);
+        }
 
         // Fletchers 16bit checksum algorithm
         for( index = 0; index < 8; ++index )
@@ -47,8 +55,7 @@ public class PSoC
         System.out.println("Input");
         for(byte b: DaqInputBuffer)
         {
-            System.out.print(b);
-            System.out.print("\t");
+            System.out.println(b);
         }
 
         if (sum1==DaqInputBuffer[10]  &&  sum2==DaqInputBuffer[9])
@@ -58,18 +65,24 @@ public class PSoC
             // decode 8 bytes using key byte as 9th bit of each byte. assemble as 4 integers (0-65535).
             HiByte = DaqInputBuffer[0];
             keyBit = (DaqInputBuffer[8] & 0x01) >> 0;
-            HiByte = HiByte + (keyBit * 128);
+            HiByte = keyBit == 0x01 ? HiByte << 7 : HiByte; //equal to HiByte << 7 if keyBit == 1
+
             LoByte = DaqInputBuffer[1];
             keyBit = (DaqInputBuffer[8] & 0x02) >> 1;
             LoByte = LoByte + (keyBit * 128);
+
             SensorVal[0] = (HiByte << 8) | LoByte;
+
             HiByte = DaqInputBuffer[2];
             keyBit = (DaqInputBuffer[8] & 0x04) >> 2;
             HiByte = HiByte + (keyBit * 128);
+
             LoByte = DaqInputBuffer[3];
             keyBit = (DaqInputBuffer[8] & 0x08) >> 3;
             LoByte = LoByte + (keyBit * 128);
+
             SensorVal[1] = (HiByte << 8) | LoByte;
+
             HiByte = DaqInputBuffer[4];
             keyBit = (DaqInputBuffer[8] & 0x16) >> 4;
             HiByte = HiByte + (keyBit * 128);

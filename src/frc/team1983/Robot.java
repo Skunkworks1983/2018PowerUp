@@ -13,6 +13,7 @@ import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.subsystems.sensors.PSoC;
 import frc.team1983.utility.control.ClosedLoopGains;
+//import javassist.bytecode.ByteArray;
 import org.apache.logging.log4j.core.Logger;
 
 public class Robot extends IterativeRobot
@@ -30,6 +31,7 @@ public class Robot extends IterativeRobot
     private PSoC psoc;
 
     private static Robot instance;
+
 
     public Robot()
     {
@@ -109,12 +111,27 @@ public class Robot extends IterativeRobot
 
         Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
         drivebase.setBrakeMode(false);
+
+
+
     }
 
     @Override
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+
+        byte[] sentBytes = {1,7,23,0,1,0,0,0,0,0,0,0}; //12 Bytes sent
+        byte[] receivedBytes = {0,0,0,0,0,0,0,0,0,0,0,0}; //12 Bytes received
+
+        int[] result = psoc.getSensorValue(sentBytes,receivedBytes);
+        System.out.print("Result: ");
+        for (int i : result)
+        {
+            System.out.println(i + ", ");
+        }
+        System.out.println(".");
+
     }
 
     @Override
