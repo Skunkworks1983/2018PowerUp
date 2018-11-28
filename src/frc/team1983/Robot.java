@@ -3,32 +3,28 @@ package frc.team1983;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.drivebase.RunTankDrive;
-import frc.team1983.services.DashboardWrapper;
+import frc.team1983.services.AutoManager;
 import frc.team1983.services.OI;
-import frc.team1983.services.StatefulDashboard;
-import frc.team1983.services.automanager.AutoManager;
-import frc.team1983.services.logger.LoggerFactory;
+import frc.team1983.services.StateEstimator;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
-import frc.team1983.subsystems.sensors.PSoC;
-import frc.team1983.utility.control.ClosedLoopGains;
-//import javassist.bytecode.ByteArray;
-import org.apache.logging.log4j.core.Logger;
+import frc.team1983.utility.control.Motor;
+import frc.team1983.utility.sensors.PSoC;
+import frc.team1983.utility.sensors.Pigeon;
 
 public class Robot extends IterativeRobot
 {
-    private static Logger robotLogger;
-
     private OI oi;
+
     private Drivebase drivebase;
     private Elevator elevator;
     private Collector collector;
-    private DashboardWrapper dashboardWrapper;
-    private StatefulDashboard dashboard;
-    private AutoManager autoManager;
 
     private PSoC psoc;
+    private Pigeon pigeon;
+
+    private StateEstimator estimator;
 
     private static Robot instance;
 
@@ -41,12 +37,6 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
-        robotLogger = LoggerFactory.createNewLogger(Robot.class);
-
-        dashboardWrapper = new DashboardWrapper();
-        dashboard = new StatefulDashboard(dashboardWrapper, Constants.DashboardConstants.FILE);
-        dashboard.populate();
-
         oi = new OI();
 
         drivebase = new Drivebase();
@@ -54,70 +44,73 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
 
         psoc = new PSoC();
+        pigeon = new Pigeon(Motor.getByID(Constants.MotorMap.Drivebase.LEFT_3));
+
+        estimator = new StateEstimator();
+
         PSoC.initSPISensor(PSoC.SensorDaq);
-
-        oi.initializeBindings(this);
-
-        autoManager = new AutoManager(dashboardWrapper);
-        autoManager.generatePaths();
+        oi.initializeBindings();
     }
 
     @Override
     public void robotPeriodic()
     {
-
+        
     }
 
     @Override
     public void disabledInit()
     {
         Scheduler.getInstance().removeAll();
-
-        drivebase.stopProfiles();
-        elevator.stopProfile();
-
-        dashboard.store();
-
-        autoManager.resetGameData();
     }
 
     @Override
     public void disabledPeriodic()
     {
-
+        Scheduler.getInstance().run();
     }
 
     @Override
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
+        Scheduler.getInstance().add(AutoManager.getInstance().getRoutine());
 
-        drivebase.setBrakeMode(true);
-        drivebase.getGyro().reset();
+        pigeon.reset();
+        estimator.reset();
     }
 
     @Override
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
-        autoManager.execute();
     }
-
 
     @Override
     public void teleopInit()
     {
         Scheduler.getInstance().removeAll();
-
-        Scheduler.getInstance().add(new RunTankDrive(drivebase, oi));
-        drivebase.setBrakeMode(false);
-
-
-
+        Scheduler.getInstance().add(new RunTankDrive());
     }
 
     @Override
     public void teleopPeriodic()
+    {
+        Scheduler.getInstance().run();
+    }
+
+    @Override
+    public void testInit()
+    {
+        Scheduler.getInstance().removeAll();
+
+        drivebase.zero();
+        collector.zero();
+        elevator.zero();
+    }
+
+    @Override
+    public void testPeriodic()
     {
         Scheduler.getInstance().run();
 
@@ -131,19 +124,6 @@ public class Robot extends IterativeRobot
             System.out.println(i + ", ");
         }
         System.out.println(".");
-
-    }
-
-    @Override
-    public void testInit()
-    {
-        Scheduler.getInstance().removeAll();
-    }
-
-    @Override
-    public void testPeriodic()
-    {
-        Scheduler.getInstance().run();
     }
 
     public Drivebase getDrivebase()
@@ -156,57 +136,25 @@ public class Robot extends IterativeRobot
         return elevator;
     }
 
-    public OI getOI()
-    {
-        return oi;
-    }
-
     public Collector getCollector()
     {
         return collector;
     }
 
-    public StatefulDashboard getStatefulDashboard()
+    public OI getOI()
     {
-        return dashboard;
+        return oi;
     }
 
-    public DashboardWrapper getDashboardWrapper()
+    public Pigeon getPigeon()
     {
-        return dashboardWrapper;
+        return pigeon;
     }
 
-    public AutoManager getAutoManager()
-    {
-        return autoManager;
-    }
-
-    //Synchronized so that we hopefully don't end up with more than one instance
     public synchronized static Robot getInstance()
     {
         if(instance == null)
-            instance = new Robot();
-
+            new Robot();
         return instance;
-    }
-
-    public ClosedLoopGains getLeftGains()
-    {
-        return Constants.PidConstants.Drivebase.Left.MAIN;
-    }
-
-    public ClosedLoopGains getRightGains()
-    {
-        return Constants.PidConstants.Drivebase.Left.MAIN;
-    }
-
-    public ClosedLoopGains getStraightGains()
-    {
-        return Constants.PidConstants.Drivebase.AUX_STRAIGHT;
-    }
-
-    public ClosedLoopGains getTurnGains()
-    {
-        return Constants.PidConstants.Drivebase.AUX_TURN;
     }
 }

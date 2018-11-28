@@ -3,23 +3,24 @@ package frc.team1983.commands.drivebase;
 import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.subsystems.Drivebase;
+import frc.team1983.utility.path.Path;
 
-public class TurnDegree extends CommandBase
+public class DrivePath extends CommandBase
 {
     private Drivebase drivebase;
-    private double degrees;
+    private Path path;
 
-    public TurnDegree(Drivebase drivebase, double degrees)
+    public DrivePath(Drivebase drivebase, Path path)
     {
         requires(drivebase);
 
         this.drivebase = drivebase;
-        this.degrees = degrees;
+        this.path = path;
     }
 
-    public TurnDegree(double degrees)
+    public DrivePath(Path path)
     {
-        this(Robot.getInstance().getDrivebase(), degrees);
+        this(Robot.getInstance().getDrivebase(), path);
     }
 
     @Override

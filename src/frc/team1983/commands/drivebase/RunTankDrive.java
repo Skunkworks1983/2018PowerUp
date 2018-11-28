@@ -1,28 +1,28 @@
 package frc.team1983.commands.drivebase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.services.OI;
-import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.Constants;
 import frc.team1983.subsystems.Drivebase;
-import org.apache.logging.log4j.core.Logger;
 
-//Default command for drivebase during Teleop
 public class RunTankDrive extends CommandBase
 {
     private Drivebase drivebase;
     private OI oi;
-    private Logger logger;
 
-    public RunTankDrive(Drivebase drivebase, frc.team1983.services.OI oi)
+    public RunTankDrive(Drivebase drivebase, OI oi)
     {
         requires(drivebase);
 
         this.drivebase = drivebase;
         this.oi = oi;
+    }
 
-        logger = LoggerFactory.createNewLogger(RunTankDrive.class);
+    public RunTankDrive()
+    {
+        this(Robot.getInstance().getDrivebase(), Robot.getInstance().getOI());
     }
 
     @Override
@@ -34,52 +34,13 @@ public class RunTankDrive extends CommandBase
     @Override
     public void execute()
     {
-        double left = oi.getAxis(Constants.OIMap.Joystick.LEFT, Constants.OIMap.Axis.Y);
-        double right = oi.getAxis(Constants.OIMap.Joystick.RIGHT, Constants.OIMap.Axis.Y);
+        double leftStick = Math.abs(oi.getLeftY()) > Constants.OIMap.JOYSTICK_DEADZONE ? oi.getLeftY() : 0;
+        double leftThrottle = Math.pow(leftStick, Constants.OIMap.JOYSTICK_EXPONENT);
+        drivebase.setLeft(ControlMode.PercentOutput, leftThrottle);
 
-        double adj_left = left;
-        double adj_right = right;
-
-        double SCALE = 2; //todo: was 1.4
-
-        if((Math.abs(left) < 0.03))
-        {
-            adj_left = 0;
-        }
-
-        if((Math.abs(right) < 0.03))
-        {
-            adj_right = 0;
-        }
-
-        if(left < 0)
-        {
-            adj_left = -Math.abs(Math.pow(Math.abs(adj_left), SCALE));
-        }
-        else
-        {
-            adj_left = Math.abs(Math.pow(Math.abs(adj_left), SCALE));
-        }
-
-        if(right < 0)
-        {
-            adj_right = -Math.abs(Math.pow(Math.abs(adj_right), SCALE));
-        }
-        else
-        {
-            adj_right = Math.abs(Math.pow(Math.abs(adj_right), SCALE));
-        }
-
-        drivebase.left1.set(ControlMode.PercentOutput, adj_left);
-
-        drivebase.right1.set(ControlMode.PercentOutput, adj_right);
-
-        drivebase.setLeft(ControlMode.PercentOutput, adj_left);
-        drivebase.setRight(ControlMode.PercentOutput, adj_right);
-
-        drivebase.right3.set(ControlMode.PercentOutput, adj_right);
-
-        //logger.info("Left: {}\tRight: {}", adj_left, adj_right);
+        double rightStick = Math.abs(oi.getRightY()) > Constants.OIMap.JOYSTICK_DEADZONE ? oi.getRightY() : 0;
+        double rightThrottle = Math.pow(rightStick, Constants.OIMap.JOYSTICK_EXPONENT);
+        drivebase.setRight(ControlMode.PercentOutput, rightThrottle);
     }
 
     @Override
