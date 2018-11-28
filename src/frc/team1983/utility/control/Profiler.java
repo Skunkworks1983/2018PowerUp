@@ -13,6 +13,6 @@ public class Profiler
 
     public void stream(MotionProfile profile)
     {
-
+        parent.clearMotionProfileTrajectories();
     }
 }

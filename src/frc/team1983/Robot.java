@@ -1,8 +1,10 @@
 package frc.team1983;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team1983.commands.drivebase.RunTankDrive;
+import frc.team1983.services.AutoManager;
 import frc.team1983.services.OI;
 import frc.team1983.services.StateEstimator;
 import frc.team1983.subsystems.Collector;
@@ -53,7 +55,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotPeriodic()
     {
-
+        
     }
 
     @Override
@@ -72,8 +74,10 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         Scheduler.getInstance().removeAll();
+        Scheduler.getInstance().add(AutoManager.getInstance().getRoutine());
 
         pigeon.reset();
+        estimator.reset();
     }
 
     @Override
@@ -99,6 +103,10 @@ public class Robot extends IterativeRobot
     public void testInit()
     {
         Scheduler.getInstance().removeAll();
+
+        drivebase.zero();
+        collector.zero();
+        elevator.zero();
     }
 
     @Override
@@ -125,6 +133,11 @@ public class Robot extends IterativeRobot
     public OI getOI()
     {
         return oi;
+    }
+
+    public Pigeon getPigeon()
+    {
+        return pigeon;
     }
 
     public synchronized static Robot getInstance()

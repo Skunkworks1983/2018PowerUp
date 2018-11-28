@@ -34,7 +34,6 @@ public class PSoC
         int keyBit2=0;
         int index, sum1=0, sum2=0;
 
-        Scheduler.getInstance().run();
         PSoC.SensorDaq.transaction(DaqOutputBuffer, DaqInputBuffer, 12);
 
         // Fletchers 16bit checksum algorithm

@@ -22,8 +22,20 @@ public class Drivebase extends Subsystem
         right2 = new Motor(Constants.MotorMap.Drivebase.RIGHT_2, Constants.MotorMap.Drivebase.RIGHT2_REVERSED);
         right3 = new Motor(Constants.MotorMap.Drivebase.RIGHT_3, Constants.MotorMap.Drivebase.RIGHT3_REVERSED);
 
-        left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-        right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+        left1.config_kP(0, Constants.Gains.Drivebase.Left.P);
+        left1.config_kI(0, Constants.Gains.Drivebase.Left.I);
+        left1.config_kD(0, Constants.Gains.Drivebase.Left.D);
+        left1.config_kF(0, 0);
+        left1.config_IntegralZone(0, (int) toTicks(Constants.Gains.Drivebase.Left.I_ZONE));
+
+        right1.config_kP(0, Constants.Gains.Drivebase.Right.P);
+        right1.config_kI(0, Constants.Gains.Drivebase.Right.I);
+        right1.config_kD(0, Constants.Gains.Drivebase.Right.D);
+        right1.config_kF(0, 0);
+        right1.config_IntegralZone(0, (int) toTicks(Constants.Gains.Drivebase.Right.I_ZONE));
+
+        left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
         left1.setSensorPhase(true);
         right1.setSensorPhase(true);
@@ -33,6 +45,8 @@ public class Drivebase extends Subsystem
 
         right2.follow(right1);
         right3.follow(right1);
+
+        zero();
     }
 
     @Override
@@ -47,14 +61,39 @@ public class Drivebase extends Subsystem
 
     }
 
+    public void zero()
+    {
+        left1.setSelectedSensorPosition(0);
+    }
+
     public static double toInches(double ticks)
     {
-        return 0;
+        return ticks * Constants.DRIVEBASE_INCHES_PER_TICK;
     }
 
     public static double toTicks(double inches)
     {
-        return 0;
+        return inches / Constants.DRIVEBASE_INCHES_PER_TICK;
+    }
+
+    public double getLeftPosition()
+    {
+        return toInches(left1.getSelectedSensorPosition());
+    }
+
+    public double getRightPosition()
+    {
+        return toInches(right1.getSelectedSensorPosition());
+    }
+
+    public double getLeftVelocity()
+    {
+        return toInches(left1.getSelectedSensorVelocity() * 10);
+    }
+
+    public double getRightVelocity()
+    {
+        return toInches(right1.getSelectedSensorVelocity() * 10);
     }
 
     public void setLeft(ControlMode mode, double value)

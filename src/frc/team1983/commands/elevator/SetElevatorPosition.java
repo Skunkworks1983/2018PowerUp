@@ -1,7 +1,6 @@
 package frc.team1983.commands.elevator;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import frc.team1983.Constants;
 import frc.team1983.Robot;
 import frc.team1983.commands.CommandBase;
 import frc.team1983.subsystems.Elevator;
@@ -46,7 +45,7 @@ public class SetElevatorPosition extends CommandBase
     @Override
     public boolean isFinished()
     {
-        return !block || Math.abs(elevator.getHeight() - inches) < Constants.ELEVATOR_ALLOWABLE_ERROR;
+        return !block || elevator.isAtSetpoint();
     }
 
     @Override

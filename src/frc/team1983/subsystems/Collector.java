@@ -20,16 +20,17 @@ public class Collector extends Subsystem
         wristLeft = new Motor(Constants.MotorMap.Collector.WRIST_LEFT, Constants.MotorMap.Collector.WRIST_LEFT_REVERSED);
 
         wristRight.setSensorPhase(false);
-        wristRight.configClosedloopRamp(0.25, 0);
-        wristRight.setSelectedSensorPosition(0, 0, 0);
+        wristRight.configClosedloopRamp(0.25);
 
-        wristRight.config_kP(0, Constants.Gains.Wrist.P, 0);
-        wristRight.config_kI(0, Constants.Gains.Wrist.I, 0);
-        wristRight.config_kD(0, Constants.Gains.Wrist.D, 0);
-        wristRight.config_kF(0, Constants.Gains.Wrist.F, 0);
+        wristRight.config_kP(0, Constants.Gains.Wrist.P);
+        wristRight.config_kI(0, Constants.Gains.Wrist.I);
+        wristRight.config_kD(0, Constants.Gains.Wrist.D);
+        wristRight.config_kF(0, 0);
 
         setIntakeNeutralMode(true);
-        setWristNeutralMode(true);
+        setWristNeutralMode(false);
+
+        zero();
     }
 
     @Override
@@ -44,14 +45,29 @@ public class Collector extends Subsystem
 
     }
 
+    public void zero()
+    {
+        wristRight.setSelectedSensorPosition(0);
+    }
+
     public static double toDegrees(double ticks)
     {
-        return 0;
+        return ticks * Constants.WRIST_DEGREES_PER_TICK;
     }
 
     public static double toTicks(double degrees)
     {
-        return 0;
+        return degrees / Constants.WRIST_DEGREES_PER_TICK;
+    }
+
+    public double getAngle()
+    {
+        return toDegrees(wristRight.getSelectedSensorPosition());
+    }
+
+    public boolean isAtSetpoint()
+    {
+        return Math.abs(getAngle() - toDegrees(wristRight.getClosedLoopTarget())) < Constants.WRIST_ALLOWABLE_ERROR;
     }
 
     public void setIntakeLeft(ControlMode mode, double value)
@@ -67,7 +83,7 @@ public class Collector extends Subsystem
     public void setWrist(ControlMode mode, double value)
     {
         wristRight.set(mode, value);
-        wristLeft.set(ControlMode.Follower, Constants.MotorMap.Collector.WRIST_LEFT);
+        wristLeft.set(ControlMode.Follower, Constants.MotorMap.Collector.WRIST_RIGHT);
     }
 
     public void setIntakeNeutralMode(boolean coast)
