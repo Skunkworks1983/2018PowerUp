@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.Constants;
+import frc.team1983.commands.collector.SetWristAngle;
 import frc.team1983.utility.control.Motor;
 
 public class Collector extends Subsystem
@@ -36,7 +37,7 @@ public class Collector extends Subsystem
     @Override
     public void initDefaultCommand()
     {
-
+        setDefaultCommand(new SetWristAngle(Constants.Setpoints.Wrist.UP));
     }
 
     @Override

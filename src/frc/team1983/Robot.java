@@ -55,7 +55,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotPeriodic()
     {
-        
+        Scheduler.getInstance().run();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class Robot extends IterativeRobot
     @Override
     public void disabledPeriodic()
     {
-        Scheduler.getInstance().run();
+
     }
 
     @Override
@@ -83,7 +83,7 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousPeriodic()
     {
-        Scheduler.getInstance().run();
+
     }
 
     @Override
@@ -96,7 +96,7 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic()
     {
-        Scheduler.getInstance().run();
+
     }
 
     @Override
@@ -112,8 +112,6 @@ public class Robot extends IterativeRobot
     @Override
     public void testPeriodic()
     {
-        Scheduler.getInstance().run();
-
         byte[] sentBytes = {1,7,23,0,1,0,0,0,0,0,0,0}; //12 Bytes sent
         byte[] receivedBytes = {0,0,0,0,0,0,0,0,0,0,0,0}; //12 Bytes received
 

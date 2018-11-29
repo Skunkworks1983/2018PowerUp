@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team1983.Constants;
+import frc.team1983.commands.elevator.SetElevatorPosition;
 import frc.team1983.utility.control.Motor;
 
 public class Elevator extends Subsystem
@@ -39,7 +40,7 @@ public class Elevator extends Subsystem
     @Override
     public void initDefaultCommand()
     {
-
+        setDefaultCommand(new SetElevatorPosition(Constants.Setpoints.Elevator.TRAVEL));
     }
 
     @Override
