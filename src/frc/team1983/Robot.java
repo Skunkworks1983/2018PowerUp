@@ -55,7 +55,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotPeriodic()
     {
-        Scheduler.getInstance().run();
+
     }
 
     @Override
@@ -67,7 +67,7 @@ public class Robot extends IterativeRobot
     @Override
     public void disabledPeriodic()
     {
-
+        Scheduler.getInstance().run();
     }
 
     @Override
@@ -83,7 +83,7 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousPeriodic()
     {
-
+        Scheduler.getInstance().run();
     }
 
     @Override
@@ -96,7 +96,8 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic()
     {
-
+        Scheduler.getInstance().run();
+        System.out.println(drivebase.getLeftPosition() + ", " + Drivebase.toInches(drivebase.getLeftPosition()));
     }
 
     @Override
@@ -112,16 +113,7 @@ public class Robot extends IterativeRobot
     @Override
     public void testPeriodic()
     {
-        byte[] sentBytes = {1,7,23,0,1,0,0,0,0,0,0,0}; //12 Bytes sent
-        byte[] receivedBytes = {0,0,0,0,0,0,0,0,0,0,0,0}; //12 Bytes received
-
-        int[] result = psoc.getSensorValue(sentBytes,receivedBytes);
-        System.out.print("Result: ");
-        for (int i : result)
-        {
-            System.out.println(i + ", ");
-        }
-        System.out.println(".");
+        Scheduler.getInstance().run();
     }
 
     public Drivebase getDrivebase()
