@@ -41,15 +41,18 @@ public class StateEstimator implements Runnable
     @Override
     public void run()
     {
-        double dLeft = drivebase.getLeftPosition() - lastLeft;
-        double dRight = drivebase.getRightPosition() - lastRight;
+        while(true)
+        {
+            double dLeft = drivebase.getLeftPosition() - lastLeft;
+            double dRight = drivebase.getRightPosition() - lastRight;
 
-        double displacement = (dLeft + dRight) / 2;
-        double heading = pigeon.getFusedHeading() * Math.PI / 180;
+            double displacement = (dLeft + dRight) / 2;
+            double heading = pigeon.getFusedHeading() * Math.PI / 180;
 
-        position.add(Vector2.scale(new Vector2(Math.sin(heading), Math.cos(heading)), displacement));
+            position.add(Vector2.scale(new Vector2(Math.sin(heading), Math.cos(heading)), displacement));
 
-        lastLeft = drivebase.getLeftPosition();
-        lastRight = drivebase.getRightPosition();
+            lastLeft = drivebase.getLeftPosition();
+            lastRight = drivebase.getRightPosition();
+        }
     }
 }

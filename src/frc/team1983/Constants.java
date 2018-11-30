@@ -57,7 +57,7 @@ public class Constants
 
     public static final double ELEVATOR_INCHES_PER_TICK = 76.5 / 29500.0;
     public static final double WRIST_DEGREES_PER_TICK = 90.0 / 1050.0;
-    public static final double DRIVEBASE_INCHES_PER_TICK = 1;
+    public static final double DRIVEBASE_INCHES_PER_TICK = (6 * Math.PI) / 1360.0;
 
     public static class Gains
     {
