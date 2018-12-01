@@ -1,1 +1,1 @@
-Dev branch of 1983's 2018 Power Up robot
+This is the repository for FIRST Robotics Competition Team 1983 Skunk Works Robotics' 2018 Power Up code.

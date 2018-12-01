@@ -1,155 +1,87 @@
 package frc.team1983.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team1983.Robot;
-import frc.team1983.services.logger.LoggerFactory;
 import frc.team1983.Constants;
-import frc.team1983.subsystems.utilities.Motor;
-import frc.team1983.utility.motion.MotionProfile;
-import org.apache.logging.log4j.core.Logger;
+import frc.team1983.utility.control.Motor;
 
-import static frc.team1983.Constants.OIMap.ALLOWABLE_FOLDOVER_DROP;
-
-//The elevator subsystem
 public class Elevator extends Subsystem
 {
-    public Motor right1, right2;
-    public Motor left1, left2;
-
-    private Logger logger;
-
-    public double setpoint;
+    private Motor right1, right2;
+    private Motor left1, left2;
 
     public Elevator()
     {
-        logger = LoggerFactory.createNewLogger(Elevator.class);
-
         left1 = new Motor(Constants.MotorMap.Elevator.LEFT1, Constants.MotorMap.Elevator.LEFT1_REVERSED, true);
         left2 = new Motor(Constants.MotorMap.Elevator.LEFT2, Constants.MotorMap.Elevator.LEFT2_REVERSED);
 
         right1 = new Motor(Constants.MotorMap.Elevator.RIGHT1, Constants.MotorMap.Elevator.RIGHT1_REVERSED, true);
         right2 = new Motor(Constants.MotorMap.Elevator.RIGHT2, Constants.MotorMap.Elevator.RIGHT2_REVERSED);
 
-        right1.configPIDF(0, Constants.PidConstants.ElevatorControlPid.Slot0.P, Constants.PidConstants.ElevatorControlPid.Slot0.I, Constants.PidConstants.ElevatorControlPid.Slot0.D, Constants.PidConstants.ElevatorControlPid.Slot0.F);
-        right1.config_IntegralZone(0, Constants.PidConstants.ElevatorControlPid.Slot0.I_ZONE, 0);
-        right1.configAllowableClosedloopError(0, Constants.PidConstants.ElevatorControlPid.Slot0.ALLOWABLE_CLOSED_LOOP_ERROR, 1);
+        right1.config_kP(0, Constants.Gains.Elevator.P);
+        right1.config_kI(0, Constants.Gains.Elevator.I);
+        right1.config_kD(0, Constants.Gains.Elevator.D);
+        right1.config_kF(0, 0);
+        right1.config_IntegralZone(0, (int) Elevator.toTicks(Constants.Gains.Elevator.I_ZONE));
 
-        right1.configPIDF(1, Constants.PidConstants.ElevatorControlPid.Slot1.P, Constants.PidConstants.ElevatorControlPid.Slot1.I, Constants.PidConstants.ElevatorControlPid.Slot1.D, Constants.PidConstants.ElevatorControlPid.Slot1.F);
-        right1.config_IntegralZone(1, Constants.PidConstants.ElevatorControlPid.Slot1.I_ZONE, 0);
-        right1.configAllowableClosedloopError(1, Constants.PidConstants.ElevatorControlPid.Slot1.ALLOWABLE_CLOSED_LOOP_ERROR, 1);
-        //right1.setGains(0, Constants.PidConstants.Elevator.MAIN);
-
-        right1.configPeakOutputForward(1, 10);
-        right1.configPeakOutputReverse(-1, 10);
-
-        right1.configClosedloopRamp(0.5, 10);
+        right1.setSensorPhase(true);
+        right1.configClosedloopRamp(0.5);
 
         right2.follow(right1);
         left1.follow(right1);
         left2.follow(right1);
 
-        right1.configClosedloopRamp(.5, 0);
-
-        right1.setSensorPhase(true);
-
-        right1.setSelectedSensorPosition(0, 0, 100);
+        zero();
     }
 
+    @Override
     public void initDefaultCommand()
     {
 
     }
 
-    public static double getFeet(double ticks)
+    @Override
+    public void periodic()
     {
-        return 0;
+
     }
 
-    public static double getTicks(double feet)
+    public void zero()
     {
-        return 0;
+        right1.setSelectedSensorPosition(0);
+    }
+
+    public static double toInches(double ticks)
+    {
+        return ticks * Constants.ELEVATOR_INCHES_PER_TICK;
+    }
+
+    public static double toTicks(double inches)
+    {
+        return inches / Constants.ELEVATOR_INCHES_PER_TICK;
+    }
+
+    public double getHeight()
+    {
+        return toInches(right1.getSelectedSensorPosition());
+    }
+
+    public boolean isAtSetpoint()
+    {
+        return Math.abs(getHeight() - toInches(right1.getClosedLoopTarget())) < Constants.ELEVATOR_ALLOWABLE_ERROR;
     }
 
     public void set(ControlMode mode, double value)
     {
-        right1.set(mode, value);
+        right1.set(mode, value, DemandType.ArbitraryFeedForward, Constants.Gains.Elevator.F);
     }
 
-    public double getError()
+    public void setNeutralMode(boolean coast)
     {
-        return right1.getClosedLoopError(0);
-    }
-
-    public double getEncoderValue()
-    {
-        return right1.getSelectedSensorPosition(0);
-    }
-
-    public double getEncoderVelocity()
-    {
-        return right1.getSelectedSensorVelocity(0);
-    }
-
-    public void setProfile(MotionProfile profile)
-    {
-        right1.setProfile(profile);
-    }
-
-    public void runProfile()
-    {
-        right1.runProfile();
-    }
-
-    public void stopProfile()
-    {
-        right1.stopProfile();
-    }
-
-    public boolean isProfileFinished()
-    {
-        return left1.isProfileFinished();
-    }
-
-    public double getSetpoint()
-    {
-        return setpoint;
-    }
-
-    public void switchSlots(boolean goingUp)
-    {
-        if(goingUp == true)
-        {
-            right1.selectProfileSlot(0, 0);
-            logger.info("slot 0");
-        }
-        else
-        {
-            right1.selectProfileSlot(1, 0);
-            logger.info("slot 1");
-        }
-    }
-
-    public void setSetpoint(double setpoint)
-    {
-        right1.setSensorPhase(true);
-        this.setpoint = setpoint;
-        right1.set(ControlMode.Position, getEncoderValue());
-    }
-    @Override
-    public void periodic()
-    {
-        if(right1.getControlMode() == ControlMode.Position)
-        {
-            if(Robot.getInstance().getCollector().getPosition() >= ALLOWABLE_FOLDOVER_DROP)
-                right1.set(ControlMode.Position, setpoint);
-
-            System.out.println("CAN FOLD: "+ (Robot.getInstance().getCollector().getPosition() >= ALLOWABLE_FOLDOVER_DROP));
-        }
-    }
-
-    public double getCurrentDraw()
-    {
-        return (right1.getOutputCurrent() + right2.getOutputCurrent())/2;
+        Motor[] motors = {left1, left2, right1, right2};
+        for(Motor motor : motors)
+            motor.setNeutralMode(coast ? NeutralMode.Coast : NeutralMode.Brake);
     }
 }

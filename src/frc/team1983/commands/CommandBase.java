@@ -8,14 +8,16 @@ public abstract class CommandBase extends Command
     {
 
     }
+
     public CommandBase(double timeout)
     {
         super(timeout);
     }
 
-    public void configTimeout(double timeout)
+    public CommandBase configTimeout(double seconds)
     {
-        setTimeout(timeout);
+        setTimeout(seconds);
+        return this;
     }
 
     @Override

@@ -1,41 +1,54 @@
 package frc.team1983.commands.drivebase;
 
 import frc.team1983.Robot;
-import frc.team1983.commands.autonomous.actions.ActionsEnum;
+import frc.team1983.commands.CommandBase;
 import frc.team1983.subsystems.Drivebase;
-import frc.team1983.utility.motion.profiles.CruiseProfile;
-import frc.team1983.utility.motion.profiles.TrapezoidalProfile;
 
-public class DriveFeet extends DriveProfile
+public class DriveFeet extends CommandBase
 {
-    public DriveFeet(Drivebase drivebase, double distance, double time, ActionsEnum[] actions)
+    private Drivebase drivebase;
+    private double feet;
+
+    public DriveFeet(Drivebase drivebase, double feet)
     {
-        super(drivebase, generateProfile(-distance, time), generateProfile(-distance, time), time, 0, actions);
-        setHeadingLoopGains(Robot.getInstance().getStraightGains());
+        requires(drivebase);
+
+        this.drivebase = drivebase;
+        this.feet = feet;
     }
 
-    public DriveFeet(Drivebase drivebase, double distance, double time)
+    public DriveFeet(double feet)
     {
-        this(drivebase, distance, time, new ActionsEnum[]{ActionsEnum.NONE});
+        this(Robot.getInstance().getDrivebase(), feet);
     }
 
-    // absolute orientation
-    public DriveFeet(Drivebase drivebase, double distance, double time, double heading, ActionsEnum[] actions)
+    @Override
+    public void initialize()
     {
-        this(drivebase, distance, time, actions);
 
-        useAbsoluteOrientation = true;
-        startHeading = heading;
-        endHeading = heading;
     }
 
-    public DriveFeet(Drivebase drivebase, double distance, double time, double heading)
+    @Override
+    public void execute()
     {
-        this(drivebase, distance, time, heading, new ActionsEnum[]{ActionsEnum.NONE});
+
     }
 
-    private static CruiseProfile generateProfile(double distance, double time)
+    @Override
+    public boolean isFinished()
     {
-        return new TrapezoidalProfile(Drivebase.getTicks(distance), time);
+        return false;
+    }
+
+    @Override
+    public void interrupted()
+    {
+        end();
+    }
+
+    @Override
+    public void end()
+    {
+
     }
 }
