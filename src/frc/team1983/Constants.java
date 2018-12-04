@@ -90,7 +90,7 @@ public class Constants
 
         public static class Wrist
         {
-            public static final double P = 1.5;
+            public static final double P = 2;
             public static final double I = 0;
             public static final double D = 1.5;
             public static final double F = 0;
@@ -100,9 +100,9 @@ public class Constants
 
         public static class Elevator
         {
-            public static final double P = 0.2;
+            public static final double P = 0.16;
             public static final double I = 0;
-            public static final double D = 2;
+            public static final double D = 11;
             public static final double F = 0.1;
 
             public static final int I_ZONE = 0;
@@ -126,8 +126,29 @@ public class Constants
             public static final double POSITION_2 = 12;
             public static final double POSITION_3 = 35;
             public static final double POSITION_4 = 60;
-            public static final double TOP = 70;
+            public static final double TOP = 75;
         }
+    }
+
+    public static class Motion
+    {
+        public static final double WRIST_MAX_VELOCITY = 0;
+        public static final double WRIST_ACCELERATION = 0;
+
+        public static final double ELEVATOR_MAX_VELOCITY = 0;
+        public static final double ELEVATOR_ACCELERATION = 0;
+
+        public static final double DRIVEBASE_LEFT_MAX_VELOCITY = 0;
+        public static final double DRIVEBASE_LEFT_ACCELERATION = 0;
+
+        public static final double DRIVEBASE_RIGHT_MAX_VELOCITY = 0;
+        public static final double DRIVEBASE_RIGHT_ACCELERATION = 0;
+    }
+
+    public static class Estimator
+    {
+        public static final double TRACK_WIDTH = 0;
+        public static final int UPDATE_RATE = 50;
     }
 
     public static class OIMap

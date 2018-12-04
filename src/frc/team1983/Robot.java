@@ -47,6 +47,7 @@ public class Robot extends IterativeRobot
         pigeon = new Pigeon(Motor.getByID(Constants.MotorMap.Drivebase.LEFT_3));
 
         estimator = new StateEstimator();
+        estimator.start();
 
         PSoC.initSPISensor(PSoC.SensorDaq);
         oi.initializeBindings();
@@ -97,6 +98,7 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+        System.out.println(Elevator.toInches(Motor.getByID(Constants.MotorMap.Elevator.RIGHT1).getClosedLoopError()));
     }
 
     @Override

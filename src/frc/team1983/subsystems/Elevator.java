@@ -40,7 +40,7 @@ public class Elevator extends Subsystem
     @Override
     public void initDefaultCommand()
     {
-        //setDefaultCommand(new SetElevatorPosition(Constants.Setpoints.Elevator.TRAVEL));
+
     }
 
     @Override

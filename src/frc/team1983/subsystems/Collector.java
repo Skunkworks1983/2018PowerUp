@@ -37,7 +37,7 @@ public class Collector extends Subsystem
     @Override
     public void initDefaultCommand()
     {
-        //setDefaultCommand(new SetWristAngle(Constants.Setpoints.Wrist.UP));
+
     }
 
     @Override
