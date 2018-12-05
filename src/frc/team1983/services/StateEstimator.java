@@ -12,18 +12,14 @@ public class StateEstimator implements Runnable
     private Pigeon pigeon;
     private Thread thread;
 
-    private double lastLeft, lastRight;
-    private double lastTimestamp;
-    private Vector2 position;
+    private double lastLeftPosition = 0, lastRightPosition = 0;
+    private double lastTimestamp = 0;
+    private Vector2 position = new Vector2(0, 0);
 
     public StateEstimator(Drivebase drivebase, Pigeon pigeon)
     {
         this.drivebase = drivebase;
         this.pigeon = pigeon;
-
-        lastLeft = 0;
-        lastRight = 0;
-        position = new Vector2(0, 0);
 
         thread = new Thread(this);
     }
@@ -45,6 +41,7 @@ public class StateEstimator implements Runnable
 
     public synchronized void start()
     {
+        lastTimestamp = System.currentTimeMillis();
         thread.start();
     }
 
@@ -55,19 +52,34 @@ public class StateEstimator implements Runnable
 
     protected synchronized void execute()
     {
-        double left = drivebase.getLeftPosition();
-        double right = drivebase.getRightPosition();
+        double leftPosition = drivebase.getLeftPosition();
+        double rightPosition = drivebase.getRightPosition();
 
-        double dLeft = left - lastLeft;
-        double dRight = right - lastRight;
+        double leftVelocity = drivebase.getLeftVelocity();
+        double rightVelocity = drivebase.getRightVelocity();
 
-        double displacement = (dLeft + dRight) / 2;
-        double heading = pigeon.getFusedHeading() * Math.PI / 180;
+        double angle = pigeon.getHeading() * Math.PI / 180.0;
 
-        position = Vector2.add(position, (Vector2.scale(new Vector2(Math.sin(heading), Math.cos(heading)), displacement)));
+        if(true)
+        {
+            double displacement = ((leftPosition - lastLeftPosition) + (rightPosition - lastRightPosition)) / 2;
+            position.add(Vector2.scale(new Vector2(Math.sin(angle), Math.cos(angle)), displacement));
+        }
+        else
+        {
+            Vector2 direction = new Vector2(Math.sin(angle), Math.cos(angle));
 
-        lastLeft = left;
-        lastRight = right;
+            double radius = (Constants.Estimator.TRACK_WIDTH * (leftVelocity + rightVelocity)) / (2 * (leftVelocity - rightVelocity));
+            Vector2 center = Vector2.scale(new Vector2(-direction.getY(), direction.getX()), radius);
+
+            double omega = Constants.Estimator.TRACK_WIDTH / (leftVelocity - rightVelocity);
+            double dtheta = omega * ((System.currentTimeMillis() - lastTimestamp) / 1000.0);
+
+            position.twist(center, dtheta);
+        }
+
+        lastLeftPosition = leftPosition;
+        lastRightPosition = rightPosition;
         lastTimestamp = System.currentTimeMillis();
     }
 

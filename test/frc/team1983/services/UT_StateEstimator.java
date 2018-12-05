@@ -27,6 +27,6 @@ public class UT_StateEstimator
     @Test
     public void localizationTest()
     {
-
+        estimator = new StateEstimator(drivebase, pigeon);
     }
 }

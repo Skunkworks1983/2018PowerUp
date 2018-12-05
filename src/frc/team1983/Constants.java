@@ -100,9 +100,9 @@ public class Constants
 
         public static class Elevator
         {
-            public static final double P = 0.16;
+            public static final double P = 0.2;
             public static final double I = 0;
-            public static final double D = 11;
+            public static final double D = 0;
             public static final double F = 0.1;
 
             public static final int I_ZONE = 0;
@@ -147,7 +147,7 @@ public class Constants
 
     public static class Estimator
     {
-        public static final double TRACK_WIDTH = 0;
+        public static final double TRACK_WIDTH = 26;
         public static final int UPDATE_RATE = 50;
     }
 
