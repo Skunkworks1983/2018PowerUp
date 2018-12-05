@@ -26,6 +26,9 @@ public class Elevator extends Subsystem
         right1.config_kF(0, 0);
         right1.config_IntegralZone(0, (int) Elevator.toTicks(Constants.Gains.Elevator.I_ZONE));
 
+        right1.configMotionCruiseVelocity(10000);
+        right1.configMotionAcceleration(4000);
+
         right1.setSensorPhase(true);
         right1.configClosedloopRamp(0.5);
 

@@ -33,7 +33,7 @@ public class SetElevatorPosition extends CommandBase
     @Override
     public void initialize()
     {
-        elevator.set(ControlMode.Position, Elevator.toTicks(inches));
+        elevator.set(ControlMode.MotionMagic, Elevator.toTicks(inches));
     }
 
     @Override

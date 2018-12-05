@@ -45,8 +45,11 @@ public class Robot extends IterativeRobot
 
         psoc = new PSoC();
         pigeon = new Pigeon(Motor.getByID(Constants.MotorMap.Drivebase.LEFT_3));
+        pigeon.reset();
 
         estimator = new StateEstimator();
+        estimator.reset();
+        estimator.start();
 
         PSoC.initSPISensor(PSoC.SensorDaq);
         oi.initializeBindings();
@@ -55,7 +58,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotPeriodic()
     {
-        
+
     }
 
     @Override
@@ -97,6 +100,7 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+        System.out.println(elevator.getHeight());
     }
 
     @Override
@@ -113,17 +117,6 @@ public class Robot extends IterativeRobot
     public void testPeriodic()
     {
         Scheduler.getInstance().run();
-
-        byte[] sentBytes = {1,7,23,0,1,0,0,0,0,0,0,0}; //12 Bytes sent
-        byte[] receivedBytes = {0,0,0,0,0,0,0,0,0,0,0,0}; //12 Bytes received
-
-        int[] result = psoc.getSensorValue(sentBytes,receivedBytes);
-        System.out.print("Result: ");
-        for (int i : result)
-        {
-            System.out.println(i + ", ");
-        }
-        System.out.println(".");
     }
 
     public Drivebase getDrivebase()
@@ -149,6 +142,11 @@ public class Robot extends IterativeRobot
     public Pigeon getPigeon()
     {
         return pigeon;
+    }
+
+    public StateEstimator getEstimator()
+    {
+        return estimator;
     }
 
     public synchronized static Robot getInstance()
