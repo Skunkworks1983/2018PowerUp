@@ -27,7 +27,24 @@ public class Bezier
 
     public Vector2 evaluateTangent(double t)
     {
-        return Vector2.sub(new Bezier(Arrays.copyOfRange(points, 1, points.length)).evaluate(t),
-                           new Bezier(Arrays.copyOfRange(points, 0, points.length - 1)).evaluate(t)).getNormalized();
+        if(points.length == 2)
+            return Vector2.sub(points[1], points[0]).getNormalized();
+        else
+            return Vector2.sub(new Bezier(Arrays.copyOfRange(points, 1, points.length)).evaluate(t),
+                               new Bezier(Arrays.copyOfRange(points, 0, points.length - 1)).evaluate(t)).getNormalized();
+    }
+
+    public Vector2 evaluateNormal(double t)
+    {
+        Vector2 tangent = evaluateTangent(t);
+        return new Vector2(-tangent.getY(), tangent.getX());
+    }
+
+    public double getLength(int segments)
+    {
+        double length = 0;
+        for(int i = 0; i < segments; i++)
+            length += evaluate((double) i / segments).getDistanceTo(evaluate((double) (i + 1) / segments));
+        return length;
     }
 }
