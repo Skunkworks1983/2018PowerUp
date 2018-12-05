@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team1983.Constants;
 import frc.team1983.Constants.OIMap;
 import frc.team1983.Constants.Setpoints;
+import frc.team1983.commands.Manual;
 import frc.team1983.commands.collector.Expel;
 import frc.team1983.commands.collector.Intake;
 import frc.team1983.commands.collector.SetWristAngle;
@@ -85,5 +86,7 @@ public class OI
 
         getButton(OIMap.PANEL, OIMap.COLLECTOR_DOWN).whenPressed(new SetWristAngle(Setpoints.Wrist.DOWN));
         getButton(OIMap.PANEL, OIMap.COLLECTOR_UP).whenPressed(new SetWristAngle(Setpoints.Wrist.UP));
+
+        getButton(OIMap.PANEL, OIMap.MANUAL_TOGGLE).whileHeld(new Manual());
     }
 }

@@ -8,6 +8,9 @@ public class Bezier
 
     public Bezier(Vector2... points)
     {
+        if(points.length < 2)
+            throw new IllegalArgumentException("cannot construct Bezier with less than two points");
+
         this.points = points;
     }
 
@@ -20,5 +23,11 @@ public class Bezier
                     new Bezier(Arrays.copyOfRange(points, 0, points.length - 1)).evaluate(t),
                     new Bezier(Arrays.copyOfRange(points, 1, points.length)).evaluate(t)
             ).evaluate(t);
+    }
+
+    public Vector2 evaluateTangent(double t)
+    {
+        return Vector2.sub(new Bezier(Arrays.copyOfRange(points, 1, points.length)).evaluate(t),
+                           new Bezier(Arrays.copyOfRange(points, 0, points.length - 1)).evaluate(t)).getNormalized();
     }
 }

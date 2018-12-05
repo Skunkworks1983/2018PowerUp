@@ -52,6 +52,12 @@ public class Constants
     public static final double COLLECTOR_EXPEL_THROTTLE = 0.75;
     public static final double COLLECTOR_EXPEL_SLOW_THROTTLE = 0.5;
 
+    public static final double MANUAL_COLLECTOR_UP_THROTTLE = 0;
+    public static final double MANUAL_COLLECTOR_DOWN_THROTTLE = 0;
+
+    public static final double MANUAL_ELEVATOR_UP_THROTTLE = 0;
+    public static final double MANUAL_ELEVATOR_DOWN_THROTTLE = 0;
+
     public static final double ELEVATOR_ALLOWABLE_ERROR = 10;
     public static final double WRIST_ALLOWABLE_ERROR = 15;
 
@@ -133,16 +139,16 @@ public class Constants
     public static class Motion
     {
         public static final double WRIST_MAX_VELOCITY = 0;
-        public static final double WRIST_ACCELERATION = 0;
+        public static final double WRIST_MAX_ACCELERATION = 0;
 
         public static final double ELEVATOR_MAX_VELOCITY = 0;
-        public static final double ELEVATOR_ACCELERATION = 0;
+        public static final double ELEVATOR_MAX_ACCELERATION = 0;
 
         public static final double DRIVEBASE_LEFT_MAX_VELOCITY = 0;
-        public static final double DRIVEBASE_LEFT_ACCELERATION = 0;
+        public static final double DRIVEBASE_LEFT_MAX_ACCELERATION = 0;
 
         public static final double DRIVEBASE_RIGHT_MAX_VELOCITY = 0;
-        public static final double DRIVEBASE_RIGHT_ACCELERATION = 0;
+        public static final double DRIVEBASE_RIGHT_MAX_ACCELERATION = 0;
     }
 
     public static class Estimator
