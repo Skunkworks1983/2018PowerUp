@@ -1,13 +1,13 @@
-package frc.team1983.utility.sensors;
+package frc.team1983.utility.sensors.psoc;
 
 import edu.wpi.first.wpilibj.SPI;
 
-import edu.wpi.first.wpilibj.command.Scheduler;
-
-public class PSoC
+//This class does not represent the PSoC, but instead is the thread that we use to interact with the PSoC
+public class PSoC implements Runnable
 {
-    public static SPI SensorDaq;
-
+    private static SPI SensorDaq; //The SPI port
+    private int[] sensorData; //The decoded data from the psoc
+    private byte[] sentBytes = {1,7,23,0,1,1,0,0,0,0,0,0}; //The bytes we send to the psoc for a transaction
 
 
     public PSoC()
@@ -16,7 +16,32 @@ public class PSoC
         initSPISensor(SensorDaq);
     }
 
-    public static void initSPISensor(SPI SensorDaq)
+    //The method called every time the thread runs
+    @Override
+    public void run() {
+        sensorData = doTransaction(sentBytes);
+    }
+
+    public synchronized void setSentBytes(byte[] newSentBytes)
+    {
+        if(sentBytes.length != 12)
+        {
+            System.out.println("WARNING: Attempted to set new sent bytes value, but given value was not 12 bytes");
+        }
+    }
+
+    public synchronized int getSensor(PSoCSensors sensor)
+    {
+        return sensorData[sensor.posInPacket];
+    }
+
+    public synchronized int[] getSensorData()
+    {
+        return sensorData.clone(); //we clone for thread-safety
+    }
+
+    //Init the SPI port on the RoboRIO
+    private static void initSPISensor(SPI SensorDaq)
     {
         SensorDaq.setClockRate(1000000);      // other tested spds also worked without changes to slave
         SensorDaq.setChipSelectActiveLow();  // Low
@@ -25,7 +50,12 @@ public class PSoC
         SensorDaq.setClockActiveLow();      //  Low
     }
 
-    public int[] getSensorValue(byte[] DaqOutputBuffer, byte[] DaqInputBuffer)
+    /**
+     * Does a transaction with the psoc
+     * @param DaqOutputBuffer a twelve byte array to send to the psoc.
+     * @return the decoded packet from the psoc, is 4 ints in an array
+     */
+    private int[] doTransaction(byte[] DaqOutputBuffer)
     {
         // local variables to decode data packet (DaqInputBuffer).
         // Packet {Data0HB, Data0LB, Data1HB, Data1LB, Data2HB, Data2LB, Data3HB, Data3LB, KEY, Spare, Checksum1, Checksum2}
@@ -35,6 +65,7 @@ public class PSoC
         int keyBit=0;
         int keyBit2=0;
         int index, sum1=0, sum2=0;
+        byte[] DaqInputBuffer = {0,0,0,0,0,0,0,0,0,0,0,0};
 
         try
         {
@@ -52,24 +83,16 @@ public class PSoC
             sum2 = (sum2 + sum1) % 128;       // sum of all bytes plus sum of check byte
         }
 
-        System.out.println("Input");
-        for(byte b: DaqInputBuffer)
-        {
-            System.out.println(b);
-        }
-
         if (sum1==DaqInputBuffer[10]  &&  sum2==DaqInputBuffer[9])
         {
-            System.out.println();
-            System.out.println("Checksum Match  *******************************************************");
             // decode 8 bytes using key byte as 9th bit of each byte. assemble as 4 integers (0-65535).
             HiByte = DaqInputBuffer[0];
             keyBit = (DaqInputBuffer[8] & 0x01) >> 0;
-            HiByte = keyBit == 0x01 ? HiByte << 7 : HiByte; //equal to HiByte << 7 if keyBit == 1
+            HiByte = HiByte + (keyBit << 7);
 
             LoByte = DaqInputBuffer[1];
             keyBit = (DaqInputBuffer[8] & 0x02) >> 1;
-            LoByte = LoByte + (keyBit * 128);
+            LoByte = LoByte + (keyBit << 7);
 
             SensorVal[0] = (HiByte << 8) | LoByte;
 
@@ -86,13 +109,17 @@ public class PSoC
             HiByte = DaqInputBuffer[4];
             keyBit = (DaqInputBuffer[8] & 0x16) >> 4;
             HiByte = HiByte + (keyBit * 128);
+
             LoByte = DaqInputBuffer[5];
             keyBit = (DaqInputBuffer[8] & 0x32) >> 5;
             LoByte = LoByte + (keyBit * 128);
+
             SensorVal[2] = (HiByte << 8) | LoByte;
+
             HiByte = DaqInputBuffer[6];
             keyBit = (DaqInputBuffer[8] & 0x64) >> 6;
             HiByte = HiByte + (keyBit * 128);
+
             LoByte = DaqInputBuffer[7];
             keyBit = (DaqInputBuffer[8] & 0x128) >> 7;
             keyBit = (keyBit > 1) ? 1 : keyBit ;    // if keyBit is greater than 1, keyBit=1 else keyBit=keyBit
