@@ -44,6 +44,7 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
 
         psoc = new PSoC();
+        new Thread(psoc).start();
         pigeon = new Pigeon(Motor.getByID(Constants.MotorMap.Drivebase.LEFT_3));
 
         estimator = new StateEstimator();
@@ -77,7 +78,9 @@ public class Robot extends IterativeRobot
 
         pigeon.reset();
         estimator.reset();
+
     }
+
 
     @Override
     public void autonomousPeriodic()
