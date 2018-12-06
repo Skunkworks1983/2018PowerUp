@@ -132,6 +132,7 @@ public class Robot extends IterativeRobot
             System.out.println(i + ", ");
         }
         System.out.println(".");
+        Scheduler.getInstance().run();
     }
 
     public Drivebase getDrivebase()
