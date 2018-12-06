@@ -6,8 +6,6 @@ import frc.team1983.commands.drivebase.RunTankDrive;
 import frc.team1983.services.AutoManager;
 import frc.team1983.services.OI;
 import frc.team1983.services.StateEstimator;
-import frc.team1983.services.smellylog.Level;
-import frc.team1983.services.smellylog.LoggerFactory;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
@@ -39,9 +37,6 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
-        //Must come first so that logger is configured for other classes
-        LoggerFactory.getInstance().setGlobalLevel(Level.INFO);
-
         oi = new OI();
 
         drivebase = new Drivebase();
