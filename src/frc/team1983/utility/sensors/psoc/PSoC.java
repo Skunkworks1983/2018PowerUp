@@ -26,8 +26,10 @@ public class PSoC implements Runnable
     {
         if(sentBytes.length != 12)
         {
-            System.out.println("WARNING: Attempted to set new sent bytes value, but given value was not 12 bytes");
+            System.out.println("WARNING: Attempted to set new sent bytes value, but given value was not 12 bytes");;
+            return;
         }
+        sentBytes = newSentBytes;
     }
 
     public synchronized int getSensor(PSoCSensors sensor)
