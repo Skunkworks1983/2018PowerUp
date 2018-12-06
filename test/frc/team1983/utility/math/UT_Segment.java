@@ -9,10 +9,4 @@ public class UT_Segment
     {
 
     }
-
-    @Test
-    public void intersectionTest()
-    {
-
-    }
 }

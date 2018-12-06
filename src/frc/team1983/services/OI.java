@@ -36,12 +36,12 @@ public class OI
 
     public double getLeftY()
     {
-        return left.getY();
+        return -left.getY();
     }
 
     public double getRightY()
     {
-        return right.getY();
+        return -right.getY();
     }
 
     public JoystickButton getButton(int joystickPort, int button)

@@ -9,4 +9,14 @@ public class Segment
         this.p0 = p0;
         this.p1 = p1;
     }
+
+    public Vector2 getP0()
+    {
+        return p0;
+    }
+
+    public Vector2 getP1()
+    {
+        return p1;
+    }
 }

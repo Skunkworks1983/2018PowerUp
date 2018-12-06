@@ -1,6 +1,7 @@
 package frc.team1983.services;
 
 import frc.team1983.autonomous.AutoRoutine;
+import frc.team1983.autonomous.routines.TestRoutine;
 
 public class AutoManager
 {
@@ -13,7 +14,7 @@ public class AutoManager
 
     public AutoRoutine getRoutine()
     {
-        return new AutoRoutine();
+        return new TestRoutine();
     }
 
     public synchronized static AutoManager getInstance()

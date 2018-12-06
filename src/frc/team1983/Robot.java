@@ -46,8 +46,11 @@ public class Robot extends IterativeRobot
         psoc = new PSoC();
         new Thread(psoc).start();
         pigeon = new Pigeon(Motor.getByID(Constants.MotorMap.Drivebase.LEFT_3));
+        pigeon.reset();
 
         estimator = new StateEstimator();
+        estimator.reset();
+        estimator.start();
 
         oi.initializeBindings();
     }
@@ -55,7 +58,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotPeriodic()
     {
-        
+
     }
 
     @Override
@@ -78,9 +81,7 @@ public class Robot extends IterativeRobot
 
         pigeon.reset();
         estimator.reset();
-
     }
-
 
     @Override
     public void autonomousPeriodic()
@@ -140,6 +141,11 @@ public class Robot extends IterativeRobot
     public Pigeon getPigeon()
     {
         return pigeon;
+    }
+
+    public StateEstimator getEstimator()
+    {
+        return estimator;
     }
 
     public synchronized static Robot getInstance()

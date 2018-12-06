@@ -1,5 +1,6 @@
 package frc.team1983.services;
 
+import frc.team1983.Constants;
 import frc.team1983.Robot;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.utility.math.Vector2;
@@ -11,8 +12,9 @@ public class StateEstimator implements Runnable
     private Pigeon pigeon;
     private Thread thread;
 
-    private double lastLeft, lastRight;
-    private Vector2 position;
+    private double lastLeftPosition = 0, lastRightPosition = 0;
+    private double lastTimestamp = 0;
+    private Vector2 position = new Vector2(0, 0);
 
     public StateEstimator(Drivebase drivebase, Pigeon pigeon)
     {
@@ -20,7 +22,6 @@ public class StateEstimator implements Runnable
         this.pigeon = pigeon;
 
         thread = new Thread(this);
-        //thread.start();
     }
 
     public StateEstimator()
@@ -28,28 +29,75 @@ public class StateEstimator implements Runnable
         this(Robot.getInstance().getDrivebase(), Robot.getInstance().getPigeon());
     }
 
-    public Vector2 getPosition()
+    public synchronized Vector2 getPosition()
     {
         return position;
     }
 
-    public void reset()
+    public synchronized void setPosition(Vector2 position)
+    {
+        this.position = position;
+    }
+
+    public synchronized void start()
+    {
+        lastTimestamp = System.currentTimeMillis();
+        thread.start();
+    }
+
+    public synchronized void reset()
     {
         position = new Vector2(0, 0);
+    }
+
+    protected synchronized void execute()
+    {
+        double leftPosition = drivebase.getLeftPosition();
+        double rightPosition = drivebase.getRightPosition();
+
+        double leftVelocity = drivebase.getLeftVelocity();
+        double rightVelocity = drivebase.getRightVelocity();
+
+        double angle = pigeon.getHeading() * Math.PI / 180.0;
+
+        if(true)
+        {
+            double displacement = ((leftPosition - lastLeftPosition) + (rightPosition - lastRightPosition)) / 2;
+            position.add(Vector2.scale(new Vector2(Math.sin(angle), Math.cos(angle)), displacement));
+        }
+        else
+        {
+            Vector2 direction = new Vector2(Math.sin(angle), Math.cos(angle));
+
+            double radius = (Constants.Estimator.TRACK_WIDTH * (leftVelocity + rightVelocity)) / (2 * (leftVelocity - rightVelocity));
+            Vector2 center = Vector2.scale(new Vector2(-direction.getY(), direction.getX()), radius);
+
+            double omega = Constants.Estimator.TRACK_WIDTH / (leftVelocity - rightVelocity);
+            double dtheta = omega * ((System.currentTimeMillis() - lastTimestamp) / 1000.0);
+
+            position.twist(center, dtheta);
+        }
+
+        lastLeftPosition = leftPosition;
+        lastRightPosition = rightPosition;
+        lastTimestamp = System.currentTimeMillis();
     }
 
     @Override
     public void run()
     {
-        double dLeft = drivebase.getLeftPosition() - lastLeft;
-        double dRight = drivebase.getRightPosition() - lastRight;
+        while(true)
+        {
+            execute();
 
-        double displacement = (dLeft + dRight) / 2;
-        double heading = pigeon.getFusedHeading() * Math.PI / 180;
-
-        position.add(Vector2.scale(new Vector2(Math.sin(heading), Math.cos(heading)), displacement));
-
-        lastLeft = drivebase.getLeftPosition();
-        lastRight = drivebase.getRightPosition();
+            try
+            {
+                Thread.sleep((long) 1000.0 / Constants.Estimator.UPDATE_RATE);
+            }
+            catch(InterruptedException exception)
+            {
+                exception.printStackTrace();
+            }
+        }
     }
 }
