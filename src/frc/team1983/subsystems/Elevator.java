@@ -30,7 +30,6 @@ public class Elevator extends Subsystem
         right1.configMotionAcceleration((int) Elevator.toTicks(Constants.Motion.ELEVATOR_MAX_ACCELERATION));
 
         right1.setSensorPhase(true);
-        right1.configClosedloopRamp(0.5);
 
         right2.follow(right1);
         left1.follow(right1);

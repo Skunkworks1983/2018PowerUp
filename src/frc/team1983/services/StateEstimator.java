@@ -63,7 +63,7 @@ public class StateEstimator implements Runnable
         if(true)
         {
             double displacement = ((leftPosition - lastLeftPosition) + (rightPosition - lastRightPosition)) / 2;
-            position.add(Vector2.scale(new Vector2(Math.sin(angle), Math.cos(angle)), displacement));
+            position.add(Vector2.scale(new Vector2(Math.sin(angle), Math.cos(angle)), displacement / 12.0));
         }
         else
         {

@@ -1,5 +1,7 @@
 package frc.team1983.utility.math;
 
+import frc.team1983.Constants;
+
 public class Vector2
 {
     private double x, y;
@@ -61,6 +63,11 @@ public class Vector2
         set(getNormalized());
     }
 
+    public Vector2 getNegative()
+    {
+        return new Vector2(-x, -y);
+    }
+
     public static double getDistance(Vector2 left, Vector2 right)
     {
         return Math.sqrt(Math.pow(left.x - right.x, 2) + Math.pow(left.y - right.y, 2));
@@ -69,6 +76,16 @@ public class Vector2
     public double getDistanceTo(Vector2 other)
     {
         return Vector2.getDistance(this, other);
+    }
+
+    public static boolean equals(Vector2 left, Vector2 right)
+    {
+        return Math.abs(left.x - right.x) < Constants.EPSILON && Math.abs(left.y - right.y) < Constants.EPSILON;
+    }
+
+    public boolean equals(Vector2 other)
+    {
+        return Vector2.equals(this, other);
     }
 
     public static Vector2 add(Vector2 left, Vector2 right)
@@ -99,6 +116,11 @@ public class Vector2
     public void scale(double scalar)
     {
         set(Vector2.scale(this, scalar));
+    }
+
+    public static double dot(Vector2 left, Vector2 right)
+    {
+        return left.x * right.x + left.y * right.y;
     }
 
     public static Vector2 twist(Vector2 point, Vector2 center, double degrees)

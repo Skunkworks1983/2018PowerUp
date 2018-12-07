@@ -1,5 +1,7 @@
 package frc.team1983.utility.math;
 
+import frc.team1983.Constants;
+
 import java.util.Arrays;
 
 public class Bezier
@@ -40,9 +42,26 @@ public class Bezier
         return new Vector2(-tangent.getY(), tangent.getX());
     }
 
-    public double getLength(int segments)
+    public Vector2 offset(double t, double offset)
+    {
+        return Vector2.add(evaluate(t), Vector2.scale(evaluateNormal(t), offset));
+    }
+
+    public Vector2 evaluateCenterOfCurvature(double t)
+    {
+        return Ray.cast(new Ray(evaluate(t - Constants.EPSILON), evaluateNormal(t - Constants.EPSILON)),
+                        new Ray(evaluate(t + Constants.EPSILON), evaluateNormal(t + Constants.EPSILON)));
+    }
+
+    public double evaluateRadiusOfCurvatuve(double t)
+    {
+        return Vector2.getDistance(evaluate(t), evaluateCenterOfCurvature(t));
+    }
+
+    public double getLength()
     {
         double length = 0;
+        double segments = 20;
         for(int i = 0; i < segments; i++)
             length += evaluate((double) i / segments).getDistanceTo(evaluate((double) (i + 1) / segments));
         return length;

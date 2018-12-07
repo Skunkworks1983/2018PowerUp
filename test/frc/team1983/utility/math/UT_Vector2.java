@@ -8,20 +8,15 @@ import static org.hamcrest.Matchers.is;
 
 public class UT_Vector2
 {
-    private static boolean vectorsAreEqual(Vector2 left, Vector2 right)
-    {
-        return Math.abs(left.getX() - right.getX()) < 0.01 && Math.abs(left.getY() - right.getY()) < 0.01;
-    }
-
     @Test
     public void additionTest()
     {
-        assertThat(vectorsAreEqual(
+        assertThat(Vector2.equals(
                 Vector2.add(new Vector2(1, 2), new Vector2(3, 4)),
                 new Vector2(4, 6)),
                 is(true));
 
-        assertThat(vectorsAreEqual(
+        assertThat(Vector2.equals(
                 Vector2.add(new Vector2(-5, 6), new Vector2(3, -4)),
                 new Vector2(-2, 2)),
                 is(true));
@@ -30,12 +25,12 @@ public class UT_Vector2
     @Test
     public void subtractionTest()
     {
-        assertThat(vectorsAreEqual(
+        assertThat(Vector2.equals(
                 Vector2.sub(new Vector2(4, 7), new Vector2(1, 3)),
                 new Vector2(3, 4)),
                 is(true));
 
-        assertThat(vectorsAreEqual(
+        assertThat(Vector2.equals(
                 Vector2.sub(new Vector2(9, -3), new Vector2(-5, 9)),
                 new Vector2(14, -12)),
                 is(true));
@@ -44,12 +39,12 @@ public class UT_Vector2
     @Test
     public void scalingTest()
     {
-        assertThat(vectorsAreEqual(
+        assertThat(Vector2.equals(
                 Vector2.scale(new Vector2(4, 6), 1.5),
                 new Vector2(6, 9)),
                 is(true));
 
-        assertThat(vectorsAreEqual(
+        assertThat(Vector2.equals(
                 Vector2.scale(new Vector2(5, 2), -1),
                 new Vector2(-5, -2)),
                 is(true));
@@ -66,8 +61,8 @@ public class UT_Vector2
     @Test
     public void normalizingTest()
     {
-        assertThat(vectorsAreEqual(new Vector2(10, 10).getNormalized(), new Vector2(1, 1).getNormalized()), is(true));
-        assertThat(vectorsAreEqual(new Vector2(-10, -10).getNormalized(), new Vector2(-1, -1).getNormalized()), is(true));
+        assertThat(Vector2.equals(new Vector2(10, 10).getNormalized(), new Vector2(1, 1).getNormalized()), is(true));
+        assertThat(Vector2.equals(new Vector2(-10, -10).getNormalized(), new Vector2(-1, -1).getNormalized()), is(true));
         assertThat(new Vector2(10, 10).getNormalized().getMagnitude(), closeTo(1.0, 0.01));
     }
 
@@ -84,9 +79,9 @@ public class UT_Vector2
     @Test
     public void twistingTest()
     {
-        assertThat(vectorsAreEqual(Vector2.twist(new Vector2(1, 0), new Vector2(0, 0), 90), new Vector2(0, 1)), is(true));
-        assertThat(vectorsAreEqual(Vector2.twist(new Vector2(0, 1), new Vector2(0, 0), 90), new Vector2(-1, 0)), is(true));
-        assertThat(vectorsAreEqual(Vector2.twist(new Vector2(-1, 0), new Vector2(0, 0), 90), new Vector2(0, -1)), is(true));
-        assertThat(vectorsAreEqual(Vector2.twist(new Vector2(0, 0), new Vector2(1, 0), -90), new Vector2(1, 1)), is(true));
+        assertThat(Vector2.equals(Vector2.twist(new Vector2(1, 0), new Vector2(0, 0), 90), new Vector2(0, 1)), is(true));
+        assertThat(Vector2.equals(Vector2.twist(new Vector2(0, 1), new Vector2(0, 0), 90), new Vector2(-1, 0)), is(true));
+        assertThat(Vector2.equals(Vector2.twist(new Vector2(-1, 0), new Vector2(0, 0), 90), new Vector2(0, -1)), is(true));
+        assertThat(Vector2.equals(Vector2.twist(new Vector2(0, 0), new Vector2(1, 0), -90), new Vector2(1, 1)), is(true));
     }
 }

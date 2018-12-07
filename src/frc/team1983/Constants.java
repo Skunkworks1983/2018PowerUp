@@ -2,6 +2,8 @@ package frc.team1983;
 
 public class Constants
 {
+    public static final double EPSILON = 0.00000000001;
+
     public static class MotorMap
     {
         public static class Drivebase
@@ -141,8 +143,8 @@ public class Constants
         public static final double WRIST_MAX_VELOCITY = 0;
         public static final double WRIST_MAX_ACCELERATION = 0;
 
-        public static final double ELEVATOR_MAX_VELOCITY = 0;
-        public static final double ELEVATOR_MAX_ACCELERATION = 0;
+        public static final double ELEVATOR_MAX_VELOCITY = 50.0 / 10;
+        public static final double ELEVATOR_MAX_ACCELERATION = 100.0 / 10;
 
         public static final double DRIVEBASE_LEFT_MAX_VELOCITY = 0;
         public static final double DRIVEBASE_LEFT_MAX_ACCELERATION = 0;
