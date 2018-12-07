@@ -10,7 +10,7 @@ import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
 import frc.team1983.subsystems.Elevator;
 import frc.team1983.utility.control.Motor;
-import frc.team1983.utility.sensors.PSoC;
+import frc.team1983.utility.sensors.psoc.PSoC;
 import frc.team1983.utility.sensors.Pigeon;
 
 public class Robot extends IterativeRobot
@@ -44,6 +44,7 @@ public class Robot extends IterativeRobot
         elevator = new Elevator();
 
         psoc = new PSoC();
+        new Thread(psoc).start();
         pigeon = new Pigeon(Motor.getByID(Constants.MotorMap.Drivebase.LEFT_3));
         pigeon.reset();
 
@@ -51,7 +52,6 @@ public class Robot extends IterativeRobot
         estimator.reset();
         estimator.start();
 
-        PSoC.initSPISensor(PSoC.SensorDaq);
         oi.initializeBindings();
     }
 
@@ -117,17 +117,6 @@ public class Robot extends IterativeRobot
     public void testPeriodic()
     {
         Scheduler.getInstance().run();
-
-        byte[] sentBytes = {1,7,23,0,1,0,0,0,0,0,0,0}; //12 Bytes sent
-        byte[] receivedBytes = {0,0,0,0,0,0,0,0,0,0,0,0}; //12 Bytes received
-
-        int[] result = psoc.getSensorValue(sentBytes,receivedBytes);
-        System.out.print("Result: ");
-        for (int i : result)
-        {
-            System.out.println(i + ", ");
-        }
-        System.out.println(".");
     }
 
     public Drivebase getDrivebase()
