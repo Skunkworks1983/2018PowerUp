@@ -7,6 +7,7 @@ import frc.team1983.services.AutoManager;
 import frc.team1983.services.OI;
 import frc.team1983.services.StateEstimator;
 import frc.team1983.services.smellylog.Level;
+import frc.team1983.services.smellylog.Logger;
 import frc.team1983.services.smellylog.LoggerFactory;
 import frc.team1983.subsystems.Collector;
 import frc.team1983.subsystems.Drivebase;
@@ -58,6 +59,9 @@ public class Robot extends IterativeRobot
 
         PSoC.initSPISensor(PSoC.SensorDaq);
         oi.initializeBindings();
+
+        Logger logger = LoggerFactory.getInstance().newLogger("Robot");
+        logger.info("Prints!");
     }
 
     @Override
