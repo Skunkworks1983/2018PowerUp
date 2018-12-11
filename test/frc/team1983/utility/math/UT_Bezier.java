@@ -18,7 +18,7 @@ public class UT_Bezier
         b = new Bezier(new Vector2(-10, -4), new Vector2(3, 7), new Vector2(3, 5));
 
         assertThat(Vector2.equals(b.evaluate(0), new Vector2(-10, -4)), is(true));
-        assertThat(Vector2.equals(b.evaluate(1), new Vector2(3, 7)), is(true));
+        assertThat(Vector2.equals(b.evaluate(1), new Vector2(3, 5)), is(true));
     }
 
     @Test
